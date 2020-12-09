@@ -1,27 +1,96 @@
 specVersion: 0.0.2
-description: Gravatar for Ethereum
-repository: https://github.com/graphprotocol/example-subgraph
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Gravity
+    name: DODOZoo
     network: mainnet
     source:
-      address: '0x2E645469f354BB4F5c8a05B3b30A929361cf77eC'
-      abi: Gravity
+      address: '0x3a97247df274a17c59a3bd12735ea3fcdfb49950'
+      abi: DODOZoo
+      startBlock: 10613640
+#      startBlock: 11337264
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
+      file: ./src/mappings/dodozoo.ts
       entities:
-        - Gravatar
+        - Pair
+        - Token
       abis:
-        - name: Gravity
-          file: ./abis/Gravity.json
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
       eventHandlers:
-        - event: NewGravatar(uint256,address,string,string)
-          handler: handleNewGravatar
-        - event: UpdatedGravatar(uint256,address,string,string)
-          handler: handleUpdatedGravatar
-      file: ./src/mapping.ts
+        - event: DODOBirth(address,address,address)
+          handler: handleDODOBirth
+  - kind: ethereum/contract
+    name: DODOZooBatch
+    network: mainnet
+    source:
+      address: '0xBD337924F000dcEB119153d4D3B1744b22364d25'
+      abi: DODOZoo
+      startBlock: 10613640
+#      startBlock: 11337264
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/dodozoo.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: DODOBirth(address,address,address)
+          handler: handleDODOBirth
+templates:
+  - kind: ethereum/contract
+    name: DODO
+    network: mainnet
+    source:
+      abi: DODO
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/dodo.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODO
+          file: ./abis/DODO.json
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
+          handler: handleWithdraw
+        - event: SellBaseToken(indexed address,uint256,uint256)
+          handler: handleSellBaseToken
+        - event: BuyBaseToken(indexed address,uint256,uint256)
+          handler: handleBuyBaseToken

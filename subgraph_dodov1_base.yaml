@@ -1,0 +1,52 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DODOZoo
+    network: mainnet
+    source:
+      address: '0x3a97247df274a17c59a3bd12735ea3fcdfb49950'
+      abi: DODOZoo
+      startBlock: 10613640
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/dodozoo.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: DODOBirth(address,address,address)
+          handler: handleDODOBirth
+templates:
+  - kind: ethereum/contract
+    name: DODO
+    network: mainnet
+    source:
+      abi: DODO
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/dodo.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODO
+          file: ./abis/DODO.json
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
