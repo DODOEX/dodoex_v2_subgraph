@@ -4,7 +4,16 @@ import {ERC20} from '../types/DodoZoo/ERC20'
 import {ERC20SymbolBytes} from '../types/DodoZoo/ERC20SymbolBytes'
 import {ERC20NameBytes} from '../types/DodoZoo/ERC20NameBytes'
 import {DODO} from '../types/templates/DODO/DODO'
-import {User, Bundle, Token, LiquidityPosition, LiquidityPositionSnapshot, Pair, LpToken} from '../types/schema'
+import {
+    User,
+    Bundle,
+    Token,
+    LiquidityPosition,
+    LiquidityPositionSnapshot,
+    Pair,
+    LpToken,
+    DodoZoo
+} from '../types/schema'
 import {DODOZoo as DodoZooContract} from '../types/templates/DODO/DodoZoo'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
@@ -165,6 +174,19 @@ export function getDODOPair(pairAddress: Address): Pair {
     return pair as Pair;
 }
 
+export function getDODOZoo(): DodoZoo {
+    let dodoZoo = DodoZoo.load(DODOZoo_ADDRESS);
+    if (dodoZoo === null) {
+        dodoZoo = new DodoZoo(DODOZoo_ADDRESS);
+        dodoZoo.pairCount = 0;
+        dodoZoo.totalLiquidityUSD = ZERO_BD;
+        dodoZoo.totalVolumeUSD = ZERO_BD;
+        dodoZoo.txCount = ZERO_BI;
+        dodoZoo.save();
+    }
+    return dodoZoo as DodoZoo;
+}
+
 export function getLpToken(address: Address): LpToken {
     let capitalToken = LpToken.load(address.toHexString())
     if (capitalToken === null) {
@@ -239,4 +261,11 @@ export function dealPriceDecimals(baseToken: String,midPrice: BigDecimal): BigDe
         log.warning('test wcres price data,{} {} {}',[baseToken.toString(),midPrice.toString(),price.toString()]);
     }
     return price;
+}
+
+export function syncPool(poolAddress:Address):void {
+    //更新池子reserve
+
+    //
+
 }

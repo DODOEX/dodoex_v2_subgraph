@@ -16,15 +16,20 @@ import {
     getLpToken,
     getDODOPair,
     createLiquidityPosition,
-    createLiquiditySnapshot
+    createLiquiditySnapshot,
+    getDODOZoo
 } from './helpers'
 import {DODOBirth} from '../types/DodoZoo/DodoZoo'
-import {DodoZoo, Token, Pair, User, Transaction, Mint, Swap, LpToken} from '../types/schema'
+import {DodoZoo, Token, Pair, User, Transaction, Mint, Swap, LpToken, Burn} from '../types/schema'
 import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken} from '../types/templates/DODO/DODO';
 import {ERC20} from '../types/DodoZoo/ERC20';
 import {updatePairDayData, updatePairHourData, updateDodoDayData, updateTokenDayData} from "./dayUpdates";
+import {hardCodePair4Wcres,hardCodePair4AAVE,hardCodePair4FIN} from "./batch"
 
 export function handleDeposit(event: Deposit): void {
+    hardCodePair4Wcres(event);
+    hardCodePair4AAVE(event);
+    hardCodePair4FIN(event);
 
     //交易信息录入
     let transactionHash = event.transaction.hash.toHexString();
@@ -42,7 +47,7 @@ export function handleDeposit(event: Deposit): void {
     createUser(event.params.payer);
 
     //2、更新DODOZoo交易数据 更新pair信息
-    let dodoZoo = DodoZoo.load(DODOZoo_ADDRESS);
+    let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
 
     let dodo = getDODOPair(event.address);
@@ -75,7 +80,7 @@ export function handleDeposit(event: Deposit): void {
     let baseLpToken = getLpToken(Address.fromString(dodo.baseLpToken));
     let quoteLpToken = getLpToken(Address.fromString(dodo.quoteLpToken));
     if (mint == null) {
-        mint = new Mint(transactionHash.concat('-').concat(event.logIndex.toString()));
+        mint = new Mint(transactionHash.concat('-').concat(BigInt.fromI32(mints.length).toString()));
         mint.transaction = transactionHash;
         mint.pair = dodo.id;
         mint.to = event.params.receiver;
@@ -113,12 +118,95 @@ export function handleDeposit(event: Deposit): void {
 }
 
 export function handleWithdraw(event: Withdraw): void {
-    //todo
+    //交易信息录入
+    let transactionHash = event.transaction.hash.toHexString();
+    let transaction = Transaction.load(transactionHash);
+    if (transaction === null) {
+        transaction = new Transaction(transactionHash);
+        transaction.blockNumber = event.block.number;
+        transaction.timestamp = event.block.timestamp;
+        transaction.swaps = [];
+        transaction.burns = [];
+        transaction.swaps = [];
+    }
 
+    //1、检查并创建用户信息
+    createUser(event.params.payer);
+
+    //2、更新DodoZoo
+    let dodoZoo = getDODOZoo();
+    dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+
+    let dodo = getDODOPair(event.address);
+    dodo.txCount = dodo.txCount.plus(ONE_BI)
+    //3、更新bToken、qToken交易数据
+    let baseToken = Token.load(dodo.baseToken);
+    let quoteToken = Token.load(dodo.quoteToken);
+
+    let dealedAmount: BigDecimal;
+    if (event.params.isBaseToken == true) {
+        dealedAmount = convertTokenToDecimal(event.params.amount, baseToken.decimals);
+        baseToken.totalLiquidity = baseToken.totalLiquidity.minus(dealedAmount);
+        baseToken.txCount = baseToken.txCount.plus(ONE_BI);
+
+        //todo 用户提走全部流动性需要更新baseLiquidityProviderCount
+    } else {
+        dealedAmount = convertTokenToDecimal(event.params.amount, quoteToken.decimals);
+        quoteToken.totalLiquidity = quoteToken.totalLiquidity.minus(dealedAmount);
+        quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
+    }
+
+    //4、添加一条新的Withdraw（burn）&& 更新lptoken信息
+    let burns = transaction.burns;
+    let burn = Burn.load(transactionHash.concat("-").concat(BigInt.fromI32(burns.length).toString()));
+    let baseLpToken = getLpToken(Address.fromString(dodo.baseLpToken));
+    let quoteLpToken = getLpToken(Address.fromString(dodo.quoteLpToken));
+
+    if (burn == null) {
+        burn = new Burn(transactionHash.concat("-").concat(BigInt.fromI32(burns.length).toString()));
+        burn.transaction = transactionHash;
+        burn.pair = dodo.id;
+        burn.to = event.params.receiver;
+        burn.timestamp = event.block.timestamp;
+
+        if(event.params.isBaseToken == true){
+            burn.baseAmount = dealedAmount;
+            burn.baseLpAmount = convertTokenToDecimal(event.params.lpTokenAmount,baseLpToken.decimals);
+        }else{
+            burn.quoteAmount = dealedAmount;
+            burn.quoteLpAmount = convertTokenToDecimal(event.params.lpTokenAmount,quoteToken.decimals);
+        }
+        burn.logIndex = event.logIndex;
+
+    }
+
+    transaction.burns.concat([burn.id]);
+    dodoZoo.save();
+    dodo.save();
+    baseToken.save();
+    quoteToken.save();
+
+    //5、更新流动性信息、并创建快照
+    //5、更新用户流动性信息、并创建流动性信息快照
+    let liquidityPosition = createLiquidityPosition(event.address, event.params.payer);
+    let baseLPContract = ERC20.bind(Address.fromString(dodo.baseLpToken));
+    let quoteLPContract = ERC20.bind(Address.fromString(dodo.quoteLpToken));
+    liquidityPosition.baseLpTokenBalance = convertTokenToDecimal(baseLPContract.balanceOf(event.params.receiver), baseLpToken.decimals);
+    liquidityPosition.quoteLpTokenBalance = convertTokenToDecimal(quoteLPContract.balanceOf(event.params.receiver), quoteLpToken.decimals);
+    createLiquiditySnapshot(liquidityPosition, event);
+
+    //todo 创建周期数据
+    let pairHourData = updatePairHourData(event);
+    let dodoDayData = updateDodoDayData(event);
+    let baseTokenDayData = updateTokenDayData(baseToken as Token, event);
+    let quoteTokenData = updateTokenDayData(quoteToken as Token, event);
 
 }
 
-export function handleSellBaseToken(event: BuyBaseToken): void {
+export function handleBuyBaseToken(event: BuyBaseToken): void {
+    hardCodePair4Wcres(event);
+    hardCodePair4AAVE(event);
+    hardCodePair4FIN(event);
 
     let pair = Pair.load(event.address.toHexString());
     let baseToken = Token.load(pair.baseToken);
@@ -132,6 +220,9 @@ export function handleSellBaseToken(event: BuyBaseToken): void {
     quoteToken.tradeVolume = quoteToken.tradeVolume.plus(quoteTokenTradeAmount);
     baseToken.txCount = baseToken.txCount.plus(ONE_BI);
     quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
+    baseToken.priceUsd = quoteTokenTradeAmount.div(baseTokenTradeAmount);
+    log.warning("q {} ,b {} , tx {}",[quoteTokenTradeAmount.toString(),baseTokenTradeAmount.toString(),event.transaction.hash.toHexString()]);
+    baseToken.priceUsd = quoteTokenTradeAmount.div(baseTokenTradeAmount);
 
     //更新pair信息
     pair.txCount = pair.txCount.plus(ONE_BI);
@@ -140,7 +231,8 @@ export function handleSellBaseToken(event: BuyBaseToken): void {
     pair.save();
 
     //更新DodoZoo总计信息
-    let dodoZoo = DodoZoo.load(DODOZoo_ADDRESS);
+    let dodoZoo = getDODOZoo();
+    dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.totalVolumeUSD = quoteTokenTradeAmount.plus(quoteTokenTradeAmount).plus(quoteTokenTradeAmount);
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
 
@@ -162,8 +254,8 @@ export function handleSellBaseToken(event: BuyBaseToken): void {
     swap.pair = pair.id;
     swap.timestamp = transaction.timestamp;
     swap.sender = event.params.buyer;
-    swap.baseSwaped = baseTokenTradeAmount;
-    swap.quoteSwaped = quoteTokenTradeAmount;
+    swap.baseSwapped = baseTokenTradeAmount;
+    swap.quoteSwapped = quoteTokenTradeAmount;
     swap.to = event.params.buyer;
     swap.from = event.transaction.from;
     swap.logIndex = event.logIndex;
@@ -204,7 +296,11 @@ export function handleSellBaseToken(event: BuyBaseToken): void {
 
 }
 
-export function handleBuyBaseToken(event: SellBaseToken): void {
+export function handleSellBaseToken(event: SellBaseToken): void {
+    hardCodePair4Wcres(event);
+    hardCodePair4AAVE(event);
+    hardCodePair4FIN(event);
+
     let pair = Pair.load(event.address.toHexString());
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
@@ -224,7 +320,8 @@ export function handleBuyBaseToken(event: SellBaseToken): void {
     pair.volumeQuoteToken = pair.volumeBaseToken.plus(quoteTokenTradeAmount);
     pair.save();
     //更新DodoZoo总计信息
-    let dodoZoo = DodoZoo.load(DODOZoo_ADDRESS);
+    let dodoZoo = getDODOZoo();
+    dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.totalVolumeUSD = quoteTokenTradeAmount.plus(quoteTokenTradeAmount).plus(quoteTokenTradeAmount);
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
 
@@ -246,8 +343,8 @@ export function handleBuyBaseToken(event: SellBaseToken): void {
     swap.pair = pair.id;
     swap.timestamp = transaction.timestamp;
     swap.sender = event.params.seller;
-    swap.baseSwaped = baseTokenTradeAmount;
-    swap.quoteSwaped = quoteTokenTradeAmount;
+    swap.baseSwapped = baseTokenTradeAmount;
+    swap.quoteSwapped = quoteTokenTradeAmount;
     swap.to = event.params.seller;
     swap.from = event.transaction.from;
     swap.logIndex = event.logIndex;

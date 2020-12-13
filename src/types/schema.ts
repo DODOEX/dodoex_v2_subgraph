@@ -1317,22 +1317,22 @@ export class Swap extends Entity {
     this.set("from", Value.fromBytes(value));
   }
 
-  get baseSwaped(): BigDecimal {
-    let value = this.get("baseSwaped");
+  get baseSwapped(): BigDecimal {
+    let value = this.get("baseSwapped");
     return value.toBigDecimal();
   }
 
-  set baseSwaped(value: BigDecimal) {
-    this.set("baseSwaped", Value.fromBigDecimal(value));
+  set baseSwapped(value: BigDecimal) {
+    this.set("baseSwapped", Value.fromBigDecimal(value));
   }
 
-  get quoteSwaped(): BigDecimal {
-    let value = this.get("quoteSwaped");
+  get quoteSwapped(): BigDecimal {
+    let value = this.get("quoteSwapped");
     return value.toBigDecimal();
   }
 
-  set quoteSwaped(value: BigDecimal) {
-    this.set("quoteSwaped", Value.fromBigDecimal(value));
+  set quoteSwapped(value: BigDecimal) {
+    this.set("quoteSwapped", Value.fromBigDecimal(value));
   }
 
   get isSellBase(): boolean {

@@ -10,7 +10,7 @@ import {
     fetchTokenDecimals,
     fetchTokenTotalSupply,
     createLiquidityPosition,
-    createLiquiditySnapshot
+    createLiquiditySnapshot, ONE_BD
 } from './helpers'
 import {DODOBirth} from '../types/DodoZoo/DodoZoo'
 import {DodoZoo, Token, Pair} from '../types/schema'
@@ -72,7 +72,7 @@ export function handleDODOBirth(event: DODOBirth): void {
         quoteToken.totalLiquidity = ZERO_BD
         // token0.allPairs = []
         quoteToken.txCount = ZERO_BI
-        quoteToken.priceUsd = ZERO_BD
+        quoteToken.priceUsd = ONE_BD
     }
 
     let pair = new Pair(event.params.newBorn.toHexString()) as Pair

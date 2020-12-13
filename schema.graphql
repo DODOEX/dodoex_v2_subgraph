@@ -1,8 +1,12 @@
 type DodoZoo @entity{
     id:ID!
+    "trade pairs total"
     pairCount:Int!
+    "total traded volume"
     totalVolumeUSD:BigDecimal!
+    "total liquidity in usd"
     totalLiquidityUSD:BigDecimal!
+    "total transaction in all pairs"
     txCount: BigInt!
 }
 
@@ -189,8 +193,8 @@ type Swap @entity {
     # populated from the Swap event
     sender: Bytes!
     from: Bytes! # the EOA that initiated the txn
-    baseSwaped: BigDecimal!
-    quoteSwaped: BigDecimal!
+    baseSwapped: BigDecimal!
+    quoteSwapped: BigDecimal!
     isSellBase: Boolean!
     to: Bytes!
     logIndex: BigInt
