@@ -6,12 +6,22 @@ import {
   DataSourceContext
 } from "@graphprotocol/graph-ts";
 
-export class DODO extends DataSourceTemplate {
+export class DVM extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("DODO", [address.toHex()]);
+    DataSourceTemplate.create("DVM", [address.toHex()]);
   }
 
   static createWithContext(address: Address, context: DataSourceContext): void {
-    DataSourceTemplate.createWithContext("DODO", [address.toHex()], context);
+    DataSourceTemplate.createWithContext("DVM", [address.toHex()], context);
+  }
+}
+
+export class DPP extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("DPP", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext("DPP", [address.toHex()], context);
   }
 }
