@@ -17,6 +17,10 @@ export const USDT_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';
 export const WBTC_ADDRESS = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599';
 export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
+export const TYPE_DVM_POOL="DVM";
+export const TYPE_DPP_POOL="DPP";
+export const TYPE_CLASSICAL_POOL="CLASSICAL";
+
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
 export let ZERO_BD = BigDecimal.fromString('0')
@@ -127,7 +131,7 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)
-    let totalSupplyValue = null
+    let totalSupplyValue = 0
     let totalSupplyResult = contract.try_totalSupply()
     if (!totalSupplyResult.reverted) {
         totalSupplyValue = totalSupplyResult as i32
@@ -182,6 +186,7 @@ export function createToken(address: Address): Token {
             token.tradeVolume = ZERO_BD;
             token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
+            token.priceUSDC=ZERO_BD;
 
             token.txCount = ZERO_BI;
         } else {
@@ -198,6 +203,7 @@ export function createToken(address: Address): Token {
             token.tradeVolume = ZERO_BD;
             token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
+            token.priceUSDC=ZERO_BD;
 
             token.txCount = ZERO_BI;
         }

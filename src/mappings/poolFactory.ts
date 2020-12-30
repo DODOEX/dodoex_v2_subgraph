@@ -1,7 +1,7 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {OrderHistory, Token,Pair} from "../types/schema"
 import {OrderHistory as OrderHistoryV1} from "../types/DODOV1Proxy01/DODOV1Proxy01"
-import {createToken,createLpToken, createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal} from "./helpers"
+import {createToken,createLpToken, createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal,TYPE_DPP_POOL,TYPE_DVM_POOL} from "./helpers"
 import { NewDPP } from "../types/DPPFactory/DPPFactory"
 import { NewDVM } from "../types/DVMFactory/DVMFactory"
 import {DVM,DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM"
@@ -17,7 +17,7 @@ export function handleNewDVM(event: NewDVM): void {
     if(pair == null){
         pair = new Pair(event.params.dvm.toHexString());
         pair.baseToken=event.params.baseToken.toHexString();
-        pair.type = "DVM";
+        pair.type = TYPE_DVM_POOL;
 
         pair.quoteToken = event.params.quoteToken.toHexString();
         pair.creator = event.params.creator;
@@ -58,7 +58,7 @@ export function handleNewDPP(event: NewDPP): void {
     if(pair == null){
         pair = new Pair(event.params.dpp.toHexString());
         pair.baseToken=event.params.baseToken.toHexString();
-        pair.type = "DPP";
+        pair.type = TYPE_DPP_POOL;
 
         pair.quoteToken = event.params.quoteToken.toHexString();
         pair.creator = event.params.creator;

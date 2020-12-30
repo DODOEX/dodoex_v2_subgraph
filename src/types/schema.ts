@@ -241,21 +241,13 @@ export class Token extends Entity {
     this.set("totalLiquidityOnDODO", Value.fromBigDecimal(value));
   }
 
-  get priceUSDC(): BigDecimal | null {
+  get priceUSDC(): BigDecimal {
     let value = this.get("priceUSDC");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value.toBigDecimal();
   }
 
-  set priceUSDC(value: BigDecimal | null) {
-    if (value === null) {
-      this.unset("priceUSDC");
-    } else {
-      this.set("priceUSDC", Value.fromBigDecimal(value as BigDecimal));
-    }
+  set priceUSDC(value: BigDecimal) {
+    this.set("priceUSDC", Value.fromBigDecimal(value));
   }
 }
 
@@ -1289,5 +1281,126 @@ export class PairDayData extends Entity {
 
   set dailyTxns(value: BigInt) {
     this.set("dailyTxns", Value.fromBigInt(value));
+  }
+
+  get fee(): BigDecimal {
+    let value = this.get("fee");
+    return value.toBigDecimal();
+  }
+
+  set fee(value: BigDecimal) {
+    this.set("fee", Value.fromBigDecimal(value));
+  }
+}
+
+export class TokenDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save TokenDayData entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save TokenDayData entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("TokenDayData", id.toString(), this);
+  }
+
+  static load(id: string): TokenDayData | null {
+    return store.get("TokenDayData", id) as TokenDayData | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get dailyVolumeToken(): BigDecimal {
+    let value = this.get("dailyVolumeToken");
+    return value.toBigDecimal();
+  }
+
+  set dailyVolumeToken(value: BigDecimal) {
+    this.set("dailyVolumeToken", Value.fromBigDecimal(value));
+  }
+
+  get dailyVolumeUSDC(): BigDecimal {
+    let value = this.get("dailyVolumeUSDC");
+    return value.toBigDecimal();
+  }
+
+  set dailyVolumeUSDC(value: BigDecimal) {
+    this.set("dailyVolumeUSDC", Value.fromBigDecimal(value));
+  }
+
+  get dailyTxns(): BigInt {
+    let value = this.get("dailyTxns");
+    return value.toBigInt();
+  }
+
+  set dailyTxns(value: BigInt) {
+    this.set("dailyTxns", Value.fromBigInt(value));
+  }
+
+  get totalLiquidityToken(): BigDecimal {
+    let value = this.get("totalLiquidityToken");
+    return value.toBigDecimal();
+  }
+
+  set totalLiquidityToken(value: BigDecimal) {
+    this.set("totalLiquidityToken", Value.fromBigDecimal(value));
+  }
+
+  get totalLiquidityUSDC(): BigDecimal {
+    let value = this.get("totalLiquidityUSDC");
+    return value.toBigDecimal();
+  }
+
+  set totalLiquidityUSDC(value: BigDecimal) {
+    this.set("totalLiquidityUSDC", Value.fromBigDecimal(value));
+  }
+
+  get priceUSDC(): BigDecimal {
+    let value = this.get("priceUSDC");
+    return value.toBigDecimal();
+  }
+
+  set priceUSDC(value: BigDecimal) {
+    this.set("priceUSDC", Value.fromBigDecimal(value));
+  }
+
+  get fee(): BigDecimal {
+    let value = this.get("fee");
+    return value.toBigDecimal();
+  }
+
+  set fee(value: BigDecimal) {
+    this.set("fee", Value.fromBigDecimal(value));
   }
 }

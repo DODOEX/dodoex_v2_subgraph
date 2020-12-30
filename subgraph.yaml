@@ -5,53 +5,25 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOZoo
-    network: mainnet
+    name: DODOV1Proxy01
+    network: kovan
     source:
-      address: '0x3a97247df274a17c59a3bd12735ea3fcdfb49950'
-      abi: DODOZoo
-      startBlock: 10613640
-    #      startBlock: 11337864
+      address: '0x0DF6c9BBc8a321CC678637De08C8F480400BCDfd'
+      abi: DODOV1Proxy01
+      startBlock: 22371964
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/dodozoo.ts
+      file: ./src/mappings/smartRoute.ts
       entities:
         - Pair
         - Token
       abis:
-        - name: DODOZoo
-          file: ./abis/DODOZoo.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: DODOBirth(address,address,address)
-          handler: handleDODOBirth
-  - kind: ethereum/contract
-    name: Wcres
-    network: mainnet
-    source:
-      address: '0x85f9569b69083c3e6aeffd301bb2c65606b5d575'
-      abi: DODO
-      startBlock: 11337864
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mappings/dodo.ts
-      entities:
-        - Pair
-        - Token
-      abis:
+        - name: DODOV1Proxy01
+          file: ./abis/DODOV1Proxy01.json
         - name: DODO
           file: ./abis/DODO.json
-        - name: DODOZoo
-          file: ./abis/DODOZoo.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -59,34 +31,26 @@ dataSources:
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleWithdraw
-        - event: SellBaseToken(indexed address,uint256,uint256)
-          handler: handleSellBaseToken
-        - event: BuyBaseToken(indexed address,uint256,uint256)
-          handler: handleBuyBaseToken
+        - event: OrderHistory(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleOrderHistory
   - kind: ethereum/contract
-    name: Aave
-    network: mainnet
+    name: DODOV2Proxy01
+    network: kovan
     source:
-      address: '0x94512fd4fb4feb63a6c0f4bedecc4a00ee260528'
-      abi: DODO
-      startBlock: 11224029
+      address: '0x97B779AD504bbd5b1BFB50e57584a876Dc65171a'
+      abi: DODOV2Proxy01
+      startBlock: 22800901
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/dodo.ts
+      file: ./src/mappings/smartRoute.ts
       entities:
         - Pair
         - Token
       abis:
-        - name: DODO
-          file: ./abis/DODO.json
-        - name: DODOZoo
-          file: ./abis/DODOZoo.json
+        - name: DODOV2Proxy01
+          file: ./abis/DODOV2Proxy01.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -94,68 +58,111 @@ dataSources:
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleWithdraw
-        - event: SellBaseToken(indexed address,uint256,uint256)
-          handler: handleSellBaseToken
-        - event: BuyBaseToken(indexed address,uint256,uint256)
-          handler: handleBuyBaseToken
+        - event: OrderHistory(address,address,address,uint256,uint256,uint8)
+          handler: handleOrderHistory
   - kind: ethereum/contract
-    name: Fin
-    network: mainnet
+    name: DVMFactory
+    network: kovan
     source:
-      address: '0x9d9793e1e18cdee6cf63818315d55244f73ec006'
-      abi: DODO
-      startBlock: 11024792
+      address: '0xF2a62693FB14b326C3719e5aeEF28e8e66dC954e'
+      abi: DVMFactory
+      startBlock: 22734980
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/dodo.ts
+      file: ./src/mappings/poolFactory.ts
       entities:
         - Pair
         - Token
       abis:
-        - name: DODO
-          file: ./abis/DODO.json
-        - name: DODOZoo
-          file: ./abis/DODOZoo.json
+        - name: DVMFactory
+          file: ./abis/DVMFactory.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
+        - name: DVM
+          file: ./abis/DVM.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleWithdraw
-        - event: SellBaseToken(indexed address,uint256,uint256)
-          handler: handleSellBaseToken
-        - event: BuyBaseToken(indexed address,uint256,uint256)
-          handler: handleBuyBaseToken
+        - event: NewDVM(address,address,address,address)
+          handler: handleNewDVM
+  - kind: ethereum/contract
+    name: DPPFactory
+    network: kovan
+    source:
+      address: '0x58Bc8D248AcbE95CE29CF893C6666D58AF92d941'
+      abi: DPPFactory
+      startBlock: 22734983
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DPPFactory
+          file: ./abis/DPPFactory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: DPP
+          file: ./abis/DPP.json
+      eventHandlers:
+        - event: NewDPP(address,address,address,address)
+          handler: handleNewDPP
 templates:
   - kind: ethereum/contract
-    name: DODO
-    network: mainnet
+    name: DVM
+    network: kovan
     source:
-      abi: DODO
+      abi: DVM
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/dodo.ts
+      file: ./src/mappings/pool.ts
+      entities:
+        - Pair
+        - Token
+        - DODOSwap
+      abis:
+        - name: DVM
+          file: ./abis/DVM.json
+        - name: DVMFactory
+          file: ./abis/DVMFactory.json
+      eventHandlers:
+        - event: DODOSwap(address,address,uint256,uint256,address)
+          handler: handleDODOSwap
+        - event: BuyShares(address,uint256,uint256)
+          handler: handleBuyShares
+        - event: SellShares(address,address,uint256,uint256)
+          handler: handleSellShares
+  - kind: ethereum/contract
+    name: DPP
+    network: kovan
+    source:
+      abi: DPP
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool.ts
       entities:
         - Pair
         - Token
       abis:
-        - name: DODO
-          file: ./abis/DODO.json
-        - name: DODOZoo
-          file: ./abis/DODOZoo.json
+        - name: DVM
+          file: ./abis/DVM.json
+        - name: DPP
+          file: ./abis/DPP.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -163,11 +170,6 @@ templates:
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleWithdraw
-        - event: SellBaseToken(indexed address,uint256,uint256)
-          handler: handleSellBaseToken
-        - event: BuyBaseToken(indexed address,uint256,uint256)
-          handler: handleBuyBaseToken
+        - event: DODOSwap(address,address,uint256,uint256,address)
+          handler: handleDODOSwap
+

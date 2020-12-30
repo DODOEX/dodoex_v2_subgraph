@@ -1,296 +1,280 @@
-type DodoZoo @entity{
-    id:ID!
-    "trade pairs total"
-    pairCount:Int!
-    "total traded volume"
-    totalVolumeUSD:BigDecimal!
-    "total liquidity in usd"
-    totalLiquidityUSD:BigDecimal!
-    "total transaction in all pairs"
-    txCount: BigInt!
-}
-
-type Token @entity {
-    # token address
-    id: ID!
-
-    # mirrored from the smart contract
-    symbol: String!
-    name: String!
-    decimals: BigInt!
-
-    # used for other stats like marketcap
-    totalSupply: BigInt!
-
-    # token specific volume
-    tradeVolume: BigDecimal! # tradeVolume = SellBaseToken.payBase+BuyBaseToken.receiveBase
-    tradeVolumeUSD: BigDecimal! # SellBaseToken.receiveQuote+BuyBaseToken.payQuote
-    # untrackedVolumeUSD: BigDecimal!
-
-    # transactions across all pairs
-    txCount: BigInt!
-
-    # liquidity across all pairs
-    totalLiquidity: BigDecimal! # baseBalance + quoteBalance
-
-    # derived prices
-    priceUsd: BigDecimal!
-}
-
-type LpToken @entity {
-    # token address
-    id: ID!
-
-    # mirrored from the smart contract
-    symbol: String!
-    name: String!
-    decimals: BigInt!
-
-    # used for other stats like marketcap
-    totalSupply: BigInt!
-}
-
-type Pair @entity {
-    # pair address
-    id: ID!
-
-    # mirrored from the smart contract
-    baseToken: Token!
-    quoteToken: Token!
-
-    baseLpToken:LpToken
-    quoteLpToken:LpToken
-
-    baseReserve: BigDecimal!
-    quoteReserve: BigDecimal!
-    reserveUSD: BigDecimal!
-    baseLpTokenTotalSupply: BigDecimal!
-    quoteLpTokenTotalSupply: BigDecimal!
-
-    # derived liquidity
-    # reserveETH: BigDecimal!
-    # reserveUSD: BigDecimal!
-    # trackedReserveETH: BigDecimal! # used for separating per pair reserves and global
-    # Price in terms of the asset pair
-    # token0Price: BigDecimal!
-    # token1Price: BigDecimal!
-
-    midPrice: BigDecimal!
-    lpFeeRate: BigDecimal
-    mtFeeRate: BigDecimal
-
-    # lifetime volume stats
-    volumeBaseToken: BigDecimal! # SellBaseToken.payBase+BuyBaseToken.receiveBase
-    volumeQuoteToken: BigDecimal! # SellBaseToken.receiveQuote+BuyBaseToken.payQuote
-    # volumeUSD: BigDecimal!
-    # untrackedVolumeUSD: BigDecimal!
-    txCount: BigInt!
-
-    # creation stats
-    createdAtTimestamp: BigInt!
-    createdAtBlockNumber: BigInt!
-
-    # Fields used to help derived relationship
-    baseLiquidityProviderCount: BigInt! # used to detect new exchanges
-    quoteLiquidityProviderCount: BigInt! # used to detect new exchanges
-
-    liquidityPositions: [LiquidityPosition!]! @derivedFrom(field: "pair")
-    liquidityPositionSnapshots: [LiquidityPositionSnapshot!]! @derivedFrom(field: "pair")
-}
-
 type User @entity {
+    "user address"
     id: ID!
-    baseLiquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
-    quoteLiquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
-    usdSwapped: BigDecimal!
+    "swapped volume"
+    usdcSwapped: BigDecimal!
+    "swapped times"
+    txCount: BigInt!
+    "liquidity Positions"
+    liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
 }
 
 type LiquidityPosition @entity {
+    "user address - pair address"
     id: ID!
+    "user"
     user: User!
+    "pair"
     pair: Pair!
-    baseLpTokenBalance: BigDecimal!
-    quoteLpTokenBalance: BigDecimal!
+    "lp token balance"
+    liquidityTokenBalance: BigDecimal!
 }
 
-type LiquidityPositionSnapshot @entity {
+type Token @entity {
+    "token address"
     id: ID!
-    liquidityPosition: LiquidityPosition!
-    timestamp: Int! # saved for fast historical lookups
-    block: Int! # saved for fast historical lookups
-    user: User! # reference to user
-    pair: Pair! # reference to pair
-    baseTokenPriceUSD: BigDecimal # snapshot of token0 price
-    quoteTokenPriceUSD: BigDecimal # snapshot of token1 price
-    baseReserve: BigDecimal! # snapshot of pair token0 reserves
-    quoteReserve: BigDecimal! # snapshot of pair token1 reserves
-    reserveUSD: BigDecimal # snapshot of pair reserves in USD
-    baseLpTokenTotalSupply: BigDecimal! # snapshot of pool token supply
-    quoteLpTokenTotalSupply: BigDecimal! # snapshot of pool token supply
+
+    "token symbol"
+    symbol: String!
+    "token name"
+    name: String!
+    "token decimals"
+    decimals: BigInt!
+    "total supply"
+    totalSupply: BigInt!
+
+    "total trade volume"
+    tradeVolume: BigDecimal!
+    "total trade trade volume of usd"
+    tradeVolumeUSDC: BigDecimal!
+
+    "transactions across all pairs"
+    txCount: BigInt!
+
+    "liquidity across all pairs"
+    totalLiquidityOnDODO: BigDecimal!
+
+    "derived usdc prices"
+    priceUSDC: BigDecimal!
 }
 
-type Transaction @entity {
-    id: ID! # txn hash
-    blockNumber: BigInt!
+type LpToken @entity {
+    "token address"
+    id: ID!
+
+    "token symbol"
+    symbol: String!
+    "token name"
+    name: String!
+    "token decimals"
+    decimals: BigInt!
+    "total supply"
+    totalSupply: BigInt!
+}
+
+type OrderHistory @entity {
+    "order id"
+    id: ID!
+    "transaction hash"
+    hash: String!
+    "block"
+    block: BigInt!
+    "timestamp of this transaction"
     timestamp: BigInt!
-    # This is not the reverse of Mint.transaction; it is only used to
-    # track incomplete mints (similar for burns and swaps)
-    mints: [Mint]!
-    burns: [Burn]!
-    swaps: [Swap]!
+    "msg sender"
+    sender: Bytes!
+    "tx from address"
+    from: Bytes!
+    "from token"
+    fromToken: Token!
+    "to token"
+    toToken: Token!
+    "to address"
+    to: Bytes!
+    "log index"
+    logIndex: BigInt
+    "from token amount"
+    amountIn: BigDecimal!
+    "to token amount"
+    amountOut: BigDecimal!
+
+    "usdc amount"
+    amountUSDC: BigDecimal!
 }
 
-type Mint @entity {
-    # transaction hash + "-" + index in mints Transaction array
+type LiquidityHistory @entity {
+    "txid - logindex"
     id: ID!
-    transaction: Transaction!
-    timestamp: BigInt! # need this to pull recent txns for specific token or pair
+    "hash"
+    hash: String!
+    "block number"
+    block: BigInt!
+    "timestamp"
+    timestamp: BigInt!
+    "user"
+    user: User!
+    "from"
+    from: Bytes!
+    "amount"
+    amount: BigDecimal!
+    "balance"
+    balance: BigDecimal!
+    "pair"
     pair: Pair!
-
-    # populated from the primary Transfer event
-    to: Bytes!
-    baseLpAmount: BigDecimal!
-    quoteLpAmount: BigDecimal!
-
-    # populated from the Mint event
-    sender: Bytes
-    baseAmount: BigDecimal
-    quoteAmount: BigDecimal
-    logIndex: BigInt
-    # derived amount based on available prices of tokens
-    amountUSD: BigDecimal
-
+    "base reserve"
+    baseReserve: BigDecimal
+    "quote reserve"
+    quoteReserve: BigDecimal
+    "lp token total supply"
+    lpTokenTotalSupply: BigDecimal
+    "base token price"
+    baseTokenPrice: BigDecimal
+    "quote token Price"
+    quoteTokenPrice: BigDecimal
 }
 
-type Burn @entity {
-    # transaction hash + "-" + index in mints Transaction array
+type Pair @entity {
+    "dvm pool address"
     id: ID!
-    transaction: Transaction!
-    timestamp: BigInt! # need this to pull recent txns for specific token or pair
-    pair: Pair!
+    "pool type"
+    type: String!
+    "creator"
+    creator: Bytes!
+    "base token"
+    baseToken: Token!
+    "quote token"
+    quoteToken: Token!
+    "i"
+    i: BigInt
+    "k"
+    k: BigInt
+    "lp Fee Rate"
+    lpFeeRate: BigDecimal
+    "mt Fee Rate"
+    mtFeeRate: BigDecimal
 
-    # populated from the primary Transfer event
-    to: Bytes!
-    baseLpAmount: BigDecimal!
-    quoteLpAmount: BigDecimal!
+    "base LP token, for DPP is null, for dodo v1 lpToken is different"
+    baseLpToken: LpToken
+    "quote LP token,for DPP is null, for dodo v1 lpToken is different"
+    quoteLpToken: LpToken
 
-    # populated from the Mint event
-    sender: Bytes
-    baseAmount: BigDecimal
-    quoteAmount: BigDecimal
-    logIndex: BigInt
-    # derived amount based on available prices of tokens
-    amountUSD: BigDecimal
+    "base token reserve"
+    baseReserve: BigDecimal!
+    "quote token reserve"
+    quoteReserve: BigDecimal!
+    "reserve usd data"
+    amountUSDC: BigDecimal!
+    "trade volume of basetoken"
+    volumeBaseToken: BigDecimal!
+    "trade volume of quotetoken"
+    volumeQuoteToken: BigDecimal!
+
+    "transactions count"
+    txCount: BigInt!
+    "createAtTimestamp"
+    createdAtTimestamp: BigInt!
+    "createAtBlock"
+    createdAtBlockNumber: BigInt!
+    "liquidity provider count"
+    liquidityProviderCount: BigInt!
 }
 
 type Swap @entity {
-    # transaction hash + "-" + index in swaps Transaction array
+    "transaction hash + \"-\" + index in swaps Transaction array"
     id: ID!
-    transaction: Transaction!
-    timestamp: BigInt! # need this to pull recent txns for specific token or pair
+    "transaction hash"
+    hash: String!
+    "transaction timestamp"
+    timestamp: BigInt!
+    "trading pair"
     pair: Pair!
 
-    # populated from the Swap event
+    "msg.sender"
     sender: Bytes!
-    from: Bytes! # the EOA that initiated the txn
-    baseSwapped: BigDecimal!
-    quoteSwapped: BigDecimal!
-    isSellBase: Boolean!
+    "tx from address"
+    from: Bytes!
+    "from token"
+    fromToken: Token!
+    "to token"
+    toToken: Token!
+    "to address"
     to: Bytes!
-    logIndex: BigInt
+    "log index"
+    logIndex: BigInt!
+    "from token amount"
+    amountIn: BigDecimal!
+    "to token amount"
+    amountOut: BigDecimal!
 
-    # derived info
-    amountUSD: BigDecimal!
+    "usdc amount"
+    amountUSDC: BigDecimal!
 }
 
-
-# stores for USD calculations
-type Bundle @entity {
+type FlashLoan @entity {
+    "transaction hash + \"-\" + index in swaps Transaction array"
     id: ID!
-    ethPrice: BigDecimal! # price of ETH usd
-}
-
-# Data accumulated and condensed into day stats for all of Uniswap
-type DodoDayData @entity {
-    id: ID! # timestamp rounded to current day by dividing by 86400
-    date: Int!
-
-    dailyVolumeUSD: BigDecimal!
-
-    totalVolumeUSD: BigDecimal! # Accumulate at each trade, not just calculated off whatever totalVolume is. making it more accurate as it is a live conversion
-    totalLiquidityUSD: BigDecimal!
-
-    txCount: BigInt!
-}
-
-type PairHourData @entity {
-    id: ID!
-    hourStartUnix: Int! # unix timestamp for start of hour
+    "transaction hash"
+    hash: String!
+    "transaction timestamp"
+    timestamp: BigInt!
+    "trading pair"
     pair: Pair!
-
-    # reserves
-    baseTokenReserve: BigDecimal!
-    quoteTokenReserve: BigDecimal!
-
-    # derived liquidity
-    reserveUSD: BigDecimal!
-
-    # volume stats
-    hourlyVolumeBase: BigDecimal!
-    hourlyVolumeQuote: BigDecimal!
-    hourlyVolumeUSD: BigDecimal!
-    hourlyTxns: BigInt!
-
-    #price chart
-    openPrice:BigDecimal!
-    higherPrice:BigDecimal!
-    lowerPrice:BigDecimal!
-    closePrice:BigDecimal!
-
+    "msg.sender"
+    sender: Bytes!
+    "tx from address"
+    from: Bytes!
+    "base amount"
+    baseAmount: BigDecimal!
+    "quote amount"
+    quoteAmount: BigDecimal!
 }
 
-# Data accumulated and condensed into day stats for each exchange
 type PairDayData @entity {
+    "pair address - day id"
     id: ID!
+    "uinx timestamp(start of day)"
     date: Int!
+    "pair address"
     pairAddress: Bytes!
+    "base token"
     baseToken: Token!
+    "quote token"
     quoteToken: Token!
 
-    # reserves
+    "base token reserve"
     baseTokenReserve: BigDecimal!
+    "quote token reserve"
     quoteTokenReserve: BigDecimal!
 
-    # total supply for LP historical returns
+    "total supply of base lp token"
     baseLpTokenTotalSupply: BigDecimal!
+    "total supply of quote lp token"
     quoteLpTokenTotalSupply: BigDecimal!
 
-    # derived liquidity
-    reserveUSD: BigDecimal!
+    "reserve volume by usdc"
+    reserveUSDC: BigDecimal!
 
-    # volume stats
+    "base token volume"
     dailyVolumeBase: BigDecimal!
+    "quote token volume"
     dailyVolumeQuote: BigDecimal!
-    dailyVolumeUSD: BigDecimal!
+    "usdc volume"
+    dailyVolumeUSDC: BigDecimal!
+    "daily txns"
     dailyTxns: BigInt!
+    "trading fee"
+    fee: BigDecimal!
 }
 
 type TokenDayData @entity {
+    "token address - day id"
     id: ID!
+    "uinx timestamp(start of day)"
     date: Int!
+    "token address"
     token: Token!
 
-    # volume stats
+    "volume stats"
     dailyVolumeToken: BigDecimal!
-    dailyVolumeUSD: BigDecimal!
+    dailyVolumeUSDC: BigDecimal!
     dailyTxns: BigInt!
 
-    # liquidity stats
+    "liquidity stats"
     totalLiquidityToken: BigDecimal!
-    totalLiquidityUSD: BigDecimal!
+    totalLiquidityUSDC: BigDecimal!
 
-    # price stats
-    priceUSD: BigDecimal
+    "price stats"
+    priceUSDC: BigDecimal!
+    "trading fee"
+    fee: BigDecimal!
 }
-
-
