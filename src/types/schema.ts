@@ -753,38 +753,13 @@ export class Pair extends Entity {
     }
   }
 
-  get lpFeeRate(): BigDecimal | null {
+  get lpFeeRate(): BigDecimal {
     let value = this.get("lpFeeRate");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value.toBigDecimal();
   }
 
-  set lpFeeRate(value: BigDecimal | null) {
-    if (value === null) {
-      this.unset("lpFeeRate");
-    } else {
-      this.set("lpFeeRate", Value.fromBigDecimal(value as BigDecimal));
-    }
-  }
-
-  get mtFeeRate(): BigDecimal | null {
-    let value = this.get("mtFeeRate");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
-  }
-
-  set mtFeeRate(value: BigDecimal | null) {
-    if (value === null) {
-      this.unset("mtFeeRate");
-    } else {
-      this.set("mtFeeRate", Value.fromBigDecimal(value as BigDecimal));
-    }
+  set lpFeeRate(value: BigDecimal) {
+    this.set("lpFeeRate", Value.fromBigDecimal(value));
   }
 
   get baseLpToken(): string | null {
@@ -900,6 +875,24 @@ export class Pair extends Entity {
 
   set liquidityProviderCount(value: BigInt) {
     this.set("liquidityProviderCount", Value.fromBigInt(value));
+  }
+
+  get mtFeeRateModel(): Bytes {
+    let value = this.get("mtFeeRateModel");
+    return value.toBytes();
+  }
+
+  set mtFeeRateModel(value: Bytes) {
+    this.set("mtFeeRateModel", Value.fromBytes(value));
+  }
+
+  get maintainer(): Bytes {
+    let value = this.get("maintainer");
+    return value.toBytes();
+  }
+
+  set maintainer(value: Bytes) {
+    this.set("maintainer", Value.fromBytes(value));
   }
 }
 
@@ -1402,5 +1395,408 @@ export class TokenDayData extends Entity {
 
   set fee(value: BigDecimal) {
     this.set("fee", Value.fromBigDecimal(value));
+  }
+}
+
+export class CrowdPooling extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save CrowdPooling entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save CrowdPooling entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("CrowdPooling", id.toString(), this);
+  }
+
+  static load(id: string): CrowdPooling | null {
+    return store.get("CrowdPooling", id) as CrowdPooling | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get creator(): Bytes {
+    let value = this.get("creator");
+    return value.toBytes();
+  }
+
+  set creator(value: Bytes) {
+    this.set("creator", Value.fromBytes(value));
+  }
+
+  get baseToken(): string {
+    let value = this.get("baseToken");
+    return value.toString();
+  }
+
+  set baseToken(value: string) {
+    this.set("baseToken", Value.fromString(value));
+  }
+
+  get quoteToken(): string {
+    let value = this.get("quoteToken");
+    return value.toString();
+  }
+
+  set quoteToken(value: string) {
+    this.set("quoteToken", Value.fromString(value));
+  }
+
+  get bidStartTime(): BigInt {
+    let value = this.get("bidStartTime");
+    return value.toBigInt();
+  }
+
+  set bidStartTime(value: BigInt) {
+    this.set("bidStartTime", Value.fromBigInt(value));
+  }
+
+  get bidEndTime(): BigInt {
+    let value = this.get("bidEndTime");
+    return value.toBigInt();
+  }
+
+  set bidEndTime(value: BigInt) {
+    this.set("bidEndTime", Value.fromBigInt(value));
+  }
+
+  get calmEndTime(): BigInt {
+    let value = this.get("calmEndTime");
+    return value.toBigInt();
+  }
+
+  set calmEndTime(value: BigInt) {
+    this.set("calmEndTime", Value.fromBigInt(value));
+  }
+
+  get freezeDuration(): BigInt {
+    let value = this.get("freezeDuration");
+    return value.toBigInt();
+  }
+
+  set freezeDuration(value: BigInt) {
+    this.set("freezeDuration", Value.fromBigInt(value));
+  }
+
+  get vestingDuration(): BigInt {
+    let value = this.get("vestingDuration");
+    return value.toBigInt();
+  }
+
+  set vestingDuration(value: BigInt) {
+    this.set("vestingDuration", Value.fromBigInt(value));
+  }
+
+  get i(): BigInt {
+    let value = this.get("i");
+    return value.toBigInt();
+  }
+
+  set i(value: BigInt) {
+    this.set("i", Value.fromBigInt(value));
+  }
+
+  get k(): BigInt {
+    let value = this.get("k");
+    return value.toBigInt();
+  }
+
+  set k(value: BigInt) {
+    this.set("k", Value.fromBigInt(value));
+  }
+
+  get poolQuoteCap(): BigDecimal {
+    let value = this.get("poolQuoteCap");
+    return value.toBigDecimal();
+  }
+
+  set poolQuoteCap(value: BigDecimal) {
+    this.set("poolQuoteCap", Value.fromBigDecimal(value));
+  }
+
+  get totalBase(): BigDecimal {
+    let value = this.get("totalBase");
+    return value.toBigDecimal();
+  }
+
+  set totalBase(value: BigDecimal) {
+    this.set("totalBase", Value.fromBigDecimal(value));
+  }
+
+  get poolQuote(): BigDecimal {
+    let value = this.get("poolQuote");
+    return value.toBigDecimal();
+  }
+
+  set poolQuote(value: BigDecimal) {
+    this.set("poolQuote", Value.fromBigDecimal(value));
+  }
+}
+
+export class BidPosition extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save BidPosition entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save BidPosition entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("BidPosition", id.toString(), this);
+  }
+
+  static load(id: string): BidPosition | null {
+    return store.get("BidPosition", id) as BidPosition | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get user(): string {
+    let value = this.get("user");
+    return value.toString();
+  }
+
+  set user(value: string) {
+    this.set("user", Value.fromString(value));
+  }
+
+  get cp(): string {
+    let value = this.get("cp");
+    return value.toString();
+  }
+
+  set cp(value: string) {
+    this.set("cp", Value.fromString(value));
+  }
+
+  get shares(): BigDecimal {
+    let value = this.get("shares");
+    return value.toBigDecimal();
+  }
+
+  set shares(value: BigDecimal) {
+    this.set("shares", Value.fromBigDecimal(value));
+  }
+
+  get investedQuote(): BigDecimal {
+    let value = this.get("investedQuote");
+    return value.toBigDecimal();
+  }
+
+  set investedQuote(value: BigDecimal) {
+    this.set("investedQuote", Value.fromBigDecimal(value));
+  }
+}
+
+export class BidHistory extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save BidHistory entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save BidHistory entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("BidHistory", id.toString(), this);
+  }
+
+  static load(id: string): BidHistory | null {
+    return store.get("BidHistory", id) as BidHistory | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get user(): string {
+    let value = this.get("user");
+    return value.toString();
+  }
+
+  set user(value: string) {
+    this.set("user", Value.fromString(value));
+  }
+
+  get cp(): string {
+    let value = this.get("cp");
+    return value.toString();
+  }
+
+  set cp(value: string) {
+    this.set("cp", Value.fromString(value));
+  }
+
+  get action(): string {
+    let value = this.get("action");
+    return value.toString();
+  }
+
+  set action(value: string) {
+    this.set("action", Value.fromString(value));
+  }
+
+  get hash(): string {
+    let value = this.get("hash");
+    return value.toString();
+  }
+
+  set hash(value: string) {
+    this.set("hash", Value.fromString(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get quote(): BigDecimal {
+    let value = this.get("quote");
+    return value.toBigDecimal();
+  }
+
+  set quote(value: BigDecimal) {
+    this.set("quote", Value.fromBigDecimal(value));
+  }
+
+  get share(): BigDecimal {
+    let value = this.get("share");
+    return value.toBigDecimal();
+  }
+
+  set share(value: BigDecimal) {
+    this.set("share", Value.fromBigDecimal(value));
+  }
+}
+
+export class CrowdPoolingDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save CrowdPoolingDayData entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save CrowdPoolingDayData entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("CrowdPoolingDayData", id.toString(), this);
+  }
+
+  static load(id: string): CrowdPoolingDayData | null {
+    return store.get("CrowdPoolingDayData", id) as CrowdPoolingDayData | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get crowdPooling(): string {
+    let value = this.get("crowdPooling");
+    return value.toString();
+  }
+
+  set crowdPooling(value: string) {
+    this.set("crowdPooling", Value.fromString(value));
+  }
+
+  get investedQuote(): BigDecimal {
+    let value = this.get("investedQuote");
+    return value.toBigDecimal();
+  }
+
+  set investedQuote(value: BigDecimal) {
+    this.set("investedQuote", Value.fromBigDecimal(value));
+  }
+
+  get investCount(): BigInt {
+    let value = this.get("investCount");
+    return value.toBigInt();
+  }
+
+  set investCount(value: BigInt) {
+    this.set("investCount", Value.fromBigInt(value));
+  }
+
+  get newcome(): BigInt {
+    let value = this.get("newcome");
+    return value.toBigInt();
+  }
+
+  set newcome(value: BigInt) {
+    this.set("newcome", Value.fromBigInt(value));
+  }
+
+  get poolQuote(): BigDecimal {
+    let value = this.get("poolQuote");
+    return value.toBigDecimal();
+  }
+
+  set poolQuote(value: BigDecimal) {
+    this.set("poolQuote", Value.fromBigDecimal(value));
   }
 }

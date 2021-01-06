@@ -1,0 +1,2949 @@
+{
+  "contractName": "FeeRateModel",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferPrepared",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "_FEE_RATE_",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_NEW_OWNER_",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_OWNER_",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "initOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "feeRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "init",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "feeRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "setSpecificFeeRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newFeeRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "setFeeRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        }
+      ],
+      "name": "getFeeRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.9+commit.3e3065ac\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferPrepared\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"_FEE_RATE_\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_NEW_OWNER_\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_OWNER_\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"claimOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"trader\",\"type\":\"address\"}],\"name\":\"getFeeRate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"feeRate\",\"type\":\"uint256\"}],\"name\":\"init\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"initOwner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newFeeRate\",\"type\":\"uint256\"}],\"name\":\"setFeeRate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"trader\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"feeRate\",\"type\":\"uint256\"}],\"name\":\"setSpecificFeeRate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/niutaotao/projects/dodo/contractV2/contracts/lib/FeeRateModel.sol\":\"FeeRateModel\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/niutaotao/projects/dodo/contractV2/contracts/lib/FeeRateModel.sol\":{\"keccak256\":\"0x1f5d21421d807c0815446b698a95dd8ff4a0af0e24d70de8820c115cc21240b1\",\"license\":\"Apache-2.0\",\"urls\":[\"bzz-raw://17261fb99596786d752b352262e7568044727a001f1587080c369734b1d5575b\",\"dweb:/ipfs/QmStFdTjqig6jcMN7hJar6HUp6QV7sRktribSiQ413ysPf\"]},\"/Users/niutaotao/projects/dodo/contractV2/contracts/lib/InitializableOwnable.sol\":{\"keccak256\":\"0x386eea470a3d5b4210e4ac231270810acdaec4bc4bd3358b9e3393b77cbbd0ca\",\"license\":\"Apache-2.0\",\"urls\":[\"bzz-raw://3f9e4d1ace9ebeeb9cfcae44a57b70cbbea66fb628456fc12d77c256772f1519\",\"dweb:/ipfs/QmaZ28mKecv6G8z89WoB8RqjiL2KGWHKUBNxAj72cPRA26\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610546806100206000396000f3fe608060405234801561001057600080fd5b506004361061009e5760003560e01c80638198edbf116100665780638198edbf146101045780638456db1514610124578063bd2e6ca31461012c578063c673ef7614610134578063f2fde38b146101475761009e565b80630d009297146100a357806316048bc4146100b8578063399ae724146100d657806345596e2e146100e95780634e71e0c8146100fc575b600080fd5b6100b66100b13660046103f1565b61015a565b005b6100c06101c3565b6040516100cd9190610455565b60405180910390f35b6100b66100e4366004610413565b6101d2565b6100b66100f736600461043d565b6101e1565b6100b6610210565b6101176101123660046103f1565b61029e565b6040516100cd9190610507565b6100c06102ce565b6101176102dd565b6100b6610142366004610413565b6102e3565b6100b66101553660046103f1565b61034f565b600154600160a01b900460ff161561018d5760405162461bcd60e51b8152600401610184906104ba565b60405180910390fd5b6001805460ff60a01b1916600160a01b179055600080546001600160a01b039092166001600160a01b0319909216919091179055565b6000546001600160a01b031681565b6101db8261015a565b60025550565b6000546001600160a01b0316331461020b5760405162461bcd60e51b8152600401610184906104e4565b600255565b6001546001600160a01b0316331461023a5760405162461bcd60e51b815260040161018490610469565b600154600080546040516001600160a01b0393841693909116917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a360018054600080546001600160a01b03199081166001600160a01b03841617909155169055565b6001600160a01b038116600090815260036020526040812054806102c65750506002546102c9565b90505b919050565b6001546001600160a01b031681565b60025481565b6000546001600160a01b0316331461030d5760405162461bcd60e51b8152600401610184906104e4565b6001600160a01b0382166103335760405162461bcd60e51b815260040161018490610490565b6001600160a01b03909116600090815260036020526040902055565b6000546001600160a01b031633146103795760405162461bcd60e51b8152600401610184906104e4565b600080546040516001600160a01b03808516939216917fdcf55418cee3220104fef63f979ff3c4097ad240c0c43dcb33ce837748983e6291a3600180546001600160a01b0319166001600160a01b0392909216919091179055565b80356001600160a01b03811681146103eb57600080fd5b92915050565b600060208284031215610402578081fd5b61040c83836103d4565b9392505050565b60008060408385031215610425578081fd5b61042f84846103d4565b946020939093013593505050565b60006020828403121561044e578081fd5b5035919050565b6001600160a01b0391909116815260200190565b6020808252600d908201526c494e56414c49445f434c41494d60981b604082015260600190565b60208082526010908201526f494e56414c494420414444524553532160801b604082015260600190565b60208082526010908201526f1113d113d7d25392551250531256915160821b604082015260600190565b6020808252600990820152682727aa2fa7aba722a960b91b604082015260600190565b9081526020019056fea2646970667358221220ab073856e85cc310bb3af070b166b0663d26e3c570e5d7749fc9ddf861c98c9e64736f6c63430006090033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061009e5760003560e01c80638198edbf116100665780638198edbf146101045780638456db1514610124578063bd2e6ca31461012c578063c673ef7614610134578063f2fde38b146101475761009e565b80630d009297146100a357806316048bc4146100b8578063399ae724146100d657806345596e2e146100e95780634e71e0c8146100fc575b600080fd5b6100b66100b13660046103f1565b61015a565b005b6100c06101c3565b6040516100cd9190610455565b60405180910390f35b6100b66100e4366004610413565b6101d2565b6100b66100f736600461043d565b6101e1565b6100b6610210565b6101176101123660046103f1565b61029e565b6040516100cd9190610507565b6100c06102ce565b6101176102dd565b6100b6610142366004610413565b6102e3565b6100b66101553660046103f1565b61034f565b600154600160a01b900460ff161561018d5760405162461bcd60e51b8152600401610184906104ba565b60405180910390fd5b6001805460ff60a01b1916600160a01b179055600080546001600160a01b039092166001600160a01b0319909216919091179055565b6000546001600160a01b031681565b6101db8261015a565b60025550565b6000546001600160a01b0316331461020b5760405162461bcd60e51b8152600401610184906104e4565b600255565b6001546001600160a01b0316331461023a5760405162461bcd60e51b815260040161018490610469565b600154600080546040516001600160a01b0393841693909116917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a360018054600080546001600160a01b03199081166001600160a01b03841617909155169055565b6001600160a01b038116600090815260036020526040812054806102c65750506002546102c9565b90505b919050565b6001546001600160a01b031681565b60025481565b6000546001600160a01b0316331461030d5760405162461bcd60e51b8152600401610184906104e4565b6001600160a01b0382166103335760405162461bcd60e51b815260040161018490610490565b6001600160a01b03909116600090815260036020526040902055565b6000546001600160a01b031633146103795760405162461bcd60e51b8152600401610184906104e4565b600080546040516001600160a01b03808516939216917fdcf55418cee3220104fef63f979ff3c4097ad240c0c43dcb33ce837748983e6291a3600180546001600160a01b0319166001600160a01b0392909216919091179055565b80356001600160a01b03811681146103eb57600080fd5b92915050565b600060208284031215610402578081fd5b61040c83836103d4565b9392505050565b60008060408385031215610425578081fd5b61042f84846103d4565b946020939093013593505050565b60006020828403121561044e578081fd5b5035919050565b6001600160a01b0391909116815260200190565b6020808252600d908201526c494e56414c49445f434c41494d60981b604082015260600190565b60208082526010908201526f494e56414c494420414444524553532160801b604082015260600190565b60208082526010908201526f1113d113d7d25392551250531256915160821b604082015260600190565b6020808252600990820152682727aa2fa7aba722a960b91b604082015260600190565b9081526020019056fea2646970667358221220ab073856e85cc310bb3af070b166b0663d26e3c570e5d7749fc9ddf861c98c9e64736f6c63430006090033",
+  "immutableReferences": {},
+  "sourceMap": "423:764:65:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "423:764:65:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;873:124:66;;;;;;;;;:::i;:::-;;264:22;;;:::i;:::-;;;;;;;;;;;;;;;;565:118:65;;;;;;;;;:::i;879:99::-;;;;;;;;;:::i;1169:223:66:-;;;:::i;984:201:65:-;;;;;;;;;:::i;:::-;;;;;;;;292:26:66;;;:::i;489:25:65:-;;;:::i;689:184::-;;;;;;;;;:::i;1003:160:66:-;;;;;;;;;:::i;873:124::-;673:13;;-1:-1:-1;;;673:13:66;;;;672:14;664:43;;;;-1:-1:-1;;;664:43:66;;;;;;;;;;;;;;;;;958:4:::1;942:20:::0;;-1:-1:-1;;;;942:20:66::1;-1:-1:-1::0;;;942:20:66::1;::::0;;;972:18;;-1:-1:-1;;;;;972:18:66;;::::1;-1:-1:-1::0;;;;;;972:18:66;;::::1;::::0;;;::::1;::::0;;873:124::o;264:22::-;;;-1:-1:-1;;;;;264:22:66;;:::o;565:118:65:-;630:16;640:5;630:9;:16::i;:::-;656:10;:20;-1:-1:-1;565:118:65:o;879:99::-;784:7:66;;-1:-1:-1;;;;;784:7:66;770:10;:21;762:43;;;;-1:-1:-1;;;762:43:66;;;;;;;;;948:10:65::1;:23:::0;879:99::o;1169:223:66:-;1234:11;;-1:-1:-1;;;;;1234:11:66;1220:10;:25;1212:51;;;;-1:-1:-1;;;1212:51:66;;;;;;;;;1308:11;;;1299:7;;1278:42;;-1:-1:-1;;;;;1308:11:66;;;;1299:7;;;;1278:42;;;1340:11;;;;1330:21;;-1:-1:-1;;;;;;1330:21:66;;;-1:-1:-1;;;;;1340:11:66;;1330:21;;;;1361:24;;;1169:223::o;984:201:65:-;-1:-1:-1;;;;;1080:18:65;;1043:7;1080:18;;;:10;:18;;;;;;1111:12;1108:46;;-1:-1:-1;;1144:10:65;;1137:17;;1108:46;1171:7;-1:-1:-1;984:201:65;;;;:::o;292:26:66:-;;;-1:-1:-1;;;;;292:26:66;;:::o;489:25:65:-;;;;:::o;689:184::-;784:7:66;;-1:-1:-1;;;;;784:7:66;770:10;:21;762:43;;;;-1:-1:-1;;;762:43:66;;;;;;;;;-1:-1:-1;;;;;787:20:65;::::1;779:49;;;;-1:-1:-1::0;;;779:49:65::1;;;;;;;;;-1:-1:-1::0;;;;;838:18:65;;::::1;;::::0;;;:10:::1;:18;::::0;;;;:28;689:184::o;1003:160:66:-;784:7;;-1:-1:-1;;;;;784:7:66;770:10;:21;762:43;;;;-1:-1:-1;;;762:43:66;;;;;;;;;1106:7:::1;::::0;;1080:44:::1;::::0;-1:-1:-1;;;;;1080:44:66;;::::1;::::0;1106:7;::::1;::::0;1080:44:::1;::::0;::::1;1134:11;:22:::0;;-1:-1:-1;;;;;;1134:22:66::1;-1:-1:-1::0;;;;;1134:22:66;;;::::1;::::0;;;::::1;::::0;;1003:160::o;5:130:-1:-;72:20;;-1:-1;;;;;5159:54;;5363:35;;5353:2;;5412:1;;5402:12;5353:2;57:78;;;;;279:241;;383:2;371:9;362:7;358:23;354:32;351:2;;;-1:-1;;389:12;351:2;451:53;496:7;472:22;451:53;;;441:63;345:175;-1:-1;;;345:175;527:366;;;648:2;636:9;627:7;623:23;619:32;616:2;;;-1:-1;;654:12;616:2;716:53;761:7;737:22;716:53;;;706:63;806:2;845:22;;;;209:20;;-1:-1;;;610:283;900:241;;1004:2;992:9;983:7;979:23;975:32;972:2;;;-1:-1;;1010:12;972:2;-1:-1;209:20;;966:175;-1:-1;966:175;2677:222;-1:-1;;;;;5159:54;;;;1219:37;;2804:2;2789:18;;2775:124;2906:416;3106:2;3120:47;;;1493:2;3091:18;;;4931:19;-1:-1;;;4971:14;;;1509:36;1564:12;;;3077:245;3329:416;3529:2;3543:47;;;1815:2;3514:18;;;4931:19;-1:-1;;;4971:14;;;1831:39;1889:12;;;3500:245;3752:416;3952:2;3966:47;;;2140:2;3937:18;;;4931:19;-1:-1;;;4971:14;;;2156:39;2214:12;;;3923:245;4175:416;4375:2;4389:47;;;2465:1;4360:18;;;4931:19;-1:-1;;;4971:14;;;2480:32;2531:12;;;4346:245;4598:222;2628:37;;;4725:2;4710:18;;4696:124",
+  "source": "/*\n\n    Copyright 2020 DODO ZOO.\n    SPDX-License-Identifier: Apache-2.0\n\n*/\n\npragma solidity 0.6.9;\npragma experimental ABIEncoderV2;\n\nimport {InitializableOwnable} from \"../lib/InitializableOwnable.sol\";\n\ninterface IFeeRateModel {\n    function getFeeRate(address trader) external view returns (uint256);\n    function init(address owner, uint256 feeRate) external;\n    function setFeeRate(uint256 newFeeRate) external;\n}\n\ncontract FeeRateModel is InitializableOwnable {\n    //DEFAULT\n    uint256 public _FEE_RATE_;\n    mapping(address => uint256) feeMapping;\n\n    function init(address owner, uint256 feeRate) external {\n        initOwner(owner);\n        _FEE_RATE_ = feeRate;\n    }\n\n    function setSpecificFeeRate(address trader, uint256 feeRate) external onlyOwner {\n        require(trader != address(0), \"INVALID ADDRESS!\");\n        feeMapping[trader] = feeRate;\n    }\n\n    function setFeeRate(uint256 newFeeRate) external onlyOwner {\n        _FEE_RATE_ = newFeeRate;\n    }\n\n    function getFeeRate(address trader) external view returns (uint256) {\n        uint256 feeRate = feeMapping[trader];\n        if(feeRate == 0)\n            return _FEE_RATE_;\n        return feeRate;\n    }\n}\n",
+  "sourcePath": "/Users/niutaotao/projects/dodo/contractV2/contracts/lib/FeeRateModel.sol",
+  "ast": {
+    "absolutePath": "/Users/niutaotao/projects/dodo/contractV2/contracts/lib/FeeRateModel.sol",
+    "exportedSymbols": {
+      "FeeRateModel": [
+        20512
+      ],
+      "IFeeRateModel": [
+        20427
+      ]
+    },
+    "id": 20513,
+    "license": "Apache-2.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 20404,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".9"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "78:22:65"
+      },
+      {
+        "id": 20405,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "101:33:65"
+      },
+      {
+        "absolutePath": "/Users/niutaotao/projects/dodo/contractV2/contracts/lib/InitializableOwnable.sol",
+        "file": "../lib/InitializableOwnable.sol",
+        "id": 20407,
+        "nodeType": "ImportDirective",
+        "scope": 20513,
+        "sourceUnit": 20619,
+        "src": "136:69:65",
+        "symbolAliases": [
+          {
+            "foreign": {
+              "argumentTypes": null,
+              "id": 20406,
+              "name": "InitializableOwnable",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": null,
+              "src": "144:20:65",
+              "typeDescriptions": {
+                "typeIdentifier": null,
+                "typeString": null
+              }
+            },
+            "local": null
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 20427,
+        "linearizedBaseContracts": [
+          20427
+        ],
+        "name": "IFeeRateModel",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "8198edbf",
+            "id": 20414,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20410,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20409,
+                  "mutability": "mutable",
+                  "name": "trader",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20414,
+                  "src": "257:14:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20408,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "257:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "256:16:65"
+            },
+            "returnParameters": {
+              "id": 20413,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20412,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20414,
+                  "src": "296:7:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20411,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "296:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "295:9:65"
+            },
+            "scope": 20427,
+            "src": "237:68:65",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "399ae724",
+            "id": 20421,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "init",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20419,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20416,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20421,
+                  "src": "324:13:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20415,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "324:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 20418,
+                  "mutability": "mutable",
+                  "name": "feeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20421,
+                  "src": "339:15:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20417,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "339:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "323:32:65"
+            },
+            "returnParameters": {
+              "id": 20420,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "364:0:65"
+            },
+            "scope": 20427,
+            "src": "310:55:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "45596e2e",
+            "id": 20426,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20424,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20423,
+                  "mutability": "mutable",
+                  "name": "newFeeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20426,
+                  "src": "390:18:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20422,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "390:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "389:20:65"
+            },
+            "returnParameters": {
+              "id": 20425,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "418:0:65"
+            },
+            "scope": 20427,
+            "src": "370:49:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 20513,
+        "src": "207:214:65"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 20428,
+              "name": "InitializableOwnable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 20618,
+              "src": "448:20:65",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_InitializableOwnable_$20618",
+                "typeString": "contract InitializableOwnable"
+              }
+            },
+            "id": 20429,
+            "nodeType": "InheritanceSpecifier",
+            "src": "448:20:65"
+          }
+        ],
+        "contractDependencies": [
+          20618
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 20512,
+        "linearizedBaseContracts": [
+          20512,
+          20618
+        ],
+        "name": "FeeRateModel",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "functionSelector": "bd2e6ca3",
+            "id": 20431,
+            "mutability": "mutable",
+            "name": "_FEE_RATE_",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 20512,
+            "src": "489:25:65",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 20430,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "489:7:65",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 20435,
+            "mutability": "mutable",
+            "name": "feeMapping",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 20512,
+            "src": "520:38:65",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 20434,
+              "keyType": {
+                "id": 20432,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "528:7:65",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "520:27:65",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 20433,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "539:7:65",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 20450,
+              "nodeType": "Block",
+              "src": "620:63:65",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 20443,
+                        "name": "owner",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 20437,
+                        "src": "640:5:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 20442,
+                      "name": "initOwner",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20572,
+                      "src": "630:9:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 20444,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "630:16:65",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 20445,
+                  "nodeType": "ExpressionStatement",
+                  "src": "630:16:65"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20448,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 20446,
+                      "name": "_FEE_RATE_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20431,
+                      "src": "656:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 20447,
+                      "name": "feeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20439,
+                      "src": "669:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "656:20:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 20449,
+                  "nodeType": "ExpressionStatement",
+                  "src": "656:20:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "399ae724",
+            "id": 20451,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "init",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20440,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20437,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20451,
+                  "src": "579:13:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20436,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "579:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 20439,
+                  "mutability": "mutable",
+                  "name": "feeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20451,
+                  "src": "594:15:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20438,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "594:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "578:32:65"
+            },
+            "returnParameters": {
+              "id": 20441,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "620:0:65"
+            },
+            "scope": 20512,
+            "src": "565:118:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 20476,
+              "nodeType": "Block",
+              "src": "769:104:65",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 20466,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 20461,
+                          "name": "trader",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 20453,
+                          "src": "787:6:65",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "30",
+                              "id": 20464,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "805:1:65",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "id": 20463,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "797:7:65",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": {
+                              "id": 20462,
+                              "name": "address",
+                              "nodeType": "ElementaryTypeName",
+                              "src": "797:7:65",
+                              "typeDescriptions": {
+                                "typeIdentifier": null,
+                                "typeString": null
+                              }
+                            }
+                          },
+                          "id": 20465,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "797:10:65",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        },
+                        "src": "787:20:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "494e56414c4944204144445245535321",
+                        "id": 20467,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "809:18:65",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_65ae391d4a99c1c2e3733116b25521ba962bc9a6ff68a43e90c18298d31607a3",
+                          "typeString": "literal_string \"INVALID ADDRESS!\""
+                        },
+                        "value": "INVALID ADDRESS!"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_65ae391d4a99c1c2e3733116b25521ba962bc9a6ff68a43e90c18298d31607a3",
+                          "typeString": "literal_string \"INVALID ADDRESS!\""
+                        }
+                      ],
+                      "id": 20460,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "779:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 20468,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "779:49:65",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 20469,
+                  "nodeType": "ExpressionStatement",
+                  "src": "779:49:65"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20474,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 20470,
+                        "name": "feeMapping",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 20435,
+                        "src": "838:10:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 20472,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 20471,
+                        "name": "trader",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 20453,
+                        "src": "849:6:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "838:18:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 20473,
+                      "name": "feeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20455,
+                      "src": "859:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "838:28:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 20475,
+                  "nodeType": "ExpressionStatement",
+                  "src": "838:28:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "c673ef76",
+            "id": 20477,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 20458,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 20457,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 20556,
+                  "src": "759:9:65",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "759:9:65"
+              }
+            ],
+            "name": "setSpecificFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20453,
+                  "mutability": "mutable",
+                  "name": "trader",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20477,
+                  "src": "717:14:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20452,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "717:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 20455,
+                  "mutability": "mutable",
+                  "name": "feeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20477,
+                  "src": "733:15:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20454,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "733:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "716:33:65"
+            },
+            "returnParameters": {
+              "id": 20459,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "769:0:65"
+            },
+            "scope": 20512,
+            "src": "689:184:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 20488,
+              "nodeType": "Block",
+              "src": "938:40:65",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20486,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 20484,
+                      "name": "_FEE_RATE_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20431,
+                      "src": "948:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 20485,
+                      "name": "newFeeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20479,
+                      "src": "961:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "948:23:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 20487,
+                  "nodeType": "ExpressionStatement",
+                  "src": "948:23:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "45596e2e",
+            "id": 20489,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 20482,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 20481,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 20556,
+                  "src": "928:9:65",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "928:9:65"
+              }
+            ],
+            "name": "setFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20480,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20479,
+                  "mutability": "mutable",
+                  "name": "newFeeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20489,
+                  "src": "899:18:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20478,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "899:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "898:20:65"
+            },
+            "returnParameters": {
+              "id": 20483,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "938:0:65"
+            },
+            "scope": 20512,
+            "src": "879:99:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 20510,
+              "nodeType": "Block",
+              "src": "1052:133:65",
+              "statements": [
+                {
+                  "assignments": [
+                    20497
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 20497,
+                      "mutability": "mutable",
+                      "name": "feeRate",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 20510,
+                      "src": "1062:15:65",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 20496,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1062:7:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 20501,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "baseExpression": {
+                      "argumentTypes": null,
+                      "id": 20498,
+                      "name": "feeMapping",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20435,
+                      "src": "1080:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 20500,
+                    "indexExpression": {
+                      "argumentTypes": null,
+                      "id": 20499,
+                      "name": "trader",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20491,
+                      "src": "1091:6:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1080:18:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1062:36:65"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 20504,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "id": 20502,
+                      "name": "feeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20497,
+                      "src": "1111:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "30",
+                      "id": 20503,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1122:1:65",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "1111:12:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 20507,
+                  "nodeType": "IfStatement",
+                  "src": "1108:46:65",
+                  "trueBody": {
+                    "expression": {
+                      "argumentTypes": null,
+                      "id": 20505,
+                      "name": "_FEE_RATE_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20431,
+                      "src": "1144:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "functionReturnParameters": 20495,
+                    "id": 20506,
+                    "nodeType": "Return",
+                    "src": "1137:17:65"
+                  }
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20508,
+                    "name": "feeRate",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 20497,
+                    "src": "1171:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 20495,
+                  "id": 20509,
+                  "nodeType": "Return",
+                  "src": "1164:14:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "8198edbf",
+            "id": 20511,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20492,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20491,
+                  "mutability": "mutable",
+                  "name": "trader",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20511,
+                  "src": "1004:14:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20490,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1004:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1003:16:65"
+            },
+            "returnParameters": {
+              "id": 20495,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20494,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20511,
+                  "src": "1043:7:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20493,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1043:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1042:9:65"
+            },
+            "scope": 20512,
+            "src": "984:201:65",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 20513,
+        "src": "423:764:65"
+      }
+    ],
+    "src": "78:1110:65"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/niutaotao/projects/dodo/contractV2/contracts/lib/FeeRateModel.sol",
+    "exportedSymbols": {
+      "FeeRateModel": [
+        20512
+      ],
+      "IFeeRateModel": [
+        20427
+      ]
+    },
+    "id": 20513,
+    "license": "Apache-2.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 20404,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".9"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "78:22:65"
+      },
+      {
+        "id": 20405,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "101:33:65"
+      },
+      {
+        "absolutePath": "/Users/niutaotao/projects/dodo/contractV2/contracts/lib/InitializableOwnable.sol",
+        "file": "../lib/InitializableOwnable.sol",
+        "id": 20407,
+        "nodeType": "ImportDirective",
+        "scope": 20513,
+        "sourceUnit": 20619,
+        "src": "136:69:65",
+        "symbolAliases": [
+          {
+            "foreign": {
+              "argumentTypes": null,
+              "id": 20406,
+              "name": "InitializableOwnable",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": null,
+              "src": "144:20:65",
+              "typeDescriptions": {
+                "typeIdentifier": null,
+                "typeString": null
+              }
+            },
+            "local": null
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 20427,
+        "linearizedBaseContracts": [
+          20427
+        ],
+        "name": "IFeeRateModel",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "8198edbf",
+            "id": 20414,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20410,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20409,
+                  "mutability": "mutable",
+                  "name": "trader",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20414,
+                  "src": "257:14:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20408,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "257:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "256:16:65"
+            },
+            "returnParameters": {
+              "id": 20413,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20412,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20414,
+                  "src": "296:7:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20411,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "296:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "295:9:65"
+            },
+            "scope": 20427,
+            "src": "237:68:65",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "399ae724",
+            "id": 20421,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "init",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20419,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20416,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20421,
+                  "src": "324:13:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20415,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "324:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 20418,
+                  "mutability": "mutable",
+                  "name": "feeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20421,
+                  "src": "339:15:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20417,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "339:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "323:32:65"
+            },
+            "returnParameters": {
+              "id": 20420,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "364:0:65"
+            },
+            "scope": 20427,
+            "src": "310:55:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "45596e2e",
+            "id": 20426,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20424,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20423,
+                  "mutability": "mutable",
+                  "name": "newFeeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20426,
+                  "src": "390:18:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20422,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "390:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "389:20:65"
+            },
+            "returnParameters": {
+              "id": 20425,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "418:0:65"
+            },
+            "scope": 20427,
+            "src": "370:49:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 20513,
+        "src": "207:214:65"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 20428,
+              "name": "InitializableOwnable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 20618,
+              "src": "448:20:65",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_InitializableOwnable_$20618",
+                "typeString": "contract InitializableOwnable"
+              }
+            },
+            "id": 20429,
+            "nodeType": "InheritanceSpecifier",
+            "src": "448:20:65"
+          }
+        ],
+        "contractDependencies": [
+          20618
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 20512,
+        "linearizedBaseContracts": [
+          20512,
+          20618
+        ],
+        "name": "FeeRateModel",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "functionSelector": "bd2e6ca3",
+            "id": 20431,
+            "mutability": "mutable",
+            "name": "_FEE_RATE_",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 20512,
+            "src": "489:25:65",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 20430,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "489:7:65",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 20435,
+            "mutability": "mutable",
+            "name": "feeMapping",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 20512,
+            "src": "520:38:65",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 20434,
+              "keyType": {
+                "id": 20432,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "528:7:65",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "520:27:65",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 20433,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "539:7:65",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 20450,
+              "nodeType": "Block",
+              "src": "620:63:65",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 20443,
+                        "name": "owner",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 20437,
+                        "src": "640:5:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 20442,
+                      "name": "initOwner",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20572,
+                      "src": "630:9:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 20444,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "630:16:65",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 20445,
+                  "nodeType": "ExpressionStatement",
+                  "src": "630:16:65"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20448,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 20446,
+                      "name": "_FEE_RATE_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20431,
+                      "src": "656:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 20447,
+                      "name": "feeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20439,
+                      "src": "669:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "656:20:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 20449,
+                  "nodeType": "ExpressionStatement",
+                  "src": "656:20:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "399ae724",
+            "id": 20451,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "init",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20440,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20437,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20451,
+                  "src": "579:13:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20436,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "579:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 20439,
+                  "mutability": "mutable",
+                  "name": "feeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20451,
+                  "src": "594:15:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20438,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "594:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "578:32:65"
+            },
+            "returnParameters": {
+              "id": 20441,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "620:0:65"
+            },
+            "scope": 20512,
+            "src": "565:118:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 20476,
+              "nodeType": "Block",
+              "src": "769:104:65",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 20466,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 20461,
+                          "name": "trader",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 20453,
+                          "src": "787:6:65",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "30",
+                              "id": 20464,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "805:1:65",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "id": 20463,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "797:7:65",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": {
+                              "id": 20462,
+                              "name": "address",
+                              "nodeType": "ElementaryTypeName",
+                              "src": "797:7:65",
+                              "typeDescriptions": {
+                                "typeIdentifier": null,
+                                "typeString": null
+                              }
+                            }
+                          },
+                          "id": 20465,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "797:10:65",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        },
+                        "src": "787:20:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "494e56414c4944204144445245535321",
+                        "id": 20467,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "809:18:65",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_65ae391d4a99c1c2e3733116b25521ba962bc9a6ff68a43e90c18298d31607a3",
+                          "typeString": "literal_string \"INVALID ADDRESS!\""
+                        },
+                        "value": "INVALID ADDRESS!"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_65ae391d4a99c1c2e3733116b25521ba962bc9a6ff68a43e90c18298d31607a3",
+                          "typeString": "literal_string \"INVALID ADDRESS!\""
+                        }
+                      ],
+                      "id": 20460,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        -18,
+                        -18
+                      ],
+                      "referencedDeclaration": -18,
+                      "src": "779:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 20468,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "779:49:65",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 20469,
+                  "nodeType": "ExpressionStatement",
+                  "src": "779:49:65"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20474,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 20470,
+                        "name": "feeMapping",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 20435,
+                        "src": "838:10:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 20472,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 20471,
+                        "name": "trader",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 20453,
+                        "src": "849:6:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "838:18:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 20473,
+                      "name": "feeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20455,
+                      "src": "859:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "838:28:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 20475,
+                  "nodeType": "ExpressionStatement",
+                  "src": "838:28:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "c673ef76",
+            "id": 20477,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 20458,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 20457,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 20556,
+                  "src": "759:9:65",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "759:9:65"
+              }
+            ],
+            "name": "setSpecificFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20453,
+                  "mutability": "mutable",
+                  "name": "trader",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20477,
+                  "src": "717:14:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20452,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "717:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 20455,
+                  "mutability": "mutable",
+                  "name": "feeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20477,
+                  "src": "733:15:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20454,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "733:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "716:33:65"
+            },
+            "returnParameters": {
+              "id": 20459,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "769:0:65"
+            },
+            "scope": 20512,
+            "src": "689:184:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 20488,
+              "nodeType": "Block",
+              "src": "938:40:65",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20486,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 20484,
+                      "name": "_FEE_RATE_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20431,
+                      "src": "948:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 20485,
+                      "name": "newFeeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20479,
+                      "src": "961:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "948:23:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 20487,
+                  "nodeType": "ExpressionStatement",
+                  "src": "948:23:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "45596e2e",
+            "id": 20489,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 20482,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 20481,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 20556,
+                  "src": "928:9:65",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "928:9:65"
+              }
+            ],
+            "name": "setFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20480,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20479,
+                  "mutability": "mutable",
+                  "name": "newFeeRate",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20489,
+                  "src": "899:18:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20478,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "899:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "898:20:65"
+            },
+            "returnParameters": {
+              "id": 20483,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "938:0:65"
+            },
+            "scope": 20512,
+            "src": "879:99:65",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 20510,
+              "nodeType": "Block",
+              "src": "1052:133:65",
+              "statements": [
+                {
+                  "assignments": [
+                    20497
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 20497,
+                      "mutability": "mutable",
+                      "name": "feeRate",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 20510,
+                      "src": "1062:15:65",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 20496,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1062:7:65",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 20501,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "baseExpression": {
+                      "argumentTypes": null,
+                      "id": 20498,
+                      "name": "feeMapping",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20435,
+                      "src": "1080:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 20500,
+                    "indexExpression": {
+                      "argumentTypes": null,
+                      "id": 20499,
+                      "name": "trader",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20491,
+                      "src": "1091:6:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1080:18:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1062:36:65"
+                },
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 20504,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "id": 20502,
+                      "name": "feeRate",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20497,
+                      "src": "1111:7:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "30",
+                      "id": 20503,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1122:1:65",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "1111:12:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 20507,
+                  "nodeType": "IfStatement",
+                  "src": "1108:46:65",
+                  "trueBody": {
+                    "expression": {
+                      "argumentTypes": null,
+                      "id": 20505,
+                      "name": "_FEE_RATE_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 20431,
+                      "src": "1144:10:65",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "functionReturnParameters": 20495,
+                    "id": 20506,
+                    "nodeType": "Return",
+                    "src": "1137:17:65"
+                  }
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 20508,
+                    "name": "feeRate",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 20497,
+                    "src": "1171:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 20495,
+                  "id": 20509,
+                  "nodeType": "Return",
+                  "src": "1164:14:65"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "8198edbf",
+            "id": 20511,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getFeeRate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 20492,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20491,
+                  "mutability": "mutable",
+                  "name": "trader",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20511,
+                  "src": "1004:14:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 20490,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1004:7:65",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1003:16:65"
+            },
+            "returnParameters": {
+              "id": 20495,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 20494,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 20511,
+                  "src": "1043:7:65",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 20493,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1043:7:65",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1042:9:65"
+            },
+            "scope": 20512,
+            "src": "984:201:65",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 20513,
+        "src": "423:764:65"
+      }
+    ],
+    "src": "78:1110:65"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.9+commit.3e3065ac.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.2",
+  "updatedAt": "2020-12-21T15:24:36.760Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

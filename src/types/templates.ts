@@ -25,3 +25,13 @@ export class DPP extends DataSourceTemplate {
     DataSourceTemplate.createWithContext("DPP", [address.toHex()], context);
   }
 }
+
+export class CP extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("CP", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext("CP", [address.toHex()], context);
+  }
+}
