@@ -214,6 +214,15 @@ export class Token extends Entity {
     this.set("totalSupply", Value.fromBigInt(value));
   }
 
+  get untrackedVolume(): BigDecimal {
+    let value = this.get("untrackedVolume");
+    return value.toBigDecimal();
+  }
+
+  set untrackedVolume(value: BigDecimal) {
+    this.set("untrackedVolume", Value.fromBigDecimal(value));
+  }
+
   get tradeVolume(): BigDecimal {
     let value = this.get("tradeVolume");
     return value.toBigDecimal();
@@ -839,6 +848,15 @@ export class Pair extends Entity {
 
   set reserveUSDC(value: BigDecimal) {
     this.set("reserveUSDC", Value.fromBigDecimal(value));
+  }
+
+  get untrackedVolume(): BigDecimal {
+    let value = this.get("untrackedVolume");
+    return value.toBigDecimal();
+  }
+
+  set untrackedVolume(value: BigDecimal) {
+    this.set("untrackedVolume", Value.fromBigDecimal(value));
   }
 
   get volumeBaseToken(): BigDecimal {

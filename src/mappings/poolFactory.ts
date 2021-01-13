@@ -49,6 +49,7 @@ export function handleNewDVM(event: NewDVM): void {
         pair.tradeVolumeUSDC = ZERO_BD;
         pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
+        pair.untrackedVolume = ZERO_BD;
 
         let dvm = DVM.bind(event.params.dvm);
         let pmmState = dvm.getPMMState();
@@ -93,6 +94,7 @@ export function handleNewDPP(event: NewDPP): void {
         pair.tradeVolumeUSDC = ZERO_BD;
         pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
+        pair.untrackedVolume = ZERO_BD;
 
         let dvm = DPP.bind(event.params.dpp);
         let pmmState = dvm.getPMMState();

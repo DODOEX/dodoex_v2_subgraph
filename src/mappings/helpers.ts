@@ -217,6 +217,7 @@ export function createToken(address: Address,event: ethereum.Event): Token {
 
             token.txCount = ZERO_BI;
         }
+        token.untrackedVolume = ZERO_BD;
         token.timestamp = event.block.timestamp;
         token.save();
 
