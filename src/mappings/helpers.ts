@@ -12,6 +12,15 @@ import {
 
 } from '../types/schema'
 import {FeeRateModel} from "../types/templates/DVM/FeeRateModel"
+import {DVMFactory} from "../types/DVMFactory/DVMFactory"
+import {DPPFactory} from "../types/DPPFactory/DPPFactory"
+
+export const DVM_FACTORY_ADDRESS="0x369279f8e1cc936f7f9513559897B183d4B2F0Bd";
+export const DPP_FACTORY_ADDRESS="0x6D4a70354cd03ae3A8461eDE9A4dAd445a169a6B";
+export const CLASSIC_FACTORY_ADDRESS="0x6D4a70354cd03ae3A8461eDE9A4dAd445a169a6B";//todo 继承V1的池子
+
+export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
+export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const USDT_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';
@@ -165,12 +174,13 @@ export function createUser(address: Address): User {
         user = new User(address.toHexString())
         user.usdcSwapped = ZERO_BD
         user.txCount = ZERO_BI
+        user.tradingRewardRecieved = ZERO_BD
         user.save()
     }
     return user as User;
 }
 
-export function createToken(address: Address): Token {
+export function createToken(address: Address,event: ethereum.Event): Token {
     let token = Token.load(address.toHexString());
     if (token == null) {
         if (address.toHexString() == ETH_ADDRESS) {
@@ -188,7 +198,6 @@ export function createToken(address: Address): Token {
             token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
             token.priceUSDC=ZERO_BD;
-
             token.txCount = ZERO_BI;
         } else {
             token = new Token(address.toHexString());
@@ -208,6 +217,7 @@ export function createToken(address: Address): Token {
 
             token.txCount = ZERO_BI;
         }
+        token.timestamp = event.block.timestamp;
         token.save();
 
     }

@@ -185,6 +185,25 @@ export class CP extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  _CLAIMED_(param0: Address): boolean {
+    let result = super.call("_CLAIMED_", "_CLAIMED_(address):(bool)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try__CLAIMED_(param0: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall("_CLAIMED_", "_CLAIMED_(address):(bool)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   _CLIFF_RATE_(): BigInt {
     let result = super.call("_CLIFF_RATE_", "_CLIFF_RATE_():(uint256)", []);
 
@@ -804,6 +823,14 @@ export class BidderClaimCall__Inputs {
   constructor(call: BidderClaimCall) {
     this._call = call;
   }
+
+  get to(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
 }
 
 export class BidderClaimCall__Outputs {
@@ -831,12 +858,16 @@ export class CancelCall__Inputs {
     this._call = call;
   }
 
-  get assetTo(): Address {
+  get to(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
   get amount(): BigInt {
     return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
   }
 }
 

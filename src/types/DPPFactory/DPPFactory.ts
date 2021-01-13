@@ -147,20 +147,20 @@ export class DPPFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _DEFAULT_GAS_PRICE_SOURCE_(): Address {
+  _DEFAULT_MAINTAINER_(): Address {
     let result = super.call(
-      "_DEFAULT_GAS_PRICE_SOURCE_",
-      "_DEFAULT_GAS_PRICE_SOURCE_():(address)",
+      "_DEFAULT_MAINTAINER_",
+      "_DEFAULT_MAINTAINER_():(address)",
       []
     );
 
     return result[0].toAddress();
   }
 
-  try__DEFAULT_GAS_PRICE_SOURCE_(): ethereum.CallResult<Address> {
+  try__DEFAULT_MAINTAINER_(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "_DEFAULT_GAS_PRICE_SOURCE_",
-      "_DEFAULT_GAS_PRICE_SOURCE_():(address)",
+      "_DEFAULT_MAINTAINER_",
+      "_DEFAULT_MAINTAINER_():(address)",
       []
     );
     if (result.reverted) {
@@ -170,20 +170,39 @@ export class DPPFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _DODO_SMART_APPROVE_(): Address {
+  _DEFAULT_MT_FEE_RATE_MODEL_(): Address {
     let result = super.call(
-      "_DODO_SMART_APPROVE_",
-      "_DODO_SMART_APPROVE_():(address)",
+      "_DEFAULT_MT_FEE_RATE_MODEL_",
+      "_DEFAULT_MT_FEE_RATE_MODEL_():(address)",
       []
     );
 
     return result[0].toAddress();
   }
 
-  try__DODO_SMART_APPROVE_(): ethereum.CallResult<Address> {
+  try__DEFAULT_MT_FEE_RATE_MODEL_(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "_DODO_SMART_APPROVE_",
-      "_DODO_SMART_APPROVE_():(address)",
+      "_DEFAULT_MT_FEE_RATE_MODEL_",
+      "_DEFAULT_MT_FEE_RATE_MODEL_():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  _DODO_APPROVE_(): Address {
+    let result = super.call("_DODO_APPROVE_", "_DODO_APPROVE_():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try__DODO_APPROVE_(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "_DODO_APPROVE_",
+      "_DODO_APPROVE_():(address)",
       []
     );
     if (result.reverted) {
@@ -235,29 +254,6 @@ export class DPPFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _FEE_RATE_MODEL_TEMPLATE_(): Address {
-    let result = super.call(
-      "_FEE_RATE_MODEL_TEMPLATE_",
-      "_FEE_RATE_MODEL_TEMPLATE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__FEE_RATE_MODEL_TEMPLATE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_FEE_RATE_MODEL_TEMPLATE_",
-      "_FEE_RATE_MODEL_TEMPLATE_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _NEW_OWNER_(): Address {
     let result = super.call("_NEW_OWNER_", "_NEW_OWNER_():(address)", []);
 
@@ -281,29 +277,6 @@ export class DPPFactory extends ethereum.SmartContract {
 
   try__OWNER_(): ethereum.CallResult<Address> {
     let result = super.tryCall("_OWNER_", "_OWNER_():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _PERMISSION_MANAGER_TEMPLATE_(): Address {
-    let result = super.call(
-      "_PERMISSION_MANAGER_TEMPLATE_",
-      "_PERMISSION_MANAGER_TEMPLATE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__PERMISSION_MANAGER_TEMPLATE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_PERMISSION_MANAGER_TEMPLATE_",
-      "_PERMISSION_MANAGER_TEMPLATE_():(address)",
-      []
-    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -370,25 +343,6 @@ export class DPPFactory extends ethereum.SmartContract {
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromUnsignedBigInt(param1)
       ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _VALUE_SOURCE_(): Address {
-    let result = super.call("_VALUE_SOURCE_", "_VALUE_SOURCE_():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__VALUE_SOURCE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_VALUE_SOURCE_",
-      "_VALUE_SOURCE_():(address)",
-      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -542,24 +496,16 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get defautFeeRateModelTemplate(): Address {
+  get defaultMaintainer(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get defaultPermissionManagerTemplate(): Address {
+  get defaultMtFeeRateModel(): Address {
     return this._call.inputValues[4].value.toAddress();
   }
 
-  get defaultExternalValueTemplate(): Address {
+  get dodoApprove(): Address {
     return this._call.inputValues[5].value.toAddress();
-  }
-
-  get defaultGasPriceSource(): Address {
-    return this._call.inputValues[6].value.toAddress();
-  }
-
-  get dodoSmartApprove(): Address {
-    return this._call.inputValues[7].value.toAddress();
   }
 }
 
@@ -724,16 +670,12 @@ export class InitDODOPrivatePoolCall__Inputs {
     return this._call.inputValues[4].value.toBigInt();
   }
 
-  get mtFeeRate(): BigInt {
+  get k(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
 
-  get k(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
-  }
-
   get i(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
+    return this._call.inputValues[6].value.toBigInt();
   }
 }
 
@@ -771,6 +713,36 @@ export class UpdateAdminTemplateCall__Outputs {
   _call: UpdateAdminTemplateCall;
 
   constructor(call: UpdateAdminTemplateCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateDppTemplateCall extends ethereum.Call {
+  get inputs(): UpdateDppTemplateCall__Inputs {
+    return new UpdateDppTemplateCall__Inputs(this);
+  }
+
+  get outputs(): UpdateDppTemplateCall__Outputs {
+    return new UpdateDppTemplateCall__Outputs(this);
+  }
+}
+
+export class UpdateDppTemplateCall__Inputs {
+  _call: UpdateDppTemplateCall;
+
+  constructor(call: UpdateDppTemplateCall) {
+    this._call = call;
+  }
+
+  get _newDPPTemplate(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpdateDppTemplateCall__Outputs {
+  _call: UpdateDppTemplateCall;
+
+  constructor(call: UpdateDppTemplateCall) {
     this._call = call;
   }
 }

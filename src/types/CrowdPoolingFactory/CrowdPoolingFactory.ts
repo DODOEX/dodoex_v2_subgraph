@@ -106,6 +106,59 @@ export class CrowdPoolingFactory extends ethereum.SmartContract {
     return new CrowdPoolingFactory("CrowdPoolingFactory", address);
   }
 
+  _CALM_DURATION_(): BigInt {
+    let result = super.call(
+      "_CALM_DURATION_",
+      "_CALM_DURATION_():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try__CALM_DURATION_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "_CALM_DURATION_",
+      "_CALM_DURATION_():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  _CAP_RATIO_(): BigInt {
+    let result = super.call("_CAP_RATIO_", "_CAP_RATIO_():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try__CAP_RATIO_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("_CAP_RATIO_", "_CAP_RATIO_():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  _CLIFF_RATE_(): BigInt {
+    let result = super.call("_CLIFF_RATE_", "_CLIFF_RATE_():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try__CLIFF_RATE_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("_CLIFF_RATE_", "_CLIFF_RATE_():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   _CLONE_FACTORY_(): Address {
     let result = super.call(
       "_CLONE_FACTORY_",
@@ -139,29 +192,6 @@ export class CrowdPoolingFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "_CP_TEMPLATE_",
       "_CP_TEMPLATE_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _DEFAULT_GAS_PRICE_SOURCE_(): Address {
-    let result = super.call(
-      "_DEFAULT_GAS_PRICE_SOURCE_",
-      "_DEFAULT_GAS_PRICE_SOURCE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__DEFAULT_GAS_PRICE_SOURCE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_DEFAULT_GAS_PRICE_SOURCE_",
-      "_DEFAULT_GAS_PRICE_SOURCE_():(address)",
       []
     );
     if (result.reverted) {
@@ -240,20 +270,16 @@ export class CrowdPoolingFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _FEE_RATE_MODEL_TEMPLATE_(): Address {
-    let result = super.call(
-      "_FEE_RATE_MODEL_TEMPLATE_",
-      "_FEE_RATE_MODEL_TEMPLATE_():(address)",
-      []
-    );
+  _DVM_FACTORY_(): Address {
+    let result = super.call("_DVM_FACTORY_", "_DVM_FACTORY_():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try__FEE_RATE_MODEL_TEMPLATE_(): ethereum.CallResult<Address> {
+  try__DVM_FACTORY_(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "_FEE_RATE_MODEL_TEMPLATE_",
-      "_FEE_RATE_MODEL_TEMPLATE_():(address)",
+      "_DVM_FACTORY_",
+      "_DVM_FACTORY_():(address)",
       []
     );
     if (result.reverted) {
@@ -261,6 +287,44 @@ export class CrowdPoolingFactory extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  _FREEZE_DURATION_(): BigInt {
+    let result = super.call(
+      "_FREEZE_DURATION_",
+      "_FREEZE_DURATION_():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try__FREEZE_DURATION_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "_FREEZE_DURATION_",
+      "_FREEZE_DURATION_():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  _K_(): BigInt {
+    let result = super.call("_K_", "_K_():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try__K_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("_K_", "_K_():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   _NEW_OWNER_(): Address {
@@ -328,29 +392,6 @@ export class CrowdPoolingFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _UNOWNED_DVM_FACTORY_(): Address {
-    let result = super.call(
-      "_UNOWNED_DVM_FACTORY_",
-      "_UNOWNED_DVM_FACTORY_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__UNOWNED_DVM_FACTORY_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_UNOWNED_DVM_FACTORY_",
-      "_UNOWNED_DVM_FACTORY_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _USER_REGISTRY_(param0: Address, param1: BigInt): Address {
     let result = super.call(
       "_USER_REGISTRY_",
@@ -383,29 +424,22 @@ export class CrowdPoolingFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _X_(): BigInt {
-    let result = super.call("_X_", "_X_():(uint256)", []);
+  _VEST_DURATION_(): BigInt {
+    let result = super.call(
+      "_VEST_DURATION_",
+      "_VEST_DURATION_():(uint256)",
+      []
+    );
 
     return result[0].toBigInt();
   }
 
-  try__X_(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("_X_", "_X_():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  _Y_(): BigInt {
-    let result = super.call("_Y_", "_Y_():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try__Y_(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("_Y_", "_Y_():(uint256)", []);
+  try__VEST_DURATION_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "_VEST_DURATION_",
+      "_VEST_DURATION_():(uint256)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -558,28 +592,20 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get unOwnedDvmFactory(): Address {
+  get dvmFactory(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get feeRateModelTemplate(): Address {
+  get defaultMaintainer(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get defaultMaintainer(): Address {
+  get defaultMtFeeRateModel(): Address {
     return this._call.inputValues[4].value.toAddress();
   }
 
-  get defaultMtFeeRateModel(): Address {
-    return this._call.inputValues[5].value.toAddress();
-  }
-
   get defaultPermissionManager(): Address {
-    return this._call.inputValues[6].value.toAddress();
-  }
-
-  get defaultGasPriceSource(): Address {
-    return this._call.inputValues[7].value.toAddress();
+    return this._call.inputValues[5].value.toAddress();
   }
 }
 
@@ -757,36 +783,212 @@ export class InitCrowdPoolingCall__Outputs {
   }
 }
 
-export class SetXYCall extends ethereum.Call {
-  get inputs(): SetXYCall__Inputs {
-    return new SetXYCall__Inputs(this);
+export class UpdateCPTemplateCall extends ethereum.Call {
+  get inputs(): UpdateCPTemplateCall__Inputs {
+    return new UpdateCPTemplateCall__Inputs(this);
   }
 
-  get outputs(): SetXYCall__Outputs {
-    return new SetXYCall__Outputs(this);
+  get outputs(): UpdateCPTemplateCall__Outputs {
+    return new UpdateCPTemplateCall__Outputs(this);
   }
 }
 
-export class SetXYCall__Inputs {
-  _call: SetXYCall;
+export class UpdateCPTemplateCall__Inputs {
+  _call: UpdateCPTemplateCall;
 
-  constructor(call: SetXYCall) {
+  constructor(call: UpdateCPTemplateCall) {
     this._call = call;
   }
 
-  get x(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get y(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get _newCPTemplate(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class SetXYCall__Outputs {
-  _call: SetXYCall;
+export class UpdateCPTemplateCall__Outputs {
+  _call: UpdateCPTemplateCall;
 
-  constructor(call: SetXYCall) {
+  constructor(call: UpdateCPTemplateCall) {
+    this._call = call;
+  }
+}
+
+export class SetCapRatioCall extends ethereum.Call {
+  get inputs(): SetCapRatioCall__Inputs {
+    return new SetCapRatioCall__Inputs(this);
+  }
+
+  get outputs(): SetCapRatioCall__Outputs {
+    return new SetCapRatioCall__Outputs(this);
+  }
+}
+
+export class SetCapRatioCall__Inputs {
+  _call: SetCapRatioCall;
+
+  constructor(call: SetCapRatioCall) {
+    this._call = call;
+  }
+
+  get _newCapRatio(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetCapRatioCall__Outputs {
+  _call: SetCapRatioCall;
+
+  constructor(call: SetCapRatioCall) {
+    this._call = call;
+  }
+}
+
+export class SetFreezeDurationCall extends ethereum.Call {
+  get inputs(): SetFreezeDurationCall__Inputs {
+    return new SetFreezeDurationCall__Inputs(this);
+  }
+
+  get outputs(): SetFreezeDurationCall__Outputs {
+    return new SetFreezeDurationCall__Outputs(this);
+  }
+}
+
+export class SetFreezeDurationCall__Inputs {
+  _call: SetFreezeDurationCall;
+
+  constructor(call: SetFreezeDurationCall) {
+    this._call = call;
+  }
+
+  get _newFreeDuration(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetFreezeDurationCall__Outputs {
+  _call: SetFreezeDurationCall;
+
+  constructor(call: SetFreezeDurationCall) {
+    this._call = call;
+  }
+}
+
+export class SetCalmDurationCall extends ethereum.Call {
+  get inputs(): SetCalmDurationCall__Inputs {
+    return new SetCalmDurationCall__Inputs(this);
+  }
+
+  get outputs(): SetCalmDurationCall__Outputs {
+    return new SetCalmDurationCall__Outputs(this);
+  }
+}
+
+export class SetCalmDurationCall__Inputs {
+  _call: SetCalmDurationCall;
+
+  constructor(call: SetCalmDurationCall) {
+    this._call = call;
+  }
+
+  get _newCalmDuration(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetCalmDurationCall__Outputs {
+  _call: SetCalmDurationCall;
+
+  constructor(call: SetCalmDurationCall) {
+    this._call = call;
+  }
+}
+
+export class SetVestDurationCall extends ethereum.Call {
+  get inputs(): SetVestDurationCall__Inputs {
+    return new SetVestDurationCall__Inputs(this);
+  }
+
+  get outputs(): SetVestDurationCall__Outputs {
+    return new SetVestDurationCall__Outputs(this);
+  }
+}
+
+export class SetVestDurationCall__Inputs {
+  _call: SetVestDurationCall;
+
+  constructor(call: SetVestDurationCall) {
+    this._call = call;
+  }
+
+  get _newVestDuration(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetVestDurationCall__Outputs {
+  _call: SetVestDurationCall;
+
+  constructor(call: SetVestDurationCall) {
+    this._call = call;
+  }
+}
+
+export class SetKCall extends ethereum.Call {
+  get inputs(): SetKCall__Inputs {
+    return new SetKCall__Inputs(this);
+  }
+
+  get outputs(): SetKCall__Outputs {
+    return new SetKCall__Outputs(this);
+  }
+}
+
+export class SetKCall__Inputs {
+  _call: SetKCall;
+
+  constructor(call: SetKCall) {
+    this._call = call;
+  }
+
+  get _newK(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetKCall__Outputs {
+  _call: SetKCall;
+
+  constructor(call: SetKCall) {
+    this._call = call;
+  }
+}
+
+export class SetCliffRateCall extends ethereum.Call {
+  get inputs(): SetCliffRateCall__Inputs {
+    return new SetCliffRateCall__Inputs(this);
+  }
+
+  get outputs(): SetCliffRateCall__Outputs {
+    return new SetCliffRateCall__Outputs(this);
+  }
+}
+
+export class SetCliffRateCall__Inputs {
+  _call: SetCliffRateCall;
+
+  constructor(call: SetCliffRateCall) {
+    this._call = call;
+  }
+
+  get _newCliffRate(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetCliffRateCall__Outputs {
+  _call: SetCliffRateCall;
+
+  constructor(call: SetCliffRateCall) {
     this._call = call;
   }
 }

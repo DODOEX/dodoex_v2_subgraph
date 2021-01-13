@@ -5,6 +5,8 @@ type User @entity {
     usdcSwapped: BigDecimal!
     "swapped times"
     txCount: BigInt!
+    "trading reward recieved"
+    tradingRewardRecieved: BigDecimal!
     "liquidity Positions"
     liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
 }
@@ -33,6 +35,8 @@ type Token @entity {
     "total supply"
     totalSupply: BigInt!
 
+    "untracked volume"
+    untrackedVolume: BigDecimal!
     "total trade volume"
     tradeVolume: BigDecimal!
     "total trade trade volume of usd"
@@ -46,6 +50,9 @@ type Token @entity {
 
     "derived usdc prices"
     priceUSDC: BigDecimal!
+
+    "timestamp"
+    timestamp: BigInt!
 }
 
 type LpToken @entity {
@@ -151,11 +158,16 @@ type Pair @entity {
     "quote token reserve"
     quoteReserve: BigDecimal!
     "reserve usd data"
-    amountUSDC: BigDecimal!
+    reserveUSDC: BigDecimal!
+
+    "untracked volume"
+    untrackedVolume: BigDecimal!
     "trade volume of basetoken"
     volumeBaseToken: BigDecimal!
     "trade volume of quotetoken"
     volumeQuoteToken: BigDecimal!
+    "volume usdc data"
+    tradeVolumeUSDC: BigDecimal!
 
     "transactions count"
     txCount: BigInt!
@@ -305,13 +317,17 @@ type CrowdPooling @entity {
     i: BigInt!
     "k"
     k: BigInt!
-
-    "pool quote cap"
-    poolQuoteCap: BigDecimal!
     "total base"
     totalBase: BigDecimal!
+    "settle state"
+    settled: Boolean
+
     "total quote in pool"
     poolQuote: BigDecimal!
+    "pool quote cap"
+    poolQuoteCap: BigDecimal!
+    "investors count = creators"
+    investorsCount: BigInt!
 }
 
 type BidPosition @entity {
@@ -355,12 +371,36 @@ type CrowdPoolingDayData @entity{
     date: Int!
     "CrowdPooling"
     crowdPooling: CrowdPooling!
-    "total quote in durnation = taker tokens"
+    "total quote invest in durnation = taker tokens"
     investedQuote: BigDecimal!
+    "total quote canceled in durnation"
+    canceledQuote: BigDecimal!
     "invest count"
     investCount: BigInt!
     "creator: newly investor"
     newcome: BigInt!
     "total quote in pool"
     poolQuote: BigDecimal!
+}
+
+type IncentiveRewardReceived @entity{
+    "id (user address)"
+    id: ID!
+    "recieved reward of dodo"
+    amount: BigDecimal!
+}
+
+type IncentiveRewardHistory @entity{
+    "id (transaction - log index)"
+    id: ID!
+    "user"
+    user: User!
+    "reward amount"
+    amount: BigDecimal!
+    "timestamp"
+    timestamp: BigInt!
+    "total amount released"
+    totalAmount: BigDecimal!
+    "total user"
+    totalUser: BigInt!
 }

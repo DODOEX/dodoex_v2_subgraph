@@ -15,6 +15,8 @@ import {
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares} from "../types/templates/DVM/DVM"
 import {updatePairDayData, updateTokenDayData} from "./dayUpdates"
+import {getUSDCPrice} from "./pricing"
+import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
 
 export function handleDODOSwap(event: DODOSwap): void {
     //base data
@@ -41,15 +43,15 @@ export function handleDODOSwap(event: DODOSwap): void {
     }
 
     //todo usdc amount cacl
-    let fromPrice = ZERO_BD;
-    let toPrice = ZERO_BD;
+    let fromPrice = getUSDCPrice(pair as Pair, true);
+    let toPrice = getUSDCPrice(pair as Pair, false);
     let swappedUSDC = dealedFromAmount.times(fromPrice).plus(dealedToAmount.times(toPrice));
 
     //1、更新pair
     pair.txCount = pair.txCount.plus(ONE_BI);
     pair.volumeBaseToken = pair.volumeBaseToken.plus(baseVolume);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
-    pair.amountUSDC = pair.amountUSDC.plus(swappedUSDC);
+    pair.tradeVolumeUSDC = pair.tradeVolumeUSDC.plus(swappedUSDC);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -108,9 +110,11 @@ export function handleDODOSwap(event: DODOSwap): void {
         orderHistory.save();
     }
 
+    //更新报表数据
+
     updatePairDayData(event);
-    updateTokenDayData(baseToken,event);
-    updateTokenDayData(quoteToken,event);
+    updateTokenDayData(baseToken, event);
+    updateTokenDayData(quoteToken, event);
 
 }
 
@@ -184,7 +188,9 @@ export function handleSellShares(event: SellShares): void {
     let fromUser = createUser(event.transaction.from);
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
-    let pmmState = getPMMState(event.address);
+
+    let pmmState: DVM__getPMMStateResultStateStruct;
+    pmmState = getPMMState(event.address);
 
     let lpToken = createLpToken(event.address);
 
@@ -221,10 +227,12 @@ export function handleSellShares(event: SellShares): void {
     liquidityHistory.save();
 
     //更新基础信息
-    pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
-    pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
-    pair.i = pmmState.i;
-    pair.k = pmmState.K;
+    if(pmmState !=null){
+        pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
+        pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
+        pair.i = pmmState.i;
+        pair.k = pmmState.K;
+    }
 
     fromUser.txCount = fromUser.txCount.plus(ONE_BI);
     toUser.txCount = toUser.txCount.plus(ONE_BI);

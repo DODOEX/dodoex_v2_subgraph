@@ -1,6 +1,6 @@
-import {PairDayData, TokenDayData,Token, Pair, LpToken} from "../types/schema"
-import {BigInt, BigDecimal, ethereum,log} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal,TYPE_DPP_POOL,TYPE_DVM_POOL} from './helpers'
+import {PairDayData, TokenDayData, CrowdPoolingDayData, CrowdPooling, Token, Pair, LpToken} from "../types/schema"
+import {BigInt, BigDecimal, ethereum, log} from '@graphprotocol/graph-ts'
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, TYPE_DPP_POOL, TYPE_DVM_POOL} from './helpers'
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
     let timestamp = event.block.timestamp.toI32();
@@ -47,14 +47,14 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
     return pairDayData as PairDayData;
 }
 
-export function updateTokenDayData(token: Token,event: ethereum.Event): TokenDayData {
+export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDayData {
     let timestamp = event.block.timestamp.toI32();
     let dayID = timestamp / 86400;
     let dayStartTimestamp = dayID * 86400;
     let tokenDayID = token.id.toString().concat("-").concat(BigInt.fromI32(dayID).toString());
 
     let tokenDayData = TokenDayData.load(tokenDayID);
-    if(tokenDayData == null){
+    if (tokenDayData == null) {
         tokenDayData = new TokenDayData(tokenDayID);
         tokenDayData.date = dayStartTimestamp;
         tokenDayData.token = token.id;
@@ -74,5 +74,28 @@ export function updateTokenDayData(token: Token,event: ethereum.Event): TokenDay
     tokenDayData.save();
 
     return tokenDayData as TokenDayData;
+
+}
+
+export function updateCrowdPoolingDayData(cp: CrowdPooling,event: ethereum.Event): CrowdPoolingDayData{
+
+    let timestamp = event.block.timestamp.toI32();
+    let dayID = timestamp / 86400;
+    let dayStartTimestamp = dayID * 86400;
+    let cpDayDataID = cp.id.toString().concat("-").concat(BigInt.fromI32(dayID).toString());
+
+    let cpDayData = CrowdPoolingDayData.load(cpDayDataID);
+    if(cpDayData == null){
+        cpDayData = new CrowdPoolingDayData(cpDayDataID);
+        cpDayData.date = dayStartTimestamp;
+        cpDayData.investCount = ZERO_BI;
+        cpDayData.investedQuote = ZERO_BD;
+        cpDayData.canceledQuote = ZERO_BD;
+        cpDayData.newcome=ZERO_BI;
+        cpDayData.crowdPooling = cp.id;
+        cpDayData.poolQuote = cp.poolQuote;
+        cpDayData.save();
+    }
+    return cpDayData as CrowdPoolingDayData;
 
 }

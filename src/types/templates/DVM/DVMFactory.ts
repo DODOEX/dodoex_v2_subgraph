@@ -147,29 +147,6 @@ export class DVMFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _DEFAULT_GAS_PRICE_SOURCE_(): Address {
-    let result = super.call(
-      "_DEFAULT_GAS_PRICE_SOURCE_",
-      "_DEFAULT_GAS_PRICE_SOURCE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__DEFAULT_GAS_PRICE_SOURCE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_DEFAULT_GAS_PRICE_SOURCE_",
-      "_DEFAULT_GAS_PRICE_SOURCE_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _DEFAULT_MAINTAINER_(): Address {
     let result = super.call(
       "_DEFAULT_MAINTAINER_",
@@ -216,52 +193,6 @@ export class DVMFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _DEFAULT_PERMISSION_MANAGER_(): Address {
-    let result = super.call(
-      "_DEFAULT_PERMISSION_MANAGER_",
-      "_DEFAULT_PERMISSION_MANAGER_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__DEFAULT_PERMISSION_MANAGER_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_DEFAULT_PERMISSION_MANAGER_",
-      "_DEFAULT_PERMISSION_MANAGER_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _DVM_ADMIN_TEMPLATE_(): Address {
-    let result = super.call(
-      "_DVM_ADMIN_TEMPLATE_",
-      "_DVM_ADMIN_TEMPLATE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__DVM_ADMIN_TEMPLATE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_DVM_ADMIN_TEMPLATE_",
-      "_DVM_ADMIN_TEMPLATE_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _DVM_TEMPLATE_(): Address {
     let result = super.call("_DVM_TEMPLATE_", "_DVM_TEMPLATE_():(address)", []);
 
@@ -272,29 +203,6 @@ export class DVMFactory extends ethereum.SmartContract {
     let result = super.tryCall(
       "_DVM_TEMPLATE_",
       "_DVM_TEMPLATE_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _FEE_RATE_MODEL_TEMPLATE_(): Address {
-    let result = super.call(
-      "_FEE_RATE_MODEL_TEMPLATE_",
-      "_FEE_RATE_MODEL_TEMPLATE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__FEE_RATE_MODEL_TEMPLATE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_FEE_RATE_MODEL_TEMPLATE_",
-      "_FEE_RATE_MODEL_TEMPLATE_():(address)",
       []
     );
     if (result.reverted) {
@@ -327,29 +235,6 @@ export class DVMFactory extends ethereum.SmartContract {
 
   try__OWNER_(): ethereum.CallResult<Address> {
     let result = super.tryCall("_OWNER_", "_OWNER_():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _PERMISSION_MANAGER_TEMPLATE_(): Address {
-    let result = super.call(
-      "_PERMISSION_MANAGER_TEMPLATE_",
-      "_PERMISSION_MANAGER_TEMPLATE_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__PERMISSION_MANAGER_TEMPLATE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_PERMISSION_MANAGER_TEMPLATE_",
-      "_PERMISSION_MANAGER_TEMPLATE_():(address)",
-      []
-    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -425,62 +310,6 @@ export class DVMFactory extends ethereum.SmartContract {
   }
 
   createDODOVendingMachine(
-    creator: Address,
-    baseToken: Address,
-    quoteToken: Address,
-    lpFeeRate: BigInt,
-    mtFeeRate: BigInt,
-    i: BigInt,
-    k: BigInt
-  ): Address {
-    let result = super.call(
-      "createDODOVendingMachine",
-      "createDODOVendingMachine(address,address,address,uint256,uint256,uint256,uint256):(address)",
-      [
-        ethereum.Value.fromAddress(creator),
-        ethereum.Value.fromAddress(baseToken),
-        ethereum.Value.fromAddress(quoteToken),
-        ethereum.Value.fromUnsignedBigInt(lpFeeRate),
-        ethereum.Value.fromUnsignedBigInt(mtFeeRate),
-        ethereum.Value.fromUnsignedBigInt(i),
-        ethereum.Value.fromUnsignedBigInt(k)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_createDODOVendingMachine(
-    creator: Address,
-    baseToken: Address,
-    quoteToken: Address,
-    lpFeeRate: BigInt,
-    mtFeeRate: BigInt,
-    i: BigInt,
-    k: BigInt
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "createDODOVendingMachine",
-      "createDODOVendingMachine(address,address,address,uint256,uint256,uint256,uint256):(address)",
-      [
-        ethereum.Value.fromAddress(creator),
-        ethereum.Value.fromAddress(baseToken),
-        ethereum.Value.fromAddress(quoteToken),
-        ethereum.Value.fromUnsignedBigInt(lpFeeRate),
-        ethereum.Value.fromUnsignedBigInt(mtFeeRate),
-        ethereum.Value.fromUnsignedBigInt(i),
-        ethereum.Value.fromUnsignedBigInt(k)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  createUnOwnedDODOVendingMachine(
-    creator: Address,
     baseToken: Address,
     quoteToken: Address,
     lpFeeRate: BigInt,
@@ -488,10 +317,9 @@ export class DVMFactory extends ethereum.SmartContract {
     k: BigInt
   ): Address {
     let result = super.call(
-      "createUnOwnedDODOVendingMachine",
-      "createUnOwnedDODOVendingMachine(address,address,address,uint256,uint256,uint256):(address)",
+      "createDODOVendingMachine",
+      "createDODOVendingMachine(address,address,uint256,uint256,uint256):(address)",
       [
-        ethereum.Value.fromAddress(creator),
         ethereum.Value.fromAddress(baseToken),
         ethereum.Value.fromAddress(quoteToken),
         ethereum.Value.fromUnsignedBigInt(lpFeeRate),
@@ -503,8 +331,7 @@ export class DVMFactory extends ethereum.SmartContract {
     return result[0].toAddress();
   }
 
-  try_createUnOwnedDODOVendingMachine(
-    creator: Address,
+  try_createDODOVendingMachine(
     baseToken: Address,
     quoteToken: Address,
     lpFeeRate: BigInt,
@@ -512,10 +339,9 @@ export class DVMFactory extends ethereum.SmartContract {
     k: BigInt
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "createUnOwnedDODOVendingMachine",
-      "createUnOwnedDODOVendingMachine(address,address,address,uint256,uint256,uint256):(address)",
+      "createDODOVendingMachine",
+      "createDODOVendingMachine(address,address,uint256,uint256,uint256):(address)",
       [
-        ethereum.Value.fromAddress(creator),
         ethereum.Value.fromAddress(baseToken),
         ethereum.Value.fromAddress(quoteToken),
         ethereum.Value.fromUnsignedBigInt(lpFeeRate),
@@ -650,32 +476,12 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get dvmAdminTemplate(): Address {
+  get defaultMaintainer(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get feeRateModelTemplate(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
-  get permissionManagerTemplate(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-
-  get defaultGasPriceSource(): Address {
-    return this._call.inputValues[5].value.toAddress();
-  }
-
-  get defaultMaintainer(): Address {
-    return this._call.inputValues[6].value.toAddress();
-  }
-
   get defaultMtFeeRateModel(): Address {
-    return this._call.inputValues[7].value.toAddress();
-  }
-
-  get defaultPermissionManager(): Address {
-    return this._call.inputValues[8].value.toAddress();
+    return this._call.inputValues[3].value.toAddress();
   }
 }
 
@@ -790,32 +596,24 @@ export class CreateDODOVendingMachineCall__Inputs {
     this._call = call;
   }
 
-  get creator(): Address {
+  get baseToken(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get baseToken(): Address {
+  get quoteToken(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get quoteToken(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
   get lpFeeRate(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get mtFeeRate(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get i(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get k(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 }
 
@@ -831,86 +629,32 @@ export class CreateDODOVendingMachineCall__Outputs {
   }
 }
 
-export class CreateUnOwnedDODOVendingMachineCall extends ethereum.Call {
-  get inputs(): CreateUnOwnedDODOVendingMachineCall__Inputs {
-    return new CreateUnOwnedDODOVendingMachineCall__Inputs(this);
+export class UpdateDvmTemplateCall extends ethereum.Call {
+  get inputs(): UpdateDvmTemplateCall__Inputs {
+    return new UpdateDvmTemplateCall__Inputs(this);
   }
 
-  get outputs(): CreateUnOwnedDODOVendingMachineCall__Outputs {
-    return new CreateUnOwnedDODOVendingMachineCall__Outputs(this);
+  get outputs(): UpdateDvmTemplateCall__Outputs {
+    return new UpdateDvmTemplateCall__Outputs(this);
   }
 }
 
-export class CreateUnOwnedDODOVendingMachineCall__Inputs {
-  _call: CreateUnOwnedDODOVendingMachineCall;
+export class UpdateDvmTemplateCall__Inputs {
+  _call: UpdateDvmTemplateCall;
 
-  constructor(call: CreateUnOwnedDODOVendingMachineCall) {
+  constructor(call: UpdateDvmTemplateCall) {
     this._call = call;
   }
 
-  get creator(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get baseToken(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get quoteToken(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
-  get lpFeeRate(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get i(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get k(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-}
-
-export class CreateUnOwnedDODOVendingMachineCall__Outputs {
-  _call: CreateUnOwnedDODOVendingMachineCall;
-
-  constructor(call: CreateUnOwnedDODOVendingMachineCall) {
-    this._call = call;
-  }
-
-  get newVendingMachine(): Address {
-    return this._call.outputValues[0].value.toAddress();
-  }
-}
-
-export class UpdateAdminTemplateCall extends ethereum.Call {
-  get inputs(): UpdateAdminTemplateCall__Inputs {
-    return new UpdateAdminTemplateCall__Inputs(this);
-  }
-
-  get outputs(): UpdateAdminTemplateCall__Outputs {
-    return new UpdateAdminTemplateCall__Outputs(this);
-  }
-}
-
-export class UpdateAdminTemplateCall__Inputs {
-  _call: UpdateAdminTemplateCall;
-
-  constructor(call: UpdateAdminTemplateCall) {
-    this._call = call;
-  }
-
-  get _newDVMAdminTemplate(): Address {
+  get _newDVMTemplate(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class UpdateAdminTemplateCall__Outputs {
-  _call: UpdateAdminTemplateCall;
+export class UpdateDvmTemplateCall__Outputs {
+  _call: UpdateDvmTemplateCall;
 
-  constructor(call: UpdateAdminTemplateCall) {
+  constructor(call: UpdateDvmTemplateCall) {
     this._call = call;
   }
 }

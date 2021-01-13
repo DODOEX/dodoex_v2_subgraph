@@ -71,6 +71,19 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newLpFeeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "LpFeeRateChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -119,191 +132,13 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newLpFeeRate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newMtFeeRate",
-        "type": "uint256"
-      }
-    ],
-    "name": "Reset",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "allow",
-        "type": "bool"
-      }
-    ],
-    "name": "SetBuy",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetGasPriceSource",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetISource",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetKSource",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetLpFeeRateModel",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetMaintainer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetMtFeeRateModel",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "allow",
-        "type": "bool"
-      }
-    ],
-    "name": "SetSell",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAddr",
-        "type": "address"
-      }
-    ],
-    "name": "SetTradePermissionManager",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "_BASE_RESERVE_",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "",
-        "type": "uint256"
+        "type": "uint128"
       }
     ],
     "stateMutability": "view",
@@ -314,9 +149,9 @@
     "name": "_BASE_TARGET_",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint120",
         "name": "",
-        "type": "uint256"
+        "type": "uint120"
       }
     ],
     "stateMutability": "view",
@@ -337,38 +172,12 @@
   },
   {
     "inputs": [],
-    "name": "_BUYING_CLOSE_",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_GAS_PRICE_LIMIT_",
-    "outputs": [
-      {
-        "internalType": "contract IExternalValue",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "_I_",
     "outputs": [
       {
-        "internalType": "contract IExternalValue",
+        "internalType": "uint128",
         "name": "",
-        "type": "address"
+        "type": "uint128"
       }
     ],
     "stateMutability": "view",
@@ -379,9 +188,9 @@
     "name": "_K_",
     "outputs": [
       {
-        "internalType": "contract IExternalValue",
+        "internalType": "uint64",
         "name": "",
-        "type": "address"
+        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -389,12 +198,12 @@
   },
   {
     "inputs": [],
-    "name": "_LP_FEE_RATE_MODEL_",
+    "name": "_LP_FEE_RATE_",
     "outputs": [
       {
-        "internalType": "contract IFeeRateModel",
+        "internalType": "uint64",
         "name": "",
-        "type": "address"
+        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -457,9 +266,9 @@
     "name": "_QUOTE_RESERVE_",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "",
-        "type": "uint256"
+        "type": "uint128"
       }
     ],
     "stateMutability": "view",
@@ -470,9 +279,9 @@
     "name": "_QUOTE_TARGET_",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint120",
         "name": "",
-        "type": "uint256"
+        "type": "uint120"
       }
     ],
     "stateMutability": "view",
@@ -496,35 +305,9 @@
     "name": "_RState_",
     "outputs": [
       {
-        "internalType": "enum PMMPricing.RState",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_SELLING_CLOSE_",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_TRADE_PERMISSION_",
-    "outputs": [
-      {
-        "internalType": "contract IPermissionManager",
-        "name": "",
-        "type": "address"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -676,9 +459,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "R",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -716,30 +499,6 @@
         "internalType": "uint256",
         "name": "mtFeeRate",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getUserTradePermission",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "isBuyAllow",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "isSellAllow",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -875,11 +634,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "newMtFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "newI",
         "type": "uint256"
       },
@@ -984,141 +738,6 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "open",
-        "type": "bool"
-      }
-    ],
-    "name": "setBuy",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newGasPriceLimitSource",
-        "type": "address"
-      }
-    ],
-    "name": "setGasPriceSource",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newISource",
-        "type": "address"
-      }
-    ],
-    "name": "setISource",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newKSource",
-        "type": "address"
-      }
-    ],
-    "name": "setKSource",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newLpFeeRateModel",
-        "type": "address"
-      }
-    ],
-    "name": "setLpFeeRateModel",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newMaintainer",
-        "type": "address"
-      }
-    ],
-    "name": "setMaintainer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newMtFeeRateModel",
-        "type": "address"
-      }
-    ],
-    "name": "setMtFeeRateModel",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "open",
-        "type": "bool"
-      }
-    ],
-    "name": "setSell",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "baseTarget",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "quoteTarget",
-        "type": "uint256"
-      }
-    ],
-    "name": "setTarget",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newTradePermissionManager",
-        "type": "address"
-      }
-    ],
-    "name": "setTradePermissionManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
@@ -1152,9 +771,9 @@
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "lpFeeRateModel",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "lpFeeRate",
+        "type": "uint256"
       },
       {
         "internalType": "address",
@@ -1162,24 +781,14 @@
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "kSource",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "k",
+        "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "iSource",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "gasPriceSource",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "tradePermissionManager",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "i",
+        "type": "uint256"
       }
     ],
     "name": "init",

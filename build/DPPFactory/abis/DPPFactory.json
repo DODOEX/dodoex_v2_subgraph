@@ -18,27 +18,17 @@
       },
       {
         "internalType": "address",
-        "name": "defautFeeRateModelTemplate",
+        "name": "defaultMaintainer",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "defaultPermissionManagerTemplate",
+        "name": "defaultMtFeeRateModel",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "defaultExternalValueTemplate",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "defaultGasPriceSource",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "dodoSmartApprove",
+        "name": "dodoApprove",
         "type": "address"
       }
     ],
@@ -142,7 +132,7 @@
   },
   {
     "inputs": [],
-    "name": "_DEFAULT_GAS_PRICE_SOURCE_",
+    "name": "_DEFAULT_MAINTAINER_",
     "outputs": [
       {
         "internalType": "address",
@@ -155,7 +145,20 @@
   },
   {
     "inputs": [],
-    "name": "_DODO_SMART_APPROVE_",
+    "name": "_DEFAULT_MT_FEE_RATE_MODEL_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_DODO_APPROVE_",
     "outputs": [
       {
         "internalType": "address",
@@ -194,19 +197,6 @@
   },
   {
     "inputs": [],
-    "name": "_FEE_RATE_MODEL_TEMPLATE_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "_NEW_OWNER_",
     "outputs": [
       {
@@ -221,19 +211,6 @@
   {
     "inputs": [],
     "name": "_OWNER_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_PERMISSION_MANAGER_TEMPLATE_",
     "outputs": [
       {
         "internalType": "address",
@@ -287,19 +264,6 @@
       }
     ],
     "name": "_USER_REGISTRY_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_VALUE_SOURCE_",
     "outputs": [
       {
         "internalType": "address",
@@ -385,11 +349,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "mtFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "k",
         "type": "uint256"
       },
@@ -413,6 +372,19 @@
       }
     ],
     "name": "updateAdminTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_newDPPTemplate",
+        "type": "address"
+      }
+    ],
+    "name": "updateDppTemplate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

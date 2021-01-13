@@ -23,9 +23,10 @@ import {FeeRateModel} from "../types/templates/DVM/FeeRateModel"
 import {CP} from "../types/CrowdPoolingFactory/CP";
 
 export function handleNewDVM(event: NewDVM): void {
+    createUser(event.params.creator);
     //1、获取token schema信息
-    let baseToken = createToken(event.params.baseToken);
-    let quoteToken = createToken(event.params.quoteToken);
+    let baseToken = createToken(event.params.baseToken,event);
+    let quoteToken = createToken(event.params.quoteToken,event);
     let pair = Pair.load(event.params.dvm.toHexString());
 
     if (pair == null) {
@@ -45,7 +46,8 @@ export function handleNewDVM(event: NewDVM): void {
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;
         pair.volumeQuoteToken = ZERO_BD;
-        pair.amountUSDC = ZERO_BD;
+        pair.tradeVolumeUSDC = ZERO_BD;
+        pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
 
         let dvm = DVM.bind(event.params.dvm);
@@ -55,9 +57,7 @@ export function handleNewDVM(event: NewDVM): void {
         pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
         pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
 
-        let feeRateModelAddress = dvm._LP_FEE_RATE_MODEL_();
-        let feeRateModel = FeeRateModel.bind(feeRateModelAddress);
-        pair.lpFeeRate = convertTokenToDecimal(feeRateModel.getFeeRate(Address.fromString(USDT_ADDRESS)), BigInt.fromI32(18));
+        pair.lpFeeRate = convertTokenToDecimal(dvm._LP_FEE_RATE_(),BigInt.fromI32(18));
 
         pair.mtFeeRateModel = dvm._MT_FEE_RATE_MODEL_();
         pair.maintainer = dvm._MAINTAINER_();
@@ -70,9 +70,10 @@ export function handleNewDVM(event: NewDVM): void {
 }
 
 export function handleNewDPP(event: NewDPP): void {
+    createUser(event.params.creator);
     //1、获取token schema信息
-    let baseToken = createToken(event.params.baseToken);
-    let quoteToken = createToken(event.params.quoteToken);
+    let baseToken = createToken(event.params.baseToken,event);
+    let quoteToken = createToken(event.params.quoteToken,event);
 
     let pair = Pair.load(event.params.dpp.toHexString());
 
@@ -89,7 +90,8 @@ export function handleNewDPP(event: NewDPP): void {
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;
         pair.volumeQuoteToken = ZERO_BD;
-        pair.amountUSDC = ZERO_BD;
+        pair.tradeVolumeUSDC = ZERO_BD;
+        pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
 
         let dvm = DPP.bind(event.params.dpp);
@@ -99,9 +101,7 @@ export function handleNewDPP(event: NewDPP): void {
         pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
         pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
 
-        let feeRateModelAddress = dvm._LP_FEE_RATE_MODEL_();
-        let feeRateModel = FeeRateModel.bind(feeRateModelAddress);
-        pair.lpFeeRate = convertTokenToDecimal(feeRateModel.getFeeRate(Address.fromString(USDT_ADDRESS)), BigInt.fromI32(18));
+        pair.lpFeeRate = convertTokenToDecimal(dvm._LP_FEE_RATE_(),BigInt.fromI32(18));
 
         pair.mtFeeRateModel = dvm._MT_FEE_RATE_MODEL_();
         pair.maintainer = dvm._MAINTAINER_();
@@ -114,9 +114,10 @@ export function handleNewDPP(event: NewDPP): void {
 }
 
 export function handleNewCP(event: NewCP): void {
+    createUser(event.params.creator);
     //1、检查token情况
-    let baseToken = createToken(event.params.baseToken);
-    let quoteToken = createToken(event.params.quoteToken);
+    let baseToken = createToken(event.params.baseToken,event);
+    let quoteToken = createToken(event.params.quoteToken,event);
 
     let crowdPooling = CrowdPooling.load(event.params.cp.toHexString());
     if (crowdPooling == null) {
@@ -134,6 +135,7 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.i = cp._I_();
         crowdPooling.k = cp._K_();
 
+        crowdPooling.investorsCount = ZERO_BI;
         crowdPooling.totalBase = convertTokenToDecimal(cp._TOTAL_BASE_(),baseToken.decimals);
         crowdPooling.poolQuoteCap = convertTokenToDecimal(cp._POOL_QUOTE_CAP_(),quoteToken.decimals);
         crowdPooling.poolQuote = ZERO_BD;

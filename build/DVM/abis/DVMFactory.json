@@ -13,37 +13,12 @@
       },
       {
         "internalType": "address",
-        "name": "dvmAdminTemplate",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "feeRateModelTemplate",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "permissionManagerTemplate",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "defaultGasPriceSource",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "defaultMaintainer",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "defaultMtFeeRateModel",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "defaultPermissionManager",
         "type": "address"
       }
     ],
@@ -147,19 +122,6 @@
   },
   {
     "inputs": [],
-    "name": "_DEFAULT_GAS_PRICE_SOURCE_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "_DEFAULT_MAINTAINER_",
     "outputs": [
       {
@@ -186,46 +148,7 @@
   },
   {
     "inputs": [],
-    "name": "_DEFAULT_PERMISSION_MANAGER_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_DVM_ADMIN_TEMPLATE_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "_DVM_TEMPLATE_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_FEE_RATE_MODEL_TEMPLATE_",
     "outputs": [
       {
         "internalType": "address",
@@ -252,19 +175,6 @@
   {
     "inputs": [],
     "name": "_OWNER_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_PERMISSION_MANAGER_TEMPLATE_",
     "outputs": [
       {
         "internalType": "address",
@@ -365,11 +275,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "baseToken",
         "type": "address"
       },
@@ -381,11 +286,6 @@
       {
         "internalType": "uint256",
         "name": "lpFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "mtFeeRate",
         "type": "uint256"
       },
       {
@@ -414,55 +314,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "baseToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "quoteToken",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lpFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "i",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "k",
-        "type": "uint256"
-      }
-    ],
-    "name": "createUnOwnedDODOVendingMachine",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "newVendingMachine",
+        "name": "_newDVMTemplate",
         "type": "address"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_newDVMAdminTemplate",
-        "type": "address"
-      }
-    ],
-    "name": "updateAdminTemplate",
+    "name": "updateDvmTemplate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

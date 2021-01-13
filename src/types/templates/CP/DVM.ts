@@ -170,50 +170,6 @@ export class Mint__Params {
   }
 }
 
-export class OwnershipTransferPrepared extends ethereum.Event {
-  get params(): OwnershipTransferPrepared__Params {
-    return new OwnershipTransferPrepared__Params(this);
-  }
-}
-
-export class OwnershipTransferPrepared__Params {
-  _event: OwnershipTransferPrepared;
-
-  constructor(event: OwnershipTransferPrepared) {
-    this._event = event;
-  }
-
-  get previousOwner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newOwner(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class OwnershipTransferred extends ethereum.Event {
-  get params(): OwnershipTransferred__Params {
-    return new OwnershipTransferred__Params(this);
-  }
-}
-
-export class OwnershipTransferred__Params {
-  _event: OwnershipTransferred;
-
-  constructor(event: OwnershipTransferred) {
-    this._event = event;
-  }
-
-  get previousOwner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newOwner(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
 export class SellShares extends ethereum.Event {
   get params(): SellShares__Params {
     return new SellShares__Params(this);
@@ -241,188 +197,6 @@ export class SellShares__Params {
 
   get totalShares(): BigInt {
     return this._event.parameters[3].value.toBigInt();
-  }
-}
-
-export class SetBuy extends ethereum.Event {
-  get params(): SetBuy__Params {
-    return new SetBuy__Params(this);
-  }
-}
-
-export class SetBuy__Params {
-  _event: SetBuy;
-
-  constructor(event: SetBuy) {
-    this._event = event;
-  }
-
-  get allow(): boolean {
-    return this._event.parameters[0].value.toBoolean();
-  }
-}
-
-export class SetGasPriceSource extends ethereum.Event {
-  get params(): SetGasPriceSource__Params {
-    return new SetGasPriceSource__Params(this);
-  }
-}
-
-export class SetGasPriceSource__Params {
-  _event: SetGasPriceSource;
-
-  constructor(event: SetGasPriceSource) {
-    this._event = event;
-  }
-
-  get oldAddr(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newAddr(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class SetLpFeeRate extends ethereum.Event {
-  get params(): SetLpFeeRate__Params {
-    return new SetLpFeeRate__Params(this);
-  }
-}
-
-export class SetLpFeeRate__Params {
-  _event: SetLpFeeRate;
-
-  constructor(event: SetLpFeeRate) {
-    this._event = event;
-  }
-
-  get newValue(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
-export class SetLpFeeRateModel extends ethereum.Event {
-  get params(): SetLpFeeRateModel__Params {
-    return new SetLpFeeRateModel__Params(this);
-  }
-}
-
-export class SetLpFeeRateModel__Params {
-  _event: SetLpFeeRateModel;
-
-  constructor(event: SetLpFeeRateModel) {
-    this._event = event;
-  }
-
-  get oldAddr(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newAddr(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class SetMaintainer extends ethereum.Event {
-  get params(): SetMaintainer__Params {
-    return new SetMaintainer__Params(this);
-  }
-}
-
-export class SetMaintainer__Params {
-  _event: SetMaintainer;
-
-  constructor(event: SetMaintainer) {
-    this._event = event;
-  }
-
-  get oldAddr(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newAddr(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class SetMtFeeRate extends ethereum.Event {
-  get params(): SetMtFeeRate__Params {
-    return new SetMtFeeRate__Params(this);
-  }
-}
-
-export class SetMtFeeRate__Params {
-  _event: SetMtFeeRate;
-
-  constructor(event: SetMtFeeRate) {
-    this._event = event;
-  }
-
-  get newValue(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
-export class SetMtFeeRateModel extends ethereum.Event {
-  get params(): SetMtFeeRateModel__Params {
-    return new SetMtFeeRateModel__Params(this);
-  }
-}
-
-export class SetMtFeeRateModel__Params {
-  _event: SetMtFeeRateModel;
-
-  constructor(event: SetMtFeeRateModel) {
-    this._event = event;
-  }
-
-  get oldAddr(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newAddr(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class SetSell extends ethereum.Event {
-  get params(): SetSell__Params {
-    return new SetSell__Params(this);
-  }
-}
-
-export class SetSell__Params {
-  _event: SetSell;
-
-  constructor(event: SetSell) {
-    this._event = event;
-  }
-
-  get allow(): boolean {
-    return this._event.parameters[0].value.toBoolean();
-  }
-}
-
-export class SetTradePermissionManager extends ethereum.Event {
-  get params(): SetTradePermissionManager__Params {
-    return new SetTradePermissionManager__Params(this);
-  }
-}
-
-export class SetTradePermissionManager__Params {
-  _event: SetTradePermissionManager;
-
-  constructor(event: SetTradePermissionManager) {
-    this._event = event;
-  }
-
-  get oldAddr(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newAddr(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -509,7 +283,7 @@ export class DVM__getPMMStateForCallResult {
   value3: BigInt;
   value4: BigInt;
   value5: BigInt;
-  value6: i32;
+  value6: BigInt;
 
   constructor(
     value0: BigInt,
@@ -518,7 +292,7 @@ export class DVM__getPMMStateForCallResult {
     value3: BigInt,
     value4: BigInt,
     value5: BigInt,
-    value6: i32
+    value6: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -537,10 +311,7 @@ export class DVM__getPMMStateForCallResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
-    map.set(
-      "value6",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value6))
-    );
+    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
     return map;
   }
 }
@@ -558,23 +329,6 @@ export class DVM__getUserFeeRateResult {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    return map;
-  }
-}
-
-export class DVM__getUserTradePermissionResult {
-  value0: boolean;
-  value1: boolean;
-
-  constructor(value0: boolean, value1: boolean) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromBoolean(this.value0));
-    map.set("value1", ethereum.Value.fromBoolean(this.value1));
     return map;
   }
 }
@@ -699,7 +453,7 @@ export class DVM extends ethereum.SmartContract {
   }
 
   _BASE_RESERVE_(): BigInt {
-    let result = super.call("_BASE_RESERVE_", "_BASE_RESERVE_():(uint256)", []);
+    let result = super.call("_BASE_RESERVE_", "_BASE_RESERVE_():(uint128)", []);
 
     return result[0].toBigInt();
   }
@@ -707,7 +461,7 @@ export class DVM extends ethereum.SmartContract {
   try__BASE_RESERVE_(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "_BASE_RESERVE_",
-      "_BASE_RESERVE_():(uint256)",
+      "_BASE_RESERVE_():(uint128)",
       []
     );
     if (result.reverted) {
@@ -725,44 +479,6 @@ export class DVM extends ethereum.SmartContract {
 
   try__BASE_TOKEN_(): ethereum.CallResult<Address> {
     let result = super.tryCall("_BASE_TOKEN_", "_BASE_TOKEN_():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _BUYING_CLOSE_(): boolean {
-    let result = super.call("_BUYING_CLOSE_", "_BUYING_CLOSE_():(bool)", []);
-
-    return result[0].toBoolean();
-  }
-
-  try__BUYING_CLOSE_(): ethereum.CallResult<boolean> {
-    let result = super.tryCall("_BUYING_CLOSE_", "_BUYING_CLOSE_():(bool)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  _GAS_PRICE_LIMIT_(): Address {
-    let result = super.call(
-      "_GAS_PRICE_LIMIT_",
-      "_GAS_PRICE_LIMIT_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__GAS_PRICE_LIMIT_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_GAS_PRICE_LIMIT_",
-      "_GAS_PRICE_LIMIT_():(address)",
-      []
-    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -800,27 +516,23 @@ export class DVM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  _LP_FEE_RATE_MODEL_(): Address {
-    let result = super.call(
-      "_LP_FEE_RATE_MODEL_",
-      "_LP_FEE_RATE_MODEL_():(address)",
-      []
-    );
+  _LP_FEE_RATE_(): BigInt {
+    let result = super.call("_LP_FEE_RATE_", "_LP_FEE_RATE_():(uint256)", []);
 
-    return result[0].toAddress();
+    return result[0].toBigInt();
   }
 
-  try__LP_FEE_RATE_MODEL_(): ethereum.CallResult<Address> {
+  try__LP_FEE_RATE_(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "_LP_FEE_RATE_MODEL_",
-      "_LP_FEE_RATE_MODEL_():(address)",
+      "_LP_FEE_RATE_",
+      "_LP_FEE_RATE_():(uint256)",
       []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   _MAINTAINER_(): Address {
@@ -861,40 +573,10 @@ export class DVM extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _NEW_OWNER_(): Address {
-    let result = super.call("_NEW_OWNER_", "_NEW_OWNER_():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__NEW_OWNER_(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_NEW_OWNER_", "_NEW_OWNER_():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _OWNER_(): Address {
-    let result = super.call("_OWNER_", "_OWNER_():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__OWNER_(): ethereum.CallResult<Address> {
-    let result = super.tryCall("_OWNER_", "_OWNER_():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   _QUOTE_RESERVE_(): BigInt {
     let result = super.call(
       "_QUOTE_RESERVE_",
-      "_QUOTE_RESERVE_():(uint256)",
+      "_QUOTE_RESERVE_():(uint128)",
       []
     );
 
@@ -904,7 +586,7 @@ export class DVM extends ethereum.SmartContract {
   try__QUOTE_RESERVE_(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "_QUOTE_RESERVE_",
-      "_QUOTE_RESERVE_():(uint256)",
+      "_QUOTE_RESERVE_():(uint128)",
       []
     );
     if (result.reverted) {
@@ -924,48 +606,6 @@ export class DVM extends ethereum.SmartContract {
     let result = super.tryCall(
       "_QUOTE_TOKEN_",
       "_QUOTE_TOKEN_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _SELLING_CLOSE_(): boolean {
-    let result = super.call("_SELLING_CLOSE_", "_SELLING_CLOSE_():(bool)", []);
-
-    return result[0].toBoolean();
-  }
-
-  try__SELLING_CLOSE_(): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "_SELLING_CLOSE_",
-      "_SELLING_CLOSE_():(bool)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  _TRADE_PERMISSION_(): Address {
-    let result = super.call(
-      "_TRADE_PERMISSION_",
-      "_TRADE_PERMISSION_():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try__TRADE_PERMISSION_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_TRADE_PERMISSION_",
-      "_TRADE_PERMISSION_():(address)",
       []
     );
     if (result.reverted) {
@@ -1144,7 +784,7 @@ export class DVM extends ethereum.SmartContract {
   getPMMStateForCall(): DVM__getPMMStateForCallResult {
     let result = super.call(
       "getPMMStateForCall",
-      "getPMMStateForCall():(uint256,uint256,uint256,uint256,uint256,uint256,uint8)",
+      "getPMMStateForCall():(uint256,uint256,uint256,uint256,uint256,uint256,uint256)",
       []
     );
 
@@ -1155,14 +795,14 @@ export class DVM extends ethereum.SmartContract {
       result[3].toBigInt(),
       result[4].toBigInt(),
       result[5].toBigInt(),
-      result[6].toI32()
+      result[6].toBigInt()
     );
   }
 
   try_getPMMStateForCall(): ethereum.CallResult<DVM__getPMMStateForCallResult> {
     let result = super.tryCall(
       "getPMMStateForCall",
-      "getPMMStateForCall():(uint256,uint256,uint256,uint256,uint256,uint256,uint8)",
+      "getPMMStateForCall():(uint256,uint256,uint256,uint256,uint256,uint256,uint256)",
       []
     );
     if (result.reverted) {
@@ -1177,7 +817,7 @@ export class DVM extends ethereum.SmartContract {
         value[3].toBigInt(),
         value[4].toBigInt(),
         value[5].toBigInt(),
-        value[6].toI32()
+        value[6].toBigInt()
       )
     );
   }
@@ -1228,39 +868,6 @@ export class DVM extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       new DVM__getUserFeeRateResult(value[0].toBigInt(), value[1].toBigInt())
-    );
-  }
-
-  getUserTradePermission(user: Address): DVM__getUserTradePermissionResult {
-    let result = super.call(
-      "getUserTradePermission",
-      "getUserTradePermission(address):(bool,bool)",
-      [ethereum.Value.fromAddress(user)]
-    );
-
-    return new DVM__getUserTradePermissionResult(
-      result[0].toBoolean(),
-      result[1].toBoolean()
-    );
-  }
-
-  try_getUserTradePermission(
-    user: Address
-  ): ethereum.CallResult<DVM__getUserTradePermissionResult> {
-    let result = super.tryCall(
-      "getUserTradePermission",
-      "getUserTradePermission(address):(bool,bool)",
-      [ethereum.Value.fromAddress(user)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new DVM__getUserTradePermissionResult(
-        value[0].toBoolean(),
-        value[1].toBoolean()
-      )
     );
   }
 
@@ -1705,32 +1312,6 @@ export class BuySharesCall__Outputs {
   }
 }
 
-export class ClaimOwnershipCall extends ethereum.Call {
-  get inputs(): ClaimOwnershipCall__Inputs {
-    return new ClaimOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): ClaimOwnershipCall__Outputs {
-    return new ClaimOwnershipCall__Outputs(this);
-  }
-}
-
-export class ClaimOwnershipCall__Inputs {
-  _call: ClaimOwnershipCall;
-
-  constructor(call: ClaimOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class ClaimOwnershipCall__Outputs {
-  _call: ClaimOwnershipCall;
-
-  constructor(call: ClaimOwnershipCall) {
-    this._call = call;
-  }
-}
-
 export class FlashLoanCall extends ethereum.Call {
   get inputs(): FlashLoanCall__Inputs {
     return new FlashLoanCall__Inputs(this);
@@ -1769,36 +1350,6 @@ export class FlashLoanCall__Outputs {
   _call: FlashLoanCall;
 
   constructor(call: FlashLoanCall) {
-    this._call = call;
-  }
-}
-
-export class InitOwnerCall extends ethereum.Call {
-  get inputs(): InitOwnerCall__Inputs {
-    return new InitOwnerCall__Inputs(this);
-  }
-
-  get outputs(): InitOwnerCall__Outputs {
-    return new InitOwnerCall__Outputs(this);
-  }
-}
-
-export class InitOwnerCall__Inputs {
-  _call: InitOwnerCall;
-
-  constructor(call: InitOwnerCall) {
-    this._call = call;
-  }
-
-  get newOwner(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class InitOwnerCall__Outputs {
-  _call: InitOwnerCall;
-
-  constructor(call: InitOwnerCall) {
     this._call = call;
   }
 }
@@ -1983,276 +1534,6 @@ export class SellSharesCall__Outputs {
   }
 }
 
-export class SetBuyCall extends ethereum.Call {
-  get inputs(): SetBuyCall__Inputs {
-    return new SetBuyCall__Inputs(this);
-  }
-
-  get outputs(): SetBuyCall__Outputs {
-    return new SetBuyCall__Outputs(this);
-  }
-}
-
-export class SetBuyCall__Inputs {
-  _call: SetBuyCall;
-
-  constructor(call: SetBuyCall) {
-    this._call = call;
-  }
-
-  get open(): boolean {
-    return this._call.inputValues[0].value.toBoolean();
-  }
-}
-
-export class SetBuyCall__Outputs {
-  _call: SetBuyCall;
-
-  constructor(call: SetBuyCall) {
-    this._call = call;
-  }
-}
-
-export class SetGasPriceSourceCall extends ethereum.Call {
-  get inputs(): SetGasPriceSourceCall__Inputs {
-    return new SetGasPriceSourceCall__Inputs(this);
-  }
-
-  get outputs(): SetGasPriceSourceCall__Outputs {
-    return new SetGasPriceSourceCall__Outputs(this);
-  }
-}
-
-export class SetGasPriceSourceCall__Inputs {
-  _call: SetGasPriceSourceCall;
-
-  constructor(call: SetGasPriceSourceCall) {
-    this._call = call;
-  }
-
-  get newGasPriceLimitSource(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetGasPriceSourceCall__Outputs {
-  _call: SetGasPriceSourceCall;
-
-  constructor(call: SetGasPriceSourceCall) {
-    this._call = call;
-  }
-}
-
-export class SetLpFeeRateModelCall extends ethereum.Call {
-  get inputs(): SetLpFeeRateModelCall__Inputs {
-    return new SetLpFeeRateModelCall__Inputs(this);
-  }
-
-  get outputs(): SetLpFeeRateModelCall__Outputs {
-    return new SetLpFeeRateModelCall__Outputs(this);
-  }
-}
-
-export class SetLpFeeRateModelCall__Inputs {
-  _call: SetLpFeeRateModelCall;
-
-  constructor(call: SetLpFeeRateModelCall) {
-    this._call = call;
-  }
-
-  get newLpFeeRateModel(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetLpFeeRateModelCall__Outputs {
-  _call: SetLpFeeRateModelCall;
-
-  constructor(call: SetLpFeeRateModelCall) {
-    this._call = call;
-  }
-}
-
-export class SetLpFeeRateValueCall extends ethereum.Call {
-  get inputs(): SetLpFeeRateValueCall__Inputs {
-    return new SetLpFeeRateValueCall__Inputs(this);
-  }
-
-  get outputs(): SetLpFeeRateValueCall__Outputs {
-    return new SetLpFeeRateValueCall__Outputs(this);
-  }
-}
-
-export class SetLpFeeRateValueCall__Inputs {
-  _call: SetLpFeeRateValueCall;
-
-  constructor(call: SetLpFeeRateValueCall) {
-    this._call = call;
-  }
-
-  get newLpFeeRate(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetLpFeeRateValueCall__Outputs {
-  _call: SetLpFeeRateValueCall;
-
-  constructor(call: SetLpFeeRateValueCall) {
-    this._call = call;
-  }
-}
-
-export class SetMaintainerCall extends ethereum.Call {
-  get inputs(): SetMaintainerCall__Inputs {
-    return new SetMaintainerCall__Inputs(this);
-  }
-
-  get outputs(): SetMaintainerCall__Outputs {
-    return new SetMaintainerCall__Outputs(this);
-  }
-}
-
-export class SetMaintainerCall__Inputs {
-  _call: SetMaintainerCall;
-
-  constructor(call: SetMaintainerCall) {
-    this._call = call;
-  }
-
-  get newMaintainer(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetMaintainerCall__Outputs {
-  _call: SetMaintainerCall;
-
-  constructor(call: SetMaintainerCall) {
-    this._call = call;
-  }
-}
-
-export class SetMtFeeRateModelCall extends ethereum.Call {
-  get inputs(): SetMtFeeRateModelCall__Inputs {
-    return new SetMtFeeRateModelCall__Inputs(this);
-  }
-
-  get outputs(): SetMtFeeRateModelCall__Outputs {
-    return new SetMtFeeRateModelCall__Outputs(this);
-  }
-}
-
-export class SetMtFeeRateModelCall__Inputs {
-  _call: SetMtFeeRateModelCall;
-
-  constructor(call: SetMtFeeRateModelCall) {
-    this._call = call;
-  }
-
-  get newMtFeeRateModel(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetMtFeeRateModelCall__Outputs {
-  _call: SetMtFeeRateModelCall;
-
-  constructor(call: SetMtFeeRateModelCall) {
-    this._call = call;
-  }
-}
-
-export class SetMtFeeRateValueCall extends ethereum.Call {
-  get inputs(): SetMtFeeRateValueCall__Inputs {
-    return new SetMtFeeRateValueCall__Inputs(this);
-  }
-
-  get outputs(): SetMtFeeRateValueCall__Outputs {
-    return new SetMtFeeRateValueCall__Outputs(this);
-  }
-}
-
-export class SetMtFeeRateValueCall__Inputs {
-  _call: SetMtFeeRateValueCall;
-
-  constructor(call: SetMtFeeRateValueCall) {
-    this._call = call;
-  }
-
-  get newMtFeeRate(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetMtFeeRateValueCall__Outputs {
-  _call: SetMtFeeRateValueCall;
-
-  constructor(call: SetMtFeeRateValueCall) {
-    this._call = call;
-  }
-}
-
-export class SetSellCall extends ethereum.Call {
-  get inputs(): SetSellCall__Inputs {
-    return new SetSellCall__Inputs(this);
-  }
-
-  get outputs(): SetSellCall__Outputs {
-    return new SetSellCall__Outputs(this);
-  }
-}
-
-export class SetSellCall__Inputs {
-  _call: SetSellCall;
-
-  constructor(call: SetSellCall) {
-    this._call = call;
-  }
-
-  get open(): boolean {
-    return this._call.inputValues[0].value.toBoolean();
-  }
-}
-
-export class SetSellCall__Outputs {
-  _call: SetSellCall;
-
-  constructor(call: SetSellCall) {
-    this._call = call;
-  }
-}
-
-export class SetTradePermissionManagerCall extends ethereum.Call {
-  get inputs(): SetTradePermissionManagerCall__Inputs {
-    return new SetTradePermissionManagerCall__Inputs(this);
-  }
-
-  get outputs(): SetTradePermissionManagerCall__Outputs {
-    return new SetTradePermissionManagerCall__Outputs(this);
-  }
-}
-
-export class SetTradePermissionManagerCall__Inputs {
-  _call: SetTradePermissionManagerCall;
-
-  constructor(call: SetTradePermissionManagerCall) {
-    this._call = call;
-  }
-
-  get newTradePermissionManager(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetTradePermissionManagerCall__Outputs {
-  _call: SetTradePermissionManagerCall;
-
-  constructor(call: SetTradePermissionManagerCall) {
-    this._call = call;
-  }
-}
-
 export class SyncCall extends ethereum.Call {
   get inputs(): SyncCall__Inputs {
     return new SyncCall__Inputs(this);
@@ -2359,36 +1640,6 @@ export class TransferFromCall__Outputs {
   }
 }
 
-export class TransferOwnershipCall extends ethereum.Call {
-  get inputs(): TransferOwnershipCall__Inputs {
-    return new TransferOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): TransferOwnershipCall__Outputs {
-    return new TransferOwnershipCall__Outputs(this);
-  }
-}
-
-export class TransferOwnershipCall__Inputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-
-  get newOwner(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class TransferOwnershipCall__Outputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-}
-
 export class InitCall extends ethereum.Call {
   get inputs(): InitCall__Inputs {
     return new InitCall__Inputs(this);
@@ -2406,44 +1657,32 @@ export class InitCall__Inputs {
     this._call = call;
   }
 
-  get owner(): Address {
+  get maintainer(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get maintainer(): Address {
+  get baseTokenAddress(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get baseTokenAddress(): Address {
+  get quoteTokenAddress(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get quoteTokenAddress(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
-  get lpFeeRateModel(): Address {
-    return this._call.inputValues[4].value.toAddress();
+  get lpFeeRate(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get mtFeeRateModel(): Address {
-    return this._call.inputValues[5].value.toAddress();
-  }
-
-  get tradePermissionManager(): Address {
-    return this._call.inputValues[6].value.toAddress();
-  }
-
-  get gasPriceSource(): Address {
-    return this._call.inputValues[7].value.toAddress();
+    return this._call.inputValues[4].value.toAddress();
   }
 
   get i(): BigInt {
-    return this._call.inputValues[8].value.toBigInt();
+    return this._call.inputValues[5].value.toBigInt();
   }
 
   get k(): BigInt {
-    return this._call.inputValues[9].value.toBigInt();
+    return this._call.inputValues[6].value.toBigInt();
   }
 }
 

@@ -13,12 +13,7 @@
       },
       {
         "internalType": "address",
-        "name": "unOwnedDvmFactory",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "feeRateModelTemplate",
+        "name": "dvmFactory",
         "type": "address"
       },
       {
@@ -34,11 +29,6 @@
       {
         "internalType": "address",
         "name": "defaultPermissionManager",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "defaultGasPriceSource",
         "type": "address"
       }
     ],
@@ -116,6 +106,45 @@
   },
   {
     "inputs": [],
+    "name": "_CALM_DURATION_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_CAP_RATIO_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_CLIFF_RATE_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "_CLONE_FACTORY_",
     "outputs": [
       {
@@ -130,19 +159,6 @@
   {
     "inputs": [],
     "name": "_CP_TEMPLATE_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_DEFAULT_GAS_PRICE_SOURCE_",
     "outputs": [
       {
         "internalType": "address",
@@ -194,12 +210,38 @@
   },
   {
     "inputs": [],
-    "name": "_FEE_RATE_MODEL_TEMPLATE_",
+    "name": "_DVM_FACTORY_",
     "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_FREEZE_DURATION_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_K_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -261,19 +303,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "_UNOWNED_DVM_FACTORY_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -299,20 +328,7 @@
   },
   {
     "inputs": [],
-    "name": "_X_",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_Y_",
+    "name": "_VEST_DURATION_",
     "outputs": [
       {
         "internalType": "uint256",
@@ -482,17 +498,90 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "x",
-        "type": "uint256"
-      },
+        "internalType": "address",
+        "name": "_newCPTemplate",
+        "type": "address"
+      }
+    ],
+    "name": "updateCPTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "uint256",
-        "name": "y",
+        "name": "_newCapRatio",
         "type": "uint256"
       }
     ],
-    "name": "setXY",
+    "name": "setCapRatio",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newFreeDuration",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFreezeDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newCalmDuration",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCalmDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newVestDuration",
+        "type": "uint256"
+      }
+    ],
+    "name": "setVestDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newK",
+        "type": "uint256"
+      }
+    ],
+    "name": "setK",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newCliffRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCliffRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

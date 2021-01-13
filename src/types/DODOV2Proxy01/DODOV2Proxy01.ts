@@ -42,10 +42,6 @@ export class OrderHistory__Params {
   get returnAmount(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
-
-  get sourceFlag(): i32 {
-    return this._event.parameters[5].value.toI32();
-  }
 }
 
 export class OwnershipTransferPrepared extends ethereum.Event {
@@ -97,6 +93,21 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
     return new DODOV2Proxy01("DODOV2Proxy01", address);
   }
 
+  _CHI_TOKEN_(): Address {
+    let result = super.call("_CHI_TOKEN_", "_CHI_TOKEN_():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try__CHI_TOKEN_(): ethereum.CallResult<Address> {
+    let result = super.tryCall("_CHI_TOKEN_", "_CHI_TOKEN_():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   _CP_FACTORY_(): Address {
     let result = super.call("_CP_FACTORY_", "_CP_FACTORY_():(address)", []);
 
@@ -122,6 +133,29 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
     let result = super.tryCall(
       "_DODO_APPROVE_",
       "_DODO_APPROVE_():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  _DODO_INCENTIVE_(): Address {
+    let result = super.call(
+      "_DODO_INCENTIVE_",
+      "_DODO_INCENTIVE_():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try__DODO_INCENTIVE_(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "_DODO_INCENTIVE_",
+      "_DODO_INCENTIVE_():(address)",
       []
     );
     if (result.reverted) {
@@ -192,6 +226,52 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  _GAS_DODO_MAX_RETURN_(): BigInt {
+    let result = super.call(
+      "_GAS_DODO_MAX_RETURN_",
+      "_GAS_DODO_MAX_RETURN_():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try__GAS_DODO_MAX_RETURN_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "_GAS_DODO_MAX_RETURN_",
+      "_GAS_DODO_MAX_RETURN_():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  _GAS_EXTERNAL_RETURN_(): BigInt {
+    let result = super.call(
+      "_GAS_EXTERNAL_RETURN_",
+      "_GAS_EXTERNAL_RETURN_():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try__GAS_EXTERNAL_RETURN_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "_GAS_EXTERNAL_RETURN_",
+      "_GAS_EXTERNAL_RETURN_():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   _NEW_OWNER_(): Address {
     let result = super.call("_NEW_OWNER_", "_NEW_OWNER_():(address)", []);
 
@@ -259,24 +339,24 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
   }
 
   dodoSwapV2TokenToETH(
-    assetTo: Address,
     fromToken: Address,
     fromTokenAmount: BigInt,
     minReturnAmount: BigInt,
     dodoPairs: Array<Address>,
-    directions: Array<i32>,
+    directions: BigInt,
+    isIncentive: boolean,
     deadLine: BigInt
   ): BigInt {
     let result = super.call(
       "dodoSwapV2TokenToETH",
-      "dodoSwapV2TokenToETH(address,address,uint256,uint256,address[],uint8[],uint256):(uint256)",
+      "dodoSwapV2TokenToETH(address,uint256,uint256,address[],uint256,bool,uint256):(uint256)",
       [
-        ethereum.Value.fromAddress(assetTo),
         ethereum.Value.fromAddress(fromToken),
         ethereum.Value.fromUnsignedBigInt(fromTokenAmount),
         ethereum.Value.fromUnsignedBigInt(minReturnAmount),
         ethereum.Value.fromAddressArray(dodoPairs),
-        ethereum.Value.fromI32Array(directions),
+        ethereum.Value.fromUnsignedBigInt(directions),
+        ethereum.Value.fromBoolean(isIncentive),
         ethereum.Value.fromUnsignedBigInt(deadLine)
       ]
     );
@@ -285,24 +365,24 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
   }
 
   try_dodoSwapV2TokenToETH(
-    assetTo: Address,
     fromToken: Address,
     fromTokenAmount: BigInt,
     minReturnAmount: BigInt,
     dodoPairs: Array<Address>,
-    directions: Array<i32>,
+    directions: BigInt,
+    isIncentive: boolean,
     deadLine: BigInt
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "dodoSwapV2TokenToETH",
-      "dodoSwapV2TokenToETH(address,address,uint256,uint256,address[],uint8[],uint256):(uint256)",
+      "dodoSwapV2TokenToETH(address,uint256,uint256,address[],uint256,bool,uint256):(uint256)",
       [
-        ethereum.Value.fromAddress(assetTo),
         ethereum.Value.fromAddress(fromToken),
         ethereum.Value.fromUnsignedBigInt(fromTokenAmount),
         ethereum.Value.fromUnsignedBigInt(minReturnAmount),
         ethereum.Value.fromAddressArray(dodoPairs),
-        ethereum.Value.fromI32Array(directions),
+        ethereum.Value.fromUnsignedBigInt(directions),
+        ethereum.Value.fromBoolean(isIncentive),
         ethereum.Value.fromUnsignedBigInt(deadLine)
       ]
     );
@@ -314,26 +394,26 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
   }
 
   dodoSwapV2TokenToToken(
-    assetTo: Address,
     fromToken: Address,
     toToken: Address,
     fromTokenAmount: BigInt,
     minReturnAmount: BigInt,
     dodoPairs: Array<Address>,
-    directions: Array<i32>,
+    directions: BigInt,
+    isIncentive: boolean,
     deadLine: BigInt
   ): BigInt {
     let result = super.call(
       "dodoSwapV2TokenToToken",
-      "dodoSwapV2TokenToToken(address,address,address,uint256,uint256,address[],uint8[],uint256):(uint256)",
+      "dodoSwapV2TokenToToken(address,address,uint256,uint256,address[],uint256,bool,uint256):(uint256)",
       [
-        ethereum.Value.fromAddress(assetTo),
         ethereum.Value.fromAddress(fromToken),
         ethereum.Value.fromAddress(toToken),
         ethereum.Value.fromUnsignedBigInt(fromTokenAmount),
         ethereum.Value.fromUnsignedBigInt(minReturnAmount),
         ethereum.Value.fromAddressArray(dodoPairs),
-        ethereum.Value.fromI32Array(directions),
+        ethereum.Value.fromUnsignedBigInt(directions),
+        ethereum.Value.fromBoolean(isIncentive),
         ethereum.Value.fromUnsignedBigInt(deadLine)
       ]
     );
@@ -342,26 +422,26 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
   }
 
   try_dodoSwapV2TokenToToken(
-    assetTo: Address,
     fromToken: Address,
     toToken: Address,
     fromTokenAmount: BigInt,
     minReturnAmount: BigInt,
     dodoPairs: Array<Address>,
-    directions: Array<i32>,
+    directions: BigInt,
+    isIncentive: boolean,
     deadLine: BigInt
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "dodoSwapV2TokenToToken",
-      "dodoSwapV2TokenToToken(address,address,address,uint256,uint256,address[],uint8[],uint256):(uint256)",
+      "dodoSwapV2TokenToToken(address,address,uint256,uint256,address[],uint256,bool,uint256):(uint256)",
       [
-        ethereum.Value.fromAddress(assetTo),
         ethereum.Value.fromAddress(fromToken),
         ethereum.Value.fromAddress(toToken),
         ethereum.Value.fromUnsignedBigInt(fromTokenAmount),
         ethereum.Value.fromUnsignedBigInt(minReturnAmount),
         ethereum.Value.fromAddressArray(dodoPairs),
-        ethereum.Value.fromI32Array(directions),
+        ethereum.Value.fromUnsignedBigInt(directions),
+        ethereum.Value.fromBoolean(isIncentive),
         ethereum.Value.fromUnsignedBigInt(deadLine)
       ]
     );
@@ -370,57 +450,6 @@ export class DODOV2Proxy01 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  createCrowdPooling(
-    baseToken: Address,
-    quoteToken: Address,
-    baseInAmount: BigInt,
-    timeLine: Array<BigInt>,
-    valueList: Array<BigInt>,
-    deadLine: BigInt
-  ): Address {
-    let result = super.call(
-      "createCrowdPooling",
-      "createCrowdPooling(address,address,uint256,uint256[],uint256[],uint256):(address)",
-      [
-        ethereum.Value.fromAddress(baseToken),
-        ethereum.Value.fromAddress(quoteToken),
-        ethereum.Value.fromUnsignedBigInt(baseInAmount),
-        ethereum.Value.fromUnsignedBigIntArray(timeLine),
-        ethereum.Value.fromUnsignedBigIntArray(valueList),
-        ethereum.Value.fromUnsignedBigInt(deadLine)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_createCrowdPooling(
-    baseToken: Address,
-    quoteToken: Address,
-    baseInAmount: BigInt,
-    timeLine: Array<BigInt>,
-    valueList: Array<BigInt>,
-    deadLine: BigInt
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "createCrowdPooling",
-      "createCrowdPooling(address,address,uint256,uint256[],uint256[],uint256):(address)",
-      [
-        ethereum.Value.fromAddress(baseToken),
-        ethereum.Value.fromAddress(quoteToken),
-        ethereum.Value.fromUnsignedBigInt(baseInAmount),
-        ethereum.Value.fromUnsignedBigIntArray(timeLine),
-        ethereum.Value.fromUnsignedBigIntArray(valueList),
-        ethereum.Value.fromUnsignedBigInt(deadLine)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 }
 
@@ -463,6 +492,14 @@ export class ConstructorCall__Inputs {
 
   get dodoSellHelper(): Address {
     return this._call.inputValues[5].value.toAddress();
+  }
+
+  get chiToken(): Address {
+    return this._call.inputValues[6].value.toAddress();
+  }
+
+  get dodoIncentive(): Address {
+    return this._call.inputValues[7].value.toAddress();
   }
 }
 
@@ -646,6 +683,40 @@ export class RemoveWhiteListCall__Outputs {
   }
 }
 
+export class UpdateGasReturnCall extends ethereum.Call {
+  get inputs(): UpdateGasReturnCall__Inputs {
+    return new UpdateGasReturnCall__Inputs(this);
+  }
+
+  get outputs(): UpdateGasReturnCall__Outputs {
+    return new UpdateGasReturnCall__Outputs(this);
+  }
+}
+
+export class UpdateGasReturnCall__Inputs {
+  _call: UpdateGasReturnCall;
+
+  constructor(call: UpdateGasReturnCall) {
+    this._call = call;
+  }
+
+  get newDodoGasReturn(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get newExternalGasReturn(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class UpdateGasReturnCall__Outputs {
+  _call: UpdateGasReturnCall;
+
+  constructor(call: UpdateGasReturnCall) {
+    this._call = call;
+  }
+}
+
 export class CreateDODOVendingMachineCall extends ethereum.Call {
   get inputs(): CreateDODOVendingMachineCall__Inputs {
     return new CreateDODOVendingMachineCall__Inputs(this);
@@ -663,44 +734,36 @@ export class CreateDODOVendingMachineCall__Inputs {
     this._call = call;
   }
 
-  get assetTo(): Address {
+  get baseToken(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get baseToken(): Address {
+  get quoteToken(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get quoteToken(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
   get baseInAmount(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get quoteInAmount(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get lpFeeRate(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-
-  get mtFeeRate(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get i(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
+    return this._call.inputValues[5].value.toBigInt();
   }
 
   get k(): BigInt {
-    return this._call.inputValues[8].value.toBigInt();
+    return this._call.inputValues[6].value.toBigInt();
   }
 
   get deadLine(): BigInt {
-    return this._call.inputValues[9].value.toBigInt();
+    return this._call.inputValues[7].value.toBigInt();
   }
 }
 
@@ -741,32 +804,28 @@ export class AddDVMLiquidityCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get to(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get baseInAmount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get quoteInAmount(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get baseMinAmount(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get quoteMinAmount(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get flag(): i32 {
-    return this._call.inputValues[6].value.toI32();
+    return this._call.inputValues[5].value.toI32();
   }
 
   get deadLine(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
+    return this._call.inputValues[6].value.toBigInt();
   }
 }
 
@@ -827,20 +886,16 @@ export class CreateDODOPrivatePoolCall__Inputs {
     return this._call.inputValues[4].value.toBigInt();
   }
 
-  get mtFeeRate(): BigInt {
+  get i(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
 
-  get i(): BigInt {
+  get k(): BigInt {
     return this._call.inputValues[6].value.toBigInt();
   }
 
-  get k(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
-  }
-
   get deadLine(): BigInt {
-    return this._call.inputValues[8].value.toBigInt();
+    return this._call.inputValues[7].value.toBigInt();
   }
 }
 
@@ -927,24 +982,24 @@ export class DodoSwapV2ETHToTokenCall__Inputs {
     this._call = call;
   }
 
-  get assetTo(): Address {
+  get toToken(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get toToken(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get minReturnAmount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get dodoPairs(): Array<Address> {
-    return this._call.inputValues[3].value.toAddressArray();
+    return this._call.inputValues[2].value.toAddressArray();
   }
 
-  get directions(): Array<i32> {
-    return this._call.inputValues[4].value.toI32Array();
+  get directions(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+
+  get isIncentive(): boolean {
+    return this._call.inputValues[4].value.toBoolean();
   }
 
   get deadLine(): BigInt {
@@ -981,28 +1036,28 @@ export class DodoSwapV2TokenToETHCall__Inputs {
     this._call = call;
   }
 
-  get assetTo(): Address {
+  get fromToken(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get fromToken(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get fromTokenAmount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get minReturnAmount(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get dodoPairs(): Array<Address> {
-    return this._call.inputValues[4].value.toAddressArray();
+    return this._call.inputValues[3].value.toAddressArray();
   }
 
-  get directions(): Array<i32> {
-    return this._call.inputValues[5].value.toI32Array();
+  get directions(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+
+  get isIncentive(): boolean {
+    return this._call.inputValues[5].value.toBoolean();
   }
 
   get deadLine(): BigInt {
@@ -1039,32 +1094,32 @@ export class DodoSwapV2TokenToTokenCall__Inputs {
     this._call = call;
   }
 
-  get assetTo(): Address {
+  get fromToken(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get fromToken(): Address {
+  get toToken(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get toToken(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
   get fromTokenAmount(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get minReturnAmount(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get dodoPairs(): Array<Address> {
-    return this._call.inputValues[5].value.toAddressArray();
+    return this._call.inputValues[4].value.toAddressArray();
   }
 
-  get directions(): Array<i32> {
-    return this._call.inputValues[6].value.toI32Array();
+  get directions(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
+  }
+
+  get isIncentive(): boolean {
+    return this._call.inputValues[6].value.toBoolean();
   }
 
   get deadLine(): BigInt {
@@ -1113,7 +1168,7 @@ export class ExternalSwapCall__Inputs {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get to(): Address {
+  get swapTarget(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
@@ -1129,8 +1184,12 @@ export class ExternalSwapCall__Inputs {
     return this._call.inputValues[6].value.toBytes();
   }
 
+  get isIncentive(): boolean {
+    return this._call.inputValues[7].value.toBoolean();
+  }
+
   get deadLine(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
+    return this._call.inputValues[8].value.toBigInt();
   }
 }
 
@@ -1183,12 +1242,16 @@ export class DodoSwapV1Call__Inputs {
     return this._call.inputValues[4].value.toAddressArray();
   }
 
-  get directions(): Array<i32> {
-    return this._call.inputValues[5].value.toI32Array();
+  get directions(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
+  }
+
+  get isIncentive(): boolean {
+    return this._call.inputValues[6].value.toBoolean();
   }
 
   get deadLine(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+    return this._call.inputValues[7].value.toBigInt();
   }
 }
 
@@ -1241,16 +1304,20 @@ export class MixSwapV1Call__Inputs {
     return this._call.inputValues[4].value.toAddressArray();
   }
 
-  get directions(): Array<i32> {
-    return this._call.inputValues[5].value.toI32Array();
+  get directions(): Array<BigInt> {
+    return this._call.inputValues[5].value.toBigIntArray();
   }
 
   get portionPath(): Array<Address> {
     return this._call.inputValues[6].value.toAddressArray();
   }
 
+  get isIncentive(): boolean {
+    return this._call.inputValues[7].value.toBoolean();
+  }
+
   get deadLine(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
+    return this._call.inputValues[8].value.toBigInt();
   }
 }
 
@@ -1337,24 +1404,20 @@ export class BidCall__Inputs {
     this._call = call;
   }
 
-  get assetTo(): Address {
+  get cpAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get cpAddress(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get quoteAmount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get flag(): i32 {
-    return this._call.inputValues[3].value.toI32();
+    return this._call.inputValues[2].value.toI32();
   }
 
   get deadLine(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 }
 
@@ -1383,36 +1446,32 @@ export class AddLiquidityToV1Call__Inputs {
     this._call = call;
   }
 
-  get to(): Address {
+  get pair(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get pair(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get baseAmount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get quoteAmount(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get baseMinShares(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get quoteMinShares(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get flag(): i32 {
-    return this._call.inputValues[6].value.toI32();
+    return this._call.inputValues[5].value.toI32();
   }
 
   get deadLine(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
+    return this._call.inputValues[6].value.toBigInt();
   }
 }
 

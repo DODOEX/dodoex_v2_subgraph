@@ -30,6 +30,16 @@
         "internalType": "address",
         "name": "dodoSellHelper",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "chiToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "dodoIncentive",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -67,12 +77,6 @@
         "internalType": "uint256",
         "name": "returnAmount",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "sourceFlag",
-        "type": "uint8"
       }
     ],
     "name": "OrderHistory",
@@ -122,6 +126,19 @@
   },
   {
     "inputs": [],
+    "name": "_CHI_TOKEN_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "_CP_FACTORY_",
     "outputs": [
       {
@@ -136,6 +153,19 @@
   {
     "inputs": [],
     "name": "_DODO_APPROVE_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_DODO_INCENTIVE_",
     "outputs": [
       {
         "internalType": "address",
@@ -180,6 +210,32 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_GAS_DODO_MAX_RETURN_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_GAS_EXTERNAL_RETURN_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -309,10 +365,23 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "assetTo",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "newDodoGasReturn",
+        "type": "uint256"
       },
+      {
+        "internalType": "uint256",
+        "name": "newExternalGasReturn",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateGasReturn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "address",
         "name": "baseToken",
@@ -336,11 +405,6 @@
       {
         "internalType": "uint256",
         "name": "lpFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "mtFeeRate",
         "type": "uint256"
       },
       {
@@ -380,11 +444,6 @@
       {
         "internalType": "address",
         "name": "dvmAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
         "type": "address"
       },
       {
@@ -468,11 +527,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "mtFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "i",
         "type": "uint256"
       },
@@ -544,11 +598,6 @@
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "assetTo",
-        "type": "address"
-      },
-      {
         "internalType": "address",
         "name": "toToken",
         "type": "address"
@@ -564,9 +613,14 @@
         "type": "address[]"
       },
       {
-        "internalType": "uint8[]",
+        "internalType": "uint256",
         "name": "directions",
-        "type": "uint8[]"
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isIncentive",
+        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -588,11 +642,6 @@
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "assetTo",
-        "type": "address"
-      },
-      {
         "internalType": "address",
         "name": "fromToken",
         "type": "address"
@@ -613,9 +662,14 @@
         "type": "address[]"
       },
       {
-        "internalType": "uint8[]",
+        "internalType": "uint256",
         "name": "directions",
-        "type": "uint8[]"
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isIncentive",
+        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -636,11 +690,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "assetTo",
-        "type": "address"
-      },
       {
         "internalType": "address",
         "name": "fromToken",
@@ -667,9 +716,14 @@
         "type": "address[]"
       },
       {
-        "internalType": "uint8[]",
+        "internalType": "uint256",
         "name": "directions",
-        "type": "uint8[]"
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isIncentive",
+        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -707,7 +761,7 @@
       },
       {
         "internalType": "address",
-        "name": "to",
+        "name": "swapTarget",
         "type": "address"
       },
       {
@@ -724,6 +778,11 @@
         "internalType": "bytes",
         "name": "callDataConcat",
         "type": "bytes"
+      },
+      {
+        "internalType": "bool",
+        "name": "isIncentive",
+        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -770,9 +829,14 @@
         "type": "address[]"
       },
       {
-        "internalType": "uint8[]",
+        "internalType": "uint256",
         "name": "directions",
-        "type": "uint8[]"
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isIncentive",
+        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -819,14 +883,19 @@
         "type": "address[]"
       },
       {
-        "internalType": "uint8[]",
+        "internalType": "uint256[]",
         "name": "directions",
-        "type": "uint8[]"
+        "type": "uint256[]"
       },
       {
         "internalType": "address[]",
         "name": "portionPath",
         "type": "address[]"
+      },
+      {
+        "internalType": "bool",
+        "name": "isIncentive",
+        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -881,21 +950,16 @@
     "name": "createCrowdPooling",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "newCrowdPooling",
         "type": "address"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "assetTo",
-        "type": "address"
-      },
       {
         "internalType": "address",
         "name": "cpAddress",
@@ -924,11 +988,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
       {
         "internalType": "address",
         "name": "pair",
