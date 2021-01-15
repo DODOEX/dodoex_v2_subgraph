@@ -10,7 +10,7 @@ import {
     CrowdPoolingDayData
 } from "../types/schema"
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, TYPE_DPP_POOL, TYPE_DVM_POOL, createToken,createUser} from './helpers'
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, TYPE_DPP_POOL, TYPE_DVM_POOL, createToken,createUser,getDODOZoo} from './helpers'
 import {Bid, Cancel} from "../types/templates/CP/CP"
 import {updateCrowdPoolingDayData} from "./dayUpdates"
 
@@ -19,6 +19,7 @@ export function handleBid(event: Bid): void {
     let token = createToken(Address.fromString(cp.quoteToken),event);
     let dealedAmount = convertTokenToDecimal(event.params.amount, token.decimals);
     cp.poolQuote = cp.poolQuote.plus(dealedAmount);
+    cp.totalShares = cp.totalShares.plus(event.params.amount.toBigDecimal());
 
     let toUser = createUser(event.params.to);
     let fromUser = createUser(event.transaction.from);
@@ -54,6 +55,7 @@ export function handleBid(event: Bid): void {
         bidHistory.share = ZERO_BD;
         bidHistory.timestamp = event.block.timestamp;
         bidHistory.user = event.params.to.toHexString();
+        bidHistory.fee = convertTokenToDecimal(event.params.fee,token.decimals);
     }
     bidHistory.quote = dealedAmount;
     bidHistory.share = event.params.amount.minus(event.params.fee).toBigDecimal();
@@ -69,6 +71,10 @@ export function handleBid(event: Bid): void {
     cpDayData.save();
     cp.save();
 
+    //更新DODOZoo
+    let dodoZoo = getDODOZoo();
+    dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.save();
 }
 
 export function handleCancel(event: Cancel): void {
@@ -76,6 +82,7 @@ export function handleCancel(event: Cancel): void {
     let token = createToken(Address.fromString(cp.quoteToken),event);
     let dealedAmount = convertTokenToDecimal(event.params.amount, token.decimals);
     cp.poolQuote = cp.poolQuote.minus(dealedAmount);
+    cp.totalShares = cp.totalShares.minus(event.params.amount.toBigDecimal());
 
     //用户信息
     let bidPositionID = event.params.to.toHexString().concat("-").concat(event.address.toHexString());
@@ -103,6 +110,7 @@ export function handleCancel(event: Cancel): void {
         bidHistory.quote = ZERO_BD;
         bidHistory.share = ZERO_BD;
         bidHistory.timestamp = event.block.timestamp;
+        bidHistory.fee = ZERO_BD;
         bidHistory.user = event.params.to.toHexString();
     }
     bidHistory.quote = dealedAmount;
@@ -117,4 +125,8 @@ export function handleCancel(event: Cancel): void {
     cpDayData.save();
     cp.save();
 
+    //更新DODOZoo
+    let dodoZoo = getDODOZoo();
+    dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.save();
 }

@@ -1,12 +1,22 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {OrderHistory, Token} from "../types/schema"
+import {OrderHistory, Token, IncentiveRewardHistory} from "../types/schema"
 import {OrderHistory as OrderHistoryV1} from "../types/DODOV1Proxy01/DODOV1Proxy01"
-import {createToken, createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal} from "./helpers"
+import {
+    createToken,
+    createUser,
+    ZERO_BI,
+    ZERO_BD,
+    ONE_BI,
+    SOURCE_SMART_ROUTE,
+    convertTokenToDecimal,
+    updatePairTraderCount,
+    getDODOZoo
+} from "./helpers"
 
 export function handleOrderHistory(event: OrderHistoryV1): void {
     let user = createUser(event.transaction.from);
-    let fromToken = createToken(event.params.fromToken,event);
-    let toToken = createToken(event.params.toToken,event);
+    let fromToken = createToken(event.params.fromToken, event);
+    let toToken = createToken(event.params.toToken, event);
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.returnAmount, toToken.decimals);
     //todo (更新交换的token的行情价)、计算交换的usd数量
@@ -35,6 +45,7 @@ export function handleOrderHistory(event: OrderHistoryV1): void {
     let orderHistory = OrderHistory.load(orderHistoryID);
     if (orderHistory == null) {
         orderHistory = new OrderHistory(orderHistoryID);
+        orderHistory.source = SOURCE_SMART_ROUTE;
         orderHistory.hash = event.transaction.hash.toHexString();
         orderHistory.timestamp = event.block.timestamp;
         orderHistory.block = event.block.number;
@@ -47,7 +58,19 @@ export function handleOrderHistory(event: OrderHistoryV1): void {
         orderHistory.amountOut = dealedToAmount;
         orderHistory.logIndex = event.transaction.index;
         orderHistory.amountUSDC = swappedUSDC;
-        orderHistory.save();
-    }
 
+        let incentiveRewardHistory = IncentiveRewardHistory.load(event.transaction.hash.toHexString())
+        if (incentiveRewardHistory != null) {
+            orderHistory.tradingReward = incentiveRewardHistory.amount;
+        } else {
+            orderHistory.tradingReward = ZERO_BD;
+        }
+
+    }
+    orderHistory.save();
+
+    //更新DODOZoo
+    let dodoZoo = getDODOZoo();
+    dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.save();
 }

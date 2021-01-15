@@ -3,33 +3,42 @@ import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-t
 import {ERC20} from "../types/DODOV1Proxy01/ERC20"
 import {ERC20NameBytes} from "../types/DODOV1Proxy01/ERC20NameBytes"
 import {ERC20SymbolBytes} from "../types/DODOV1Proxy01/ERC20SymbolBytes"
-import {DVM,DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM"
+import {DVM, DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM"
 import {
     User,
     Token,
     Pair,
-    LpToken
+    LpToken,
+    DodoZoo,
+    PairTrader
 
 } from '../types/schema'
-import {FeeRateModel} from "../types/templates/DVM/FeeRateModel"
 import {DVMFactory} from "../types/DVMFactory/DVMFactory"
 import {DPPFactory} from "../types/DPPFactory/DPPFactory"
 
-export const DVM_FACTORY_ADDRESS="0x369279f8e1cc936f7f9513559897B183d4B2F0Bd";
-export const DPP_FACTORY_ADDRESS="0x6D4a70354cd03ae3A8461eDE9A4dAd445a169a6B";
-export const CLASSIC_FACTORY_ADDRESS="0x6D4a70354cd03ae3A8461eDE9A4dAd445a169a6B";//todo 继承V1的池子
+export const DODOZooID = "dodoex-v2";
+export const SMART_ROUTE_ADDRESS = "0x06b5d7590297f7b0dcecc5e382938eb562d91e1a";
+export const DVM_FACTORY_ADDRESS = "0xdd3dDDaae565E7745b2cAcD980B8a98546bAb978";
+export const DPP_FACTORY_ADDRESS = "0x36ab096ADBfd1491FE90F56a9C782dE7b1019f7c";
+export const CLASSIC_FACTORY_ADDRESS = "0x6D4a70354cd03ae3A8461eDE9A4dAd445a169a6B";//todo 继承V1的池子
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
 
+export const TRADING_INCENTIVE_ADDRESS = "0x0b8fa3Bb6E352d74803018e934f742198f6bf68B";
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const USDT_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';
 export const WBTC_ADDRESS = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599';
 export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
-export const TYPE_DVM_POOL="DVM";
-export const TYPE_DPP_POOL="DPP";
-export const TYPE_CLASSICAL_POOL="CLASSICAL";
+//poo type
+export const TYPE_DVM_POOL = "DVM";
+export const TYPE_DPP_POOL = "DPP";
+export const TYPE_CLASSICAL_POOL = "CLASSICAL";
+
+//OrderHistory source type
+export const SOURCE_SMART_ROUTE = "smart route"
+export const SOURCE_POOL_SWAP = "pool swap"
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
@@ -168,6 +177,19 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     return BigInt.fromI32(decimalValue as i32)
 }
 
+export function getDODOZoo(): DodoZoo{
+    let dodoZoo = DodoZoo.load(DODOZooID);
+    if (dodoZoo === null) {
+        dodoZoo = new DodoZoo(DODOZooID);
+        dodoZoo.pairCount = ZERO_BI;
+        dodoZoo.tokenCount = ZERO_BI;
+        dodoZoo.crowdpoolingCount = ZERO_BI;
+        dodoZoo.txCount = ZERO_BI;
+    }
+    return dodoZoo as DodoZoo;
+
+}
+
 export function createUser(address: Address): User {
     let user = User.load(address.toHexString())
     if (user === null) {
@@ -180,7 +202,7 @@ export function createUser(address: Address): User {
     return user as User;
 }
 
-export function createToken(address: Address,event: ethereum.Event): Token {
+export function createToken(address: Address, event: ethereum.Event): Token {
     let token = Token.load(address.toHexString());
     if (token == null) {
         if (address.toHexString() == ETH_ADDRESS) {
@@ -197,8 +219,6 @@ export function createToken(address: Address,event: ethereum.Event): Token {
             token.tradeVolume = ZERO_BD;
             token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
-            token.priceUSDC=ZERO_BD;
-            token.txCount = ZERO_BI;
         } else {
             token = new Token(address.toHexString());
             token.symbol = fetchTokenSymbol(address);
@@ -213,14 +233,17 @@ export function createToken(address: Address,event: ethereum.Event): Token {
             token.tradeVolume = ZERO_BD;
             token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
-            token.priceUSDC=ZERO_BD;
-
-            token.txCount = ZERO_BI;
         }
+        token.txCount = ZERO_BI;
+        token.priceUSDC = ZERO_BD;
         token.untrackedVolume = ZERO_BD;
         token.timestamp = event.block.timestamp;
+        token.feeUSDC = ZERO_BD
         token.save();
 
+        let dodoZoo = getDODOZoo();
+        dodoZoo.tokenCount = dodoZoo.tokenCount.plus(ONE_BI);
+        dodoZoo.save();
     }
     return token as Token;
 }
@@ -245,4 +268,29 @@ export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateSt
     let pool = DVM.bind(poolAddress);
     let pmmState = pool.getPMMState();
     return pmmState as DVM__getPMMStateResultStateStruct;
+}
+
+export function updatePairTraderCount(from: Address, to: Address, pair: Pair): void {
+    let fromPairID = from.toHexString().concat("-").concat(pair.id);
+    let toPairID = to.toHexString().concat("-").concat(pair.id);
+
+    let fromTraderPair = PairTrader.load(fromPairID);
+    if(fromTraderPair ==null){
+        fromTraderPair = new PairTrader(fromPairID);
+        fromTraderPair.pair = pair.id;
+        fromTraderPair.trader = createUser(from).id;
+        fromTraderPair.save();
+
+        pair.traderCount = pair.traderCount.plus(ONE_BI);
+    }
+
+    let toTraderPair = PairTrader.load(toPairID);
+    if(toTraderPair ==null){
+        toTraderPair = new PairTrader(toPairID);
+        toTraderPair.pair = pair.id;
+        toTraderPair.trader = createUser(to).id;
+        toTraderPair.save();
+        pair.traderCount = pair.traderCount.plus(ONE_BI);
+    }
+    pair.save();
 }

@@ -1,3 +1,16 @@
+type DodoZoo @entity {
+    "id"
+    id: ID!
+    "pairs count"
+    pairCount: BigInt!
+    "tokens count"
+    tokenCount: BigInt!
+    "crowdpooling count"
+    crowdpoolingCount: BigInt!
+    "transactions count"
+    txCount: BigInt!
+}
+
 type User @entity {
     "user address"
     id: ID!
@@ -41,6 +54,8 @@ type Token @entity {
     tradeVolume: BigDecimal!
     "total trade trade volume of usd"
     tradeVolumeUSDC: BigDecimal!
+    "fee usdc"
+    feeUSDC: BigDecimal!
 
     "transactions across all pairs"
     txCount: BigInt!
@@ -72,6 +87,8 @@ type LpToken @entity {
 type OrderHistory @entity {
     "order id"
     id: ID!
+    "source (from : smartroute event、pool swap event)"
+    source: String!
     "transaction hash"
     hash: String!
     "block"
@@ -97,6 +114,9 @@ type OrderHistory @entity {
 
     "usdc amount"
     amountUSDC: BigDecimal!
+
+    "trading incentive reward"
+    tradingReward: BigDecimal!
 }
 
 type LiquidityHistory @entity {
@@ -168,6 +188,12 @@ type Pair @entity {
     volumeQuoteToken: BigDecimal!
     "volume usdc data"
     tradeVolumeUSDC: BigDecimal!
+    "lp fee base"
+    baseLpFee: BigDecimal!
+    "lp fee quote"
+    quoteLpFee: BigDecimal!
+    "fee usdc"
+    lpFeeUSDC: BigDecimal!
 
     "transactions count"
     txCount: BigInt!
@@ -182,6 +208,18 @@ type Pair @entity {
     mtFeeRateModel: Bytes!
     "maintainer"
     maintainer: Bytes!
+
+    "trader count"
+    traderCount: BigInt!
+}
+
+type PairTrader @entity{
+    "pair address - user address"
+    id: ID!
+    "pair"
+    pair: Pair!
+    "user"
+    trader: User!
 }
 
 type Swap @entity {
@@ -210,6 +248,12 @@ type Swap @entity {
     amountIn: BigDecimal!
     "to token amount"
     amountOut: BigDecimal!
+    "lp fee base"
+    baseLpFee: BigDecimal!
+    "lp fee quote"
+    quoteLpFee: BigDecimal!
+    "fee usdc"
+    lpFeeUSDC: BigDecimal!
 
     "usdc amount"
     amountUSDC: BigDecimal!
@@ -299,6 +343,8 @@ type CrowdPooling @entity {
     id: ID!
     "creator"
     creator: Bytes!
+    "create time"
+    createTime: BigInt!
     "base token"
     baseToken: Token!
     "quote token"
@@ -317,6 +363,10 @@ type CrowdPooling @entity {
     i: BigInt!
     "k"
     k: BigInt!
+    "mt fee rate model"
+    mtFeeRateModel: Bytes!
+    "total shares"
+    totalShares: BigDecimal!
     "total base"
     totalBase: BigDecimal!
     "settle state"
@@ -362,6 +412,8 @@ type BidHistory @entity {
     quote: BigDecimal!
     "share"
     share: BigDecimal!
+    "fee"
+    fee: BigDecimal!
 }
 
 type CrowdPoolingDayData @entity{
@@ -383,11 +435,13 @@ type CrowdPoolingDayData @entity{
     poolQuote: BigDecimal!
 }
 
-type IncentiveRewardReceived @entity{
-    "id (user address)"
+type TradingIncentive @entity{
+    "id (contract address)"
     id: ID!
-    "recieved reward of dodo"
-    amount: BigDecimal!
+    "total amount released"
+    totalAmount: BigDecimal!
+    "total user"
+    totalUser: BigInt!
 }
 
 type IncentiveRewardHistory @entity{
@@ -399,6 +453,9 @@ type IncentiveRewardHistory @entity{
     amount: BigDecimal!
     "timestamp"
     timestamp: BigInt!
+    "reward times in this transaction"
+    times: BigInt!
+
     "total amount released"
     totalAmount: BigDecimal!
     "total user"

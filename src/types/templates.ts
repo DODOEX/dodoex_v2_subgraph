@@ -35,3 +35,13 @@ export class CP extends DataSourceTemplate {
     DataSourceTemplate.createWithContext("CP", [address.toHex()], context);
   }
 }
+
+export class DODO extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("DODO", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext("DODO", [address.toHex()], context);
+  }
+}

@@ -584,6 +584,21 @@
         "internalType": "uint256",
         "name": "poolQuote",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "poolI",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unUsedBase",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unUsedQuote",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

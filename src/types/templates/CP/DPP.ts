@@ -72,6 +72,10 @@ export class DODOSwap__Params {
   get trader(): Address {
     return this._event.parameters[4].value.toAddress();
   }
+
+  get receiver(): Address {
+    return this._event.parameters[5].value.toAddress();
+  }
 }
 
 export class LpFeeRateChange extends ethereum.Event {

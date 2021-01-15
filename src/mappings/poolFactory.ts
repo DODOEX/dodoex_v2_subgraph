@@ -11,7 +11,8 @@ import {
     convertTokenToDecimal,
     TYPE_DPP_POOL,
     TYPE_DVM_POOL,
-    USDT_ADDRESS
+    USDT_ADDRESS,
+    getDODOZoo
 } from "./helpers"
 import {NewDPP} from "../types/DPPFactory/DPPFactory"
 import {NewDVM} from "../types/DVMFactory/DVMFactory"
@@ -50,6 +51,10 @@ export function handleNewDVM(event: NewDVM): void {
         pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
         pair.untrackedVolume = ZERO_BD;
+        pair.baseLpFee = ZERO_BD;
+        pair.quoteLpFee = ZERO_BD;
+        pair.lpFeeUSDC = ZERO_BD;
+        pair.traderCount = ZERO_BI;
 
         let dvm = DVM.bind(event.params.dvm);
         let pmmState = dvm.getPMMState();
@@ -64,6 +69,10 @@ export function handleNewDVM(event: NewDVM): void {
         pair.maintainer = dvm._MAINTAINER_();
 
         pair.save()
+
+        let dodoZoo = getDODOZoo();
+        dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.save()
     }
 
     DVMTemplate.create(event.params.dvm);
@@ -95,6 +104,10 @@ export function handleNewDPP(event: NewDPP): void {
         pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
         pair.untrackedVolume = ZERO_BD;
+        pair.baseLpFee = ZERO_BD;
+        pair.quoteLpFee = ZERO_BD;
+        pair.lpFeeUSDC = ZERO_BD;
+        pair.traderCount = ZERO_BI;
 
         let dvm = DPP.bind(event.params.dpp);
         let pmmState = dvm.getPMMState();
@@ -108,7 +121,11 @@ export function handleNewDPP(event: NewDPP): void {
         pair.mtFeeRateModel = dvm._MT_FEE_RATE_MODEL_();
         pair.maintainer = dvm._MAINTAINER_();
 
-        pair.save()
+        pair.save();
+
+        let dodoZoo = getDODOZoo();
+        dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.save()
     }
 
     DPPTemplate.create(event.params.dpp);
@@ -125,6 +142,8 @@ export function handleNewCP(event: NewCP): void {
     if (crowdPooling == null) {
         crowdPooling = new CrowdPooling(event.params.cp.toHexString());
         crowdPooling.creator = event.params.creator;
+        crowdPooling.createTime = event.block.timestamp;
+        crowdPooling.totalShares = ZERO_BD;
         let cp = CP.bind(event.params.cp);
         crowdPooling.creator = event.params.creator;
         crowdPooling.baseToken = event.params.baseToken.toHexString();
@@ -136,6 +155,7 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.vestingDuration = cp._VESTING_DURATION_();
         crowdPooling.i = cp._I_();
         crowdPooling.k = cp._K_();
+        crowdPooling.mtFeeRateModel = cp._MT_FEE_RATE_MODEL_();
 
         crowdPooling.investorsCount = ZERO_BI;
         crowdPooling.totalBase = convertTokenToDecimal(cp._TOTAL_BASE_(),baseToken.decimals);
@@ -143,6 +163,10 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.poolQuote = ZERO_BD;
 
         crowdPooling.save();
+
+        let dodoZoo = getDODOZoo();
+        dodoZoo.crowdpoolingCount = dodoZoo.crowdpoolingCount.plus(ONE_BI);
+        dodoZoo.save();
     }
 
     CPTemplate.create(event.params.cp);

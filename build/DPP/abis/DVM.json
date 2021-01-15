@@ -131,6 +131,12 @@
         "internalType": "address",
         "name": "trader",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
       }
     ],
     "name": "DODOSwap",
