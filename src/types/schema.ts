@@ -944,13 +944,22 @@ export class Pair extends Entity {
     this.set("reserveUSDC", Value.fromBigDecimal(value));
   }
 
-  get untrackedVolume(): BigDecimal {
-    let value = this.get("untrackedVolume");
+  get untrackedBaseVolume(): BigDecimal {
+    let value = this.get("untrackedBaseVolume");
     return value.toBigDecimal();
   }
 
-  set untrackedVolume(value: BigDecimal) {
-    this.set("untrackedVolume", Value.fromBigDecimal(value));
+  set untrackedBaseVolume(value: BigDecimal) {
+    this.set("untrackedBaseVolume", Value.fromBigDecimal(value));
+  }
+
+  get untrackedQuoteVolume(): BigDecimal {
+    let value = this.get("untrackedQuoteVolume");
+    return value.toBigDecimal();
+  }
+
+  set untrackedQuoteVolume(value: BigDecimal) {
+    this.set("untrackedQuoteVolume", Value.fromBigDecimal(value));
   }
 
   get volumeBaseToken(): BigDecimal {
@@ -1491,6 +1500,24 @@ export class PairDayData extends Entity {
     this.set("reserveUSDC", Value.fromBigDecimal(value));
   }
 
+  get untrackedBaseVolume(): BigDecimal {
+    let value = this.get("untrackedBaseVolume");
+    return value.toBigDecimal();
+  }
+
+  set untrackedBaseVolume(value: BigDecimal) {
+    this.set("untrackedBaseVolume", Value.fromBigDecimal(value));
+  }
+
+  get untrackedQuoteVolume(): BigDecimal {
+    let value = this.get("untrackedQuoteVolume");
+    return value.toBigDecimal();
+  }
+
+  set untrackedQuoteVolume(value: BigDecimal) {
+    this.set("untrackedQuoteVolume", Value.fromBigDecimal(value));
+  }
+
   get dailyVolumeBase(): BigDecimal {
     let value = this.get("dailyVolumeBase");
     return value.toBigDecimal();
@@ -1583,6 +1610,15 @@ export class TokenDayData extends Entity {
 
   set token(value: string) {
     this.set("token", Value.fromString(value));
+  }
+
+  get untrackedVolume(): BigDecimal {
+    let value = this.get("untrackedVolume");
+    return value.toBigDecimal();
+  }
+
+  set untrackedVolume(value: BigDecimal) {
+    this.set("untrackedVolume", Value.fromBigDecimal(value));
   }
 
   get dailyVolumeToken(): BigDecimal {

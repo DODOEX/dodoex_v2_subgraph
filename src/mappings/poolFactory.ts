@@ -11,7 +11,6 @@ import {
     convertTokenToDecimal,
     TYPE_DPP_POOL,
     TYPE_DVM_POOL,
-    USDT_ADDRESS,
     getDODOZoo
 } from "./helpers"
 import {NewDPP} from "../types/DPPFactory/DPPFactory"
@@ -50,7 +49,8 @@ export function handleNewDVM(event: NewDVM): void {
         pair.tradeVolumeUSDC = ZERO_BD;
         pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
-        pair.untrackedVolume = ZERO_BD;
+        pair.untrackedBaseVolume = ZERO_BD;
+        pair.untrackedQuoteVolume = ZERO_BD;
         pair.baseLpFee = ZERO_BD;
         pair.quoteLpFee = ZERO_BD;
         pair.lpFeeUSDC = ZERO_BD;
@@ -103,7 +103,8 @@ export function handleNewDPP(event: NewDPP): void {
         pair.tradeVolumeUSDC = ZERO_BD;
         pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
-        pair.untrackedVolume = ZERO_BD;
+        pair.untrackedBaseVolume = ZERO_BD;
+        pair.untrackedQuoteVolume = ZERO_BD;
         pair.baseLpFee = ZERO_BD;
         pair.quoteLpFee = ZERO_BD;
         pair.lpFeeUSDC = ZERO_BD;

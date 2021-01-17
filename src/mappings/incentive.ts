@@ -24,10 +24,13 @@ import {
     getPMMState,
     TYPE_DPP_POOL,
     TYPE_DVM_POOL,
-    TRADING_INCENTIVE_ADDRESS
 } from "./helpers"
 
 import {Incentive} from "../types/DODOIncentive/DODOIncentive"
+
+import {
+    TRADING_INCENTIVE_ADDRESS,
+} from "./constant"
 
 export function handleIncentive(event: Incentive): void {
     let user = createUser(event.params.user);

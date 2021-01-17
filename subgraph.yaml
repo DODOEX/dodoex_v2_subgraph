@@ -10,7 +10,7 @@ dataSources:
     source:
       address: '0xDcD1d44Bb885e8ce2dc66ffDE8868ABb642eA45a'
       abi: DODOIncentive
-      startBlock: 22371964
+      startBlock: 23016930
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -97,7 +97,7 @@ dataSources:
     source:
       address: '0x67c4765D04C3848FFa7967231fc7B7E58f67A887'
       abi: DPPFactory
-      startBlock: 22931592
+      startBlock: 23016946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -173,6 +173,10 @@ dataSources:
       abis:
         - name: DODOZoo
           file: ./abis/DODOZoo.json
+        - name: DODO
+          file: ./abis/DODO.json
+        - name: DVM
+          file: ./abis/DVM.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -202,8 +206,14 @@ templates:
           file: ./abis/DVM.json
         - name: DVMFactory
           file: ./abis/DVMFactory.json
+        - name: DPPFactory
+          file: ./abis/DPPFactory.json
         - name: FeeRateModel
           file: ./abis/FeeRateModel.json
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
+        - name: DPP
+          file: ./abis/DPP.json
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -227,6 +237,8 @@ templates:
       abis:
         - name: DVMFactory
           file: ./abis/DVMFactory.json
+        - name: DPPFactory
+          file: ./abis/DPPFactory.json
         - name: DVM
           file: ./abis/DVM.json
         - name: DPP
@@ -239,6 +251,8 @@ templates:
           file: ./abis/ERC20NameBytes.json
         - name: FeeRateModel
           file: ./abis/FeeRateModel.json
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -270,6 +284,8 @@ templates:
           file: ./abis/CP.json
         - name: DVMFactory
           file: ./abis/DVMFactory.json
+        - name: DODOZoo
+          file: ./abis/DODOZoo.json
       eventHandlers:
         - event: Bid(address,uint256,uint256)
           handler: handleBid
@@ -289,10 +305,16 @@ templates:
         - Pair
         - Token
       abis:
+        - name: DVMFactory
+          file: ./abis/DVMFactory.json
+        - name: DPPFactory
+          file: ./abis/DPPFactory.json
         - name: DODO
           file: ./abis/DODO.json
         - name: DODOZoo
           file: ./abis/DODOZoo.json
+        - name: DVM
+          file: ./abis/DVM.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes

@@ -1,6 +1,7 @@
 import {PairDayData, TokenDayData, CrowdPoolingDayData, CrowdPooling, Token, Pair, LpToken} from "../types/schema"
 import {BigInt, BigDecimal, ethereum, log} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, TYPE_DPP_POOL, TYPE_DVM_POOL} from './helpers'
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, TYPE_DPP_POOL} from './helpers'
+import {ADDRESS_ZERO} from "./constant"
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
     let timestamp = event.block.timestamp.toI32();
@@ -19,6 +20,8 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         pairDayData.quoteToken = pair.quoteToken;
         pairDayData.pairAddress = event.address;
 
+        pairDayData.untrackedBaseVolume = ZERO_BD;
+        pairDayData.untrackedQuoteVolume = ZERO_BD;
         pairDayData.dailyVolumeQuote = ZERO_BD;
         pairDayData.dailyVolumeBase = ZERO_BD;
         pairDayData.dailyTxns = ZERO_BI;
@@ -35,11 +38,15 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
     pairDayData.quoteTokenReserve = pair.quoteReserve;
     pairDayData.reserveUSDC = pairDayData.reserveUSDC;
     if (pair.type != TYPE_DPP_POOL) {
-        let baseLpToken = LpToken.load(pair.baseLpToken);
-        let quoteLpToken = LpToken.load(pair.quoteLpToken);
+        if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
+            let baseLpToken = LpToken.load(pair.baseLpToken);
+            pairDayData.baseLpTokenTotalSupply = convertTokenToDecimal(baseLpToken.totalSupply, baseLpToken.decimals);
+        }
 
-        pairDayData.baseLpTokenTotalSupply = convertTokenToDecimal(baseLpToken.totalSupply, baseLpToken.decimals);
-        pairDayData.quoteLpTokenTotalSupply = convertTokenToDecimal(quoteLpToken.totalSupply, quoteLpToken.decimals);
+        if (pair.quoteLpToken != null && pair.quoteLpToken != ADDRESS_ZERO) {
+            let quoteLpToken = LpToken.load(pair.quoteLpToken);
+            pairDayData.quoteLpTokenTotalSupply = convertTokenToDecimal(quoteLpToken.totalSupply, quoteLpToken.decimals);
+        }
 
     }
     pairDayData.dailyTxns = pairDayData.dailyTxns.plus(ONE_BI);
@@ -64,6 +71,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData.totalLiquidityToken = ZERO_BD;
         tokenDayData.dailyVolumeUSDC = ZERO_BD;
         tokenDayData.totalLiquidityUSDC = ZERO_BD;
+        tokenDayData.untrackedVolume = ZERO_BD;
         tokenDayData.fee = ZERO_BD;
     }
 
@@ -77,7 +85,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
 
 }
 
-export function updateCrowdPoolingDayData(cp: CrowdPooling,event: ethereum.Event): CrowdPoolingDayData{
+export function updateCrowdPoolingDayData(cp: CrowdPooling, event: ethereum.Event): CrowdPoolingDayData {
 
     let timestamp = event.block.timestamp.toI32();
     let dayID = timestamp / 86400;
@@ -85,13 +93,13 @@ export function updateCrowdPoolingDayData(cp: CrowdPooling,event: ethereum.Event
     let cpDayDataID = cp.id.toString().concat("-").concat(BigInt.fromI32(dayID).toString());
 
     let cpDayData = CrowdPoolingDayData.load(cpDayDataID);
-    if(cpDayData == null){
+    if (cpDayData == null) {
         cpDayData = new CrowdPoolingDayData(cpDayDataID);
         cpDayData.date = dayStartTimestamp;
         cpDayData.investCount = ZERO_BI;
         cpDayData.investedQuote = ZERO_BD;
         cpDayData.canceledQuote = ZERO_BD;
-        cpDayData.newcome=ZERO_BI;
+        cpDayData.newcome = ZERO_BI;
         cpDayData.crowdPooling = cp.id;
         cpDayData.poolQuote = cp.poolQuote;
         cpDayData.save();

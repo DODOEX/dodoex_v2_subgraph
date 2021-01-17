@@ -180,8 +180,10 @@ type Pair @entity {
     "reserve usd data"
     reserveUSDC: BigDecimal!
 
-    "untracked volume"
-    untrackedVolume: BigDecimal!
+    "untracked base volume"
+    untrackedBaseVolume: BigDecimal!
+    "untracked quote volume"
+    untrackedQuoteVolume: BigDecimal!
     "trade volume of basetoken"
     volumeBaseToken: BigDecimal!
     "trade volume of quotetoken"
@@ -303,6 +305,10 @@ type PairDayData @entity {
     "reserve volume by usdc"
     reserveUSDC: BigDecimal!
 
+    "untracked base volume"
+    untrackedBaseVolume: BigDecimal!
+    "untracked quote volume"
+    untrackedQuoteVolume: BigDecimal!
     "base token volume"
     dailyVolumeBase: BigDecimal!
     "quote token volume"
@@ -313,6 +319,7 @@ type PairDayData @entity {
     dailyTxns: BigInt!
     "trading fee"
     fee: BigDecimal!
+
 }
 
 type TokenDayData @entity {
@@ -323,6 +330,8 @@ type TokenDayData @entity {
     "token address"
     token: Token!
 
+    "untracked base volume"
+    untrackedVolume: BigDecimal!
     "volume stats"
     dailyVolumeToken: BigDecimal!
     dailyVolumeUSDC: BigDecimal!

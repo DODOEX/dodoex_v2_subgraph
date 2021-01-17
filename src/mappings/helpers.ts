@@ -15,21 +15,19 @@ import {
 } from '../types/schema'
 import {DVMFactory} from "../types/DVMFactory/DVMFactory"
 import {DPPFactory} from "../types/DPPFactory/DPPFactory"
+import {DODOZoo as DODOZooContract} from "../types/DODOZoo/DODOZoo"
 
-export const DODOZooID = "dodoex-v2";
-export const SMART_ROUTE_ADDRESS = "0x06b5d7590297f7b0dcecc5e382938eb562d91e1a";
-export const DVM_FACTORY_ADDRESS = "0xdd3dDDaae565E7745b2cAcD980B8a98546bAb978";
-export const DPP_FACTORY_ADDRESS = "0x36ab096ADBfd1491FE90F56a9C782dE7b1019f7c";
-export const CLASSIC_FACTORY_ADDRESS = "0x6D4a70354cd03ae3A8461eDE9A4dAd445a169a6B";//todo 继承V1的池子
+import {
+    DODOZooID,
+    DPP_FACTORY_ADDRESS,
+    DVM_FACTORY_ADDRESS,
+    CLASSIC_FACTORY_ADDRESS,
+    ETH_ADDRESS
+} from "./constant"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
-
-export const TRADING_INCENTIVE_ADDRESS = "0x0b8fa3Bb6E352d74803018e934f742198f6bf68B";
-export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
-export const USDT_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';
-export const WBTC_ADDRESS = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599';
-export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+export let classicFactoryContract = DODOZooContract.bind(Address.fromString(CLASSIC_FACTORY_ADDRESS));
 
 //poo type
 export const TYPE_DVM_POOL = "DVM";
@@ -177,7 +175,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     return BigInt.fromI32(decimalValue as i32)
 }
 
-export function getDODOZoo(): DodoZoo{
+export function getDODOZoo(): DodoZoo {
     let dodoZoo = DodoZoo.load(DODOZooID);
     if (dodoZoo === null) {
         dodoZoo = new DodoZoo(DODOZooID);
@@ -275,7 +273,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair): v
     let toPairID = to.toHexString().concat("-").concat(pair.id);
 
     let fromTraderPair = PairTrader.load(fromPairID);
-    if(fromTraderPair ==null){
+    if (fromTraderPair == null) {
         fromTraderPair = new PairTrader(fromPairID);
         fromTraderPair.pair = pair.id;
         fromTraderPair.trader = createUser(from).id;
@@ -285,7 +283,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair): v
     }
 
     let toTraderPair = PairTrader.load(toPairID);
-    if(toTraderPair ==null){
+    if (toTraderPair == null) {
         toTraderPair = new PairTrader(toPairID);
         toTraderPair.pair = pair.id;
         toTraderPair.trader = createUser(to).id;

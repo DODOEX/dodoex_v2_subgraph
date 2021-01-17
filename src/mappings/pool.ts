@@ -1,19 +1,13 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {OrderHistory, Token, Pair, Swap, User, LiquidityPosition, LpToken, LiquidityHistory} from "../types/schema"
-import {OrderHistory as OrderHistoryV1} from "../types/DODOV1Proxy01/DODOV1Proxy01"
 import {
-    createToken,
     createLpToken,
     createUser,
-    ZERO_BI,
     ZERO_BD,
     ONE_BI,
     convertTokenToDecimal,
     getPMMState,
-    TYPE_DPP_POOL,
-    TYPE_DVM_POOL,
     SOURCE_POOL_SWAP,
-    SMART_ROUTE_ADDRESS,
     BI_18,
     updatePairTraderCount,
     getDODOZoo
@@ -22,6 +16,10 @@ import {DODOSwap, BuyShares, SellShares} from "../types/templates/DVM/DVM"
 import {updatePairDayData, updateTokenDayData} from "./dayUpdates"
 import {getUSDCPrice} from "./pricing"
 import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
+
+import {
+    SMART_ROUTE_ADDRESS,
+} from "./constant"
 
 export function handleDODOSwap(event: DODOSwap): void {
     //base data
@@ -33,6 +31,11 @@ export function handleDODOSwap(event: DODOSwap): void {
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.toAmount, toToken.decimals);
     let pmmState = getPMMState(event.address);
+    let fromPrice = getUSDCPrice(pair as Pair, true,event.block.number);
+    let toPrice = getUSDCPrice(pair as Pair, false,event.block.number);
+
+    let untrackedBaseVolume = ZERO_BD;
+    let untrackedQuoteVolume = ZERO_BD;
 
     let baseToken: Token, quoteToken: Token, baseVolume: BigDecimal, quoteVolume: BigDecimal,baseLpFee: BigDecimal,quoteLpFee: BigDecimal,lpFeeUsdc: BigDecimal;
     if (fromToken.id == pair.baseToken) {
@@ -43,6 +46,13 @@ export function handleDODOSwap(event: DODOSwap): void {
 
         baseLpFee = ZERO_BD;
         quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+
+        if(fromPrice.equals(ZERO_BD)){
+            untrackedBaseVolume=dealedFromAmount;
+        }
+        if(toPrice.equals(ZERO_BD)){
+            untrackedQuoteVolume = dealedToAmount;
+        }
     } else {
         baseToken = toToken as Token;
         quoteToken = fromToken as Token;
@@ -51,11 +61,15 @@ export function handleDODOSwap(event: DODOSwap): void {
 
         baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
         quoteLpFee = ZERO_BD;
+
+        if(fromPrice.equals(ZERO_BD)){
+            untrackedBaseVolume=dealedToAmount;
+        }
+        if(toPrice.equals(ZERO_BD)){
+            untrackedQuoteVolume=dealedFromAmount;
+        }
     }
 
-    //todo usdc amount cacl
-    let fromPrice = getUSDCPrice(pair as Pair, true);
-    let toPrice = getUSDCPrice(pair as Pair, false);
     let swappedUSDC = dealedFromAmount.times(fromPrice).plus(dealedToAmount.times(toPrice));
     lpFeeUsdc = swappedUSDC.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
 
@@ -71,6 +85,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.baseLpFee = pair.baseLpFee.plus(baseLpFee);
     pair.quoteLpFee = pair.quoteLpFee.plus(quoteLpFee);
     pair.lpFeeUSDC = lpFeeUsdc;
+    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -79,6 +95,9 @@ export function handleDODOSwap(event: DODOSwap): void {
     fromToken.tradeVolumeUSDC = fromToken.tradeVolumeUSDC.plus(dealedFromAmount.times(fromPrice));
     fromToken.priceUSDC = fromPrice;
     fromToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
+    if(fromPrice.equals(ZERO_BD)){
+        fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
+    }
     fromToken.save();
 
     toToken.txCount = toToken.txCount.plus(ONE_BI);
@@ -86,6 +105,9 @@ export function handleDODOSwap(event: DODOSwap): void {
     toToken.tradeVolumeUSDC = toToken.tradeVolumeUSDC.plus(dealedToAmount.times(toPrice));
     toToken.priceUSDC = toPrice;
     toToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
+    if(toPrice.equals(ZERO_BD)){
+        toToken.untrackedVolume = toToken.untrackedVolume.plus(dealedToAmount);
+    }
     toToken.save();
 
     //3、更新用户信息
@@ -119,6 +141,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
     if (event.params.trader.notEqual(Address.fromString(SMART_ROUTE_ADDRESS))&&orderHistory == null) {
+        log.warning(`external swap from {},hash : {}`,[event.params.trader.toHexString(),event.transaction.hash.toHexString()]);
         orderHistory = new OrderHistory(swapID);
         orderHistory.source=SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
@@ -146,10 +169,19 @@ export function handleDODOSwap(event: DODOSwap): void {
     dodoZoo.save();
 
     //更新报表数据
-    updatePairDayData(event);
-    updateTokenDayData(baseToken, event);
-    updateTokenDayData(quoteToken, event);
+    let pairDayData = updatePairDayData(event);
+    pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
 
+    let baseDayData=updateTokenDayData(baseToken, event);
+    baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
+
+    let quoteDayData=updateTokenDayData(quoteToken, event);
+    quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
+
+    pairDayData.save();
+    baseDayData.save();
+    quoteDayData.save();
 }
 
 export function handleBuyShares(event: BuyShares): void {
