@@ -25,6 +25,8 @@ import {
     ADDRESS_ZERO,
     DPP_FACTORY_DEPLOY_BLOCK,
     DVM_FACTORY_DEPLOY_BLOCK,
+    WETH_USDC_BLOCK,
+    USDT_USDC_BLOCK,
 } from "./constant"
 
 const WHITELIST: string[] = [
@@ -37,26 +39,36 @@ const WHITELIST_PAIR: string[] = [
     USDT_USDC_PAIR
 ]
 
+const WHITELIST_BLOCK: i32[] = [
+    WETH_USDC_BLOCK,
+    USDT_USDC_BLOCK
+]
+
 function getPriceFromExistPair(i: i32): BigDecimal {
     log.warning("getUSDCPrice 5555", [])
     switch (i) {
         case 1:
             let contract1 = DODO.bind(Address.fromString(WHITELIST_PAIR[i]));
-            log.warning(`get3333333`,[WHITELIST_PAIR[i]]);
+            log.warning(`get3333333`, [WHITELIST_PAIR[i]]);
             return convertTokenToDecimal(contract1.getMidPrice(), BigInt.fromI32(18));
         case 2:
             let contract2 = DODO.bind(Address.fromString(USDT_USDC_PAIR[i]));
-            log.warning(`get4444444`,[WHITELIST_PAIR[i]]);
+            log.warning(`get4444444`, [WHITELIST_PAIR[i]]);
             return convertTokenToDecimal(contract2.getMidPrice(), BigInt.fromI32(18));
         default:
             return ZERO_BD;
     }
 }
 
-function getPriceFromWhiteList(token: Token,block: BigInt): BigDecimal {
+function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
 
     //1、查找交易对
     for (let i = 0; i < WHITELIST.length; i++) {
+
+        if (block.lt(BigInt.fromI32(WHITELIST_BLOCK[i]) ) ){
+            continue;
+        }
+
         //先去classic 池寻找
         let address = classicFactoryContract.getDODO(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
         if (address.toHexString() != ADDRESS_ZERO) {
@@ -67,7 +79,7 @@ function getPriceFromWhiteList(token: Token,block: BigInt): BigDecimal {
             return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
         }
 
-        if(block.toI32() >= DVM_FACTORY_DEPLOY_BLOCK){
+        if (block.toI32() >= DVM_FACTORY_DEPLOY_BLOCK) {
             let addresses = dvmFactoryContract.getVendingMachine(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
             if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
                 let pair: DVM;
@@ -78,7 +90,7 @@ function getPriceFromWhiteList(token: Token,block: BigInt): BigDecimal {
             }
         }
 
-        if(block.toI32() >= DPP_FACTORY_DEPLOY_BLOCK){
+        if (block.toI32() >= DPP_FACTORY_DEPLOY_BLOCK) {
             let addresses = dppFactoryContract.getPrivatePool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
             if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
                 let pair: DPP;
@@ -95,7 +107,7 @@ function getPriceFromWhiteList(token: Token,block: BigInt): BigDecimal {
 
 }
 
-export function getUSDCPrice(pair: Pair, isBase: boolean,block: BigInt): BigDecimal {
+export function getUSDCPrice(pair: Pair, isBase: boolean, block: BigInt): BigDecimal {
 
     if (pair.baseToken == USDC_ADDRESS && isBase == true) {
         return ONE_BD;
@@ -119,10 +131,10 @@ export function getUSDCPrice(pair: Pair, isBase: boolean,block: BigInt): BigDeci
     }
 
     if (isBase == true) {
-        return getPriceFromWhiteList(Token.load(pair.baseToken) as Token,block);
+        return getPriceFromWhiteList(Token.load(pair.baseToken) as Token, block);
     }
 
-    return getPriceFromWhiteList(Token.load(pair.quoteToken) as Token,block);
+    return getPriceFromWhiteList(Token.load(pair.quoteToken) as Token, block);
 }
 
 

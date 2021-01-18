@@ -10,15 +10,17 @@ import {
     SOURCE_POOL_SWAP,
     BI_18,
     updatePairTraderCount,
-    getDODOZoo
+    getDODOZoo, TYPE_DPP_POOL,
 } from "./helpers"
-import {DODOSwap, BuyShares, SellShares} from "../types/templates/DVM/DVM"
+import {DODOSwap, BuyShares, SellShares,Transfer} from "../types/templates/DVM/DVM"
+import {LpFeeRateChange,DPP} from "../types/templates/DPP/DPP"
 import {updatePairDayData, updateTokenDayData} from "./dayUpdates"
 import {getUSDCPrice} from "./pricing"
 import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
 
 import {
-    SMART_ROUTE_ADDRESS,
+    SMART_ROUTE_ADDRESSES,
+    ADDRESS_ZERO
 } from "./constant"
 
 export function handleDODOSwap(event: DODOSwap): void {
@@ -140,7 +142,7 @@ export function handleDODOSwap(event: DODOSwap): void {
 
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
-    if (event.params.trader.notEqual(Address.fromString(SMART_ROUTE_ADDRESS))&&orderHistory == null) {
+    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.trader.toHexString()) == -1 &&orderHistory == null) {
         log.warning(`external swap from {},hash : {}`,[event.params.trader.toHexString(),event.transaction.hash.toHexString()]);
         orderHistory = new OrderHistory(swapID);
         orderHistory.source=SOURCE_POOL_SWAP;
@@ -205,6 +207,7 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityPosition.pair = event.address.toHexString();
         liquidityPosition.user = event.params.to.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
+        liquidityPosition.lpToken = lpToken.id;
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
@@ -221,6 +224,7 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityHistory.user = event.params.to.toHexString();
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.balance = balance;
+        liquidityHistory.lpToken = lpToken.id;
     }
 
     liquidityPosition.save();
@@ -276,6 +280,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityPosition.pair = event.address.toHexString();
         liquidityPosition.user = event.params.to.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
+        liquidityPosition.lpToken = lpToken.id;
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
@@ -292,6 +297,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityHistory.user = event.params.to.toHexString();
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.balance = balance;
+        liquidityHistory.lpToken = lpToken.id;
     }
 
     liquidityPosition.save();
@@ -325,4 +331,48 @@ export function handleSellShares(event: SellShares): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+}
+
+export function handleLpFeeRateChange(event: LpFeeRateChange): void{
+    let pair = Pair.load(event.address.toHexString());
+
+    if(pair.type == TYPE_DPP_POOL){
+        let dpp =DPP.bind(event.address);
+        pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(),BigInt.fromI32(18));
+
+        let pmmState: DVM__getPMMStateResultStateStruct;
+        pmmState = getPMMState(event.address);
+        let baseToken = Token.load(pair.baseToken);
+        let quoteToken = Token.load(pair.quoteToken);
+
+        pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
+        pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
+        pair.i = pmmState.i;
+        pair.k = pmmState.K;
+        pair.save();
+    }
+
+}
+
+export function handleTransfer(event: Transfer): void{
+    let pair = Pair.load(event.address.toHexString());
+    let fromUser = createUser(event.params.from);
+    let toUser = createUser(event.params.to);
+    let lpToken = LpToken.load(event.address.toHexString());
+    let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
+
+    if(event.params.to.toHexString() != ADDRESS_ZERO){
+        let toUserLiquidityPostionID = toUser.id.concat("-").concat(lpToken.id);
+        let position = LiquidityPosition.load(toUserLiquidityPostionID);
+        position.liquidityTokenBalance = position.liquidityTokenBalance.plus(dealedAmount);
+        position.save();
+    }
+
+    if(event.params.from.toHexString() != ADDRESS_ZERO){
+        let fromUserLiquidityPostionID = fromUser.id.concat("-").concat(lpToken.id);
+        let position = LiquidityPosition.load(fromUserLiquidityPostionID);
+        position.liquidityTokenBalance = position.liquidityTokenBalance.minus(dealedAmount);
+        position.save();
+    }
+
 }

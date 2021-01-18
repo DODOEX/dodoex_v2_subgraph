@@ -1,5 +1,5 @@
 import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-ts'
-import {LiquidityHistory, LiquidityPosition, Pair, Token, Swap, OrderHistory} from '../types/schema'
+import {LiquidityHistory, LiquidityPosition, Pair, Token, Swap, OrderHistory, LpToken} from '../types/schema'
 import {DODO as DODOTemplate} from '../types/templates'
 import {
     ONE_BI,
@@ -22,7 +22,7 @@ import {updatePairDayData, updateTokenDayData} from "./dayUpdates"
 import {getUSDCPrice} from "./pricing"
 
 import {
-    SMART_ROUTE_ADDRESS,
+    SMART_ROUTE_ADDRESSES,
     ADDRESS_ZERO,
 } from "./constant"
 
@@ -79,8 +79,8 @@ const BASE_LP_TOKENS: String[] = [
     "0x53cf4694b427fcef9bb1f4438b68df51a10228d0",//COMP
     "0x2ec2a42901c761b295a9e6b95200cd0bdaa474eb",//WBTC
     "0xe2852c572fc42c9e2ec03197defa42c647e89291",//YFI
-    ADDRESS_ZERO,//WETH
-    ADDRESS_ZERO,//DODO
+    "0x1270be1bf727447270f237115f0943011e35ee3e",//WETH
+    "0x3befc1f0f6cfe0ea852ae61709de370599c88bde ",//DODO
     "0x50b11247bf14ee5116c855cde9963fa376fcec86",//USDT
     "0x30ad5b6d4e531591591113b49eae2fafbc2236d5",//AAVE
     "0xcfba2e0f1bbf6ad96960d8866316b02e36ed1761",//wCRES
@@ -94,8 +94,8 @@ const QUOTE_LP_TOKENS: String[] = [
     "0x51baf2656778ad6d67b19a419f91d38c3d0b87b6",
     "0x0cdb21e20597d753c90458f5ef2083f6695eb794",
     "0xd9d0bd18ddfa753d0c88a060ffb60657bb0d7a07",
-    ADDRESS_ZERO,
-    ADDRESS_ZERO,
+    "0x3dc2eb2f59ddca985174bb20ae9141ba66cfd2d3",
+    "0x1e5bfc8c1225a6ce59504988f823c44e08414a49",
     "0x05a54b466f01510e92c02d3a180bae83a64baab8",
     "0x5840a9e733960f591856a5d13f6366658535bbe5",
     "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
@@ -167,7 +167,8 @@ export function handleDODOBirth(event: DODOBirth): void {
 
     let dodoZoo = getDODOZoo();
 
-    if (Pair.load(event.params.newBorn.toHexString()) == null) {
+    let pair = Pair.load(event.params.newBorn.toHexString());
+    if ( pair == null) {
         //tokens
         let dodo = DODO.bind(event.params.newBorn);
 
@@ -179,7 +180,7 @@ export function handleDODOBirth(event: DODOBirth): void {
         let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
 
         pair.baseLpToken = baseLpToken.id;
-        pair.quoteToken = quoteLpToken.id;
+        pair.quoteLpToken = quoteLpToken.id;
         pair.baseToken = baseToken.id;
         pair.quoteToken = quoteToken.id;
         pair.type = TYPE_CLASSICAL_POOL;
@@ -215,9 +216,10 @@ export function handleDODOBirth(event: DODOBirth): void {
 
         dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
         DODOTemplate.create(event.params.newBorn);
+
+        dodoZoo.save();
     }
 
-    dodoZoo.save();
 
 }
 
@@ -228,18 +230,29 @@ export function handleDeposit(event: Deposit): void {
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
 
-    let lpToken = createLpToken(event.address);
+    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken));
+    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken));
 
-    let amount = convertTokenToDecimal(event.params.amount,event.params.isBaseToken?baseToken.decimals:quoteToken.decimals);
-    let dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, lpToken.decimals);
+    let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
+    let dealedSharesAmount: BigDecimal;
     //更新用户LP token信息
-    let liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(event.address.toHexString());
+    let liquidityPositionID: string, lpToken: LpToken;
+    if (event.params.isBaseToken) {
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
+        lpToken= LpToken.load(baseLpToken.id) as LpToken;
+        dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
+    } else {
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
+        lpToken = LpToken.load(quoteLpToken.id) as LpToken;
+        dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
+    }
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
         liquidityPosition.pair = event.address.toHexString();
         liquidityPosition.user = event.params.receiver.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
+        liquidityPosition.lpToken = lpToken.id;
     }
     liquidityPosition.liquidityTokenBalance = liquidityPosition.liquidityTokenBalance.plus(dealedSharesAmount);
 
@@ -256,15 +269,16 @@ export function handleDeposit(event: Deposit): void {
         liquidityHistory.user = event.params.receiver.toHexString();
         liquidityHistory.amount = amount;
         liquidityHistory.balance = ZERO_BD;
+        liquidityHistory.lpToken = lpToken.id;
     }
 
     liquidityPosition.save();
     liquidityHistory.save();
 
     //不更新pair基础信息（i，k，B0，Q0，B，Q）
-    if(event.params.isBaseToken){
+    if (event.params.isBaseToken) {
         pair.baseReserve = pair.baseReserve.plus(amount);
-    }else{
+    } else {
         pair.quoteReserve = pair.quoteReserve.plus(amount);
     }
 
@@ -295,20 +309,29 @@ export function handleWithdraw(event: Withdraw): void {
     let fromUser = createUser(event.transaction.from);
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
+    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken));
+    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken));
 
-    let lpToken = createLpToken(event.address);
-
-    let amount = convertTokenToDecimal(event.params.amount,event.params.isBaseToken?baseToken.decimals:quoteToken.decimals);
-    let dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, lpToken.decimals);
-
+    let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
+    let dealedSharesAmount: BigDecimal;
     //更新用户LP token信息
-    let liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(event.address.toHexString());
+    let liquidityPositionID: string, lpToken: LpToken;
+    if (event.params.isBaseToken) {
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
+        lpToken = LpToken.load(baseLpToken.id) as LpToken;
+        dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
+    } else {
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
+        lpToken = LpToken.load(quoteLpToken.id) as LpToken;
+        dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
+    }
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
         liquidityPosition.pair = event.address.toHexString();
         liquidityPosition.user = event.params.receiver.toHexString();
         liquidityPosition.liquidityTokenBalance = dealedSharesAmount;
+        liquidityPosition.lpToken = event.address.toHexString();
     }
 
     //增加shares发生时的快照
@@ -323,7 +346,7 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityHistory.timestamp = event.block.timestamp;
         liquidityHistory.user = event.params.receiver.toHexString();
         liquidityHistory.amount = dealedSharesAmount;
-
+        liquidityHistory.lpToken = lpToken.id;
         liquidityHistory.balance = amount;
     }
 
@@ -331,9 +354,9 @@ export function handleWithdraw(event: Withdraw): void {
     liquidityHistory.save();
 
     //更新基础信息
-    if(event.params.isBaseToken){
+    if (event.params.isBaseToken) {
         pair.baseReserve = pair.baseReserve.minus(amount);
-    }else{
+    } else {
         pair.quoteReserve = pair.quoteReserve.minus(amount);
     }
 
@@ -368,8 +391,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     let toToken = createToken(Address.fromString(pair.quoteToken), event);
     let dealedFromAmount = convertTokenToDecimal(event.params.payBase, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.receiveQuote, toToken.decimals);
-    let fromPrice = getUSDCPrice(pair as Pair, true,event.block.number);
-    let toPrice = getUSDCPrice(pair as Pair, false,event.block.number);
+    let fromPrice = getUSDCPrice(pair as Pair, true, event.block.number);
+    let toPrice = getUSDCPrice(pair as Pair, false, event.block.number);
     let untrackedBaseVolume = ZERO_BD;
     let untrackedQuoteVolume = ZERO_BD;
 
@@ -384,10 +407,10 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         baseLpFee = ZERO_BD;
         quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
 
-        if(fromPrice.equals(ZERO_BD)){
-            untrackedBaseVolume=dealedFromAmount;
+        if (fromPrice.equals(ZERO_BD)) {
+            untrackedBaseVolume = dealedFromAmount;
         }
-        if(toPrice.equals(ZERO_BD)){
+        if (toPrice.equals(ZERO_BD)) {
             untrackedQuoteVolume = dealedToAmount;
         }
     } else {
@@ -399,10 +422,10 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
         quoteLpFee = ZERO_BD;
 
-        if(fromPrice.equals(ZERO_BD)){
-            untrackedBaseVolume=dealedToAmount;
+        if (fromPrice.equals(ZERO_BD)) {
+            untrackedBaseVolume = dealedToAmount;
         }
-        if(toPrice.equals(ZERO_BD)){
+        if (toPrice.equals(ZERO_BD)) {
             untrackedQuoteVolume = dealedFromAmount;
         }
     }
@@ -428,7 +451,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     fromToken.tradeVolumeUSDC = fromToken.tradeVolumeUSDC.plus(dealedFromAmount.times(fromPrice));
     fromToken.priceUSDC = fromPrice;
     fromToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if(fromPrice.equals(ZERO_BD)){
+    if (fromPrice.equals(ZERO_BD)) {
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
     }
     fromToken.save();
@@ -438,7 +461,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     toToken.tradeVolumeUSDC = toToken.tradeVolumeUSDC.plus(dealedToAmount.times(toPrice));
     toToken.priceUSDC = toPrice;
     toToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if(fromPrice.equals(ZERO_BD)){
+    if (fromPrice.equals(ZERO_BD)) {
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
     }
     toToken.save();
@@ -473,7 +496,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
 
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
-    if (event.params.seller.notEqual(Address.fromString(SMART_ROUTE_ADDRESS)) && orderHistory == null) {
+    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.seller.toHexString()) == -1 && orderHistory == null) {
         orderHistory = new OrderHistory(swapID);
         orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
@@ -505,10 +528,10 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
 
-    let baseDayData=updateTokenDayData(baseToken, event);
+    let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
 
-    let quoteDayData=updateTokenDayData(quoteToken, event);
+    let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
 
     pairDayData.save();
@@ -525,8 +548,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     let toToken = createToken(Address.fromString(pair.baseToken), event);
     let dealedFromAmount = convertTokenToDecimal(event.params.payQuote, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.receiveBase, toToken.decimals);
-    let fromPrice = getUSDCPrice(pair as Pair, true,event.block.number);
-    let toPrice = getUSDCPrice(pair as Pair, false,event.block.number);
+    let fromPrice = getUSDCPrice(pair as Pair, true, event.block.number);
+    let toPrice = getUSDCPrice(pair as Pair, false, event.block.number);
     let untrackedBaseVolume = ZERO_BD;
     let untrackedQuoteVolume = ZERO_BD;
 
@@ -541,10 +564,10 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         baseLpFee = ZERO_BD;
         quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
 
-        if(fromPrice.equals(ZERO_BD)){
-            untrackedBaseVolume=dealedFromAmount;
+        if (fromPrice.equals(ZERO_BD)) {
+            untrackedBaseVolume = dealedFromAmount;
         }
-        if(toPrice.equals(ZERO_BD)){
+        if (toPrice.equals(ZERO_BD)) {
             untrackedQuoteVolume = dealedToAmount;
         }
     } else {
@@ -556,10 +579,10 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
         quoteLpFee = ZERO_BD;
 
-        if(fromPrice.equals(ZERO_BD)){
-            untrackedBaseVolume=dealedToAmount;
+        if (fromPrice.equals(ZERO_BD)) {
+            untrackedBaseVolume = dealedToAmount;
         }
-        if(toPrice.equals(ZERO_BD)){
+        if (toPrice.equals(ZERO_BD)) {
             untrackedQuoteVolume = dealedFromAmount;
         }
     }
@@ -586,7 +609,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     fromToken.tradeVolumeUSDC = fromToken.tradeVolumeUSDC.plus(dealedFromAmount.times(fromPrice));
     fromToken.priceUSDC = fromPrice;
     fromToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if(fromPrice.equals(ZERO_BD)){
+    if (fromPrice.equals(ZERO_BD)) {
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
     }
     fromToken.save();
@@ -596,7 +619,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     toToken.tradeVolumeUSDC = toToken.tradeVolumeUSDC.plus(dealedToAmount.times(toPrice));
     toToken.priceUSDC = toPrice;
     toToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if(toPrice.equals(ZERO_BD)){
+    if (toPrice.equals(ZERO_BD)) {
         toToken.untrackedVolume = toToken.untrackedVolume.plus(dealedToAmount);
     }
     toToken.save();
@@ -631,7 +654,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
-    if (event.params.buyer.notEqual(Address.fromString(SMART_ROUTE_ADDRESS)) && orderHistory == null) {
+    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.buyer.toHexString()) == -1 && orderHistory == null) {
         orderHistory = new OrderHistory(swapID);
         orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
@@ -663,10 +686,10 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
 
-    let baseDayData=updateTokenDayData(baseToken, event);
+    let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
 
-    let quoteDayData=updateTokenDayData(quoteToken, event);
+    let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
 
     pairDayData.save();

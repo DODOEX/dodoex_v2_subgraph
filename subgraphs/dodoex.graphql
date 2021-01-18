@@ -31,6 +31,8 @@ type LiquidityPosition @entity {
     user: User!
     "pair"
     pair: Pair!
+    "lp token"
+    lpToken: LpToken!
     "lp token balance"
     liquidityTokenBalance: BigDecimal!
 }
@@ -130,6 +132,8 @@ type LiquidityHistory @entity {
     timestamp: BigInt!
     "user"
     user: User!
+    "lp token"
+    lpToken:LpToken!
     "from"
     from: Bytes!
     "amount"

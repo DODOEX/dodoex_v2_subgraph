@@ -16,6 +16,7 @@ import {
 import {DVMFactory} from "../types/DVMFactory/DVMFactory"
 import {DPPFactory} from "../types/DPPFactory/DPPFactory"
 import {DODOZoo as DODOZooContract} from "../types/DODOZoo/DODOZoo"
+import {DPP} from "../types/templates/DPP/DPP"
 
 import {
     DODOZooID,
@@ -263,9 +264,18 @@ export function createLpToken(address: Address): LpToken {
 }
 
 export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateStruct {
-    let pool = DVM.bind(poolAddress);
-    let pmmState = pool.getPMMState();
-    return pmmState as DVM__getPMMStateResultStateStruct;
+    let pair = Pair.load(poolAddress.toHexString());
+    if(pair.type == TYPE_DVM_POOL){
+        let pool = DVM.bind(poolAddress);
+        let pmmState = pool.getPMMState();
+        return pmmState as DVM__getPMMStateResultStateStruct;
+    }
+    if(pair.type == TYPE_DPP_POOL){
+        let pool = DVM.bind(poolAddress);
+        let pmmState = pool.getPMMState();
+        return pmmState as DVM__getPMMStateResultStateStruct;
+    }
+    return null;
 }
 
 export function updatePairTraderCount(from: Address, to: Address, pair: Pair): void {
