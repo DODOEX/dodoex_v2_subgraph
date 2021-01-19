@@ -362,15 +362,29 @@ export function handleTransfer(event: Transfer): void{
     let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
 
     if(event.params.to.toHexString() != ADDRESS_ZERO){
-        let toUserLiquidityPostionID = toUser.id.concat("-").concat(lpToken.id);
-        let position = LiquidityPosition.load(toUserLiquidityPostionID);
+        let toUserLiquidityPositionID = toUser.id.concat("-").concat(lpToken.id);
+        let position = LiquidityPosition.load(toUserLiquidityPositionID);
+        if(position == null){
+            position = new LiquidityPosition(toUserLiquidityPositionID);
+            position.pair = event.address.toHexString();
+            position.user = event.params.to.toHexString();
+            position.liquidityTokenBalance = ZERO_BD;
+            position.lpToken = lpToken.id;
+        }
         position.liquidityTokenBalance = position.liquidityTokenBalance.plus(dealedAmount);
         position.save();
     }
 
     if(event.params.from.toHexString() != ADDRESS_ZERO){
-        let fromUserLiquidityPostionID = fromUser.id.concat("-").concat(lpToken.id);
-        let position = LiquidityPosition.load(fromUserLiquidityPostionID);
+        let fromUserLiquidityPositionID = fromUser.id.concat("-").concat(lpToken.id);
+        let position = LiquidityPosition.load(fromUserLiquidityPositionID);
+        if(position == null){
+            position = new LiquidityPosition(fromUserLiquidityPositionID);
+            position.pair = event.address.toHexString();
+            position.user = event.params.to.toHexString();
+            position.liquidityTokenBalance = ZERO_BD;
+            position.lpToken = lpToken.id;
+        }
         position.liquidityTokenBalance = position.liquidityTokenBalance.minus(dealedAmount);
         position.save();
     }

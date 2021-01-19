@@ -1,4 +1,4 @@
-import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-ts'
+import {log, BigInt, BigDecimal, Address, ethereum,dataSource} from '@graphprotocol/graph-ts'
 import {LiquidityHistory, LiquidityPosition, Pair, Token, Swap, OrderHistory, LpToken} from '../types/schema'
 import {DODO as DODOTemplate} from '../types/templates'
 import {
@@ -26,52 +26,52 @@ import {
     ADDRESS_ZERO,
 } from "./constant"
 
-const POOLS_ADDRESS: String[] = [
-    "0x75c23271661d9d143DCb617222BC4BEc783eff34",//WETH-USDC
-    "0x562c0b218cc9ba06D9EB42F3aEf54C54cC5a4650",//LINK-USDC
-    "0x9D9793e1E18CDEe6cf63818315D55244f73EC006",//FIN-USDT
-    "0xCa7b0632bd0E646B0f823927D3D2e61B00fE4D80",//SNX-USDC
-    "0x0D04146B2Fe5d267629a7eb341Fb4388DcdBD22f",//COMP-USDC
-    "0x2109F78b46a789125598f5ad2b7f243751c2934d",//WBTC-USDC
-    "0x1B7902a66f133d899130bF44d7D879dA89913b2e",//YFI-USDC
-    "0x1A7fE5D6f0BB2D071E16BDD52C863233BBFd38e9",//WETH-USDT
-    "0x8876819535b48b551C9e97EBc07332C7482b4b2d",//DODO-USDT
-    "0xC9f93163c99695c6526b799EbcA2207Fdf7D61aD",//USDT-USDC
-    "0x94512fd4Fb4FEb63a6C0F4bEDEcC4A00eE260528",//AAVE-USDC
-    "0x85F9569B69083C3e6aefFd301BB2c65606b5D575",//wCRES-USDT
+const POOLS_ADDRESS: string[] = [
+    "0x75c23271661d9d143dcb617222bc4bec783eff34",//WETH-USDC
+    "0x562c0b218cc9ba06d9eb42f3aef54c54cc5a4650",//LINK-USDC
+    "0x9d9793e1e18cdee6cf63818315d55244f73ec006",//FIN-USDT
+    "0xca7b0632bd0e646b0f823927d3d2e61b00fe4d80",//SNX-USDC
+    "0x0d04146b2fe5d267629a7eb341fb4388dcdbd22f",//COMP-USDC
+    "0x2109f78b46a789125598f5ad2b7f243751c2934d",//WBTC-USDC
+    "0x1b7902a66f133d899130bf44d7d879da89913b2e",//YFI-USDC
+    "0x1a7fe5d6f0bb2d071e16bdd52c863233bbfd38e9",//WETH-USDT
+    "0x8876819535b48b551c9e97ebc07332c7482b4b2d",//DODO-USDT
+    "0xc9f93163c99695c6526b799ebca2207fdf7d61ad",//USDT-USDC
+    "0x94512fd4fb4feb63a6c0f4bedecc4a00ee260528",//AAVE-USDC
+    "0x85f9569b69083c3e6aeffd301bb2c65606b5d575",//wCRES-USDT
 ]
 
-const BASE_TOKENS: String[] = [
-    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",//WETH
-    "0x514910771AF9Ca656af840dff83E8264EcF986CA",//LINK
-    "0x054f76beED60AB6dBEb23502178C52d6C5dEbE40",//FIN
-    "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",//SNX
-    "0xc00e94Cb662C3520282E6f5717214004A7f26888",//COMP
-    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",//WBTC
-    "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",//YFI
-    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",//WETH
-    "0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd",//DODO
-    "0xdAC17F958D2ee523a2206206994597C13D831ec7",//USDT
-    "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",//AAVE
-    "0xa0afAA285Ce85974c3C881256cB7F225e3A1178a",//wCRES
+const BASE_TOKENS: string[] = [
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",//WETH
+    "0x514910771af9ca656af840dff83e8264ecf986ca",//LINK
+    "0x054f76beed60ab6dbeb23502178c52d6c5debe40",//FIN
+    "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",//SNX
+    "0xc00e94cb662c3520282e6f5717214004a7f26888",//COMP
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",//WBTC
+    "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e",//YFI
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",//WETH
+    "0x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd",//DODO
+    "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
+    "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",//AAVE
+    "0xa0afaa285ce85974c3c881256cb7f225e3a1178a",//wCRES
 ]
 
-const QUOTE_TOKENS: String[] = [
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xdAC17F958D2ee523a2206206994597C13D831ec7",//USDT
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xdAC17F958D2ee523a2206206994597C13D831ec7",//USDT
-    "0xdAC17F958D2ee523a2206206994597C13D831ec7",//USDT
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",//USDC
-    "0xdAC17F958D2ee523a2206206994597C13D831ec7",//USDT
+const QUOTE_TOKENS: string[] = [
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
+    "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
 ]
 
-const BASE_LP_TOKENS: String[] = [
+const BASE_LP_TOKENS: string[] = [
     "0xc11eccdee225d644f873776a68a02ecd8c015697",//WETH
     "0xf03f3d2fbee37f92ec91ae927a8019cacef4b738",//LINK
     "0x7c4a6813b6af50a2aa2720d861c796a990245383",//FIN
@@ -86,7 +86,7 @@ const BASE_LP_TOKENS: String[] = [
     "0xcfba2e0f1bbf6ad96960d8866316b02e36ed1761",//wCRES
 ]
 
-const QUOTE_LP_TOKENS: String[] = [
+const QUOTE_LP_TOKENS: string[] = [
     "0x6a5eb3555cbbd29016ba6f6ffbccee28d57b2932",
     "0x0f769bc3ecbda8e0d78280c88e31609e899a1f78",
     "0xa62bf27fd1d64d488b609a09705a28a9b5240b9c",
@@ -101,7 +101,7 @@ const QUOTE_LP_TOKENS: String[] = [
     "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
 ]
 
-function insertAllPairs4V1(event: ethereum.Event): void {
+function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
     let dodoZoo = getDODOZoo();
 
@@ -109,8 +109,8 @@ function insertAllPairs4V1(event: ethereum.Event): void {
 
         if (Pair.load(POOLS_ADDRESS[i].toString()) == null) {
             //tokens
-            let baseToken = createToken(Address.fromString(BASE_TOKENS[i].toString()), event);
-            let quoteToken = createToken(Address.fromString(QUOTE_TOKENS[i].toString()), event);
+            let baseToken = createToken(Address.fromString(BASE_TOKENS[i]), event);
+            let quoteToken = createToken(Address.fromString(QUOTE_TOKENS[i]), event);
 
             let pair = new Pair(POOLS_ADDRESS[i].toString()) as Pair
 
@@ -122,8 +122,8 @@ function insertAllPairs4V1(event: ethereum.Event): void {
             pair.createdAtTimestamp = event.block.timestamp;
             pair.createdAtBlockNumber = event.block.number;
 
-            let baseLpToken = createLpToken(Address.fromString(BASE_LP_TOKENS[i].toString()));
-            let quoteLpToken = createLpToken(Address.fromString(QUOTE_LP_TOKENS[i].toString()));
+            let baseLpToken = createLpToken(Address.fromString(BASE_LP_TOKENS[i]));
+            let quoteLpToken = createLpToken(Address.fromString(QUOTE_LP_TOKENS[i]));
 
             pair.baseLpToken = baseLpToken.id;
             pair.quoteLpToken = quoteLpToken.id;
@@ -153,7 +153,7 @@ function insertAllPairs4V1(event: ethereum.Event): void {
             pair.save();
 
             dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
-            DODOTemplate.create(Address.fromString(POOLS_ADDRESS[i].toString()));
+            DODOTemplate.create(Address.fromString(POOLS_ADDRESS[i]));
         }
 
     }
@@ -163,63 +163,64 @@ function insertAllPairs4V1(event: ethereum.Event): void {
 }
 
 export function handleDODOBirth(event: DODOBirth): void {
-    insertAllPairs4V1(event);
+    insertAllPairs4V1Mainnet(event);
 
-    let dodoZoo = getDODOZoo();
+    if(dataSource.network() != "mainnet"){
+        let dodoZoo = getDODOZoo();
 
-    let pair = Pair.load(event.params.newBorn.toHexString());
-    if ( pair == null) {
-        //tokens
-        let dodo = DODO.bind(event.params.newBorn);
+        let pair = Pair.load(event.params.newBorn.toHexString());
+        if ( pair == null) {
+            //tokens
+            let dodo = DODO.bind(event.params.newBorn);
 
-        let baseToken = createToken(event.params.baseToken, event);
-        let quoteToken = createToken(event.params.quoteToken, event);
-        let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_());
-        let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_());
+            let baseToken = createToken(event.params.baseToken, event);
+            let quoteToken = createToken(event.params.quoteToken, event);
+            let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_());
+            let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_());
 
-        let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
+            let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
 
-        pair.baseLpToken = baseLpToken.id;
-        pair.quoteLpToken = quoteLpToken.id;
-        pair.baseToken = baseToken.id;
-        pair.quoteToken = quoteToken.id;
-        pair.type = TYPE_CLASSICAL_POOL;
+            pair.baseLpToken = baseLpToken.id;
+            pair.quoteLpToken = quoteLpToken.id;
+            pair.baseToken = baseToken.id;
+            pair.quoteToken = quoteToken.id;
+            pair.type = TYPE_CLASSICAL_POOL;
 
-        pair.creator = Address.fromString(ADDRESS_ZERO);
-        pair.createdAtTimestamp = event.block.timestamp;
-        pair.createdAtBlockNumber = event.block.number;
+            pair.creator = Address.fromString(ADDRESS_ZERO);
+            pair.createdAtTimestamp = event.block.timestamp;
+            pair.createdAtBlockNumber = event.block.number;
 
-        pair.txCount = ZERO_BI;
-        pair.volumeBaseToken = ZERO_BD;
-        pair.volumeQuoteToken = ZERO_BD;
-        pair.tradeVolumeUSDC = ZERO_BD;
-        pair.reserveUSDC = ZERO_BD;
-        pair.liquidityProviderCount = ZERO_BI;
-        pair.untrackedBaseVolume = ZERO_BD;
-        pair.untrackedQuoteVolume = ZERO_BD;
-        pair.baseLpFee = ZERO_BD;
-        pair.quoteLpFee = ZERO_BD;
-        pair.lpFeeUSDC = ZERO_BD;
-        pair.traderCount = ZERO_BI;
+            pair.txCount = ZERO_BI;
+            pair.volumeBaseToken = ZERO_BD;
+            pair.volumeQuoteToken = ZERO_BD;
+            pair.tradeVolumeUSDC = ZERO_BD;
+            pair.reserveUSDC = ZERO_BD;
+            pair.liquidityProviderCount = ZERO_BI;
+            pair.untrackedBaseVolume = ZERO_BD;
+            pair.untrackedQuoteVolume = ZERO_BD;
+            pair.baseLpFee = ZERO_BD;
+            pair.quoteLpFee = ZERO_BD;
+            pair.lpFeeUSDC = ZERO_BD;
+            pair.traderCount = ZERO_BI;
 
-        pair.i = ZERO_BI;
-        pair.k = ZERO_BI;
-        pair.baseReserve = ZERO_BD;
-        pair.quoteReserve = ZERO_BD;
+            pair.i = ZERO_BI;
+            pair.k = ZERO_BI;
+            pair.baseReserve = ZERO_BD;
+            pair.quoteReserve = ZERO_BD;
 
-        pair.lpFeeRate = ZERO_BD;
+            pair.lpFeeRate = ZERO_BD;
 
-        pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
-        pair.maintainer = Address.fromString(ADDRESS_ZERO);
+            pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+            pair.maintainer = Address.fromString(ADDRESS_ZERO);
 
-        pair.save();
+            pair.save();
 
-        dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
-        DODOTemplate.create(event.params.newBorn);
+            dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+            DODOTemplate.create(event.params.newBorn);
 
-        dodoZoo.save();
+            dodoZoo.save();
+        }
     }
-
 
 }
 

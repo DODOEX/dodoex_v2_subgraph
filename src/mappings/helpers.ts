@@ -244,6 +244,15 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         dodoZoo.tokenCount = dodoZoo.tokenCount.plus(ONE_BI);
         dodoZoo.save();
     }
+
+    if(token.symbol=="unknown"){
+        token.symbol = fetchTokenSymbol(address);
+        token.totalSupply = fetchTokenTotalSupply(address);
+        token.name = fetchTokenName(address);
+        token.decimals = fetchTokenDecimals(address);
+        token.save();
+    }
+
     return token as Token;
 }
 
