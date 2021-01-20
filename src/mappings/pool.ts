@@ -12,8 +12,8 @@ import {
     updatePairTraderCount,
     getDODOZoo, TYPE_DPP_POOL,
 } from "./helpers"
-import {DODOSwap, BuyShares, SellShares,Transfer} from "../types/templates/DVM/DVM"
-import {LpFeeRateChange,DPP} from "../types/templates/DPP/DPP"
+import {DODOSwap, BuyShares, SellShares, Transfer} from "../types/templates/DVM/DVM"
+import {LpFeeRateChange, DPP} from "../types/templates/DPP/DPP"
 import {updatePairDayData, updateTokenDayData} from "./dayUpdates"
 import {getUSDCPrice} from "./pricing"
 import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
@@ -33,13 +33,14 @@ export function handleDODOSwap(event: DODOSwap): void {
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.toAmount, toToken.decimals);
     let pmmState = getPMMState(event.address);
-    let fromPrice = getUSDCPrice(pair as Pair, true,event.block.number);
-    let toPrice = getUSDCPrice(pair as Pair, false,event.block.number);
+    let fromPrice = getUSDCPrice(pair as Pair, true, event.block.number);
+    let toPrice = getUSDCPrice(pair as Pair, false, event.block.number);
 
     let untrackedBaseVolume = ZERO_BD;
     let untrackedQuoteVolume = ZERO_BD;
 
-    let baseToken: Token, quoteToken: Token, baseVolume: BigDecimal, quoteVolume: BigDecimal,baseLpFee: BigDecimal,quoteLpFee: BigDecimal,lpFeeUsdc: BigDecimal;
+    let baseToken: Token, quoteToken: Token, baseVolume: BigDecimal, quoteVolume: BigDecimal, baseLpFee: BigDecimal,
+        quoteLpFee: BigDecimal, lpFeeUsdc: BigDecimal;
     if (fromToken.id == pair.baseToken) {
         baseToken = fromToken as Token;
         quoteToken = toToken as Token;
@@ -49,10 +50,10 @@ export function handleDODOSwap(event: DODOSwap): void {
         baseLpFee = ZERO_BD;
         quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
 
-        if(fromPrice.equals(ZERO_BD)){
-            untrackedBaseVolume=dealedFromAmount;
+        if (fromPrice.equals(ZERO_BD)) {
+            untrackedBaseVolume = dealedFromAmount;
         }
-        if(toPrice.equals(ZERO_BD)){
+        if (toPrice.equals(ZERO_BD)) {
             untrackedQuoteVolume = dealedToAmount;
         }
     } else {
@@ -64,11 +65,11 @@ export function handleDODOSwap(event: DODOSwap): void {
         baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
         quoteLpFee = ZERO_BD;
 
-        if(fromPrice.equals(ZERO_BD)){
-            untrackedBaseVolume=dealedToAmount;
+        if (fromPrice.equals(ZERO_BD)) {
+            untrackedBaseVolume = dealedToAmount;
         }
-        if(toPrice.equals(ZERO_BD)){
-            untrackedQuoteVolume=dealedFromAmount;
+        if (toPrice.equals(ZERO_BD)) {
+            untrackedQuoteVolume = dealedFromAmount;
         }
     }
 
@@ -97,7 +98,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     fromToken.tradeVolumeUSDC = fromToken.tradeVolumeUSDC.plus(dealedFromAmount.times(fromPrice));
     fromToken.priceUSDC = fromPrice;
     fromToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if(fromPrice.equals(ZERO_BD)){
+    if (fromPrice.equals(ZERO_BD)) {
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
     }
     fromToken.save();
@@ -107,7 +108,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     toToken.tradeVolumeUSDC = toToken.tradeVolumeUSDC.plus(dealedToAmount.times(toPrice));
     toToken.priceUSDC = toPrice;
     toToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if(toPrice.equals(ZERO_BD)){
+    if (toPrice.equals(ZERO_BD)) {
         toToken.untrackedVolume = toToken.untrackedVolume.plus(dealedToAmount);
     }
     toToken.save();
@@ -142,10 +143,10 @@ export function handleDODOSwap(event: DODOSwap): void {
 
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
-    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.trader.toHexString()) == -1 &&orderHistory == null) {
-        log.warning(`external swap from {},hash : {}`,[event.params.trader.toHexString(),event.transaction.hash.toHexString()]);
+    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.trader.toHexString()) == -1 && orderHistory == null) {
+        log.warning(`external swap from {},hash : {}`, [event.params.trader.toHexString(), event.transaction.hash.toHexString()]);
         orderHistory = new OrderHistory(swapID);
-        orderHistory.source=SOURCE_POOL_SWAP;
+        orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
         orderHistory.timestamp = event.block.timestamp;
         orderHistory.block = event.block.number;
@@ -163,7 +164,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     }
 
     // 更新交易人数
-    updatePairTraderCount(event.transaction.from,event.params.receiver,pair as Pair);
+    updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair);
 
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
@@ -175,10 +176,10 @@ export function handleDODOSwap(event: DODOSwap): void {
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
 
-    let baseDayData=updateTokenDayData(baseToken, event);
+    let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
 
-    let quoteDayData=updateTokenDayData(quoteToken, event);
+    let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
 
     pairDayData.save();
@@ -296,7 +297,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityHistory.timestamp = event.block.timestamp;
         liquidityHistory.user = event.params.to.toHexString();
         liquidityHistory.amount = dealedSharesAmount;
-        liquidityHistory.balance = balance;
+        liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
         liquidityHistory.lpToken = lpToken.id;
     }
 
@@ -304,7 +305,7 @@ export function handleSellShares(event: SellShares): void {
     liquidityHistory.save();
 
     //更新基础信息
-    if(pmmState !=null){
+    if (pmmState != null) {
         pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
         pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
         pair.i = pmmState.i;
@@ -333,12 +334,12 @@ export function handleSellShares(event: SellShares): void {
     dodoZoo.save();
 }
 
-export function handleLpFeeRateChange(event: LpFeeRateChange): void{
+export function handleLpFeeRateChange(event: LpFeeRateChange): void {
     let pair = Pair.load(event.address.toHexString());
 
-    if(pair.type == TYPE_DPP_POOL){
-        let dpp =DPP.bind(event.address);
-        pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(),BigInt.fromI32(18));
+    if (pair.type == TYPE_DPP_POOL) {
+        let dpp = DPP.bind(event.address);
+        pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(), BigInt.fromI32(18));
 
         let pmmState: DVM__getPMMStateResultStateStruct;
         pmmState = getPMMState(event.address);
@@ -354,17 +355,21 @@ export function handleLpFeeRateChange(event: LpFeeRateChange): void{
 
 }
 
-export function handleTransfer(event: Transfer): void{
-    let pair = Pair.load(event.address.toHexString());
+export function handleTransfer(event: Transfer): void {
+
+    if (event.params.to.toHexString() == ADDRESS_ZERO || event.params.from.toHexString() == ADDRESS_ZERO) {
+        return;
+    }
+
     let fromUser = createUser(event.params.from);
     let toUser = createUser(event.params.to);
     let lpToken = LpToken.load(event.address.toHexString());
-    let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
+    let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 
-    if(event.params.to.toHexString() != ADDRESS_ZERO){
+    {
         let toUserLiquidityPositionID = toUser.id.concat("-").concat(lpToken.id);
         let position = LiquidityPosition.load(toUserLiquidityPositionID);
-        if(position == null){
+        if (position == null) {
             position = new LiquidityPosition(toUserLiquidityPositionID);
             position.pair = event.address.toHexString();
             position.user = event.params.to.toHexString();
@@ -375,10 +380,10 @@ export function handleTransfer(event: Transfer): void{
         position.save();
     }
 
-    if(event.params.from.toHexString() != ADDRESS_ZERO){
+    {
         let fromUserLiquidityPositionID = fromUser.id.concat("-").concat(lpToken.id);
         let position = LiquidityPosition.load(fromUserLiquidityPositionID);
-        if(position == null){
+        if (position == null) {
             position = new LiquidityPosition(fromUserLiquidityPositionID);
             position.pair = event.address.toHexString();
             position.user = event.params.to.toHexString();

@@ -79,8 +79,8 @@ function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
             return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
         }
 
-        if (block.toI32() >= DVM_FACTORY_DEPLOY_BLOCK) {
-            let addresses = dvmFactoryContract.getVendingMachine(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+        if (block.toI32() > DVM_FACTORY_DEPLOY_BLOCK) {
+            let addresses = dvmFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
             if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
                 let pair: DVM;
                 pair = DVM.bind(addresses[0]);
@@ -90,8 +90,8 @@ function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
             }
         }
 
-        if (block.toI32() >= DPP_FACTORY_DEPLOY_BLOCK) {
-            let addresses = dppFactoryContract.getPrivatePool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+        if (block.toI32() > DPP_FACTORY_DEPLOY_BLOCK) {
+            let addresses = dppFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
             if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
                 let pair: DPP;
                 pair = DPP.bind(addresses[0]);

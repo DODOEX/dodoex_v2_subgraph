@@ -1,6 +1,6 @@
 import {log, BigInt, BigDecimal, Address, ethereum,dataSource} from '@graphprotocol/graph-ts'
 import {LiquidityHistory, LiquidityPosition, Pair, Token, Swap, OrderHistory, LpToken} from '../types/schema'
-import {DODO as DODOTemplate} from '../types/templates'
+import {DODO as DODOTemplate,ERC20 as ERC20Template} from '../types/templates'
 import {
     ONE_BI,
     ZERO_BD,
@@ -14,7 +14,8 @@ import {
     getPMMState,
     BI_18,
     SOURCE_POOL_SWAP,
-    updatePairTraderCount
+    updatePairTraderCount,
+    fetchTokenBalance
 } from './helpers'
 import {DODOBirth} from '../types/DodoZoo/DodoZoo'
 import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken} from '../types/templates/DODO/DODO';
@@ -154,6 +155,9 @@ function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
             dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
             DODOTemplate.create(Address.fromString(POOLS_ADDRESS[i]));
+
+            ERC20Template.create(Address.fromString(BASE_LP_TOKENS[i]));
+            ERC20Template.create(Address.fromString(QUOTE_LP_TOKENS[i]));
         }
 
     }
@@ -240,11 +244,11 @@ export function handleDeposit(event: Deposit): void {
     let liquidityPositionID: string, lpToken: LpToken;
     if (event.params.isBaseToken) {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
-        lpToken= LpToken.load(baseLpToken.id) as LpToken;
+        lpToken= LpToken.load(pair.baseLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
     } else {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
-        lpToken = LpToken.load(quoteLpToken.id) as LpToken;
+        lpToken = LpToken.load(pair.quoteLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
     }
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
@@ -268,8 +272,8 @@ export function handleDeposit(event: Deposit): void {
         liquidityHistory.pair = event.address.toHexString();
         liquidityHistory.timestamp = event.block.timestamp;
         liquidityHistory.user = event.params.receiver.toHexString();
-        liquidityHistory.amount = amount;
-        liquidityHistory.balance = ZERO_BD;
+        liquidityHistory.amount = dealedSharesAmount;
+        liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
         liquidityHistory.lpToken = lpToken.id;
     }
 
@@ -319,11 +323,11 @@ export function handleWithdraw(event: Withdraw): void {
     let liquidityPositionID: string, lpToken: LpToken;
     if (event.params.isBaseToken) {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
-        lpToken = LpToken.load(baseLpToken.id) as LpToken;
+        lpToken= LpToken.load(pair.baseLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
     } else {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
-        lpToken = LpToken.load(quoteLpToken.id) as LpToken;
+        lpToken = LpToken.load(pair.quoteLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
     }
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
@@ -331,8 +335,10 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
         liquidityPosition.pair = event.address.toHexString();
         liquidityPosition.user = event.params.receiver.toHexString();
-        liquidityPosition.liquidityTokenBalance = dealedSharesAmount;
-        liquidityPosition.lpToken = event.address.toHexString();
+        liquidityPosition.liquidityTokenBalance = convertTokenToDecimal(fetchTokenBalance(Address.fromString(lpToken.id),event.params.receiver),lpToken.decimals);
+        liquidityPosition.lpToken = lpToken.id;
+    }else{
+        liquidityPosition.liquidityTokenBalance = liquidityPosition.liquidityTokenBalance.minus(dealedSharesAmount);
     }
 
     //增加shares发生时的快照
@@ -348,7 +354,7 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityHistory.user = event.params.receiver.toHexString();
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.lpToken = lpToken.id;
-        liquidityHistory.balance = amount;
+        liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
     }
 
     liquidityPosition.save();

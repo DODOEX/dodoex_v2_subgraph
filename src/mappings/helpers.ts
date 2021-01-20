@@ -176,6 +176,19 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     return BigInt.fromI32(decimalValue as i32)
 }
 
+export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
+    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+        return BigInt.fromI32(0)
+    }
+    let contract = ERC20.bind(tokenAddress)
+    let balance = 0;
+    let balanceResult = contract.try_balanceOf(user);
+    if (!balanceResult.reverted) {
+        balance = balanceResult as i32
+    }
+    return BigInt.fromI32(balance as i32)
+}
+
 export function getDODOZoo(): DodoZoo {
     let dodoZoo = DodoZoo.load(DODOZooID);
     if (dodoZoo === null) {
@@ -184,6 +197,7 @@ export function getDODOZoo(): DodoZoo {
         dodoZoo.tokenCount = ZERO_BI;
         dodoZoo.crowdpoolingCount = ZERO_BI;
         dodoZoo.txCount = ZERO_BI;
+        dodoZoo.save();
     }
     return dodoZoo as DodoZoo;
 
@@ -245,6 +259,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         dodoZoo.save();
     }
 
+    //for V1 classical hardcode pools
     if(token.symbol=="unknown"){
         token.symbol = fetchTokenSymbol(address);
         token.totalSupply = fetchTokenTotalSupply(address);
@@ -269,6 +284,16 @@ export function createLpToken(address: Address): LpToken {
 
         lpToken.save();
     }
+
+    //for V1 classical hardcode pools
+    if(lpToken.symbol=="unknown"){
+        lpToken.symbol = fetchTokenSymbol(address);
+        lpToken.totalSupply = fetchTokenTotalSupply(address);
+        lpToken.name = fetchTokenName(address);
+        lpToken.decimals = fetchTokenDecimals(address);
+        lpToken.save();
+    }
+
     return lpToken as LpToken;
 }
 
