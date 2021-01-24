@@ -20,6 +20,10 @@ dataSources:
         - Pair
         - Token
       abis:
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
         - name: DODO
           file: ../abis/DODO.json
         - name: ERC20
@@ -51,6 +55,10 @@ dataSources:
       abis:
         - name: DODOV1Proxy01
           file: ../abis/DODOV1Proxy01.json
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
         - name: DODO
           file: ../abis/DODO.json
         - name: ERC20
@@ -80,6 +88,10 @@ dataSources:
       abis:
         - name: DODOV1Proxy02
           file: ../abis/DODOV1Proxy02.json
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
         - name: DODO
           file: ../abis/DODO.json
         - name: ERC20
@@ -109,6 +121,10 @@ dataSources:
       abis:
         - name: DODOV1Proxy03
           file: ../abis/DODOV1Proxy03.json
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
         - name: DODO
           file: ../abis/DODO.json
         - name: ERC20
@@ -229,6 +245,8 @@ dataSources:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: CrowdPoolingFactory
           file: ../abis/CrowdPoolingFactory.json
         - name: ERC20
@@ -260,10 +278,12 @@ dataSources:
       abis:
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: DODO
-          file: ../abis/DODO.json
         - name: DVM
           file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -291,6 +311,10 @@ templates:
       abis:
         - name: DVM
           file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: DVMFactory
           file: ../abis/DVMFactory.json
         - name: DPPFactory
@@ -332,6 +356,8 @@ templates:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -363,6 +389,8 @@ templates:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -398,12 +426,14 @@ templates:
           file: ../abis/DVMFactory.json
         - name: DPPFactory
           file: ../abis/DPPFactory.json
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
         - name: DODO
           file: ../abis/DODO.json
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: DVM
-          file: ../abis/DVM.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes

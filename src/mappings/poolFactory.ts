@@ -110,17 +110,17 @@ export function handleNewDPP(event: NewDPP): void {
         pair.lpFeeUSDC = ZERO_BD;
         pair.traderCount = ZERO_BI;
 
-        let dvm = DPP.bind(event.params.dpp);
-        let pmmState = dvm.getPMMState();
+        let dpp = DPP.bind(event.params.dpp);
+        let pmmState = dpp.getPMMState();
         pair.i = pmmState.i;
         pair.k = pmmState.K;
         pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
         pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
 
-        pair.lpFeeRate = convertTokenToDecimal(dvm._LP_FEE_RATE_(),BigInt.fromI32(18));
+        pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(),BigInt.fromI32(18));
 
-        pair.mtFeeRateModel = dvm._MT_FEE_RATE_MODEL_();
-        pair.maintainer = dvm._MAINTAINER_();
+        pair.mtFeeRateModel = dpp._MT_FEE_RATE_MODEL_();
+        pair.maintainer = dpp._MAINTAINER_();
 
         pair.save();
 
