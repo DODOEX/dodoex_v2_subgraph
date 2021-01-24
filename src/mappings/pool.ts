@@ -137,7 +137,8 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.baseLpFee = baseLpFee;
         swap.quoteLpFee = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-
+        swap.baseVolume = baseVolume;
+        swap.quoteVolume = quoteVolume;
         swap.save();
     }
 
@@ -195,7 +196,7 @@ export function handleBuyShares(event: BuyShares): void {
     let quoteToken = Token.load(pair.quoteToken);
     let pmmState = getPMMState(event.address);
 
-    let lpToken = createLpToken(event.address);
+    let lpToken = createLpToken(event.address,pair as Pair);
 
     let dealedSharesAmount = convertTokenToDecimal(event.params.increaseShares, lpToken.decimals);
     let balance = convertTokenToDecimal(event.params.totalShares, lpToken.decimals);
@@ -226,6 +227,7 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.balance = balance;
         liquidityHistory.lpToken = lpToken.id;
+        liquidityHistory.type = "DEPOSIT";
     }
 
     liquidityPosition.save();
@@ -268,7 +270,7 @@ export function handleSellShares(event: SellShares): void {
     let pmmState: DVM__getPMMStateResultStateStruct;
     pmmState = getPMMState(event.address);
 
-    let lpToken = createLpToken(event.address);
+    let lpToken = createLpToken(event.address,pair as Pair);
 
     let dealedSharesAmount = convertTokenToDecimal(event.params.decreaseShares, lpToken.decimals);
     let balance = convertTokenToDecimal(event.params.totalShares, lpToken.decimals);
@@ -299,6 +301,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
         liquidityHistory.lpToken = lpToken.id;
+        liquidityHistory.type = "WITHDRAW";
     }
 
     liquidityPosition.save();

@@ -1,6 +1,6 @@
 import {log, BigInt, BigDecimal, Address, ethereum,dataSource} from '@graphprotocol/graph-ts'
 import {LiquidityHistory, LiquidityPosition, Pair, Token, Swap, OrderHistory, LpToken} from '../types/schema'
-import {DODO as DODOTemplate,ERC20 as ERC20Template} from '../types/templates'
+import {DODO as DODOTemplate,DODOLpToken as DODOLpTokenTemplate} from '../types/templates'
 import {
     ONE_BI,
     ZERO_BD,
@@ -25,6 +25,7 @@ import {getUSDCPrice} from "./pricing"
 import {
     SMART_ROUTE_ADDRESSES,
     ADDRESS_ZERO,
+    DODOZooID,
 } from "./constant"
 
 const POOLS_ADDRESS: string[] = [
@@ -104,6 +105,10 @@ const QUOTE_LP_TOKENS: string[] = [
 
 function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
+    if(DODOZooID == "dodoex-v2-bsc" || DODOZooID == "dodoex-v2-kovan"){
+        return;
+    }
+
     let dodoZoo = getDODOZoo();
 
     for (let i = 0; i < POOLS_ADDRESS.length; i++) {
@@ -123,8 +128,8 @@ function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.createdAtTimestamp = event.block.timestamp;
             pair.createdAtBlockNumber = event.block.number;
 
-            let baseLpToken = createLpToken(Address.fromString(BASE_LP_TOKENS[i]));
-            let quoteLpToken = createLpToken(Address.fromString(QUOTE_LP_TOKENS[i]));
+            let baseLpToken = createLpToken(Address.fromString(BASE_LP_TOKENS[i]),pair);
+            let quoteLpToken = createLpToken(Address.fromString(QUOTE_LP_TOKENS[i]),pair);
 
             pair.baseLpToken = baseLpToken.id;
             pair.quoteLpToken = quoteLpToken.id;
@@ -156,8 +161,8 @@ function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
             DODOTemplate.create(Address.fromString(POOLS_ADDRESS[i]));
 
-            ERC20Template.create(Address.fromString(BASE_LP_TOKENS[i]));
-            ERC20Template.create(Address.fromString(QUOTE_LP_TOKENS[i]));
+            DODOLpTokenTemplate.create(Address.fromString(BASE_LP_TOKENS[i]));
+            DODOLpTokenTemplate.create(Address.fromString(QUOTE_LP_TOKENS[i]));
         }
 
     }
@@ -169,20 +174,20 @@ function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 export function handleDODOBirth(event: DODOBirth): void {
     insertAllPairs4V1Mainnet(event);
 
-    if(dataSource.network() != "mainnet"){
+    if(dataSource.address().toHexString() != "0x3a97247df274a17c59a3bd12735ea3fcdfb49950"){
         let dodoZoo = getDODOZoo();
 
         let pair = Pair.load(event.params.newBorn.toHexString());
         if ( pair == null) {
             //tokens
             let dodo = DODO.bind(event.params.newBorn);
+            let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
 
             let baseToken = createToken(event.params.baseToken, event);
             let quoteToken = createToken(event.params.quoteToken, event);
-            let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_());
-            let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_());
+            let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_(),pair);
+            let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_(),pair);
 
-            let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
 
             pair.baseLpToken = baseLpToken.id;
             pair.quoteLpToken = quoteLpToken.id;
@@ -222,6 +227,9 @@ export function handleDODOBirth(event: DODOBirth): void {
             dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
             DODOTemplate.create(event.params.newBorn);
 
+            DODOLpTokenTemplate.create(Address.fromString(baseLpToken.id));
+            DODOLpTokenTemplate.create(Address.fromString(quoteLpToken.id));
+
             dodoZoo.save();
         }
     }
@@ -235,8 +243,8 @@ export function handleDeposit(event: Deposit): void {
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
 
-    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken));
-    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken));
+    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken),pair as Pair);
+    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken),pair as Pair);
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
     let dealedSharesAmount: BigDecimal;
@@ -275,6 +283,7 @@ export function handleDeposit(event: Deposit): void {
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
         liquidityHistory.lpToken = lpToken.id;
+        liquidityHistory.type = "DEPOSIT";
     }
 
     liquidityPosition.save();
@@ -314,8 +323,8 @@ export function handleWithdraw(event: Withdraw): void {
     let fromUser = createUser(event.transaction.from);
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
-    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken));
-    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken));
+    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken),pair as Pair);
+    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken),pair as Pair);
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
     let dealedSharesAmount: BigDecimal;
@@ -355,6 +364,7 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.lpToken = lpToken.id;
         liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
+        liquidityHistory.type = "WITHDRAW";
     }
 
     liquidityPosition.save();
@@ -497,7 +507,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         swap.baseLpFee = baseLpFee;
         swap.quoteLpFee = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-
+        swap.baseVolume = baseVolume;
+        swap.quoteVolume = quoteVolume;
         swap.save();
     }
 
@@ -655,7 +666,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         swap.baseLpFee = baseLpFee;
         swap.quoteLpFee = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-
+        swap.baseVolume = baseVolume;
+        swap.quoteVolume = quoteVolume;
         swap.save();
     }
 

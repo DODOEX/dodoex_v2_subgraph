@@ -8,7 +8,7 @@ dataSources:
     name: DODOIncentive
     network: kovan
     source:
-      address: '0xc6BCC0918c507e057Af641625AfBF11dD9542262'
+      address: '0x1f69E3CEAbDc464Ab11bceB15726530CD8AC535E'
       abi: DODOIncentive
       startBlock: 23072267
     mapping:
@@ -37,7 +37,7 @@ dataSources:
     name: DODOV2Proxy01
     network: kovan
     source:
-      address: '0xe8836EB6EaE9Bc4Db880D4b9C0912E5db817e41D'
+      address: '0xfDEDc04A641DE9CEeb4eD2F24d98faa22418Bd94'
       abi: DODOV2Proxy01
       startBlock: 23072322
     mapping:
@@ -64,9 +64,9 @@ dataSources:
     name: DVMFactory
     network: kovan
     source:
-      address: '0x1C0435b87B3772E994adA2D0194be91EaC85FDb0'
+      address: '0xE842d8c9A54B23C4D0cf208daCA3882c0c311353'
       abi: DVMFactory
-      startBlock: 23072277
+      startBlock: 23109610
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -95,9 +95,9 @@ dataSources:
     name: DPPFactory
     network: kovan
     source:
-      address: '0x2D7F071415480eE7721eBB48c3147e347b980fEe'
+      address: '0xaFC7F3Ef4f8609411653FbF1Dd6D583A8Ae1f0fA'
       abi: DPPFactory
-      startBlock: 23072289
+      startBlock: 23109618
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -126,7 +126,7 @@ dataSources:
     name: CrowdPoolingFactory
     network: kovan
     source:
-      address: '0x2EF5f1a9C89E6C814A2b7C547baC865967d65e64'
+      address: '0xD25e0A9A464f50191d9C879bE818FbA44680E980'
       abi: CrowdPoolingFactory
       startBlock: 23072301
     mapping:
@@ -335,35 +335,21 @@ templates:
         - event: BuyBaseToken(indexed address,uint256,uint256)
           handler: handleBuyBaseToken
   - kind: ethereum/contract
-    name: ERC20
+    name: DODOLpToken
     network: kovan
     source:
-      abi: ERC20
+      abi: DODOLpToken
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/erc20.ts
+      file: ../src/mappings/lpToken.ts
       entities:
         - Pair
         - Token
       abis:
-        - name: DVMFactory
-          file: ../abis/DVMFactory.json
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
-        - name: DODO
-          file: ../abis/DODO.json
-        - name: DODOZoo
-          file: ../abis/DODOZoo.json
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+        - name: DODOLpToken
+          file: ../abis/DODOLpToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer

@@ -271,7 +271,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
     return token as Token;
 }
 
-export function createLpToken(address: Address): LpToken {
+export function createLpToken(address: Address,pair: Pair): LpToken {
     let lpToken = LpToken.load(address.toHexString());
 
     if (lpToken == null) {
@@ -281,7 +281,7 @@ export function createLpToken(address: Address): LpToken {
         lpToken.name = fetchTokenName(address);
         lpToken.symbol = fetchTokenSymbol(address);
         lpToken.totalSupply = fetchTokenTotalSupply(address);
-
+        lpToken.pair = pair.id;
         lpToken.save();
     }
 

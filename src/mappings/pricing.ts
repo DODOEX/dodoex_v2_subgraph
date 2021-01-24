@@ -27,6 +27,7 @@ import {
     DVM_FACTORY_DEPLOY_BLOCK,
     WETH_USDC_BLOCK,
     USDT_USDC_BLOCK,
+    DODOZooID
 } from "./constant"
 
 const WHITELIST: string[] = [
@@ -108,6 +109,10 @@ function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
 }
 
 export function getUSDCPrice(pair: Pair, isBase: boolean, block: BigInt): BigDecimal {
+
+    if(DODOZooID == "dodoex-v2-bsc"){
+        return ZERO_BD;
+    }
 
     if (pair.baseToken == USDC_ADDRESS && isBase == true) {
         return ONE_BD;

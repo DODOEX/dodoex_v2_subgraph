@@ -6,7 +6,7 @@
     "codegen:dodoex_kovan": "graph codegen subgraphs/dodoex_kovan.yaml --output-dir ./src/types/",
     "codegen:dodoex_mainnet": "graph codegen subgraphs/dodoex_mainnet.yaml --output-dir ./src/types/",
     "build": "graph build",
-    "deploy:dodoex_bsc": "graph codegen subgraphs/dodoex_bsc.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex-v2 subgraphs/dodoex_bsc.yaml",
+    "deploy:dodoex_bsc": "graph codegen subgraphs/dodoex_bsc.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.bscgraph.org/ --node https://api.bscgraph.org/deploy dodoex-v2 subgraphs/dodoex_bsc.yaml",
     "deploy:dodoex_kovan": "graph codegen subgraphs/dodoex_kovan.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodoex-v2 subgraphs/dodoex_kovan.yaml",
     "deploy:dodoex_mainnet": "graph codegen subgraphs/dodoex_mainnet.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2 subgraphs/dodoex_mainnet.yaml",
     "deploy:dodoex_mainnet_test": "graph codegen subgraphs/dodoex_mainnet.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodo_v2_test09 subgraphs/dodoex_mainnet.yaml",

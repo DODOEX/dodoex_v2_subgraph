@@ -41,7 +41,7 @@ export function handleNewDVM(event: NewDVM): void {
 
         pair.baseLpToken = event.params.dvm.toHexString();
         pair.quoteLpToken = event.params.dvm.toHexString();
-        createLpToken(event.params.dvm);
+        createLpToken(event.params.dvm,pair as Pair);
 
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;

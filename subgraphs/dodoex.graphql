@@ -75,6 +75,8 @@ type Token @entity {
 type LpToken @entity {
     "token address"
     id: ID!
+    "belong pair"
+    pair: Pair!
 
     "token symbol"
     symbol: String!
@@ -124,6 +126,8 @@ type OrderHistory @entity {
 type LiquidityHistory @entity {
     "txid - logindex"
     id: ID!
+    "type (DEPOSIT、WITHDRAW)"
+    type: String!
     "hash"
     hash: String!
     "block number"
@@ -260,6 +264,11 @@ type Swap @entity {
     quoteLpFee: BigDecimal!
     "fee usdc"
     lpFeeUSDC: BigDecimal!
+
+    "base volume"
+    baseVolume: BigDecimal!
+    "quote volume"
+    quoteVolume: BigDecimal!
 
     "usdc amount"
     amountUSDC: BigDecimal!

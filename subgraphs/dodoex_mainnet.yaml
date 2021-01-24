@@ -8,9 +8,9 @@ dataSources:
     name: DODOIncentive
     network: mainnet
     source:
-      address: '0xDcD1d44Bb885e8ce2dc66ffDE8868ABb642eA45a'
+      address: '0x989dcaa95801c527c5b73aa65d3962df9ace1b0c'
       abi: DODOIncentive
-      startBlock: 23016930
+      startBlock: 11704641
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -92,12 +92,41 @@ dataSources:
         - event: OrderHistory(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
+    name: DODOV1Proxy03
+    network: mainnet
+    source:
+      address: '0x9a9942458754bdf65dcbcd0b6b4b842a7d4031ab'
+      abi: DODOV1Proxy03
+      startBlock: 11689692
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOV1Proxy03
+          file: ../abis/DODOV1Proxy03.json
+        - name: DODO
+          file: ../abis/DODO.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
     name: DODOV2Proxy01
     network: mainnet
     source:
-      address: '0xA730229607b710cd06AEAad1eDc644Dbb70A5E85'
+      address: '0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5'
       abi: DODOV2Proxy01
-      startBlock: 22931601
+      startBlock: 11704684
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -122,9 +151,9 @@ dataSources:
     name: DVMFactory
     network: mainnet
     source:
-      address: '0x01B7fCc1890Ab90Da33dE2F0dC54aDF3C7501F04'
+      address: '0x72d220ce168c4f361dd4dee5d826a01ad8598f6c'
       abi: DVMFactory
-      startBlock: 22931587
+      startBlock: 11704651
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -153,9 +182,9 @@ dataSources:
     name: DPPFactory
     network: mainnet
     source:
-      address: '0x67c4765D04C3848FFa7967231fc7B7E58f67A887'
+      address: "0xb5dc5e183c2acf02ab879a8569ab4edaf147d537"
       abi: DPPFactory
-      startBlock: 23016946
+      startBlock: 11704659
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -184,9 +213,9 @@ dataSources:
     name: CrowdPoolingFactory
     network: mainnet
     source:
-      address: '0x671429f12243DE03BF9826ea6cB88c41CF2a2AAA'
+      address: '0xe8c9a78725d0451fa19878d5f8a3dc0d55fecf25'
       abi: CrowdPoolingFactory
-      startBlock: 22931598
+      startBlock: 11704666
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -390,3 +419,22 @@ templates:
           handler: handleSellBaseToken
         - event: BuyBaseToken(indexed address,uint256,uint256)
           handler: handleBuyBaseToken
+  - kind: ethereum/contract
+    name: DODOLpToken
+    network: mainnet
+    source:
+      abi: DODOLpToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/lpToken.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOLpToken
+          file: ../abis/DODOLpToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
