@@ -32,6 +32,7 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         pairDayData.dailyVolumeUSDC = ZERO_BD;
         pairDayData.reserveUSDC = ZERO_BD;
         pairDayData.fee = ZERO_BD;
+        pairDayData.dailyTraders = ZERO_BI;
     }
 
     pairDayData.baseTokenReserve = pair.baseReserve;
@@ -73,6 +74,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData.totalLiquidityUSDC = ZERO_BD;
         tokenDayData.untrackedVolume = ZERO_BD;
         tokenDayData.fee = ZERO_BD;
+        tokenDayData.dailyTraders = ZERO_BI;
     }
 
     tokenDayData.priceUSDC = token.priceUSDC;
@@ -102,6 +104,7 @@ export function updateCrowdPoolingDayData(cp: CrowdPooling, event: ethereum.Even
         cpDayData.newcome = ZERO_BI;
         cpDayData.crowdPooling = cp.id;
         cpDayData.poolQuote = cp.poolQuote;
+        cpDayData.dailyInvestors = ZERO_BI;
         cpDayData.save();
     }
     return cpDayData as CrowdPoolingDayData;

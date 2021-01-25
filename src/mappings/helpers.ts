@@ -328,7 +328,7 @@ export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateSt
     return null;
 }
 
-export function updatePairTraderCount(from: Address, to: Address, pair: Pair): void {
+export function updatePairTraderCount(from: Address, to: Address, pair: Pair,event: ethereum.Event): void {
     let fromPairID = from.toHexString().concat("-").concat(pair.id);
     let toPairID = to.toHexString().concat("-").concat(pair.id);
 
@@ -337,6 +337,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair): v
         fromTraderPair = new PairTrader(fromPairID);
         fromTraderPair.pair = pair.id;
         fromTraderPair.trader = createUser(from).id;
+        fromTraderPair.lastTxTime = ZERO_BI;
         fromTraderPair.save();
 
         pair.traderCount = pair.traderCount.plus(ONE_BI);
@@ -347,6 +348,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair): v
         toTraderPair = new PairTrader(toPairID);
         toTraderPair.pair = pair.id;
         toTraderPair.trader = createUser(to).id;
+        toTraderPair.lastTxTime = ZERO_BI;
         toTraderPair.save();
         pair.traderCount = pair.traderCount.plus(ONE_BI);
     }

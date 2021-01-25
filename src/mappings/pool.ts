@@ -1,10 +1,21 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {OrderHistory, Token, Pair, Swap, User, LiquidityPosition, LpToken, LiquidityHistory} from "../types/schema"
+import {
+    OrderHistory,
+    Token,
+    Pair,
+    Swap,
+    User,
+    LiquidityPosition,
+    LpToken,
+    LiquidityHistory,
+    PairTrader
+} from "../types/schema"
 import {
     createLpToken,
     createUser,
     ZERO_BD,
     ONE_BI,
+    ZERO_BI,
     convertTokenToDecimal,
     getPMMState,
     SOURCE_POOL_SWAP,
@@ -165,7 +176,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     }
 
     // 更新交易人数
-    updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair);
+    updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair,event);
 
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
@@ -182,7 +193,23 @@ export function handleDODOSwap(event: DODOSwap): void {
 
     let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
+    let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
+    let toTraderPair = PairTrader.load(event.params.receiver.toHexString().concat("-").concat(pair.id));
+    if(fromTraderPair.lastTxTime.lt(event.block.timestamp)){
+        fromTraderPair.lastTxTime = event.block.timestamp;
+        pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
+        baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
+        quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
+    }
+    if(toTraderPair.lastTxTime.lt(event.block.timestamp)){
+        toTraderPair.lastTxTime = event.block.timestamp;
+        pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
+        baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
+        quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
+    }
 
+    fromTraderPair.save();
+    toTraderPair.save();
     pairDayData.save();
     baseDayData.save();
     quoteDayData.save();
@@ -210,6 +237,7 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityPosition.user = event.params.to.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
+        liquidityPosition.lastTxTime = event.block.timestamp;
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
@@ -284,6 +312,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityPosition.user = event.params.to.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
+        liquidityPosition.lastTxTime = ZERO_BI;
     }
     liquidityPosition.liquidityTokenBalance = balance;
 

@@ -37,10 +37,10 @@ export function handleBid(event: Bid): void {
         bidPosition.user = event.params.to.toHexString();
         bidPosition.investedQuote = ZERO_BD;
         bidPosition.shares = ZERO_BD;
+        bidPosition.lastTxTime = ZERO_BI;
     }
     bidPosition.investedQuote = dealedAmount.plus(bidPosition.investedQuote);
     bidPosition.shares = event.params.amount.minus(event.params.fee).toBigDecimal().plus(bidPosition.shares);
-    bidPosition.save();
 
     //交易记录
     let bidHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
@@ -67,7 +67,12 @@ export function handleBid(event: Bid): void {
     cpDayData.investedQuote = cpDayData.investedQuote.plus(dealedAmount);
     cpDayData.poolQuote = cp.poolQuote;
     if (newcome == true) cpDayData.newcome = cpDayData.newcome.plus(ONE_BI);
+    if(bidPosition.lastTxTime.lt(BigInt.fromI32(cpDayData.date))){
+        bidPosition.lastTxTime = event.block.timestamp;
+        cpDayData.dailyInvestors = cpDayData.dailyInvestors.plus(ONE_BI);
+    }
 
+    bidPosition.save();
     cpDayData.save();
     cp.save();
 
@@ -93,6 +98,7 @@ export function handleCancel(event: Cancel): void {
         bidPosition.user = event.params.to.toHexString();
         bidPosition.investedQuote = ZERO_BD;
         bidPosition.shares = ZERO_BD;
+        bidPosition.lastTxTime = ZERO_BI;
     }
     bidPosition.investedQuote = bidPosition.investedQuote.minus(dealedAmount);
     bidPosition.shares = bidPosition.shares.minus(event.params.amount.toBigDecimal());

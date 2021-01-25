@@ -35,6 +35,8 @@ type LiquidityPosition @entity {
     lpToken: LpToken!
     "lp token balance"
     liquidityTokenBalance: BigDecimal!
+    "last add time"
+    lastTxTime: BigInt!
 }
 
 type Token @entity {
@@ -230,6 +232,8 @@ type PairTrader @entity{
     pair: Pair!
     "user"
     trader: User!
+    "last trade time"
+    lastTxTime: BigInt!
 }
 
 type Swap @entity {
@@ -330,6 +334,8 @@ type PairDayData @entity {
     dailyVolumeUSDC: BigDecimal!
     "daily txns"
     dailyTxns: BigInt!
+    "daily traders"
+    dailyTraders: BigInt!
     "trading fee"
     fee: BigDecimal!
 
@@ -349,6 +355,8 @@ type TokenDayData @entity {
     dailyVolumeToken: BigDecimal!
     dailyVolumeUSDC: BigDecimal!
     dailyTxns: BigInt!
+
+    dailyTraders: BigInt!
 
     "liquidity stats"
     totalLiquidityToken: BigDecimal!
@@ -413,6 +421,8 @@ type BidPosition @entity {
     shares: BigDecimal!
     "total quote invested"
     investedQuote: BigDecimal!
+    "last bid time"
+    lastTxTime: BigInt!
 }
 
 type BidHistory @entity {
@@ -455,6 +465,8 @@ type CrowdPoolingDayData @entity{
     newcome: BigInt!
     "total quote in pool"
     poolQuote: BigDecimal!
+    "investors count"
+    dailyInvestors: BigInt!
 }
 
 type TradingIncentive @entity{
