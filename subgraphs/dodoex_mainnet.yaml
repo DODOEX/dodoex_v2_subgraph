@@ -311,10 +311,6 @@ templates:
       abis:
         - name: DVM
           file: ../abis/DVM.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: DODO
-          file: ../abis/DODO.json
         - name: DVMFactory
           file: ../abis/DVMFactory.json
         - name: DPPFactory
@@ -356,8 +352,6 @@ templates:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
-        - name: DODO
-          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -371,6 +365,8 @@ templates:
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
+        - event: LpFeeRateChange(uint256)
+          handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: CP
     network: mainnet
@@ -389,8 +385,6 @@ templates:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
-        - name: DODO
-          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -426,14 +420,12 @@ templates:
           file: ../abis/DVMFactory.json
         - name: DPPFactory
           file: ../abis/DPPFactory.json
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: DPP
-          file: ../abis/DPP.json
         - name: DODO
           file: ../abis/DODO.json
         - name: DODOZoo
           file: ../abis/DODOZoo.json
+        - name: DVM
+          file: ../abis/DVM.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes

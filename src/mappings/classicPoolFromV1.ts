@@ -105,7 +105,7 @@ const QUOTE_LP_TOKENS: string[] = [
 
 function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
-    if(DODOZooID == "dodoex-v2-bsc" || DODOZooID == "dodoex-v2-kovan"){
+    if(DODOZooID != "dodoex-v2"){
         return;
     }
 
