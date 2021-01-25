@@ -45,6 +45,22 @@ export let ZERO_BD = BigDecimal.fromString('0')
 export let ONE_BD = BigDecimal.fromString('1')
 export let BI_18 = BigInt.fromI32(18)
 
+//subgraph dosen't support indexOf() now
+export function getAddressFirstIndex(addresses: string[], address: string): BigInt {
+    let index = BigInt.fromI32(-1);
+    let length = addresses.length;
+
+    for (let i = 0; i < length; i++) {
+
+        if (addresses[i] == address) {
+            index = BigInt.fromI32(i);
+            break
+        }
+
+    }
+    return index
+}
+
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
     let bd = BigDecimal.fromString('1')
     for (let i = ZERO_BI; i.lt(decimals as BigInt); i = i.plus(ONE_BI)) {
