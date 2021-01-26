@@ -88,17 +88,18 @@ function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
             }
         }
 
-        if (block.toI32() > DPP_FACTORY_DEPLOY_BLOCK) {
-            let addresses = dppFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-            if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
-                let pair: DPP;
-                log.warning(`dpp pool address:{}`,[addresses[0].toHexString()])
-                pair = DPP.bind(addresses[0]);
-                let price1 = pair.getMidPrice();
-                let price2 = getPriceFromExistPair(i);
-                return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
-            }
-        }
+        //dpp reset will cause uncertain consequences
+        // if (block.toI32() > DPP_FACTORY_DEPLOY_BLOCK) {
+        //     let addresses = dppFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
+        //     if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
+        //         let pair: DPP;
+        //         log.warning(`dpp pool address:{}`,[addresses[0].toHexString()])
+        //         pair = DPP.bind(addresses[0]);
+        //         let price1 = pair.getMidPrice();
+        //         let price2 = getPriceFromExistPair(i);
+        //         return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
+        //     }
+        // }
 
     }
 
