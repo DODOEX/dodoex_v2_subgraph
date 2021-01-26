@@ -46,15 +46,12 @@ const WHITELIST_BLOCK: i32[] = [
 ]
 
 function getPriceFromExistPair(i: i32): BigDecimal {
-    log.warning("getUSDCPrice 5555", [])
     switch (i) {
         case 1:
             let contract1 = DODO.bind(Address.fromString(WHITELIST_PAIR[i]));
-            log.warning(`get3333333`, [WHITELIST_PAIR[i]]);
             return convertTokenToDecimal(contract1.getMidPrice(), BigInt.fromI32(18));
         case 2:
             let contract2 = DODO.bind(Address.fromString(USDT_USDC_PAIR[i]));
-            log.warning(`get4444444`, [WHITELIST_PAIR[i]]);
             return convertTokenToDecimal(contract2.getMidPrice(), BigInt.fromI32(18));
         default:
             return ZERO_BD;
@@ -95,6 +92,7 @@ function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
             let addresses = dppFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
             if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
                 let pair: DPP;
+                log.warning(`dpp pool address:{}`,[addresses[0].toHexString()])
                 pair = DPP.bind(addresses[0]);
                 let price1 = pair.getMidPrice();
                 let price2 = getPriceFromExistPair(i);

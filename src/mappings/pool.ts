@@ -21,11 +21,11 @@ import {
     SOURCE_POOL_SWAP,
     BI_18,
     updatePairTraderCount,
-    getDODOZoo, TYPE_DPP_POOL,
+    getDODOZoo, TYPE_DPP_POOL, updateStatistics,
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../types/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../types/templates/DPP/DPP"
-import {updatePairDayData, updateTokenDayData} from "./dayUpdates"
+import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates"
 import {getUSDCPrice} from "./pricing"
 import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
 
@@ -184,36 +184,48 @@ export function handleDODOSwap(event: DODOSwap): void {
     dodoZoo.save();
 
     //更新报表数据
-    let pairDayData = updatePairDayData(event);
-    pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
-    pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
+    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.receiver);
 
-    let baseDayData = updateTokenDayData(baseToken, event);
-    baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
-
-    let quoteDayData = updateTokenDayData(quoteToken, event);
-    quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
-    let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-        fromTraderPair.lastTxTime = event.block.timestamp;
-        pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-        baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-        quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    }
-    fromTraderPair.save();
-
-    let toTraderPair = PairTrader.load(event.params.receiver.toHexString().concat("-").concat(pair.id));
-    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-        toTraderPair.lastTxTime = event.block.timestamp;
-        pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-        baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-        quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    }
-    toTraderPair.save();
-
-    pairDayData.save();
-    baseDayData.save();
-    quoteDayData.save();
+    // let pairHourData = updatePairHourData(event);
+    // pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
+    // pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
+    //
+    // let pairDayData = updatePairDayData(event);
+    // pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
+    // pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
+    //
+    // let baseDayData = updateTokenDayData(baseToken, event);
+    // baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
+    //
+    // let quoteDayData = updateTokenDayData(quoteToken, event);
+    // quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
+    // let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
+    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
+    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
+    // }
+    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
+    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
+    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
+    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
+    // }
+    // fromTraderPair.lastTxTime = event.block.timestamp;
+    // fromTraderPair.save();
+    //
+    // let toTraderPair = PairTrader.load(event.params.receiver.toHexString().concat("-").concat(pair.id));
+    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
+    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
+    // }
+    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
+    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
+    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
+    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
+    // }
+    // toTraderPair.lastTxTime = event.block.timestamp;
+    // toTraderPair.save();
+    //
+    // pairDayData.save();
+    // baseDayData.save();
+    // quoteDayData.save();
 }
 
 export function handleBuyShares(event: BuyShares): void {

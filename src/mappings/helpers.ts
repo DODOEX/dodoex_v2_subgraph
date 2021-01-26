@@ -25,6 +25,7 @@ import {
     CLASSIC_FACTORY_ADDRESS,
     ETH_ADDRESS
 } from "./constant"
+import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
@@ -353,4 +354,52 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
         pair.traderCount = pair.traderCount.plus(ONE_BI);
     }
     pair.save();
+}
+
+export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: BigDecimal,quoteVolume: BigDecimal,untrackedBaseVolume: BigDecimal,untrackedQuoteVolume: BigDecimal,baseToken: Token,quoteToken: Token,to: Address):void {
+    let pairHourData = updatePairHourData(event);
+    pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
+    pairHourData.volumeBase = pairHourData.volumeBase.plus(baseVolume);
+    pairHourData.volumeQuote = pairHourData.volumeQuote.plus(quoteVolume);
+
+    let pairDayData = updatePairDayData(event);
+    pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
+    pairDayData.volumeBase = pairDayData.volumeBase.plus(baseVolume);
+    pairDayData.volumeQuote = pairDayData.volumeQuote.plus(quoteVolume);
+
+    let baseDayData = updateTokenDayData(baseToken, event);
+    baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
+
+    let quoteDayData = updateTokenDayData(quoteToken, event);
+    quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
+    let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
+    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
+        pairHourData.traders = pairHourData.traders.plus(ONE_BI);
+    }
+    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
+        pairDayData.traders = pairDayData.traders.plus(ONE_BI);
+        baseDayData.traders = baseDayData.traders.plus(ONE_BI);
+        quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
+    }
+    fromTraderPair.lastTxTime = event.block.timestamp;
+    fromTraderPair.save();
+
+    let toTraderPair = PairTrader.load(to.toHexString().concat("-").concat(pair.id));
+    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
+        pairHourData.traders = pairHourData.traders.plus(ONE_BI);
+    }
+    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
+        pairDayData.traders = pairDayData.traders.plus(ONE_BI);
+        baseDayData.traders = baseDayData.traders.plus(ONE_BI);
+        quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
+    }
+    toTraderPair.lastTxTime = event.block.timestamp;
+    toTraderPair.save();
+
+    pairHourData.save();
+    pairDayData.save();
+    baseDayData.save();
+    quoteDayData.save();
 }

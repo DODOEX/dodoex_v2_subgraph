@@ -37,9 +37,9 @@ dataSources:
     name: DODOV2Proxy01
     network: kovan
     source:
-      address: '0xfDEDc04A641DE9CEeb4eD2F24d98faa22418Bd94'
+      address: '0x3457a15b9ab57fc754789ee83e4bd2bd8f4f50c8'
       abi: DODOV2Proxy01
-      startBlock: 23072322
+      startBlock: 23158550
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -95,9 +95,9 @@ dataSources:
     name: DPPFactory
     network: kovan
     source:
-      address: '0xaFC7F3Ef4f8609411653FbF1Dd6D583A8Ae1f0fA'
+      address: '0x6dab26dfe83e484dcc5126f812e3e6aa8e7eef4d'
       abi: DPPFactory
-      startBlock: 23109618
+      startBlock: 23158541
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

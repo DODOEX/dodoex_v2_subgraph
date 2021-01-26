@@ -1,12 +1,12 @@
 //kovan
 // export const DODOZooID = "dodoex-v2-kovan";
-// export const SMART_ROUTE_ADDRESSES: string[]= ["0xfDEDc04A641DE9CEeb4eD2F24d98faa22418Bd94"];
+// export const SMART_ROUTE_ADDRESSES: string[]= ["0x3457a15b9ab57fc754789ee83e4bd2bd8f4f50c8"];
 // export const DVM_FACTORY_ADDRESS = "0xE842d8c9A54B23C4D0cf208daCA3882c0c311353";
-// export const DPP_FACTORY_ADDRESS = "0xaFC7F3Ef4f8609411653FbF1Dd6D583A8Ae1f0fA";
-// export const CLASSIC_FACTORY_ADDRESS = "0x92230e929a2226b29ed3441ae5524886347c60c8";//todo 继承V1的池子
+// export const DPP_FACTORY_ADDRESS = "0x6dab26dfe83e484dcc5126f812e3e6aa8e7eef4d";
+// export const CLASSIC_FACTORY_ADDRESS = "0x92230e929a2226b29ed3441ae5524886347c60c8";
 //
 // export const DVM_FACTORY_DEPLOY_BLOCK = 23109610;
-// export const DPP_FACTORY_DEPLOY_BLOCK = 23109618;
+// export const DPP_FACTORY_DEPLOY_BLOCK = 23158541;
 //
 // export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 // export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';

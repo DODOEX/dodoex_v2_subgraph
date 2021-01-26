@@ -1,18 +1,12 @@
 import {
-    PairDayData,
-    TokenDayData,
-    Token,
-    Pair,
-    LpToken,
     CrowdPooling,
     BidPosition,
     BidHistory,
-    CrowdPoolingDayData
 } from "../types/schema"
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, TYPE_DPP_POOL, TYPE_DVM_POOL, createToken,createUser,getDODOZoo} from './helpers'
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken,createUser,getDODOZoo} from './helpers'
 import {Bid, Cancel} from "../types/templates/CP/CP"
-import {updateCrowdPoolingDayData} from "./dayUpdates"
+import {updateCrowdPoolingDayData,updateCrowdPoolingHourData} from "./dayUpdates"
 
 export function handleBid(event: Bid): void {
     let cp = CrowdPooling.load(event.address.toHexString());
@@ -61,6 +55,17 @@ export function handleBid(event: Bid): void {
     bidHistory.share = event.params.amount.minus(event.params.fee).toBigDecimal();
     bidHistory.save();
 
+    //更新小时统计数据
+    let cpHourData = updateCrowdPoolingHourData(cp as CrowdPooling, event);
+    cpHourData.investCount = cpHourData.investCount.plus(ONE_BI);
+    cpHourData.investedQuote = cpHourData.investedQuote.plus(dealedAmount);
+    cpHourData.poolQuote = cp.poolQuote;
+    if (newcome == true) cpHourData.newcome = cpHourData.newcome.plus(ONE_BI);
+    if(bidPosition.lastTxTime.lt(BigInt.fromI32(cpHourData.hour))){
+        cpHourData.investors = cpHourData.investors.plus(ONE_BI);
+    }
+    cpHourData.save();
+
     //更新日统计数据
     let cpDayData = updateCrowdPoolingDayData(cp as CrowdPooling, event);
     cpDayData.investCount = cpDayData.investCount.plus(ONE_BI);
@@ -68,10 +73,10 @@ export function handleBid(event: Bid): void {
     cpDayData.poolQuote = cp.poolQuote;
     if (newcome == true) cpDayData.newcome = cpDayData.newcome.plus(ONE_BI);
     if(bidPosition.lastTxTime.lt(BigInt.fromI32(cpDayData.date))){
-        bidPosition.lastTxTime = event.block.timestamp;
-        cpDayData.dailyInvestors = cpDayData.dailyInvestors.plus(ONE_BI);
+        cpDayData.investors = cpDayData.investors.plus(ONE_BI);
     }
 
+    bidPosition.lastTxTime = event.block.timestamp;
     bidPosition.save();
     cpDayData.save();
     cp.save();
@@ -122,6 +127,13 @@ export function handleCancel(event: Cancel): void {
     bidHistory.quote = dealedAmount;
     bidHistory.share = event.params.amount.toBigDecimal();
     bidHistory.save();
+
+    //更新小时统计数据
+    let cpHourData = updateCrowdPoolingHourData(cp as CrowdPooling, event);
+    cpHourData.investedQuote = cpHourData.investedQuote.minus(dealedAmount);
+    cpHourData.poolQuote = cp.poolQuote;
+    cpHourData.canceledQuote = cpHourData.canceledQuote.plus(dealedAmount);
+    cpHourData.save();
 
     //更新日统计数据
     let cpDayData = updateCrowdPoolingDayData(cp as CrowdPooling, event);
