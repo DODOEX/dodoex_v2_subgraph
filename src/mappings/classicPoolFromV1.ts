@@ -553,7 +553,6 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     dodoZoo.save();
 
     //更新报表数据
-    let newToday = false;
     let pairDayData = updatePairDayData(event);
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
@@ -564,22 +563,23 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    let toTraderPair = PairTrader.load(event.params.seller.toHexString().concat("-").concat(pair.id));
-    if(fromTraderPair.lastTxTime.lt(event.block.timestamp)){
+    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
         fromTraderPair.lastTxTime = event.block.timestamp;
         pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
         baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
         quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
     }
-    if(toTraderPair.lastTxTime.lt(event.block.timestamp)){
+    fromTraderPair.save();
+
+    let toTraderPair = PairTrader.load(event.params.seller.toHexString().concat("-").concat(pair.id));
+    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
         toTraderPair.lastTxTime = event.block.timestamp;
         pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
         baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
         quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
     }
-
-    fromTraderPair.save();
     toTraderPair.save();
+
     pairDayData.save();
     baseDayData.save();
     quoteDayData.save();
@@ -740,22 +740,23 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
 
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    let toTraderPair = PairTrader.load(event.params.buyer.toHexString().concat("-").concat(pair.id));
-    if(fromTraderPair.lastTxTime.lt(event.block.timestamp)){
+    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
         fromTraderPair.lastTxTime = event.block.timestamp;
         pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
         baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
         quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
     }
-    if(toTraderPair.lastTxTime.lt(event.block.timestamp)){
+    fromTraderPair.save();
+
+    let toTraderPair = PairTrader.load(event.params.buyer.toHexString().concat("-").concat(pair.id));
+    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
         toTraderPair.lastTxTime = event.block.timestamp;
         pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
         baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
         quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
     }
-
-    fromTraderPair.save();
     toTraderPair.save();
+
     pairDayData.save();
     baseDayData.save();
     quoteDayData.save();
