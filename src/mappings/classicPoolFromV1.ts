@@ -702,7 +702,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         swap.toToken = toToken.id;
         swap.pair = pair.id;
         swap.feeBase = baseLpFee;
-        swap.feeBase = quoteLpFee;
+        swap.feeQuote = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;

@@ -24,6 +24,7 @@ export function handleTransfer(event: Transfer): void{
             position.liquidityTokenBalance = ZERO_BD;
             position.lpToken = lpToken.id;
             position.lastTxTime = ZERO_BI;
+            position.liquidityTokenInMining = ZERO_BD;
         }
         position.liquidityTokenBalance = position.liquidityTokenBalance.plus(dealedAmount);
         position.save();
@@ -39,6 +40,7 @@ export function handleTransfer(event: Transfer): void{
             position.liquidityTokenBalance = ZERO_BD;
             position.lpToken = lpToken.id;
             position.lastTxTime = ZERO_BI;
+            position.liquidityTokenInMining = ZERO_BD;
         }
         position.liquidityTokenBalance = position.liquidityTokenBalance.minus(dealedAmount);
         position.save();
