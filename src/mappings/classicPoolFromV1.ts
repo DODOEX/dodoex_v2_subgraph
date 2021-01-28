@@ -115,36 +115,36 @@ const QUOTE_LP_TOKENS: string[] = [
 ]
 
 const OWNER: string[] = [
-    "0x6a5eb3555cbbd29016ba6f6ffbccee28d57b2932",
-    "0x0f769bc3ecbda8e0d78280c88e31609e899a1f78",
-    "0xa62bf27fd1d64d488b609a09705a28a9b5240b9c",
-    "0x1b06a22b20362b4115388ab8ca3ed0972230d78a",
-    "0x51baf2656778ad6d67b19a419f91d38c3d0b87b6",
-    "0x0cdb21e20597d753c90458f5ef2083f6695eb794",
-    "0xd9d0bd18ddfa753d0c88a060ffb60657bb0d7a07",
-    "0x3dc2eb2f59ddca985174bb20ae9141ba66cfd2d3",
-    "0x1e5bfc8c1225a6ce59504988f823c44e08414a49",
-    "0x05a54b466f01510e92c02d3a180bae83a64baab8",
-    "0x5840a9e733960f591856a5d13f6366658535bbe5",
-    "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x6dae6ae227438378c117821c51fd61661faa8893",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0 ",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x6dae6ae227438378c117821c51fd61661faa8893",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
+    "0x9c59990ec0177d87ed7d60a56f584e6b06c639a2",
 ]
 
 const createTime: i32[] = [
-    "0x6a5eb3555cbbd29016ba6f6ffbccee28d57b2932",
-    "0x0f769bc3ecbda8e0d78280c88e31609e899a1f78",
-    "0xa62bf27fd1d64d488b609a09705a28a9b5240b9c",
-    "0x1b06a22b20362b4115388ab8ca3ed0972230d78a",
-    "0x51baf2656778ad6d67b19a419f91d38c3d0b87b6",
-    "0x0cdb21e20597d753c90458f5ef2083f6695eb794",
-    "0xd9d0bd18ddfa753d0c88a060ffb60657bb0d7a07",
-    "0x3dc2eb2f59ddca985174bb20ae9141ba66cfd2d3",
-    "0x1e5bfc8c1225a6ce59504988f823c44e08414a49",
-    "0x05a54b466f01510e92c02d3a180bae83a64baab8",
-    "0x5840a9e733960f591856a5d13f6366658535bbe5",
-    "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
+    1596787200,
+    1598180006,
+    1602236520,
+    1598613764,
+    1598702967,
+    1599011490,
+    1599011463,
+    1599011490,
+    1601348330,
+    1603302872,
+    1604862756,
+    1606415616
 ]
 
-function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
+export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
     if (DODOZooID != "dodoex-v2") {
         return;
@@ -165,8 +165,8 @@ function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.quoteToken = quoteToken.id;
             pair.type = TYPE_CLASSICAL_POOL;
 
-            pair.creator = Address.fromString(ADDRESS_ZERO);
-            pair.createdAtTimestamp = event.block.timestamp;
+            pair.creator = Address.fromString(OWNER[i]);
+            pair.createdAtTimestamp = BigInt.fromI32(createTime[i]);
             pair.createdAtBlockNumber = event.block.number;
 
             let baseLpToken = createLpToken(Address.fromString(BASE_LP_TOKENS[i]), pair);
