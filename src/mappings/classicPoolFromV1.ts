@@ -192,7 +192,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.baseReserve = ZERO_BD;
             pair.quoteReserve = ZERO_BD;
 
-            pair.lpFeeRate = ZERO_BD;
+            pair.lpFeeRate = BigDecimal.fromString("0.003");
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
