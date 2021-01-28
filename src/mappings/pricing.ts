@@ -109,7 +109,7 @@ function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
 
 export function getUSDCPrice(pair: Pair, isBase: boolean, block: BigInt): BigDecimal {
 
-    if(DODOZooID == "dodoex-v2-bsc"){
+    if(DODOZooID != " "){
         return ZERO_BD;
     }
 

@@ -31,7 +31,8 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         pairDayData.quoteLpTokenTotalSupply = ZERO_BD;
         pairDayData.volumeUSDC = ZERO_BD;
         pairDayData.reserveUSDC = ZERO_BD;
-        pairDayData.fee = ZERO_BD;
+        pairDayData.feeBase = ZERO_BD;
+        pairDayData.feeQuote = ZERO_BD;
         pairDayData.traders = ZERO_BI;
     }
 
@@ -83,7 +84,8 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
         pairHourData.quoteLpTokenTotalSupply = ZERO_BD;
         pairHourData.volumeUSDC = ZERO_BD;
         pairHourData.reserveUSDC = ZERO_BD;
-        pairHourData.fee = ZERO_BD;
+        pairHourData.feeBase = ZERO_BD;
+        pairHourData.feeQuote = ZERO_BD;
         pairHourData.traders = ZERO_BI;
     }
 

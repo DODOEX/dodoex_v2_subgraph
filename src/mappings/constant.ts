@@ -20,6 +20,7 @@
 // export const WETH_USDC_BLOCK = 23016939;
 // export const USDT_USDC_BLOCK = 23016946;
 // export const TRADING_INCENTIVE_ADDRESS = "0x1f69E3CEAbDc464Ab11bceB15726530CD8AC535E";
+// export  const DODO_MINE_ADDRESS = "0xaed7384f03844af886b830862ff0a7afce0a632c"
 
 //bsc
 // export const DODOV2Proxy01="0xb57dd5c265dbb13ca014f2332069e90cd0e22e65";
@@ -79,4 +80,5 @@ export const WETH_USDC_BLOCK = 10616399;
 export const USDT_USDC_BLOCK = 11106395;
 
 export const TRADING_INCENTIVE_ADDRESS = "0x989dcaa95801c527c5b73aa65d3962df9ace1b0c";
+export  const DODO_MINE_ADDRESS = "0xaed7384f03844af886b830862ff0a7afce0a632c"
 

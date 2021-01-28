@@ -25,7 +25,8 @@ import {
     SOURCE_POOL_SWAP,
     updatePairTraderCount,
     fetchTokenBalance,
-    updateStatistics
+    updateStatistics,
+    bigDecimalExp18
 } from './helpers'
 import {DODOBirth} from '../types/DodoZoo/DodoZoo'
 import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken} from '../types/templates/DODO/DODO';
@@ -113,6 +114,36 @@ const QUOTE_LP_TOKENS: string[] = [
     "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
 ]
 
+const OWNER: string[] = [
+    "0x6a5eb3555cbbd29016ba6f6ffbccee28d57b2932",
+    "0x0f769bc3ecbda8e0d78280c88e31609e899a1f78",
+    "0xa62bf27fd1d64d488b609a09705a28a9b5240b9c",
+    "0x1b06a22b20362b4115388ab8ca3ed0972230d78a",
+    "0x51baf2656778ad6d67b19a419f91d38c3d0b87b6",
+    "0x0cdb21e20597d753c90458f5ef2083f6695eb794",
+    "0xd9d0bd18ddfa753d0c88a060ffb60657bb0d7a07",
+    "0x3dc2eb2f59ddca985174bb20ae9141ba66cfd2d3",
+    "0x1e5bfc8c1225a6ce59504988f823c44e08414a49",
+    "0x05a54b466f01510e92c02d3a180bae83a64baab8",
+    "0x5840a9e733960f591856a5d13f6366658535bbe5",
+    "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
+]
+
+const createTime: i32[] = [
+    "0x6a5eb3555cbbd29016ba6f6ffbccee28d57b2932",
+    "0x0f769bc3ecbda8e0d78280c88e31609e899a1f78",
+    "0xa62bf27fd1d64d488b609a09705a28a9b5240b9c",
+    "0x1b06a22b20362b4115388ab8ca3ed0972230d78a",
+    "0x51baf2656778ad6d67b19a419f91d38c3d0b87b6",
+    "0x0cdb21e20597d753c90458f5ef2083f6695eb794",
+    "0xd9d0bd18ddfa753d0c88a060ffb60657bb0d7a07",
+    "0x3dc2eb2f59ddca985174bb20ae9141ba66cfd2d3",
+    "0x1e5bfc8c1225a6ce59504988f823c44e08414a49",
+    "0x05a54b466f01510e92c02d3a180bae83a64baab8",
+    "0x5840a9e733960f591856a5d13f6366658535bbe5",
+    "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
+]
+
 function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
     if (DODOZooID != "dodoex-v2") {
@@ -151,8 +182,8 @@ function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.liquidityProviderCount = ZERO_BI;
             pair.untrackedBaseVolume = ZERO_BD;
             pair.untrackedQuoteVolume = ZERO_BD;
-            pair.baseLpFee = ZERO_BD;
-            pair.quoteLpFee = ZERO_BD;
+            pair.feeBase = ZERO_BD;
+            pair.feeQuote = ZERO_BD;
             pair.lpFeeUSDC = ZERO_BD;
             pair.traderCount = ZERO_BI;
 
@@ -217,8 +248,8 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.liquidityProviderCount = ZERO_BI;
             pair.untrackedBaseVolume = ZERO_BD;
             pair.untrackedQuoteVolume = ZERO_BD;
-            pair.baseLpFee = ZERO_BD;
-            pair.quoteLpFee = ZERO_BD;
+            pair.feeBase = ZERO_BD;
+            pair.feeQuote = ZERO_BD;
             pair.lpFeeUSDC = ZERO_BD;
             pair.traderCount = ZERO_BI;
 
@@ -276,6 +307,7 @@ export function handleDeposit(event: Deposit): void {
         liquidityPosition.user = event.params.receiver.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
+        liquidityPosition.liquidityTokenInMining = ZERO_BD;
     }
     liquidityPosition.lastTxTime = event.block.timestamp;
     liquidityPosition.liquidityTokenBalance = liquidityPosition.liquidityTokenBalance.plus(dealedSharesAmount);
@@ -358,6 +390,7 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityPosition.liquidityTokenBalance = convertTokenToDecimal(fetchTokenBalance(Address.fromString(lpToken.id), event.params.receiver), lpToken.decimals);
         liquidityPosition.lpToken = lpToken.id;
         liquidityPosition.lastTxTime = ZERO_BI;
+        liquidityPosition.liquidityTokenInMining = ZERO_BD;
     } else {
         liquidityPosition.liquidityTokenBalance = liquidityPosition.liquidityTokenBalance.minus(dealedSharesAmount);
     }
@@ -467,8 +500,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.volumeBaseToken = pair.volumeBaseToken.plus(baseVolume);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.tradeVolumeUSDC = pair.tradeVolumeUSDC.plus(swappedUSDC);
-    pair.baseLpFee = pair.baseLpFee.plus(baseLpFee);
-    pair.quoteLpFee = pair.quoteLpFee.plus(quoteLpFee);
+    pair.feeBase = pair.feeBase.plus(baseLpFee);
+    pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
     pair.lpFeeUSDC = lpFeeUsdc;
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
@@ -516,8 +549,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         swap.fromToken = fromToken.id;
         swap.toToken = toToken.id;
         swap.pair = pair.id;
-        swap.baseLpFee = baseLpFee;
-        swap.quoteLpFee = quoteLpFee;
+        swap.feeBase = baseLpFee;
+        swap.feeQuote = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
@@ -559,44 +592,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
 
     //更新日报表数据
-    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.seller);
-    // let pairDayData = updatePairDayData(event);
-    // pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
-    // pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
-    //
-    // let baseDayData = updateTokenDayData(baseToken, event);
-    // baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
-    //
-    // let quoteDayData = updateTokenDayData(quoteToken, event);
-    // quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
-    // let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
-    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
-    // }
-    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    // }
-    // fromTraderPair.lastTxTime = event.block.timestamp;
-    // fromTraderPair.save();
-    //
-    // let toTraderPair = PairTrader.load(event.params.seller.toHexString().concat("-").concat(pair.id));
-    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
-    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
-    // }
-    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    // }
-    // toTraderPair.lastTxTime = event.block.timestamp;
-    // toTraderPair.save();
-    //
-    // pairHourData.save();
-    // pairDayData.save();
-    // baseDayData.save();
-    // quoteDayData.save();
+    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,baseLpFee,quoteLpFee,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.seller);
 }
 
 export function handleBuyBaseToken(event: BuyBaseToken): void {
@@ -656,8 +652,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.volumeBaseToken = pair.volumeBaseToken.plus(baseVolume);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.tradeVolumeUSDC = pair.tradeVolumeUSDC.plus(swappedUSDC);
-    pair.baseLpFee = pair.baseLpFee.plus(baseLpFee);
-    pair.quoteLpFee = pair.quoteLpFee.plus(quoteLpFee);
+    pair.feeBase = pair.feeBase.plus(baseLpFee);
+    pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
     pair.lpFeeUSDC = lpFeeUsdc;
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
@@ -705,8 +701,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         swap.fromToken = fromToken.id;
         swap.toToken = toToken.id;
         swap.pair = pair.id;
-        swap.baseLpFee = baseLpFee;
-        swap.quoteLpFee = quoteLpFee;
+        swap.feeBase = baseLpFee;
+        swap.feeBase = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
@@ -743,47 +739,5 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     dodoZoo.save();
 
     //更新报表数据
-    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.buyer);
-
-    // let pairHourData = updatePairHourData(event);
-    // pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
-    // pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
-    //
-    // let pairDayData = updatePairDayData(event);
-    // pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
-    // pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
-    //
-    // let baseDayData = updateTokenDayData(baseToken, event);
-    // baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
-    //
-    // let quoteDayData = updateTokenDayData(quoteToken, event);
-    // quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
-    //
-    // let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
-    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
-    // }
-    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    // }
-    // fromTraderPair.lastTxTime = event.block.timestamp;
-    // fromTraderPair.save();
-    //
-    // let toTraderPair = PairTrader.load(event.params.buyer.toHexString().concat("-").concat(pair.id));
-    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
-    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
-    // }
-    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    // }
-    // toTraderPair.lastTxTime = event.block.timestamp;
-    // toTraderPair.save();
-    //
-    // pairDayData.save();
-    // baseDayData.save();
-    // quoteDayData.save();
+    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,baseLpFee,quoteLpFee,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.buyer);
 }

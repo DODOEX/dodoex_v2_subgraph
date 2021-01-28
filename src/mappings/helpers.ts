@@ -10,20 +10,22 @@ import {
     Pair,
     LpToken,
     DodoZoo,
-    PairTrader
-
+    PairTrader,
+    Pool
 } from '../types/schema'
 import {DVMFactory} from "../types/DVMFactory/DVMFactory"
 import {DPPFactory} from "../types/DPPFactory/DPPFactory"
 import {DODOZoo as DODOZooContract} from "../types/DODOZoo/DODOZoo"
 import {DPP} from "../types/templates/DPP/DPP"
+import {DODOMine} from "../types/DODOMine/DODOMine"
 
 import {
     DODOZooID,
     DPP_FACTORY_ADDRESS,
     DVM_FACTORY_ADDRESS,
     CLASSIC_FACTORY_ADDRESS,
-    ETH_ADDRESS
+    ETH_ADDRESS,
+    DODO_MINE_ADDRESS
 } from "./constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
 
@@ -356,24 +358,31 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
     pair.save();
 }
 
-export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: BigDecimal,quoteVolume: BigDecimal,untrackedBaseVolume: BigDecimal,untrackedQuoteVolume: BigDecimal,baseToken: Token,quoteToken: Token,to: Address):void {
+export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: BigDecimal,quoteVolume: BigDecimal,feeBase: BigDecimal,feeQuote: BigDecimal,untrackedBaseVolume: BigDecimal,untrackedQuoteVolume: BigDecimal,baseToken: Token,quoteToken: Token,to: Address):void {
     let pairHourData = updatePairHourData(event);
     pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
     pairHourData.volumeBase = pairHourData.volumeBase.plus(baseVolume);
     pairHourData.volumeQuote = pairHourData.volumeQuote.plus(quoteVolume);
+    pairHourData.feeBase = pairHourData.feeBase.plus(feeBase);
+    pairHourData.feeQuote = pairHourData.feeQuote.plus(feeQuote);
 
     let pairDayData = updatePairDayData(event);
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
     pairDayData.volumeBase = pairDayData.volumeBase.plus(baseVolume);
     pairDayData.volumeQuote = pairDayData.volumeQuote.plus(quoteVolume);
+    pairDayData.feeBase = pairDayData.feeBase.plus(feeBase);
+    pairDayData.feeQuote = pairDayData.feeQuote.plus(feeQuote);
 
     let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
+    baseDayData.fee = baseDayData.fee.plus(feeBase);
 
     let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
+    quoteDayData.fee = quoteDayData.fee.plus(feeQuote);
+
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
     if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
         pairHourData.traders = pairHourData.traders.plus(ONE_BI);
@@ -402,4 +411,20 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
     pairDayData.save();
     baseDayData.save();
     quoteDayData.save();
+}
+
+export function createPool(pid: BigInt): Pool {
+
+    let pool = Pool.load(pid.toString());
+
+    if (pool == null) {
+        let pool = new Pool(pid.toString());
+        let dodoMineContract = DODOMine.bind(Address.fromString(DODO_MINE_ADDRESS));
+        let poolInfo = dodoMineContract.poolInfos(pid)
+        pool.lpToken = poolInfo.value0.toHexString();
+        pool.staked = ZERO_BD;
+        pool.save();
+    }
+
+    return pool as Pool;
 }

@@ -5,6 +5,35 @@ schema:
   file: ./dodoex.graphql
 dataSources:
   - kind: ethereum/contract
+    name: DODOMine
+    network: mainnet
+    source:
+      address: '0xaed7384f03844af886b830862ff0a7afce0a632c'
+      abi: DODOMine
+      startBlock: 10970196
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/mine.ts
+      entities:
+        - User
+        - StakeHistory
+      abis:
+        - name: DODOMine
+          file: ../abis/DODOMine.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: handleWithdraw
+  - kind: ethereum/contract
     name: DODOIncentive
     network: mainnet
     source:

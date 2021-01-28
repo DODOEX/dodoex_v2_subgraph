@@ -9,7 +9,6 @@ export function handleTransfer(event: Transfer): void{
     if (event.params.to.toHexString() == ADDRESS_ZERO || event.params.from.toHexString() == ADDRESS_ZERO) {
         return;
     }
-    log.warning(`yes,I see it, {}`,[event.address.toHexString()])
     let fromUser = createUser(event.params.from);
     let toUser = createUser(event.params.to);
     let lpToken = LpToken.load(event.address.toHexString());

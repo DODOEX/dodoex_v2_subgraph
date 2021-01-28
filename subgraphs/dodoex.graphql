@@ -35,6 +35,8 @@ type LiquidityPosition @entity {
     lpToken: LpToken!
     "lp token balance"
     liquidityTokenBalance: BigDecimal!
+    "lp token balance in mining contract"
+    liquidityTokenInMining: BigDecimal!
     "last add time"
     lastTxTime: BigInt!
 }
@@ -144,7 +146,7 @@ type LiquidityHistory @entity {
     from: Bytes!
     "amount"
     amount: BigDecimal!
-    "balance"
+    "balance in wallet"
     balance: BigDecimal!
     "pair"
     pair: Pair!
@@ -201,9 +203,9 @@ type Pair @entity {
     "volume usdc data"
     tradeVolumeUSDC: BigDecimal!
     "lp fee base"
-    baseLpFee: BigDecimal!
+    feeBase: BigDecimal!
     "lp fee quote"
-    quoteLpFee: BigDecimal!
+    feeQuote: BigDecimal!
     "fee usdc"
     lpFeeUSDC: BigDecimal!
 
@@ -263,9 +265,9 @@ type Swap @entity {
     "to token amount"
     amountOut: BigDecimal!
     "lp fee base"
-    baseLpFee: BigDecimal!
+    feeBase: BigDecimal!
     "lp fee quote"
-    quoteLpFee: BigDecimal!
+    feeQuote: BigDecimal!
     "fee usdc"
     lpFeeUSDC: BigDecimal!
 
@@ -336,9 +338,10 @@ type PairDayData @entity {
     txns: BigInt!
     "daily traders"
     traders: BigInt!
-    "trading fee"
-    fee: BigDecimal!
-
+    "base token trading fee get"
+    feeBase: BigDecimal!
+    "quote token trading fee"
+    feeQuote: BigDecimal!
 }
 
 type PairHourData @entity {
@@ -380,9 +383,10 @@ type PairHourData @entity {
     txns: BigInt!
     "daily traders"
     traders: BigInt!
-    "trading fee"
-    fee: BigDecimal!
-
+    "base token trading fee get"
+    feeBase: BigDecimal!
+    "quote token trading fee"
+    feeQuote: BigDecimal!
 }
 
 type TokenDayData @entity {
@@ -408,7 +412,7 @@ type TokenDayData @entity {
 
     "price stats"
     priceUSDC: BigDecimal!
-    "trading fee"
+    "trading fee lp get"
     fee: BigDecimal!
 }
 
@@ -559,4 +563,13 @@ type IncentiveRewardHistory @entity{
     totalAmount: BigDecimal!
     "total user"
     totalUser: BigInt!
+}
+
+type Pool @entity{
+    "pid"
+    id: ID!
+    "lp token"
+    lpToken: LpToken!
+    "staked balance"
+    staked: BigDecimal!
 }

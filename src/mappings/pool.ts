@@ -21,7 +21,7 @@ import {
     SOURCE_POOL_SWAP,
     BI_18,
     updatePairTraderCount,
-    getDODOZoo, TYPE_DPP_POOL, updateStatistics,
+    getDODOZoo, TYPE_DPP_POOL, updateStatistics, bigDecimalExp18,
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../types/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../types/templates/DPP/DPP"
@@ -96,8 +96,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.volumeBaseToken = pair.volumeBaseToken.plus(baseVolume);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.tradeVolumeUSDC = pair.tradeVolumeUSDC.plus(swappedUSDC);
-    pair.baseLpFee = pair.baseLpFee.plus(baseLpFee);
-    pair.quoteLpFee = pair.quoteLpFee.plus(quoteLpFee);
+    pair.feeBase = pair.feeBase.plus(baseLpFee);
+    pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
     pair.lpFeeUSDC = lpFeeUsdc;
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
@@ -145,8 +145,8 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.fromToken = fromToken.id;
         swap.toToken = toToken.id;
         swap.pair = pair.id;
-        swap.baseLpFee = baseLpFee;
-        swap.quoteLpFee = quoteLpFee;
+        swap.feeBase = baseLpFee;
+        swap.feeQuote = quoteLpFee;
         swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
@@ -184,48 +184,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     dodoZoo.save();
 
     //更新报表数据
-    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.receiver);
+    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,baseLpFee,quoteLpFee,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.receiver);
 
-    // let pairHourData = updatePairHourData(event);
-    // pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
-    // pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
-    //
-    // let pairDayData = updatePairDayData(event);
-    // pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
-    // pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
-    //
-    // let baseDayData = updateTokenDayData(baseToken, event);
-    // baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
-    //
-    // let quoteDayData = updateTokenDayData(quoteToken, event);
-    // quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
-    // let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
-    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
-    // }
-    // if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    // }
-    // fromTraderPair.lastTxTime = event.block.timestamp;
-    // fromTraderPair.save();
-    //
-    // let toTraderPair = PairTrader.load(event.params.receiver.toHexString().concat("-").concat(pair.id));
-    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
-    //     pairHourData.hourlyTraders = pairHourData.hourlyTraders.plus(ONE_BI);
-    // }
-    // if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
-    //     pairDayData.dailyTraders = pairDayData.dailyTraders.plus(ONE_BI);
-    //     baseDayData.dailyTraders = baseDayData.dailyTraders.plus(ONE_BI);
-    //     quoteDayData.dailyTraders = quoteDayData.dailyTraders.plus(ONE_BI);
-    // }
-    // toTraderPair.lastTxTime = event.block.timestamp;
-    // toTraderPair.save();
-    //
-    // pairDayData.save();
-    // baseDayData.save();
-    // quoteDayData.save();
 }
 
 export function handleBuyShares(event: BuyShares): void {
@@ -251,6 +211,7 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
         liquidityPosition.lastTxTime = event.block.timestamp;
+        liquidityPosition.liquidityTokenInMining = ZERO_BD;
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
@@ -285,7 +246,7 @@ export function handleBuyShares(event: BuyShares): void {
 
     baseToken.txCount = baseToken.txCount.plus(ONE_BI);
     quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
-
+log.warning("dlp: {}，total supply {},incres {}",[event.address.toHexString(),lpToken.totalSupply.toString(),event.params.increaseShares.toString()])
     lpToken.totalSupply = lpToken.totalSupply.plus(event.params.increaseShares);
 
     pair.save();
@@ -326,6 +287,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
         liquidityPosition.lastTxTime = ZERO_BI;
+        liquidityPosition.liquidityTokenInMining = ZERO_BD;
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
@@ -420,6 +382,7 @@ export function handleTransfer(event: Transfer): void {
             position.user = event.params.to.toHexString();
             position.liquidityTokenBalance = ZERO_BD;
             position.lpToken = lpToken.id;
+            position.lastTxTime = event.block.timestamp;
         }
         position.liquidityTokenBalance = position.liquidityTokenBalance.plus(dealedAmount);
         position.save();
@@ -434,6 +397,7 @@ export function handleTransfer(event: Transfer): void {
             position.user = event.params.to.toHexString();
             position.liquidityTokenBalance = ZERO_BD;
             position.lpToken = lpToken.id;
+            position.lastTxTime = ZERO_BI;
         }
         position.liquidityTokenBalance = position.liquidityTokenBalance.minus(dealedAmount);
         position.save();

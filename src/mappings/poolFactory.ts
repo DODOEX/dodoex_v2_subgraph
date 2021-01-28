@@ -51,8 +51,8 @@ export function handleNewDVM(event: NewDVM): void {
         pair.liquidityProviderCount = ZERO_BI;
         pair.untrackedBaseVolume = ZERO_BD;
         pair.untrackedQuoteVolume = ZERO_BD;
-        pair.baseLpFee = ZERO_BD;
-        pair.quoteLpFee = ZERO_BD;
+        pair.feeBase = ZERO_BD;
+        pair.feeQuote = ZERO_BD;
         pair.lpFeeUSDC = ZERO_BD;
         pair.traderCount = ZERO_BI;
 
@@ -105,8 +105,8 @@ export function handleNewDPP(event: NewDPP): void {
         pair.liquidityProviderCount = ZERO_BI;
         pair.untrackedBaseVolume = ZERO_BD;
         pair.untrackedQuoteVolume = ZERO_BD;
-        pair.baseLpFee = ZERO_BD;
-        pair.quoteLpFee = ZERO_BD;
+        pair.feeBase = ZERO_BD;
+        pair.feeQuote = ZERO_BD;
         pair.lpFeeUSDC = ZERO_BD;
         pair.traderCount = ZERO_BI;
 
