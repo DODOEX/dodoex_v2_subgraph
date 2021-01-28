@@ -263,6 +263,10 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
 
+            baseToken.save();
+            quoteToken.save();
+            baseLpToken.save();
+            quoteLpToken.save();
             pair.save();
 
             dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);

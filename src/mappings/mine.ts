@@ -5,7 +5,7 @@ import {LiquidityPosition, LpToken} from "../types/schema"
 
 export function handleDeposit(event: Deposit): void {
     let pool = createPool(event.params.pid);
-    let lpToken = LpToken.load(pool.lpToken)
+    let lpToken = LpToken.load(pool.lpToken);
     let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
 
     let liquidityPositionID = event.params.user.toHexString().concat("-").concat(event.address.toHexString());
