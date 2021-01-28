@@ -418,7 +418,7 @@ export function createPool(pid: BigInt): Pool {
     let pool = Pool.load(pid.toString());
 
     if (pool == null) {
-        let pool = new Pool(pid.toString());
+        pool = new Pool(pid.toString());
         let dodoMineContract = DODOMine.bind(Address.fromString(DODO_MINE_ADDRESS));
         let poolInfo = dodoMineContract.poolInfos(pid)
         pool.lpToken = poolInfo.value0.toHexString();
