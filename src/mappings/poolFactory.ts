@@ -21,6 +21,7 @@ import {NewCP} from "../types/CrowdPoolingFactory/CrowdPoolingFactory"
 import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../types/templates"
 import {FeeRateModel} from "../types/templates/DVM/FeeRateModel"
 import {CP} from "../types/CrowdPoolingFactory/CP";
+import {ADDRESS_ZERO} from "./constant"
 
 export function handleNewDVM(event: NewDVM): void {
     createUser(event.params.creator);
@@ -163,6 +164,7 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.poolQuoteCap = convertTokenToDecimal(cp._POOL_QUOTE_CAP_(),quoteToken.decimals);
         crowdPooling.poolQuote = ZERO_BD;
         crowdPooling.settled = false;
+        crowdPooling.dvm = ADDRESS_ZERO;
         crowdPooling.save();
 
         let dodoZoo = getDODOZoo();

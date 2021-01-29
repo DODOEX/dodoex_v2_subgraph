@@ -449,6 +449,8 @@ type CrowdPooling @entity {
     totalBase: BigDecimal!
     "settle state"
     settled: Boolean!
+    "created dvm address"
+    dvm: Pair!
 
     "total quote in pool"
     poolQuote: BigDecimal!
