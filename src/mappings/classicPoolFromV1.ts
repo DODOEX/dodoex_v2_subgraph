@@ -514,6 +514,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.lpFeeUSDC = lpFeeUsdc;
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
+    pair.baseReserve = pair.baseReserve.plus(baseVolume);
+    pair.quoteReserve = pair.baseReserve.minus(quoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -666,6 +668,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.lpFeeUSDC = lpFeeUsdc;
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
+    pair.baseReserve = pair.baseReserve.minus(baseVolume);
+    pair.quoteReserve = pair.baseReserve.plus(quoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据

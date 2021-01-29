@@ -17,7 +17,7 @@ export function handleDeposit(event: Deposit): void {
 
     let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
 
-    let liquidityPositionID = event.params.user.toHexString().concat("-").concat(lpToken.id));
+    let liquidityPositionID = event.params.user.toHexString().concat("-").concat(lpToken.id);
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
