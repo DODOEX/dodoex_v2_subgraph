@@ -297,6 +297,7 @@ export function handleDeposit(event: Deposit): void {
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
     let dealedSharesAmount: BigDecimal;
+
     //更新用户LP token信息
     let liquidityPositionID: string, lpToken: LpToken;
     if (event.params.isBaseToken) {

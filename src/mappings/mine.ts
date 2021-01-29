@@ -17,11 +17,11 @@ export function handleDeposit(event: Deposit): void {
 
     let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
 
-    let liquidityPositionID = event.params.user.toHexString().concat("-").concat(event.address.toHexString());
+    let liquidityPositionID = event.params.user.toHexString().concat("-").concat(lpToken.id));
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
-        liquidityPosition.pair = event.address.toHexString();
+        liquidityPosition.pair = lpToken.pair;
         liquidityPosition.user = event.params.user.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
@@ -40,11 +40,11 @@ export function handleWithdraw(event: Withdraw): void {
 
     let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
 
-    let liquidityPositionID = event.params.user.toHexString().concat("-").concat(event.address.toHexString());
+    let liquidityPositionID = event.params.user.toHexString().concat("-").concat(lpToken.id);
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
-        liquidityPosition.pair = event.address.toHexString();
+        liquidityPosition.pair = lpToken.pair;
         liquidityPosition.user = event.params.user.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
