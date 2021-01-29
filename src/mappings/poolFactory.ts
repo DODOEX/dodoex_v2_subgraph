@@ -162,7 +162,7 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.totalBase = convertTokenToDecimal(cp._TOTAL_BASE_(),baseToken.decimals);
         crowdPooling.poolQuoteCap = convertTokenToDecimal(cp._POOL_QUOTE_CAP_(),quoteToken.decimals);
         crowdPooling.poolQuote = ZERO_BD;
-
+        crowdPooling.settled = false;
         crowdPooling.save();
 
         let dodoZoo = getDODOZoo();
