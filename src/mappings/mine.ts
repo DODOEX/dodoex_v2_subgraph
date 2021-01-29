@@ -2,8 +2,15 @@ import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-t
 import {createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal, BI_18, createLpToken,createPool} from "./helpers"
 import {Deposit, Withdraw, Claim} from "../types/DODOMine/DODOMine"
 import {LiquidityPosition, LpToken} from "../types/schema"
+import {insertAllPairs4V1Mainnet} from "./classicPoolFromV1"
 
 export function handleDeposit(event: Deposit): void {
+
+    //only beta
+    // if(event.block.number.lt(BigInt.fromI32(10972196))){
+    //     insertAllPairs4V1Mainnet(event);
+    // }
+
     let pool = createPool(event.params.pid);
     let lpToken = LpToken.load(pool.lpToken);
     if(lpToken == null){return}
