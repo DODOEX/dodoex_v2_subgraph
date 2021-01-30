@@ -20,6 +20,7 @@ DODO V1 Pools is recognized as "classical" pool
 ```
 {
   pairDayDatas(first:100,orderBy:date,orderDirection:desc){
+    date
     volumeBase
     volumeQuote
     feeBase
