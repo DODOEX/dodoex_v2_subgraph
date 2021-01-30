@@ -166,6 +166,39 @@ dataSources:
         - event: OrderHistory(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
+    name: DODOV1Proxy04
+    network: mainnet
+    source:
+      address: '0xa2cb66ebb947d217f61510882096f6e95c1de97d'
+      abi: DODOV1Proxy04
+      startBlock: 11730536
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOV1Proxy04
+          file: ../abis/DODOV1Proxy04.json
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
     name: DODOV2Proxy01
     network: mainnet
     source:
@@ -183,6 +216,33 @@ dataSources:
       abis:
         - name: DODOV2Proxy01
           file: ../abis/DODOV2Proxy01.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODOV2Proxy02
+    network: mainnet
+    source:
+      address: '0xa356867fdcea8e71aeaf87805808803806231fdc'
+      abi: DODOV2Proxy02
+      startBlock: 11730395
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOV2Proxy02
+          file: ../abis/DODOV2Proxy02.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -224,7 +284,7 @@ dataSources:
         - event: NewDVM(address,address,address,address)
           handler: handleNewDVM
   - kind: ethereum/contract
-    name: DPPFactory
+    name: DPPFactory_pass01
     network: mainnet
     source:
       address: "0xb5dc5e183c2acf02ab879a8569ab4edaf147d537"
@@ -254,6 +314,38 @@ dataSources:
       eventHandlers:
         - event: NewDPP(address,address,address,address)
           handler: handleNewDPP
+  - kind: ethereum/contract
+    name: DPPFactory
+    network: mainnet
+    source:
+      address: "0x6b4fa0bc61eddc928e0df9c7f01e407bfcd3e5ef"
+      abi: DPPFactory
+      startBlock: 11730389
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DPPFactory
+          file: ../abis/DPPFactory.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: FeeRateModel
+          file: ../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewDPP(address,address,address,address)
+          handler: handleNewDPP
+
   - kind: ethereum/contract
     name: CrowdPoolingFactory
     network: mainnet
