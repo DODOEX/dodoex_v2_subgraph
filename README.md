@@ -2,11 +2,38 @@
 
 The Graph exposes a GraphQL endpoint to query the events and entities within the DODOex ecosytem.
 
-Help us to 
-
 DODO V1 Pools is recognized as "classical" pool
 
 ### graphql
+ - to get user info
+```
+{
+  user(id:"0x8982a82a77eaf1cd6f490b67ad982304ecc590af"){
+    id
+    txCount
+    tradingRewardRecieved
+  }
+}
+
+```
+ - to get pair data for statistics use pairDayData、pairHourData
+```
+{
+  pairDayDatas(first:100,orderBy:date,orderDirection:desc){
+    volumeBase
+    volumeQuote
+    feeBase
+    feeQuote
+    baseToken{
+      symbol
+    }
+    quoteToken{
+      symbol
+    }
+  }
+}
+```
+ - to get crowdpooling info
 ```
 {
   crowdPoolingDayDatas{
