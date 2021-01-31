@@ -244,9 +244,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
             token.totalSupply = fetchTokenTotalSupply(address);
 
             let decimals = fetchTokenDecimals(address);
-            if (decimals === null) {
-                log.debug('mybug the decimal on token 0 was null', []);
-            }
+
             token.decimals = decimals;
             token.tradeVolume = ZERO_BD;
             token.tradeVolumeUSDC = ZERO_BD;
@@ -258,9 +256,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
             token.totalSupply = fetchTokenTotalSupply(address);
 
             let decimals = fetchTokenDecimals(address);
-            if (decimals === null) {
-                log.debug('mybug the decimal on token 0 was null', []);
-            }
+
             token.decimals = decimals;
             token.tradeVolume = ZERO_BD;
             token.tradeVolumeUSDC = ZERO_BD;

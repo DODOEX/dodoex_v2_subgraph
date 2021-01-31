@@ -289,8 +289,8 @@ export function handleDeposit(event: Deposit): void {
     let pair = Pair.load(event.address.toHexString());
     let toUser = createUser(event.params.receiver);
     let fromUser = createUser(event.transaction.from);
-    let baseToken = Token.load(pair.baseToken);
-    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = createToken(Address.fromString(pair.baseToken),event);
+    let quoteToken = createToken(Address.fromString(pair.quoteToken),event);
 
     let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken), pair as Pair);
     let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken), pair as Pair);
@@ -373,8 +373,8 @@ export function handleWithdraw(event: Withdraw): void {
     let pair = Pair.load(event.address.toHexString());
     let toUser = createUser(event.params.receiver);
     let fromUser = createUser(event.transaction.from);
-    let baseToken = Token.load(pair.baseToken);
-    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = createToken(Address.fromString(pair.baseToken),event);
+    let quoteToken = createToken(Address.fromString(pair.quoteToken),event);
     let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken), pair as Pair);
     let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken), pair as Pair);
 
