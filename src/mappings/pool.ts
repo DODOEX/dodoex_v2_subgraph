@@ -119,29 +119,8 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.save();
     }
 
-    //1、同步到OrderHistory
-    let orderHistory = OrderHistory.load(swapID);
-    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.trader.toHexString()) == -1 && orderHistory == null) {
-        log.warning(`external swap from {},hash : {}`, [event.params.trader.toHexString(), event.transaction.hash.toHexString()]);
-        orderHistory = new OrderHistory(swapID);
-        orderHistory.source = SOURCE_POOL_SWAP;
-        orderHistory.hash = event.transaction.hash.toHexString();
-        orderHistory.timestamp = event.block.timestamp;
-        orderHistory.block = event.block.number;
-        orderHistory.fromToken = event.params.fromToken.toHexString();
-        orderHistory.toToken = event.params.toToken.toHexString();
-        orderHistory.from = event.transaction.from;
-        orderHistory.to = event.params.trader;
-        orderHistory.sender = event.params.trader;
-        orderHistory.amountIn = dealedFromAmount;
-        orderHistory.amountOut = dealedToAmount;
-        orderHistory.logIndex = event.logIndex;
-        orderHistory.tradingReward = ZERO_BD;
-        orderHistory.save();
-    }
-
     // 更新交易人数
-    updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair,event);
+    updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair, event);
 
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
@@ -149,7 +128,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     dodoZoo.save();
 
     //更新报表数据
-    updateStatistics(event,pair as Pair,baseVolume,quoteVolume,baseLpFee,quoteLpFee,untrackedBaseVolume,untrackedQuoteVolume,baseToken,quoteToken,event.params.receiver);
+    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver);
 
 }
 
@@ -161,7 +140,7 @@ export function handleBuyShares(event: BuyShares): void {
     let quoteToken = Token.load(pair.quoteToken);
     let pmmState = getPMMState(event.address);
 
-    let lpToken = createLpToken(event.address,pair as Pair);
+    let lpToken = createLpToken(event.address, pair as Pair);
 
     let dealedSharesAmount = convertTokenToDecimal(event.params.increaseShares, lpToken.decimals);
     let balance = convertTokenToDecimal(event.params.totalShares, lpToken.decimals);
@@ -191,7 +170,6 @@ export function handleBuyShares(event: BuyShares): void {
 
     baseToken.txCount = baseToken.txCount.plus(ONE_BI);
     quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
-log.warning("dlp: {}，total supply {},incres {}",[event.address.toHexString(),lpToken.totalSupply.toString(),event.params.increaseShares.toString()])
     lpToken.totalSupply = lpToken.totalSupply.plus(event.params.increaseShares);
 
     //增加shares发生时的快照
@@ -211,7 +189,7 @@ log.warning("dlp: {}，total supply {},incres {}",[event.address.toHexString(),l
         liquidityHistory.type = "DEPOSIT";
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
-        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply,lpToken.decimals);
+        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
     }
 
     liquidityPosition.save();
@@ -239,7 +217,7 @@ export function handleSellShares(event: SellShares): void {
     let pmmState: DVM__getPMMStateResultStateStruct;
     pmmState = getPMMState(event.address);
 
-    let lpToken = createLpToken(event.address,pair as Pair);
+    let lpToken = createLpToken(event.address, pair as Pair);
 
     let dealedSharesAmount = convertTokenToDecimal(event.params.decreaseShares, lpToken.decimals);
     let balance = convertTokenToDecimal(event.params.totalShares, lpToken.decimals);
@@ -290,7 +268,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityHistory.type = "WITHDRAW";
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
-        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply,lpToken.decimals);
+        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
     }
 
     liquidityPosition.save();

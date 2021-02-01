@@ -168,12 +168,11 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)
-    let totalSupplyValue = 0
     let totalSupplyResult = contract.try_totalSupply()
-    if (!totalSupplyResult.reverted) {
-        totalSupplyValue = totalSupplyResult as i32
+    if (totalSupplyResult.reverted) {
+        return BigInt.fromI32(0)
     }
-    return BigInt.fromI32(totalSupplyValue as i32)
+    return totalSupplyResult.value
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
@@ -202,10 +201,11 @@ export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
     let contract = ERC20.bind(tokenAddress)
     let balance = 0;
     let balanceResult = contract.try_balanceOf(user);
-    if (!balanceResult.reverted) {
-        balance = balanceResult as i32
+    if (balanceResult.reverted) {
+        return BigInt.fromI32(0)
     }
-    return BigInt.fromI32(balance as i32)
+
+    return balanceResult.value;
 }
 
 export function getDODOZoo(): DodoZoo {

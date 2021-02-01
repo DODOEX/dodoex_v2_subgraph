@@ -26,7 +26,6 @@ import {
     updatePairTraderCount,
     fetchTokenBalance,
     updateStatistics,
-    bigDecimalExp18
 } from './helpers'
 import {DODOBirth} from '../types/DodoZoo/DodoZoo'
 import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken} from '../types/templates/DODO/DODO';
@@ -314,6 +313,9 @@ export function handleDeposit(event: Deposit): void {
     liquidityPosition.liquidityTokenBalance = liquidityPosition.liquidityTokenBalance.plus(dealedSharesAmount);
 
     //classical 在这里校准
+    // pair.baseReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(baseToken.id), event.address), baseToken.decimals);
+    // pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(quoteToken.id), event.address), quoteToken.decimals);
+
     if (event.params.isBaseToken) {
         pair.baseReserve = pair.baseReserve.plus(amount);
     } else {
@@ -399,14 +401,11 @@ export function handleWithdraw(event: Withdraw): void {
     }
 
     //更新基础信息
-    let dodo = DODO.bind(event.address);
-    pair.baseReserve = convertTokenToDecimal(dodo._BASE_BALANCE_(),baseToken.decimals);
-    pair.quoteReserve = convertTokenToDecimal(dodo._QUOTE_BALANCE_(),quoteToken.decimals);
-    // if (event.params.isBaseToken) {
-    //     pair.baseReserve = pair.baseReserve.minus(amount);
-    // } else {
-    //     pair.quoteReserve = pair.quoteReserve.minus(amount);
-    // }
+    if (event.params.isBaseToken) {
+        pair.baseReserve = pair.baseReserve.minus(amount);
+    } else {
+        pair.quoteReserve = pair.quoteReserve.minus(amount);
+    }
 
     fromUser.txCount = fromUser.txCount.plus(ONE_BI);
     toUser.txCount = toUser.txCount.plus(ONE_BI);
@@ -494,7 +493,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.plus(baseVolume);
-    pair.quoteReserve = pair.baseReserve.minus(quoteVolume);
+    pair.quoteReserve = pair.quoteReserve.minus(quoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -531,26 +530,6 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.save();
-    }
-
-    //1、同步到OrderHistory
-    let orderHistory = OrderHistory.load(swapID);
-    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.seller.toHexString()) == -1 && orderHistory == null) {
-        orderHistory = new OrderHistory(swapID);
-        orderHistory.source = SOURCE_POOL_SWAP;
-        orderHistory.hash = event.transaction.hash.toHexString();
-        orderHistory.timestamp = event.block.timestamp;
-        orderHistory.block = event.block.number;
-        orderHistory.fromToken = fromToken.id;
-        orderHistory.toToken = toToken.id;
-        orderHistory.from = event.transaction.from;
-        orderHistory.to = event.params.seller;
-        orderHistory.sender = event.params.seller;
-        orderHistory.amountIn = dealedFromAmount;
-        orderHistory.amountOut = dealedToAmount;
-        orderHistory.logIndex = event.logIndex;
-        orderHistory.tradingReward = ZERO_BD;
-        orderHistory.save();
     }
 
     // 更新交易人数
@@ -613,7 +592,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.minus(baseVolume);
-    pair.quoteReserve = pair.baseReserve.plus(quoteVolume);
+    pair.quoteReserve = pair.quoteReserve.plus(quoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -651,26 +630,6 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.save();
-    }
-
-    //1、同步到OrderHistory
-    let orderHistory = OrderHistory.load(swapID);
-    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.buyer.toHexString()) == -1 && orderHistory == null) {
-        orderHistory = new OrderHistory(swapID);
-        orderHistory.source = SOURCE_POOL_SWAP;
-        orderHistory.hash = event.transaction.hash.toHexString();
-        orderHistory.timestamp = event.block.timestamp;
-        orderHistory.block = event.block.number;
-        orderHistory.fromToken = fromToken.id;
-        orderHistory.toToken = toToken.id;
-        orderHistory.from = event.transaction.from;
-        orderHistory.to = event.params.buyer;
-        orderHistory.sender = event.params.buyer;
-        orderHistory.amountIn = dealedFromAmount;
-        orderHistory.amountOut = dealedToAmount;
-        orderHistory.logIndex = event.logIndex;
-        orderHistory.tradingReward = ZERO_BD;
-        orderHistory.save();
     }
 
     // 更新交易人数
