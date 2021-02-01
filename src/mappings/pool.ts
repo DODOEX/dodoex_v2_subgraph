@@ -25,8 +25,6 @@ import {
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../types/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../types/templates/DPP/DPP"
-import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates"
-import {getUSDCPrice} from "./pricing"
 import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
 
 import {
@@ -44,8 +42,6 @@ export function handleDODOSwap(event: DODOSwap): void {
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.toAmount, toToken.decimals);
     let pmmState = getPMMState(event.address);
-    let fromPrice = getUSDCPrice(pair as Pair, true, event.block.number);
-    let toPrice = getUSDCPrice(pair as Pair, false, event.block.number);
 
     let untrackedBaseVolume = ZERO_BD;
     let untrackedQuoteVolume = ZERO_BD;
@@ -61,12 +57,6 @@ export function handleDODOSwap(event: DODOSwap): void {
         baseLpFee = ZERO_BD;
         quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
 
-        if (fromPrice.equals(ZERO_BD)) {
-            untrackedBaseVolume = dealedFromAmount;
-        }
-        if (toPrice.equals(ZERO_BD)) {
-            untrackedQuoteVolume = dealedToAmount;
-        }
     } else {
         baseToken = toToken as Token;
         quoteToken = fromToken as Token;
@@ -76,16 +66,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
         quoteLpFee = ZERO_BD;
 
-        if (fromPrice.equals(ZERO_BD)) {
-            untrackedBaseVolume = dealedToAmount;
-        }
-        if (toPrice.equals(ZERO_BD)) {
-            untrackedQuoteVolume = dealedFromAmount;
-        }
     }
-
-    let swappedUSDC = dealedFromAmount.times(fromPrice).plus(dealedToAmount.times(toPrice));
-    lpFeeUsdc = swappedUSDC.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
 
     //1、更新pair
     pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
@@ -95,10 +76,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.txCount = pair.txCount.plus(ONE_BI);
     pair.volumeBaseToken = pair.volumeBaseToken.plus(baseVolume);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
-    pair.tradeVolumeUSDC = pair.tradeVolumeUSDC.plus(swappedUSDC);
     pair.feeBase = pair.feeBase.plus(baseLpFee);
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
-    pair.lpFeeUSDC = lpFeeUsdc;
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
@@ -106,27 +85,16 @@ export function handleDODOSwap(event: DODOSwap): void {
     //2、更新两个token的记录数据
     fromToken.txCount = fromToken.txCount.plus(ONE_BI);
     fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
-    fromToken.tradeVolumeUSDC = fromToken.tradeVolumeUSDC.plus(dealedFromAmount.times(fromPrice));
-    fromToken.priceUSDC = fromPrice;
-    fromToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if (fromPrice.equals(ZERO_BD)) {
-        fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
-    }
+
     fromToken.save();
 
     toToken.txCount = toToken.txCount.plus(ONE_BI);
     toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-    toToken.tradeVolumeUSDC = toToken.tradeVolumeUSDC.plus(dealedToAmount.times(toPrice));
-    toToken.priceUSDC = toPrice;
-    toToken.feeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
-    if (toPrice.equals(ZERO_BD)) {
-        toToken.untrackedVolume = toToken.untrackedVolume.plus(dealedToAmount);
-    }
+
     toToken.save();
 
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);
-    user.usdcSwapped = user.usdcSwapped.plus(swappedUSDC);
     user.save();
 
     //4、增加swap条目
@@ -141,13 +109,11 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.timestamp = event.block.timestamp;
         swap.amountIn = dealedFromAmount;
         swap.amountOut = dealedToAmount;
-        swap.amountUSDC = swappedUSDC;
         swap.fromToken = fromToken.id;
         swap.toToken = toToken.id;
         swap.pair = pair.id;
         swap.feeBase = baseLpFee;
         swap.feeQuote = quoteLpFee;
-        swap.lpFeeUSDC = lpFeeUsdc.div(BigDecimal.fromString("2"));
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.save();
@@ -170,7 +136,6 @@ export function handleDODOSwap(event: DODOSwap): void {
         orderHistory.amountIn = dealedFromAmount;
         orderHistory.amountOut = dealedToAmount;
         orderHistory.logIndex = event.logIndex;
-        orderHistory.amountUSDC = swappedUSDC;
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.save();
     }
@@ -215,6 +180,20 @@ export function handleBuyShares(event: BuyShares): void {
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
+    //更新基础信息
+    pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
+    pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
+    pair.i = pmmState.i;
+    pair.k = pmmState.K;
+
+    fromUser.txCount = fromUser.txCount.plus(ONE_BI);
+    toUser.txCount = toUser.txCount.plus(ONE_BI);
+
+    baseToken.txCount = baseToken.txCount.plus(ONE_BI);
+    quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
+log.warning("dlp: {}，total supply {},incres {}",[event.address.toHexString(),lpToken.totalSupply.toString(),event.params.increaseShares.toString()])
+    lpToken.totalSupply = lpToken.totalSupply.plus(event.params.increaseShares);
+
     //增加shares发生时的快照
     let liquidityHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let liquidityHistory = LiquidityHistory.load(liquidityHistoryID);
@@ -230,25 +209,13 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityHistory.balance = balance;
         liquidityHistory.lpToken = lpToken.id;
         liquidityHistory.type = "DEPOSIT";
+        liquidityHistory.baseReserve = pair.baseReserve;
+        liquidityHistory.quoteReserve = pair.quoteReserve;
+        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply,lpToken.decimals);
     }
 
     liquidityPosition.save();
     liquidityHistory.save();
-
-    //更新基础信息
-    pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
-    pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
-    pair.i = pmmState.i;
-    pair.k = pmmState.K;
-
-    fromUser.txCount = fromUser.txCount.plus(ONE_BI);
-    toUser.txCount = toUser.txCount.plus(ONE_BI);
-
-    baseToken.txCount = baseToken.txCount.plus(ONE_BI);
-    quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
-log.warning("dlp: {}，total supply {},incres {}",[event.address.toHexString(),lpToken.totalSupply.toString(),event.params.increaseShares.toString()])
-    lpToken.totalSupply = lpToken.totalSupply.plus(event.params.increaseShares);
-
     pair.save();
     fromUser.save();
     toUser.save();
@@ -291,26 +258,6 @@ export function handleSellShares(event: SellShares): void {
     }
     liquidityPosition.liquidityTokenBalance = balance;
 
-    //增加shares发生时的快照
-    let liquidityHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
-    let liquidityHistory = LiquidityHistory.load(liquidityHistoryID);
-    if (liquidityHistory == null) {
-        liquidityHistory = new LiquidityHistory(liquidityHistoryID);
-        liquidityHistory.block = event.block.number;
-        liquidityHistory.hash = event.transaction.hash.toHexString();
-        liquidityHistory.from = event.transaction.from;
-        liquidityHistory.pair = event.address.toHexString();
-        liquidityHistory.timestamp = event.block.timestamp;
-        liquidityHistory.user = event.params.to.toHexString();
-        liquidityHistory.amount = dealedSharesAmount;
-        liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
-        liquidityHistory.lpToken = lpToken.id;
-        liquidityHistory.type = "WITHDRAW";
-    }
-
-    liquidityPosition.save();
-    liquidityHistory.save();
-
     //更新基础信息
     if (pmmState != null) {
         pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
@@ -326,7 +273,28 @@ export function handleSellShares(event: SellShares): void {
     quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
 
     lpToken.totalSupply = lpToken.totalSupply.minus(event.params.decreaseShares);
+    //增加shares发生时的快照
+    let liquidityHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
+    let liquidityHistory = LiquidityHistory.load(liquidityHistoryID);
+    if (liquidityHistory == null) {
+        liquidityHistory = new LiquidityHistory(liquidityHistoryID);
+        liquidityHistory.block = event.block.number;
+        liquidityHistory.hash = event.transaction.hash.toHexString();
+        liquidityHistory.from = event.transaction.from;
+        liquidityHistory.pair = event.address.toHexString();
+        liquidityHistory.timestamp = event.block.timestamp;
+        liquidityHistory.user = event.params.to.toHexString();
+        liquidityHistory.amount = dealedSharesAmount;
+        liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
+        liquidityHistory.lpToken = lpToken.id;
+        liquidityHistory.type = "WITHDRAW";
+        liquidityHistory.baseReserve = pair.baseReserve;
+        liquidityHistory.quoteReserve = pair.quoteReserve;
+        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply,lpToken.decimals);
+    }
 
+    liquidityPosition.save();
+    liquidityHistory.save();
     pair.save();
     fromUser.save();
     toUser.save();

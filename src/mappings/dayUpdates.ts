@@ -29,8 +29,6 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         pairDayData.baseTokenReserve = ZERO_BD;
         pairDayData.baseLpTokenTotalSupply = ZERO_BD;
         pairDayData.quoteLpTokenTotalSupply = ZERO_BD;
-        pairDayData.volumeUSDC = ZERO_BD;
-        pairDayData.reserveUSDC = ZERO_BD;
         pairDayData.feeBase = ZERO_BD;
         pairDayData.feeQuote = ZERO_BD;
         pairDayData.traders = ZERO_BI;
@@ -38,7 +36,6 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
 
     pairDayData.baseTokenReserve = pair.baseReserve;
     pairDayData.quoteTokenReserve = pair.quoteReserve;
-    pairDayData.reserveUSDC = pairDayData.reserveUSDC;
     if (pair.type != TYPE_DPP_POOL) {
         if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
             let baseLpToken = LpToken.load(pair.baseLpToken);
@@ -82,8 +79,6 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
         pairHourData.baseTokenReserve = ZERO_BD;
         pairHourData.baseLpTokenTotalSupply = ZERO_BD;
         pairHourData.quoteLpTokenTotalSupply = ZERO_BD;
-        pairHourData.volumeUSDC = ZERO_BD;
-        pairHourData.reserveUSDC = ZERO_BD;
         pairHourData.feeBase = ZERO_BD;
         pairHourData.feeQuote = ZERO_BD;
         pairHourData.traders = ZERO_BI;
@@ -91,7 +86,6 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
 
     pairHourData.baseTokenReserve = pair.baseReserve;
     pairHourData.quoteTokenReserve = pair.quoteReserve;
-    pairHourData.reserveUSDC = pairHourData.reserveUSDC;
     if (pair.type != TYPE_DPP_POOL) {
         if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
             let baseLpToken = LpToken.load(pair.baseLpToken);
@@ -121,20 +115,15 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData = new TokenDayData(tokenDayID);
         tokenDayData.date = dayStartTimestamp;
         tokenDayData.token = token.id;
-        tokenDayData.priceUSDC = ZERO_BD;
         tokenDayData.volumeToken = ZERO_BD;
         tokenDayData.txns = ZERO_BI;
         tokenDayData.totalLiquidityToken = ZERO_BD;
-        tokenDayData.volumeUSDC = ZERO_BD;
-        tokenDayData.totalLiquidityUSDC = ZERO_BD;
         tokenDayData.untrackedVolume = ZERO_BD;
         tokenDayData.fee = ZERO_BD;
         tokenDayData.traders = ZERO_BI;
     }
 
-    tokenDayData.priceUSDC = token.priceUSDC;
     tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
-    tokenDayData.totalLiquidityUSDC = token.totalLiquidityOnDODO.times(token.priceUSDC);
     tokenDayData.txns = tokenDayData.txns.plus(ONE_BI);
     tokenDayData.save();
 

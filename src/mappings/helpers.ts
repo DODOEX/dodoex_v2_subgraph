@@ -226,7 +226,6 @@ export function createUser(address: Address): User {
     let user = User.load(address.toHexString())
     if (user === null) {
         user = new User(address.toHexString())
-        user.usdcSwapped = ZERO_BD
         user.txCount = ZERO_BI
         user.tradingRewardRecieved = ZERO_BD
         user.save()
@@ -247,7 +246,6 @@ export function createToken(address: Address, event: ethereum.Event): Token {
 
             token.decimals = decimals;
             token.tradeVolume = ZERO_BD;
-            token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
         } else {
             token = new Token(address.toHexString());
@@ -259,14 +257,11 @@ export function createToken(address: Address, event: ethereum.Event): Token {
 
             token.decimals = decimals;
             token.tradeVolume = ZERO_BD;
-            token.tradeVolumeUSDC = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
         }
         token.txCount = ZERO_BI;
-        token.priceUSDC = ZERO_BD;
         token.untrackedVolume = ZERO_BD;
         token.timestamp = event.block.timestamp;
-        token.feeUSDC = ZERO_BD
         token.save();
 
         let dodoZoo = getDODOZoo();

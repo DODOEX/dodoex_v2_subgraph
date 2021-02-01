@@ -1,6 +1,5 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {OrderHistory, Token, Pair, CrowdPooling} from "../types/schema"
-import {OrderHistory as OrderHistoryV1} from "../types/DODOV1Proxy01/DODOV1Proxy01"
 import {
     createToken,
     createLpToken,
@@ -47,14 +46,11 @@ export function handleNewDVM(event: NewDVM): void {
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;
         pair.volumeQuoteToken = ZERO_BD;
-        pair.tradeVolumeUSDC = ZERO_BD;
-        pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
         pair.untrackedBaseVolume = ZERO_BD;
         pair.untrackedQuoteVolume = ZERO_BD;
         pair.feeBase = ZERO_BD;
         pair.feeQuote = ZERO_BD;
-        pair.lpFeeUSDC = ZERO_BD;
         pair.traderCount = ZERO_BI;
 
         let dvm = DVM.bind(event.params.dvm);
@@ -101,14 +97,11 @@ export function handleNewDPP(event: NewDPP): void {
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;
         pair.volumeQuoteToken = ZERO_BD;
-        pair.tradeVolumeUSDC = ZERO_BD;
-        pair.reserveUSDC = ZERO_BD;
         pair.liquidityProviderCount = ZERO_BI;
         pair.untrackedBaseVolume = ZERO_BD;
         pair.untrackedQuoteVolume = ZERO_BD;
         pair.feeBase = ZERO_BD;
         pair.feeQuote = ZERO_BD;
-        pair.lpFeeUSDC = ZERO_BD;
         pair.traderCount = ZERO_BI;
 
         let dpp = DPP.bind(event.params.dpp);

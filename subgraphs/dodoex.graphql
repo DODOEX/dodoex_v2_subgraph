@@ -14,8 +14,6 @@ type DodoZoo @entity {
 type User @entity {
     "user address"
     id: ID!
-    "swapped volume"
-    usdcSwapped: BigDecimal!
     "swapped times"
     txCount: BigInt!
     "trading reward recieved"
@@ -58,19 +56,12 @@ type Token @entity {
     untrackedVolume: BigDecimal!
     "total trade volume"
     tradeVolume: BigDecimal!
-    "total trade trade volume of usd"
-    tradeVolumeUSDC: BigDecimal!
-    "fee usdc"
-    feeUSDC: BigDecimal!
 
     "transactions across all pairs"
     txCount: BigInt!
 
     "liquidity across all pairs"
     totalLiquidityOnDODO: BigDecimal!
-
-    "derived usdc prices"
-    priceUSDC: BigDecimal!
 
     "timestamp"
     timestamp: BigInt!
@@ -119,9 +110,6 @@ type OrderHistory @entity {
     amountIn: BigDecimal!
     "to token amount"
     amountOut: BigDecimal!
-
-    "usdc amount"
-    amountUSDC: BigDecimal!
 
     "trading incentive reward"
     tradingReward: BigDecimal!
@@ -189,8 +177,6 @@ type Pair @entity {
     baseReserve: BigDecimal!
     "quote token reserve"
     quoteReserve: BigDecimal!
-    "reserve usd data"
-    reserveUSDC: BigDecimal!
 
     "untracked base volume"
     untrackedBaseVolume: BigDecimal!
@@ -200,14 +186,10 @@ type Pair @entity {
     volumeBaseToken: BigDecimal!
     "trade volume of quotetoken"
     volumeQuoteToken: BigDecimal!
-    "volume usdc data"
-    tradeVolumeUSDC: BigDecimal!
     "lp fee base"
     feeBase: BigDecimal!
     "lp fee quote"
     feeQuote: BigDecimal!
-    "fee usdc"
-    lpFeeUSDC: BigDecimal!
 
     "transactions count"
     txCount: BigInt!
@@ -268,16 +250,12 @@ type Swap @entity {
     feeBase: BigDecimal!
     "lp fee quote"
     feeQuote: BigDecimal!
-    "fee usdc"
-    lpFeeUSDC: BigDecimal!
 
     "base volume"
     baseVolume: BigDecimal!
     "quote volume"
     quoteVolume: BigDecimal!
 
-    "usdc amount"
-    amountUSDC: BigDecimal!
 }
 
 type FlashLoan @entity {
@@ -321,9 +299,6 @@ type PairDayData @entity {
     "total supply of quote lp token"
     quoteLpTokenTotalSupply: BigDecimal!
 
-    "reserve volume by usdc"
-    reserveUSDC: BigDecimal!
-
     "untracked base volume"
     untrackedBaseVolume: BigDecimal!
     "untracked quote volume"
@@ -332,8 +307,7 @@ type PairDayData @entity {
     volumeBase: BigDecimal!
     "quote token volume"
     volumeQuote: BigDecimal!
-    "usdc volume"
-    volumeUSDC: BigDecimal!
+
     "daily txns"
     txns: BigInt!
     "daily traders"
@@ -366,9 +340,6 @@ type PairHourData @entity {
     "total supply of quote lp token"
     quoteLpTokenTotalSupply: BigDecimal!
 
-    "reserve volume by usdc"
-    reserveUSDC: BigDecimal!
-
     "untracked base volume"
     untrackedBaseVolume: BigDecimal!
     "untracked quote volume"
@@ -377,8 +348,7 @@ type PairHourData @entity {
     volumeBase: BigDecimal!
     "quote token volume"
     volumeQuote: BigDecimal!
-    "usdc volume"
-    volumeUSDC: BigDecimal!
+
     "daily txns"
     txns: BigInt!
     "daily traders"
@@ -401,17 +371,13 @@ type TokenDayData @entity {
     untrackedVolume: BigDecimal!
     "volume stats"
     volumeToken: BigDecimal!
-    volumeUSDC: BigDecimal!
     txns: BigInt!
 
     traders: BigInt!
 
     "liquidity stats"
     totalLiquidityToken: BigDecimal!
-    totalLiquidityUSDC: BigDecimal!
 
-    "price stats"
-    priceUSDC: BigDecimal!
     "trading fee lp get"
     fee: BigDecimal!
 }

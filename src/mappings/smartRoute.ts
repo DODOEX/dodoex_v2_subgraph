@@ -1,15 +1,12 @@
-import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {OrderHistory, Token, IncentiveRewardHistory} from "../types/schema"
 import {OrderHistory as OrderHistoryV1} from "../types/DODOV1Proxy01/DODOV1Proxy01"
 import {
     createToken,
     createUser,
-    ZERO_BI,
     ZERO_BD,
     ONE_BI,
     SOURCE_SMART_ROUTE,
     convertTokenToDecimal,
-    updatePairTraderCount,
     getDODOZoo
 } from "./helpers"
 
@@ -23,18 +20,15 @@ export function handleOrderHistory(event: OrderHistoryV1): void {
     let swappedUSDC = ZERO_BD;
 
     //1、更新用户交易数据(用户的交易次数在下层)
-    user.usdcSwapped = user.usdcSwapped.plus(swappedUSDC);
     user.txCount = user.txCount.plus(ONE_BI);
     user.save();
 
     //2、更新两个token的数据
     fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
     fromToken.txCount = fromToken.txCount.plus(ONE_BI);
-    fromToken.tradeVolumeUSDC = fromToken.tradeVolumeUSDC.plus(swappedUSDC);
 
     toToken.tradeVolume = toToken.tradeVolume.plus(dealedToAmount);
     toToken.txCount = toToken.txCount.plus(ONE_BI);
-    toToken.tradeVolumeUSDC = toToken.tradeVolumeUSDC.plus(swappedUSDC);
     fromToken.save();
     toToken.save();
 
@@ -57,9 +51,8 @@ export function handleOrderHistory(event: OrderHistoryV1): void {
         orderHistory.amountIn = dealedFromAmount;
         orderHistory.amountOut = dealedToAmount;
         orderHistory.logIndex = event.transaction.index;
-        orderHistory.amountUSDC = swappedUSDC;
 
-        let incentiveRewardHistory = IncentiveRewardHistory.load(event.transaction.hash.toHexString())
+        let incentiveRewardHistory = IncentiveRewardHistory.load(event.transaction.hash.toHexString());
         if (incentiveRewardHistory != null) {
             orderHistory.tradingReward = incentiveRewardHistory.amount;
         } else {
