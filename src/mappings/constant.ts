@@ -1,3 +1,12 @@
+//poo type
+export const TYPE_DVM_POOL = "DVM";
+export const TYPE_DPP_POOL = "DPP";
+export const TYPE_CLASSICAL_POOL = "CLASSICAL";
+
+//OrderHistory source type
+export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
+export const SOURCE_POOL_SWAP = "DODO_POOL";
+
 //kovan
 // export const DODOZooID = "dodoex-v2-kovan";
 // export const SMART_ROUTE_ADDRESSES: string[]= ["0x3457a15b9ab57fc754789ee83e4bd2bd8f4f50c8"];

@@ -151,9 +151,9 @@ type LiquidityHistory @entity {
 }
 
 type Pair @entity {
-    "dvm pool address"
+    "pool address"
     id: ID!
-    "pool type"
+    "pool type（CLASSICAL、DVM、DPP）"
     type: String!
     "creator"
     creator: Bytes!

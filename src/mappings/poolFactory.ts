@@ -8,8 +8,6 @@ import {
     ZERO_BD,
     ONE_BI,
     convertTokenToDecimal,
-    TYPE_DPP_POOL,
-    TYPE_DVM_POOL,
     getDODOZoo
 } from "./helpers"
 import {NewDPP} from "../types/DPPFactory/DPPFactory"
@@ -18,7 +16,7 @@ import {DVM, DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM"
 import {DPP, DPP__getPMMStateResultStateStruct} from "../types/DPPFactory/DPP"
 import {NewCP} from "../types/CrowdPoolingFactory/CrowdPoolingFactory"
 import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../types/templates"
-import {FeeRateModel} from "../types/templates/DVM/FeeRateModel"
+import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "./constant"
 import {CP} from "../types/CrowdPoolingFactory/CP";
 import {ADDRESS_ZERO} from "./constant"
 

@@ -28,19 +28,11 @@ import {
     DODO_MINE_ADDRESS
 } from "./constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
+import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "./constant"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
 export let classicFactoryContract = DODOZooContract.bind(Address.fromString(CLASSIC_FACTORY_ADDRESS));
-
-//poo type
-export const TYPE_DVM_POOL = "DVM";
-export const TYPE_DPP_POOL = "DPP";
-export const TYPE_CLASSICAL_POOL = "CLASSICAL";
-
-//OrderHistory source type
-export const SOURCE_SMART_ROUTE = "smart route"
-export const SOURCE_POOL_SWAP = "pool swap"
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)

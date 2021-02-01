@@ -5,10 +5,11 @@ import {
     createUser,
     ZERO_BD,
     ONE_BI,
-    SOURCE_SMART_ROUTE,
     convertTokenToDecimal,
-    getDODOZoo
+    getDODOZoo,
 } from "./helpers"
+import {SOURCE_SMART_ROUTE} from "./constant";
+import {log, BigInt, store} from '@graphprotocol/graph-ts'
 
 export function handleOrderHistory(event: OrderHistoryV1): void {
     let user = createUser(event.transaction.from);
@@ -32,9 +33,16 @@ export function handleOrderHistory(event: OrderHistoryV1): void {
     fromToken.save();
     toToken.save();
 
-    //不更新pair，pair合约自身被调用时更新
+    //3、trim
+    // for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i.plus(ONE_BI)) {
+    //     let orderHistoryAbove = OrderHistory.load(event.transaction.hash.toHexString().concat("-").concat(i.toString()));
+    //     if (orderHistoryAbove != null) {
+    //         // store.remove("OrderHistory",event.transaction.hash.toHexString().concat("-").concat(i.toString()));
+    //         log.warning("66666,{}",[orderHistoryAbove.id])
+    //     }
+    // }
 
-    //3、更OrderHistory数据
+    //4、更OrderHistory数据
     let orderHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
     let orderHistory = OrderHistory.load(orderHistoryID);
     if (orderHistory == null) {

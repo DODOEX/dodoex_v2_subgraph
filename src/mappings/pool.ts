@@ -4,7 +4,6 @@ import {
     Token,
     Pair,
     Swap,
-    User,
     LiquidityPosition,
     LpToken,
     LiquidityHistory,
@@ -18,10 +17,10 @@ import {
     ZERO_BI,
     convertTokenToDecimal,
     getPMMState,
-    SOURCE_POOL_SWAP,
     BI_18,
     updatePairTraderCount,
-    getDODOZoo, TYPE_DPP_POOL, updateStatistics, bigDecimalExp18,
+    getDODOZoo,
+    updateStatistics,
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../types/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../types/templates/DPP/DPP"
@@ -29,7 +28,9 @@ import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
 
 import {
     SMART_ROUTE_ADDRESSES,
-    ADDRESS_ZERO
+    ADDRESS_ZERO,
+    SOURCE_POOL_SWAP,
+    TYPE_DPP_POOL
 } from "./constant"
 
 export function handleDODOSwap(event: DODOSwap): void {
@@ -117,6 +118,27 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.save();
+    }
+
+    //1、同步到OrderHistory
+    let orderHistory = OrderHistory.load(swapID);
+    if (SMART_ROUTE_ADDRESSES.indexOf(event.params.trader.toHexString()) == -1 && orderHistory == null) {
+        log.warning(`external swap from {},hash : {}`, [event.params.trader.toHexString(), event.transaction.hash.toHexString()]);
+        orderHistory = new OrderHistory(swapID);
+        orderHistory.source = SOURCE_POOL_SWAP;
+        orderHistory.hash = event.transaction.hash.toHexString();
+        orderHistory.timestamp = event.block.timestamp;
+        orderHistory.block = event.block.number;
+        orderHistory.fromToken = event.params.fromToken.toHexString();
+        orderHistory.toToken = event.params.toToken.toHexString();
+        orderHistory.from = event.transaction.from;
+        orderHistory.to = event.params.trader;
+        orderHistory.sender = event.params.trader;
+        orderHistory.amountIn = dealedFromAmount;
+        orderHistory.amountOut = dealedToAmount;
+        orderHistory.logIndex = event.logIndex;
+        orderHistory.tradingReward = ZERO_BD;
+        orderHistory.save();
     }
 
     // 更新交易人数
