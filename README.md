@@ -2,7 +2,7 @@
 
 The Graph exposes a GraphQL endpoint to query the events and entities within the DODOex ecosytem.
 
-##1、 Introduce
+## 1、 Introduce
 
 **What is in OrderHistory**
  - 1、Each OrderHistory event emit by DODOSmartRoute contract，if swap goes into the dodo liquidity pool,pool swap event will be ignored. 
@@ -14,7 +14,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 **Where to find pool information**
  - In Pair schema we track pool status.
  
-##2、 Graphql
+## 2、 Graphql
  - to get user info
 ```
 {
