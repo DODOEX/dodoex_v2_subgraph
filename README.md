@@ -2,9 +2,19 @@
 
 The Graph exposes a GraphQL endpoint to query the events and entities within the DODOex ecosytem.
 
-DODO V1 Pools is recognized as "classical" pool
+##1、 Introduce
 
-### graphql
+**What is in OrderHistory**
+ - 1、Each OrderHistory event emit by DODOSmartRoute contract，if swap goes into the dodo liquidity pool,pool swap event will be ignored. 
+ - 2、If swap tx isn't from DODOSmartRoute, swap event from each dodo liquidity pool will record as OrderHistory.
+
+**What is in Swap** 
+ - Each swap event emit from dodo liquidity pool
+ 
+**Where to find pool information**
+ - In Pair schema we track pool status.
+ 
+##2、 Graphql
  - to get user info
 ```
 {
