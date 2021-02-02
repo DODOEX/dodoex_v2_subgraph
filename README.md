@@ -2,7 +2,7 @@
 
 The Graph exposes a GraphQL endpoint to query the events and entities within the DODOex ecosystem.
 
-[Go to the playground and use it](https://thegraph.com/explorer/subgraph/dodoex/dodoex-v2)
+[Go to the playground and use it.](https://thegraph.com/explorer/subgraph/dodoex/dodoex-v2)
 
 ## 1、 Introduce
 
@@ -16,7 +16,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 **Where to find pool information**
  - In *Pair* schema we track pool status.
  
-## 2、 Graphql
+## 2、 Graphql Examples
  - to get user info
 ```
 {
