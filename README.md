@@ -5,7 +5,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 ## 1、 Introduce
 
 **What is in OrderHistory**
- - 1、Each *OrderHistory* event emit by DODOSmartRoute contract，if swap goes into the dodo liquidity pool,pool swap event will be ignored. 
+ - 1、Each *OrderHistory* event emit by DODOSmartRoute contract，if swap goes into the dodo liquidity pool, pool swap event will be ignored. 
  - 2、If swap tx isn't from DODOSmartRoute, swap event from each dodo liquidity pool will record as *OrderHistory*.
 
 **What is in Swap** 
