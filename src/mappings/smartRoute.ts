@@ -34,13 +34,13 @@ export function handleOrderHistory(event: OrderHistoryV1): void {
     toToken.save();
 
     //3、trim
-    // for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i.plus(ONE_BI)) {
-    //     let orderHistoryAbove = OrderHistory.load(event.transaction.hash.toHexString().concat("-").concat(i.toString()));
-    //     if (orderHistoryAbove != null) {
-    //         // store.remove("OrderHistory",event.transaction.hash.toHexString().concat("-").concat(i.toString()));
-    //         log.warning("66666,{}",[orderHistoryAbove.id])
-    //     }
-    // }
+    for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i=i.plus(ONE_BI)) {
+        let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());
+        let orderHistoryAbove = OrderHistory.load(orderHistoryAboveID);
+        if (orderHistoryAbove != null) {
+            store.remove("OrderHistory",event.transaction.hash.toHexString().concat("-").concat(i.toString()));
+        }
+    }
 
     //4、更OrderHistory数据
     let orderHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
