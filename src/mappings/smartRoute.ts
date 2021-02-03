@@ -1,24 +1,22 @@
-import {OrderHistory, Token, IncentiveRewardHistory} from "../types/schema"
-import {OrderHistory as OrderHistoryV1} from "../types/DODOV1Proxy01/DODOV1Proxy01"
+import {OrderHistory, Token, IncentiveRewardHistory, Pair} from "../types/schema"
+import {OrderHistory as OrderHistoryV2} from "../types/DODOV2Proxy02/DODOV2Proxy02"
 import {
     createToken,
     createUser,
     ZERO_BD,
     ONE_BI,
     convertTokenToDecimal,
-    getDODOZoo,
+    getDODOZoo, updatePairTraderCount,
 } from "./helpers"
 import {SOURCE_SMART_ROUTE} from "./constant";
 import {log, BigInt, store} from '@graphprotocol/graph-ts'
 
-export function handleOrderHistory(event: OrderHistoryV1): void {
+export function handleOrderHistory(event: OrderHistoryV2): void {
     let user = createUser(event.transaction.from);
     let fromToken = createToken(event.params.fromToken, event);
     let toToken = createToken(event.params.toToken, event);
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.returnAmount, toToken.decimals);
-    //todo (更新交换的token的行情价)、计算交换的usd数量
-    let swappedUSDC = ZERO_BD;
 
     //1、更新用户交易数据(用户的交易次数在下层)
     user.txCount = user.txCount.plus(ONE_BI);

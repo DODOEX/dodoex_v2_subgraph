@@ -26,8 +26,7 @@ import {
     updateStatistics,
 } from './helpers'
 import {DODOBirth} from '../types/DodoZoo/DodoZoo'
-import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken} from '../types/templates/DODO/DODO';
-import {updatePairDayData, updateTokenDayData, updatePairHourData} from "./dayUpdates"
+import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../types/templates/DODO/DODO';
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -671,4 +670,10 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer);
+}
+
+export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {
+    let pair = Pair.load(event.address.toHexString());
+    pair.lpFeeRate = convertTokenToDecimal(event.params.newLiquidityProviderFeeRate,BI_18);
+    pair.save();
 }

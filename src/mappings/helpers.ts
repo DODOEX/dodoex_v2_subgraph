@@ -282,7 +282,7 @@ export function createLpToken(address: Address,pair: Pair): LpToken {
         lpToken.decimals = fetchTokenDecimals(address);
         lpToken.name = fetchTokenName(address);
         lpToken.symbol = fetchTokenSymbol(address);
-        lpToken.totalSupply = fetchTokenTotalSupply(address);
+        lpToken.totalSupply = ZERO_BI;
         lpToken.pair = pair.id;
         lpToken.save();
     }
