@@ -2,8 +2,6 @@
 export const TYPE_DVM_POOL = "DVM";
 export const TYPE_DPP_POOL = "DPP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
-
-//OrderHistory source type
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
 
@@ -29,9 +27,9 @@ export const SOURCE_POOL_SWAP = "DODO_POOL";
 // export const WETH_USDC_BLOCK = 23016939;
 // export const USDT_USDC_BLOCK = 23016946;
 // export const TRADING_INCENTIVE_ADDRESS = "0x1f69E3CEAbDc464Ab11bceB15726530CD8AC535E";
-// export  const DODO_MINE_ADDRESS = "0xaed7384f03844af886b830862ff0a7afce0a632c"
+// export  const DODO_MINE_ADDRESS = "0xaed7384f03844af886b830862ff0a7afce0a632c";
 
-//bsc
+// bsc
 // export const DODOV2Proxy01="0xb57dd5c265dbb13ca014f2332069e90cd0e22e65";
 //
 // export const DODOZooID = "dodoex-v2-bsc";
@@ -58,6 +56,7 @@ export const SOURCE_POOL_SWAP = "DODO_POOL";
 // export const USDT_USDC_BLOCK = 11106395;
 //
 // export const TRADING_INCENTIVE_ADDRESS = "0x80930cb1849f7d42531506ff45e66724338a821b";
+// export  const DODO_MINE_ADDRESS = "0xaed7384f03844af886b830862ff0a7afce0a632c"
 
 //mainnet
 export const DODOV1Proxy01="0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e";

@@ -245,12 +245,12 @@ export function handleSellShares(event: SellShares): void {
     let balance = convertTokenToDecimal(event.params.totalShares, lpToken.decimals);
 
     //更新用户LP token信息
-    let liquidityPositionID = event.params.to.toHexString().concat("-").concat(event.address.toHexString());
+    let liquidityPositionID = event.transaction.from.toHexString().concat("-").concat(event.address.toHexString());
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
         liquidityPosition.pair = event.address.toHexString();
-        liquidityPosition.user = event.params.to.toHexString();
+        liquidityPosition.user = event.transaction.from.toHexString();
         liquidityPosition.liquidityTokenBalance = ZERO_BD;
         liquidityPosition.lpToken = lpToken.id;
         liquidityPosition.lastTxTime = ZERO_BI;
@@ -283,7 +283,7 @@ export function handleSellShares(event: SellShares): void {
         liquidityHistory.from = event.transaction.from;
         liquidityHistory.pair = event.address.toHexString();
         liquidityHistory.timestamp = event.block.timestamp;
-        liquidityHistory.user = event.params.to.toHexString();
+        liquidityHistory.user = event.transaction.from.toHexString();
         liquidityHistory.amount = dealedSharesAmount;
         liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
         liquidityHistory.lpToken = lpToken.id;
