@@ -1,4 +1,4 @@
-//poo type
+//mainnet
 export const TYPE_DVM_POOL = "DVM";
 export const TYPE_DPP_POOL = "DPP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
