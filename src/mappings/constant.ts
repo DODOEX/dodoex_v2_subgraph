@@ -4,6 +4,7 @@ export const TYPE_DPP_POOL = "DPP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
+
 export const DODOV1Proxy01="0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e";
 export const DODOV1Proxy02="0x6ed3fd491f5b10384787b3fb162a72227fafbf63";
 export const DODOV1Proxy03="0x9a9942458754bdf65dcbcd0b6b4b842a7d4031ab";

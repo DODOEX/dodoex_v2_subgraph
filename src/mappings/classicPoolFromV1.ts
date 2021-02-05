@@ -464,7 +464,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         quoteVolume = dealedToAmount;
 
         baseLpFee = ZERO_BD;
-        quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+        quoteLpFee = quoteVolume.times(pair.lpFeeRate);
 
     } else {
         baseToken = toToken as Token;
@@ -472,7 +472,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         baseVolume = dealedToAmount;
         quoteVolume = dealedFromAmount;
 
-        baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+        baseLpFee = baseVolume.times(pair.lpFeeRate);
         quoteLpFee = ZERO_BD;
 
     }
@@ -578,7 +578,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         quoteVolume = dealedToAmount;
 
         baseLpFee = ZERO_BD;
-        quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+        quoteLpFee = quoteVolume.times(pair.lpFeeRate);
 
     } else {
         baseToken = toToken as Token;
@@ -586,7 +586,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         baseVolume = dealedToAmount;
         quoteVolume = dealedFromAmount;
 
-        baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+        baseLpFee = baseVolume.times(pair.lpFeeRate);
         quoteLpFee = ZERO_BD;
 
     }

@@ -56,7 +56,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         quoteVolume = dealedToAmount;
 
         baseLpFee = ZERO_BD;
-        quoteLpFee = quoteVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+        quoteLpFee = quoteVolume.times(pair.lpFeeRate);
 
     } else {
         baseToken = toToken as Token;
@@ -64,7 +64,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         baseVolume = dealedToAmount;
         quoteVolume = dealedFromAmount;
 
-        baseLpFee = baseVolume.times(pair.lpFeeRate).div(BI_18.toBigDecimal());
+        baseLpFee = baseVolume.times(pair.lpFeeRate);
         quoteLpFee = ZERO_BD;
 
     }
