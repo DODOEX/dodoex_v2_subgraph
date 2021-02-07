@@ -49,6 +49,7 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         }
 
     }
+    pairDayData.lpFeeRate = pair.lpFeeRate;
     pairDayData.txns = pairDayData.txns.plus(ONE_BI);
     pairDayData.save();
     return pairDayData as PairDayData;
@@ -100,6 +101,7 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
 
     }
     pairHourData.txns = pairHourData.txns.plus(ONE_BI);
+    pairHourData.lpFeeRate = pair.lpFeeRate;
     pairHourData.save();
     return pairHourData as PairHourData;
 }

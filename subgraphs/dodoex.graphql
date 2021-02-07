@@ -316,6 +316,9 @@ type PairDayData @entity {
     feeBase: BigDecimal!
     "quote token trading fee"
     feeQuote: BigDecimal!
+
+    "lp Fee Rate"
+    lpFeeRate: BigDecimal!
 }
 
 type PairHourData @entity {
@@ -357,6 +360,9 @@ type PairHourData @entity {
     feeBase: BigDecimal!
     "quote token trading fee"
     feeQuote: BigDecimal!
+
+    "lp Fee Rate"
+    lpFeeRate: BigDecimal!
 }
 
 type TokenDayData @entity {

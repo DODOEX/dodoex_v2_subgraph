@@ -21,7 +21,6 @@ export const CLASSIC_FACTORY_ADDRESS = "0x3a97247df274a17c59a3bd12735ea3fcdfb499
 export const DVM_FACTORY_DEPLOY_BLOCK = 11704651;
 export const DPP_FACTORY_DEPLOY_BLOCK = 11704659;
 
-
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
