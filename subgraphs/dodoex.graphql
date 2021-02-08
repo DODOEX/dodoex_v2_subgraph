@@ -375,10 +375,15 @@ type TokenDayData @entity {
 
     "untracked base volume"
     untrackedVolume: BigDecimal!
-    "volume stats"
-    volumeToken: BigDecimal!
+
+    "volume"
+    volume: BigDecimal!
+    "bridge volume"
+    volumeBridge: BigDecimal!
+    "tx occured"
     txns: BigInt!
 
+    "daily traders"
     traders: BigInt!
 
     "liquidity stats"

@@ -5,9 +5,6 @@ import {
     ZERO_BD,
     ONE_BD,
     convertTokenToDecimal,
-    TYPE_DVM_POOL,
-    TYPE_DPP_POOL,
-    TYPE_CLASSICAL_POOL,
     dppFactoryContract,
     dvmFactoryContract,
     classicFactoryContract
@@ -27,7 +24,10 @@ import {
     DVM_FACTORY_DEPLOY_BLOCK,
     WETH_USDC_BLOCK,
     USDT_USDC_BLOCK,
-    DODOZooID
+    DODOZooID,
+    TYPE_DVM_POOL,
+    TYPE_DPP_POOL,
+    TYPE_CLASSICAL_POOL,
 } from "./constant"
 
 const WHITELIST: string[] = [

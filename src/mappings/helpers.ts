@@ -360,11 +360,15 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
 
     let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
+    baseDayData.volume = baseDayData.volume.plus(baseVolume);
     baseDayData.fee = baseDayData.fee.plus(feeBase);
+    baseDayData.txns = baseDayData.txns.plus(ONE_BI);
 
     let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
+    quoteDayData.volume = quoteDayData.volume.plus(quoteVolume);
     quoteDayData.fee = quoteDayData.fee.plus(feeQuote);
+    quoteDayData.txns = quoteDayData.txns.plus(ONE_BI);
 
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
     if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){

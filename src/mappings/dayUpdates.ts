@@ -1,8 +1,18 @@
-import {PairDayData,PairHourData, TokenDayData, CrowdPoolingDayData, CrowdPooling, Token, Pair, LpToken,CrowdPoolingHourData} from "../types/schema"
-import {BigInt, ethereum, log} from '@graphprotocol/graph-ts'
+import {
+    PairDayData,
+    PairHourData,
+    TokenDayData,
+    CrowdPoolingDayData,
+    CrowdPooling,
+    Token,
+    Pair,
+    LpToken,
+    CrowdPoolingHourData
+} from "../types/schema"
+import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from './helpers'
 import {ADDRESS_ZERO} from "./constant"
-import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "./constant"
+import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "./constant"
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
     let timestamp = event.block.timestamp.toI32();
@@ -118,18 +128,50 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData = new TokenDayData(tokenDayID);
         tokenDayData.date = dayStartTimestamp;
         tokenDayData.token = token.id;
-        tokenDayData.volumeToken = ZERO_BD;
+        tokenDayData.volume = ZERO_BD;
         tokenDayData.txns = ZERO_BI;
         tokenDayData.totalLiquidityToken = ZERO_BD;
         tokenDayData.untrackedVolume = ZERO_BD;
         tokenDayData.fee = ZERO_BD;
         tokenDayData.traders = ZERO_BI;
+        tokenDayData.volumeBridge = ZERO_BD;
     }
 
     tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
     tokenDayData.txns = tokenDayData.txns.plus(ONE_BI);
     tokenDayData.save();
 
+    return tokenDayData as TokenDayData;
+
+}
+
+export function trimTokenDayData(token: Token, volume: BigDecimal, bridge: BigDecimal, event: ethereum.Event): TokenDayData {
+    let timestamp = event.block.timestamp.toI32();
+    let dayID = timestamp / 86400;
+    let dayStartTimestamp = dayID * 86400;
+    let tokenDayID = token.id.toString().concat("-").concat(BigInt.fromI32(dayID).toString());
+
+    let tokenDayData = TokenDayData.load(tokenDayID);
+    if (tokenDayData == null) {
+        tokenDayData = new TokenDayData(tokenDayID);
+        tokenDayData.date = dayStartTimestamp;
+        tokenDayData.token = token.id;
+        tokenDayData.volume = ZERO_BD;
+        tokenDayData.txns = ZERO_BI;
+        tokenDayData.totalLiquidityToken = ZERO_BD;
+        tokenDayData.untrackedVolume = ZERO_BD;
+        tokenDayData.fee = ZERO_BD;
+        tokenDayData.traders = ZERO_BI;
+        tokenDayData.volumeBridge = ZERO_BD;
+    } else {
+        tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
+        tokenDayData.volume = tokenDayData.volume.minus(volume);
+        tokenDayData.volumeBridge = tokenDayData.volumeBridge.plus(bridge);
+        if (bridge.equals(ZERO_BD)) {
+            tokenDayData.txns = tokenDayData.txns.minus(ONE_BI);
+        }
+    }
+    tokenDayData.save();
     return tokenDayData as TokenDayData;
 
 }

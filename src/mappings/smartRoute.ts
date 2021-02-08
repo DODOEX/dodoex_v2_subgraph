@@ -1,4 +1,4 @@
-import {OrderHistory, Token, IncentiveRewardHistory, Pair} from "../types/schema"
+import {OrderHistory, TokenDayData, IncentiveRewardHistory} from "../types/schema"
 import {OrderHistory as OrderHistoryV2} from "../types/DODOV2Proxy02/DODOV2Proxy02"
 import {
     createToken,
@@ -10,6 +10,7 @@ import {
 } from "./helpers"
 import {SOURCE_SMART_ROUTE} from "./constant";
 import {log, BigInt, store} from '@graphprotocol/graph-ts'
+import {trimTokenDayData, updateTokenDayData} from "./dayUpdates";
 
 export function handleOrderHistory(event: OrderHistoryV2): void {
     let user = createUser(event.transaction.from);
@@ -32,11 +33,15 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     toToken.save();
 
     //3、trim
-    for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i=i.plus(ONE_BI)) {
+    for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i = i.plus(ONE_BI)) {
         let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());
         let orderHistoryAbove = OrderHistory.load(orderHistoryAboveID);
+
+        trimTokenDayData(fromToken, orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, event);
+        trimTokenDayData(toToken, orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, event);
+
         if (orderHistoryAbove != null) {
-            store.remove("OrderHistory",event.transaction.hash.toHexString().concat("-").concat(i.toString()));
+            store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
         }
     }
 
@@ -67,6 +72,14 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
 
     }
     orderHistory.save();
+
+    //更新token统计信息
+    let fromTokenDayData = updateTokenDayData(fromToken, event);
+    let toTokenDayData = updateTokenDayData(toToken, event);
+    fromTokenDayData.volume = fromTokenDayData.volume.plus(dealedFromAmount);
+    toTokenDayData.volume = toTokenDayData.volume.plus(dealedToAmount);
+    fromTokenDayData.save();
+    toTokenDayData.save();
 
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
