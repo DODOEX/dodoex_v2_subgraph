@@ -156,6 +156,7 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.poolQuote = ZERO_BD;
         crowdPooling.settled = false;
         crowdPooling.dvm = ADDRESS_ZERO;
+        crowdPooling.liquidator = Address.fromString(ADDRESS_ZERO);
         crowdPooling.save();
 
         let dodoZoo = getDODOZoo();

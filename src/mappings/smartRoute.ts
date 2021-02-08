@@ -36,17 +36,16 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i = i.plus(ONE_BI)) {
         let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());
         let orderHistoryAbove = OrderHistory.load(orderHistoryAboveID);
-
-        trimTokenDayData(fromToken, orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, event);
-        trimTokenDayData(toToken, orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, event);
-
         if (orderHistoryAbove != null) {
+            trimTokenDayData(fromToken, orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, event);
+            trimTokenDayData(toToken, orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, event);
+
             store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
         }
     }
 
     //4、更OrderHistory数据
-    let orderHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
+    let orderHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let orderHistory = OrderHistory.load(orderHistoryID);
     if (orderHistory == null) {
         orderHistory = new OrderHistory(orderHistoryID);

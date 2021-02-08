@@ -295,6 +295,8 @@ templates:
           handler: handleBid
         - event: Cancel(address,uint256)
           handler: handleCancel
+        - event: Settle()
+          handler: handleSettle
   - kind: ethereum/contract
     name: DODO
     network: kovan
