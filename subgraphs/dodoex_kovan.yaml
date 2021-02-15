@@ -8,14 +8,14 @@ dataSources:
     name: DODOIncentive
     network: kovan
     source:
-      address: '0x1f69E3CEAbDc464Ab11bceB15726530CD8AC535E'
+      address: '0x5cfcc14f7c8be8b138d9fdf7438391b0bfe0589f'
       abi: DODOIncentive
-      startBlock: 23072267
+      startBlock: 23379874
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/incentive.ts
+      file: ../src/mappings/dodoex/incentive.ts
       entities:
         - Pair
         - Token
@@ -37,14 +37,14 @@ dataSources:
     name: DODOV2Proxy02
     network: kovan
     source:
-      address: '0xfc6840905e7e550a209b3856f313c523d2f9a3e3'
+      address: '0x85caa68ae47f047aa01c48bcaa711ca70a950ffb'
       abi: DODOV2Proxy02
-      startBlock: 23158550
+      startBlock: 23388916
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/smartRoute.ts
+      file: ../src/mappings/dodoex/smartRoute.ts
       entities:
         - Pair
         - Token
@@ -64,14 +64,14 @@ dataSources:
     name: DVMFactory
     network: kovan
     source:
-      address: '0xE842d8c9A54B23C4D0cf208daCA3882c0c311353'
+      address: '0x322f8014c125da09314d3a68d4d9f427823f17fd'
       abi: DVMFactory
-      startBlock: 23109610
+      startBlock: 23379878
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/poolFactory.ts
+      file: ../src/mappings/dodoex/poolFactory.ts
       entities:
         - Pair
         - Token
@@ -95,14 +95,14 @@ dataSources:
     name: DPPFactory
     network: kovan
     source:
-      address: '0x80c03749c22acbe5eafeb1d550a32c707a67fc34'
+      address: '0xc65f8087288aa0a118aa6f3228ef9ecc8187f4b6'
       abi: DPPFactory
-      startBlock: 23158541
+      startBlock: 23388901
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/poolFactory.ts
+      file: ../src/mappings/dodoex/poolFactory.ts
       entities:
         - Pair
         - Token
@@ -126,14 +126,14 @@ dataSources:
     name: CrowdPoolingFactory
     network: kovan
     source:
-      address: '0xD25e0A9A464f50191d9C879bE818FbA44680E980'
+      address: '0x9e6e8985d52e91edf1671f28ca73bc4f3e219b72'
       abi: CrowdPoolingFactory
-      startBlock: 23072301
+      startBlock: 23379891
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/poolFactory.ts
+      file: ../src/mappings/dodoex/poolFactory.ts
       entities:
         - Pair
         - Token
@@ -166,7 +166,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/classicPoolFromV1.ts
+      file: ../src/mappings/dodoex/classicPoolFromV1.ts
       entities:
         - Pair
         - Token
@@ -196,7 +196,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/pool.ts
+      file: ../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
@@ -232,7 +232,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/pool.ts
+      file: ../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
@@ -269,7 +269,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/crowdPooling.ts
+      file: ../src/mappings/dodoex/crowdPooling.ts
       entities:
         - CrowdPooling
         - Token
@@ -306,7 +306,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/classicPoolFromV1.ts
+      file: ../src/mappings/dodoex/classicPoolFromV1.ts
       entities:
         - Pair
         - Token
@@ -347,7 +347,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/lpToken.ts
+      file: ../src/mappings/dodoex/lpToken.ts
       entities:
         - Pair
         - Token

@@ -1,5 +1,5 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {OrderHistory, Token, Pair, CrowdPooling} from "../types/schema"
+import {OrderHistory, Token, Pair, CrowdPooling} from "../../types/schema"
 import {
     createToken,
     createLpToken,
@@ -9,16 +9,16 @@ import {
     ONE_BI,
     convertTokenToDecimal,
     getDODOZoo
-} from "./helpers"
-import {NewDPP} from "../types/DPPFactory/DPPFactory"
-import {NewDVM} from "../types/DVMFactory/DVMFactory"
-import {DVM, DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM"
-import {DPP, DPP__getPMMStateResultStateStruct} from "../types/DPPFactory/DPP"
-import {NewCP} from "../types/CrowdPoolingFactory/CrowdPoolingFactory"
-import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../types/templates"
-import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "./constant"
-import {CP} from "../types/CrowdPoolingFactory/CP";
-import {ADDRESS_ZERO} from "./constant"
+} from "../helpers"
+import {NewDPP} from "../../types/DPPFactory/DPPFactory"
+import {NewDVM} from "../../types/DVMFactory/DVMFactory"
+import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM"
+import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/DPPFactory/DPP"
+import {NewCP} from "../../types/CrowdPoolingFactory/CrowdPoolingFactory"
+import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../../types/templates"
+import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
+import {CP} from "../../types/CrowdPoolingFactory/CP";
+import {ADDRESS_ZERO} from "../constant"
 
 export function handleNewDVM(event: NewDVM): void {
     createUser(event.params.creator);
@@ -52,16 +52,24 @@ export function handleNewDVM(event: NewDVM): void {
         pair.traderCount = ZERO_BI;
 
         let dvm = DVM.bind(event.params.dvm);
-        let pmmState = dvm.getPMMState();
-        pair.i = pmmState.i;
-        pair.k = pmmState.K;
-        pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
-        pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
-
-        pair.lpFeeRate = convertTokenToDecimal(dvm._LP_FEE_RATE_(),BigInt.fromI32(18));
-
-        pair.mtFeeRateModel = dvm._MT_FEE_RATE_MODEL_();
-        pair.maintainer = dvm._MAINTAINER_();
+        let pmmState = dvm.try_getPMMState();
+        if(pmmState.reverted==false){
+            pair.i = pmmState.value.i;
+            pair.k = pmmState.value.K;
+            pair.baseReserve = convertTokenToDecimal(pmmState.value.B, baseToken.decimals);
+            pair.quoteReserve = convertTokenToDecimal(pmmState.value.Q, quoteToken.decimals);
+            pair.lpFeeRate = convertTokenToDecimal(dvm._LP_FEE_RATE_(),BigInt.fromI32(18));
+            pair.mtFeeRateModel = dvm._MT_FEE_RATE_MODEL_();
+            pair.maintainer = dvm._MAINTAINER_();
+        }else{
+            pair.i = ZERO_BI;
+            pair.k = ZERO_BI;
+            pair.baseReserve = ZERO_BD;
+            pair.quoteReserve = ZERO_BD;
+            pair.lpFeeRate = ZERO_BD;
+            pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+            pair.maintainer = Address.fromString(ADDRESS_ZERO);
+        }
 
         pair.save()
 
@@ -103,16 +111,24 @@ export function handleNewDPP(event: NewDPP): void {
         pair.traderCount = ZERO_BI;
 
         let dpp = DPP.bind(event.params.dpp);
-        let pmmState = dpp.getPMMState();
-        pair.i = pmmState.i;
-        pair.k = pmmState.K;
-        pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
-        pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
-
-        pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(),BigInt.fromI32(18));
-
-        pair.mtFeeRateModel = dpp._MT_FEE_RATE_MODEL_();
-        pair.maintainer = dpp._MAINTAINER_();
+        let pmmState = dpp.try_getPMMState();
+        if(pmmState.reverted==false){
+            pair.i = pmmState.value.i;
+            pair.k = pmmState.value.K;
+            pair.baseReserve = convertTokenToDecimal(pmmState.value.B, baseToken.decimals);
+            pair.quoteReserve = convertTokenToDecimal(pmmState.value.Q, quoteToken.decimals);
+            pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(),BigInt.fromI32(18));
+            pair.mtFeeRateModel = dpp._MT_FEE_RATE_MODEL_();
+            pair.maintainer = dpp._MAINTAINER_();
+        }else{
+            pair.i = ZERO_BI;
+            pair.k = ZERO_BI;
+            pair.baseReserve = ZERO_BD;
+            pair.quoteReserve = ZERO_BD;
+            pair.lpFeeRate = ZERO_BD;
+            pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+            pair.maintainer = Address.fromString(ADDRESS_ZERO);
+        }
 
         pair.save();
 

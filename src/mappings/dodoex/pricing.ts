@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import {Pair, Token} from '../types/schema'
+import {Pair, Token} from '../../types/schema'
 import {BigDecimal, Address, BigInt, log} from '@graphprotocol/graph-ts/index'
 import {
     ZERO_BD,
@@ -8,10 +8,10 @@ import {
     dppFactoryContract,
     dvmFactoryContract,
     classicFactoryContract
-} from './helpers'
-import {DODO} from '../types/DODOV1Proxy01/DODO'
-import {DVM} from '../types/DVMFactory/DVM'
-import {DPP} from '../types/DPPFactory/DPP'
+} from '../helpers'
+import {DODO} from '../../types/DODOV1Proxy01/DODO'
+import {DVM} from '../../types/DVMFactory/DVM'
+import {DPP} from '../../types/DPPFactory/DPP'
 
 import {
     WETH_ADDRESS,
@@ -28,7 +28,7 @@ import {
     TYPE_DVM_POOL,
     TYPE_DPP_POOL,
     TYPE_CLASSICAL_POOL,
-} from "./constant"
+} from "../constant"
 
 const WHITELIST: string[] = [
     WETH_ADDRESS,

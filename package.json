@@ -9,6 +9,9 @@
     "deploy:dodoex_bsc": "graph codegen subgraphs/dodoex_bsc.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.bscgraph.org/ --node https://api.bscgraph.org/deploy dodoex-v2 subgraphs/dodoex_bsc.yaml",
     "deploy:dodoex_kovan": "graph auth https://api.thegraph.com/deploy/ 763a318f70f54cb6bc5364c2bb1b8b8b&&graph codegen subgraphs/dodoex_kovan.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodoex-v2 subgraphs/dodoex_kovan.yaml",
     "deploy:dodoex_mainnet": "graph codegen subgraphs/dodoex_mainnet.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2 subgraphs/dodoex_mainnet.yaml",
+    "deploy:erc20token_bsc": "graph codegen subgraphs/dodoex_bsc.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.bscgraph.org/ --node https://api.bscgraph.org/deploy dodoex-v2 subgraphs/dodoex_bsc.yaml",
+    "deploy:erc20token_kovan": "graph auth https://api.thegraph.com/deploy/ 763a318f70f54cb6bc5364c2bb1b8b8b&&graph codegen subgraphs/dodoex_kovan.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodoex-v2 subgraphs/dodoex_kovan.yaml",
+    "deploy:erc20token_mainnet": "graph codegen subgraphs/dodoex_mainnet.yaml --output-dir ./src/types/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2 subgraphs/dodoex_mainnet.yaml",
     "create": "graph create autarkxu/dodoex --node https://api.thegraph.com/deploy/",
     "create-local": "graph create autarkxu/dodoex --node http://127.0.0.1:8020",
     "deploy-local": "graph deploy autarkxu/dodoex --ipfs http://localhost:5001 --node http://127.0.0.1:8020"

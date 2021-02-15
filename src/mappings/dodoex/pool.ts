@@ -8,7 +8,7 @@ import {
     LpToken,
     LiquidityHistory,
     PairTrader
-} from "../types/schema"
+} from "../../types/schema"
 import {
     createLpToken,
     createUser,
@@ -21,17 +21,17 @@ import {
     updatePairTraderCount,
     getDODOZoo,
     updateStatistics,
-} from "./helpers"
-import {DODOSwap, BuyShares, SellShares, Transfer} from "../types/templates/DVM/DVM"
-import {LpFeeRateChange, DPP} from "../types/templates/DPP/DPP"
-import {DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM";
+} from "../helpers"
+import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/templates/DVM/DVM"
+import {LpFeeRateChange, DPP} from "../../types/templates/DPP/DPP"
+import {DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM";
 
 import {
     SMART_ROUTE_ADDRESSES,
     ADDRESS_ZERO,
     SOURCE_POOL_SWAP,
     TYPE_DPP_POOL
-} from "./constant"
+} from "../constant"
 
 export function handleDODOSwap(event: DODOSwap): void {
     //base data

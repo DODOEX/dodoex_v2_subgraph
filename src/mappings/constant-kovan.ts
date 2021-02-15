@@ -5,13 +5,13 @@ export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
 export const DODOZooID = "dodoex-v2-kovan";
-export const SMART_ROUTE_ADDRESSES: string[]= ["0x3457a15b9ab57fc754789ee83e4bd2bd8f4f50c8"];
-export const DVM_FACTORY_ADDRESS = "0xE842d8c9A54B23C4D0cf208daCA3882c0c311353";
-export const DPP_FACTORY_ADDRESS = "0x6dab26dfe83e484dcc5126f812e3e6aa8e7eef4d";
+export const SMART_ROUTE_ADDRESSES: string[]= ["0x85caa68ae47f047aa01c48bcaa711ca70a950ffb"];
+export const DVM_FACTORY_ADDRESS = "0x322f8014c125da09314d3a68d4d9f427823f17fd";
+export const DPP_FACTORY_ADDRESS = "0xc65f8087288aa0a118aa6f3228ef9ecc8187f4b6";
 export const CLASSIC_FACTORY_ADDRESS = "0x92230e929a2226b29ed3441ae5524886347c60c8";
 
-export const DVM_FACTORY_DEPLOY_BLOCK = 23109610;
-export const DPP_FACTORY_DEPLOY_BLOCK = 23158541;
+export const DVM_FACTORY_DEPLOY_BLOCK = 23379878;
+export const DPP_FACTORY_DEPLOY_BLOCK = 23388901;
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';

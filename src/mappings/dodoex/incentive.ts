@@ -1,7 +1,7 @@
 import {
     IncentiveRewardHistory,
     TradingIncentive
-} from "../types/schema"
+} from "../../types/schema"
 import {
     createUser,
     ZERO_BI,
@@ -9,13 +9,13 @@ import {
     BI_18,
     ONE_BI,
     convertTokenToDecimal,
-} from "./helpers"
+} from "../helpers"
 
-import {Incentive} from "../types/DODOIncentive/DODOIncentive"
+import {Incentive} from "../../types/DODOIncentive/DODOIncentive"
 
 import {
     TRADING_INCENTIVE_ADDRESS,
-} from "./constant"
+} from "../constant"
 
 export function handleIncentive(event: Incentive): void {
     let user = createUser(event.params.user);

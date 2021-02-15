@@ -27,7 +27,7 @@ import {
     ETH_ADDRESS,
     DODO_MINE_ADDRESS
 } from "./constant"
-import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
+import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dodoex/dayUpdates";
 import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "./constant"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));

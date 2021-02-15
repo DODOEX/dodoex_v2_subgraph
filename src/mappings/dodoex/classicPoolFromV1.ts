@@ -8,8 +8,8 @@ import {
     OrderHistory,
     LpToken,
     PairTrader
-} from '../types/schema'
-import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../types/templates'
+} from '../../types/schema'
+import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../../types/templates'
 import {
     ONE_BI,
     ZERO_BD,
@@ -24,9 +24,9 @@ import {
     updatePairTraderCount,
     fetchTokenBalance,
     updateStatistics,
-} from './helpers'
-import {DODOBirth} from '../types/DodoZoo/DodoZoo'
-import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../types/templates/DODO/DODO';
+} from '../helpers'
+import {DODOBirth} from '../../types/DODOZoo/DODOZoo'
+import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../../types/templates/DODO/DODO';
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -34,7 +34,7 @@ import {
     DODOZooID,
     TYPE_CLASSICAL_POOL,
     SOURCE_POOL_SWAP
-} from "./constant"
+} from "../constant"
 
 const POOLS_ADDRESS: string[] = [
     "0x75c23271661d9d143dcb617222bc4bec783eff34",//WETH-USDC

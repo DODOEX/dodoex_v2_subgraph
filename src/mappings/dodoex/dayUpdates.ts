@@ -8,11 +8,11 @@ import {
     Pair,
     LpToken,
     CrowdPoolingHourData
-} from "../types/schema"
+} from "../../types/schema"
 import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from './helpers'
-import {ADDRESS_ZERO} from "./constant"
-import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "./constant"
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from '../helpers'
+import {ADDRESS_ZERO} from "../constant"
+import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
     let timestamp = event.block.timestamp.toI32();

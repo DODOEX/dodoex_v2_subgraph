@@ -1,5 +1,5 @@
-import {OrderHistory, TokenDayData, IncentiveRewardHistory} from "../types/schema"
-import {OrderHistory as OrderHistoryV2} from "../types/DODOV2Proxy02/DODOV2Proxy02"
+import {OrderHistory, TokenDayData, IncentiveRewardHistory} from "../../types/schema"
+import {OrderHistory as OrderHistoryV2} from "../../types/DODOV2Proxy02/DODOV2Proxy02"
 import {
     createToken,
     createUser,
@@ -7,8 +7,8 @@ import {
     ONE_BI,
     convertTokenToDecimal,
     getDODOZoo, updatePairTraderCount,
-} from "./helpers"
-import {SOURCE_SMART_ROUTE} from "./constant";
+} from "../helpers"
+import {SOURCE_SMART_ROUTE} from "../constant";
 import {log, BigInt, store} from '@graphprotocol/graph-ts'
 import {trimTokenDayData, updateTokenDayData} from "./dayUpdates";
 
