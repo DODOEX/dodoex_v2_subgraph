@@ -9,7 +9,7 @@ import {
     ONE_BI,
     convertTokenToDecimal,
     getDODOZoo
-} from "../helpers"
+} from "./helpers"
 import {NewDPP} from "../../types/DPPFactory/DPPFactory"
 import {NewDVM} from "../../types/DVMFactory/DVMFactory"
 import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM"

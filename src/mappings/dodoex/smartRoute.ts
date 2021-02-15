@@ -7,7 +7,7 @@ import {
     ONE_BI,
     convertTokenToDecimal,
     getDODOZoo, updatePairTraderCount,
-} from "../helpers"
+} from "./helpers"
 import {SOURCE_SMART_ROUTE} from "../constant";
 import {log, BigInt, store} from '@graphprotocol/graph-ts'
 import {trimTokenDayData, updateTokenDayData} from "./dayUpdates";

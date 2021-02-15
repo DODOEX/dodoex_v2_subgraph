@@ -9,7 +9,7 @@ import {
     BI_18,
     ONE_BI,
     convertTokenToDecimal,
-} from "../helpers"
+} from "./helpers"
 
 import {Incentive} from "../../types/DODOIncentive/DODOIncentive"
 

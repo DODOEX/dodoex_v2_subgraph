@@ -1,9 +1,9 @@
 /* eslint-disable prefer-const */
 import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-ts'
-import {ERC20} from "../types/DODOV1Proxy01/ERC20"
-import {ERC20NameBytes} from "../types/DODOV1Proxy01/ERC20NameBytes"
-import {ERC20SymbolBytes} from "../types/DODOV1Proxy01/ERC20SymbolBytes"
-import {DVM, DVM__getPMMStateResultStateStruct} from "../types/DVMFactory/DVM"
+import {ERC20} from "../../types/DODOV1Proxy01/ERC20"
+import {ERC20NameBytes} from "../../types/DODOV1Proxy01/ERC20NameBytes"
+import {ERC20SymbolBytes} from "../../types/DODOV1Proxy01/ERC20SymbolBytes"
+import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM"
 import {
     User,
     Token,
@@ -12,12 +12,12 @@ import {
     DodoZoo,
     PairTrader,
     Pool
-} from '../types/schema'
-import {DVMFactory} from "../types/DVMFactory/DVMFactory"
-import {DPPFactory} from "../types/DPPFactory/DPPFactory"
-import {DODOZoo as DODOZooContract} from "../types/DODOZoo/DODOZoo"
-import {DPP} from "../types/templates/DPP/DPP"
-import {DODOMine} from "../types/DODOMine/DODOMine"
+} from '../../types/schema'
+import {DVMFactory} from "../../types/DVMFactory/DVMFactory"
+import {DPPFactory} from "../../types/DPPFactory/DPPFactory"
+import {DODOZoo as DODOZooContract} from "../../types/DODOZoo/DODOZoo"
+import {DPP} from "../../types/templates/DPP/DPP"
+import {DODOMine} from "../../types/DODOMine/DODOMine"
 
 import {
     DODOZooID,
@@ -26,9 +26,9 @@ import {
     CLASSIC_FACTORY_ADDRESS,
     ETH_ADDRESS,
     DODO_MINE_ADDRESS
-} from "./constant"
-import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dodoex/dayUpdates";
-import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "./constant"
+} from "../constant"
+import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
+import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));

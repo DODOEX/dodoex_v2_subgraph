@@ -8,7 +8,7 @@ import {
     dppFactoryContract,
     dvmFactoryContract,
     classicFactoryContract
-} from '../helpers'
+} from './helpers'
 import {DODO} from '../../types/DODOV1Proxy01/DODO'
 import {DVM} from '../../types/DVMFactory/DVM'
 import {DPP} from '../../types/DPPFactory/DPP'

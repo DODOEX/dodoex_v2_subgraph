@@ -1,0 +1,2 @@
+export const DODO_ADDRESS_MAINNET="0x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd";
+export const DODO_ADDRESS_KOVAN="0x854b0f89baa9101e49bfb357a38071c9db5d0dfa";

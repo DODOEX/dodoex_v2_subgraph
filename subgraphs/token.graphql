@@ -21,6 +21,8 @@ type Token @entity {
     creator: String!
     "create timestamp"
     timestamp: BigInt!
+    "holder count"
+    holderCount: BigInt!
 }
 
 type UserTokenBlance @entity{
@@ -30,7 +32,7 @@ type UserTokenBlance @entity{
     balance: BigDecimal!
 }
 
-type TransferHistories @entity{
+type TransferHistory @entity{
     "token - hash"
     id: ID!
     "from"

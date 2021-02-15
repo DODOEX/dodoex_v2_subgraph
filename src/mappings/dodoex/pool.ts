@@ -21,7 +21,7 @@ import {
     updatePairTraderCount,
     getDODOZoo,
     updateStatistics,
-} from "../helpers"
+} from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../../types/templates/DPP/DPP"
 import {DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM";

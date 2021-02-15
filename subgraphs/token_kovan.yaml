@@ -2,20 +2,20 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: ./dodoex.graphql
+  file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOZoo
+    name: ERC20Factory
     network: kovan
     source:
-      address: '0x92230e929a2226b29ed3441ae5524886347c60c8'
-      abi: DODOZoo
-      startBlock: 19962676
+      address: '0xCb1A2f64EfB02803276BFB5a8D511C4D950282a0'
+      abi: ERC20Factory
+      startBlock: 22652741
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/dodoex/classicPoolFromV1.ts
+      file: ../src/mappings/token/factory.ts
       entities:
         - User
         - Token
@@ -31,19 +31,19 @@ dataSources:
         - name: ERC20NameBytes
           file: ../abis/ERC20NameBytes.json
       eventHandlers:
-        - event: DODOBirth(address,address,address)
-          handler: handleDODOBirth
+        - event: NewERC20(address,address,bool)
+          handler: handleNewERC20
 templates:
   - kind: ethereum/contract
     name: ERC20
     network: kovan
     source:
-      abi: Token
+      abi: ERC20
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/dodoex/erc20.ts
+      file: ../src/mappings/token/erc20.ts
       entities:
         - User
         - Token

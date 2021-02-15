@@ -24,7 +24,7 @@ import {
     updatePairTraderCount,
     fetchTokenBalance,
     updateStatistics,
-} from '../helpers'
+} from './helpers'
 import {DODOBirth} from '../../types/DODOZoo/DODOZoo'
 import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../../types/templates/DODO/DODO';
 
