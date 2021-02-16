@@ -1,7 +1,7 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal, BI_18, createLpToken,createPool} from "./helpers"
-import {Deposit, Withdraw, Claim} from "../../types/DODOMine/DODOMine"
-import {LiquidityPosition, LpToken} from "../../types/schema"
+import {Deposit, Withdraw, Claim} from "../../types/dodoex/DODOMine/DODOMine"
+import {LiquidityPosition, LpToken} from "../../types/dodoex/schema"
 import {insertAllPairs4V1Mainnet} from "./classicPoolFromV1"
 
 export function handleDeposit(event: Deposit): void {

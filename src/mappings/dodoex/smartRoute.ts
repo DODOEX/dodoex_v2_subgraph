@@ -1,5 +1,5 @@
-import {OrderHistory, TokenDayData, IncentiveRewardHistory} from "../../types/schema"
-import {OrderHistory as OrderHistoryV2} from "../../types/DODOV2Proxy02/DODOV2Proxy02"
+import {OrderHistory, TokenDayData, IncentiveRewardHistory} from "../../types/dodoex/schema"
+import {OrderHistory as OrderHistoryV2} from "../../types/dodoex/DODOV2Proxy02/DODOV2Proxy02"
 import {
     createToken,
     createUser,

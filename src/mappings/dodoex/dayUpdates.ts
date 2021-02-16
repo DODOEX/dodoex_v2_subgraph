@@ -8,7 +8,7 @@ import {
     Pair,
     LpToken,
     CrowdPoolingHourData
-} from "../../types/schema"
+} from "../../types/dodoex/schema"
 import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from './helpers'
 import {ADDRESS_ZERO} from "../constant"

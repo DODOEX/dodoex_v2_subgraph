@@ -1,9 +1,9 @@
 /* eslint-disable prefer-const */
 import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-ts'
-import {ERC20} from "../../types/DODOV1Proxy01/ERC20"
-import {ERC20NameBytes} from "../../types/DODOV1Proxy01/ERC20NameBytes"
-import {ERC20SymbolBytes} from "../../types/DODOV1Proxy01/ERC20SymbolBytes"
-import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM"
+import {ERC20} from "../../types/dodoex/DODOV1Proxy01/ERC20"
+import {ERC20NameBytes} from "../../types/dodoex/DODOV1Proxy01/ERC20NameBytes"
+import {ERC20SymbolBytes} from "../../types/dodoex/DODOV1Proxy01/ERC20SymbolBytes"
+import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
 import {
     User,
     Token,
@@ -12,12 +12,12 @@ import {
     DodoZoo,
     PairTrader,
     Pool
-} from '../../types/schema'
-import {DVMFactory} from "../../types/DVMFactory/DVMFactory"
-import {DPPFactory} from "../../types/DPPFactory/DPPFactory"
-import {DODOZoo as DODOZooContract} from "../../types/DODOZoo/DODOZoo"
-import {DPP} from "../../types/templates/DPP/DPP"
-import {DODOMine} from "../../types/DODOMine/DODOMine"
+} from '../../types/dodoex/schema'
+import {DVMFactory} from "../../types/dodoex/DVMFactory/DVMFactory"
+import {DPPFactory} from "../../types/dodoex/DPPFactory/DPPFactory"
+import {DODOZoo as DODOZooContract} from "../../types/dodoex/DODOZoo/DODOZoo"
+import {DPP} from "../../types/dodoex/templates/DPP/DPP"
+import {DODOMine} from "../../types/dodoex/DODOMine/DODOMine"
 
 import {
     DODOZooID,

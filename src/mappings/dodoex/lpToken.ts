@@ -1,5 +1,5 @@
-import {Transfer} from "../../types/templates/DVM/DVM";
-import {LiquidityPosition, LpToken, Pair} from "../../types/schema";
+import {Transfer} from "../../types/dodoex/templates/DVM/DVM";
+import {LiquidityPosition, LpToken, Pair} from "../../types/dodoex/schema";
 import {convertTokenToDecimal, createUser, ZERO_BD, ZERO_BI} from "./helpers";
 import {ADDRESS_ZERO} from "../constant";
 import {log, BigInt, BigDecimal, Address, ethereum,dataSource} from '@graphprotocol/graph-ts'

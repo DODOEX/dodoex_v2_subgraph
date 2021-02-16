@@ -8,8 +8,8 @@ import {
     OrderHistory,
     LpToken,
     PairTrader
-} from '../../types/schema'
-import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../../types/templates'
+} from '../../types/dodoex/schema'
+import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../../types/dodoex/templates'
 import {
     ONE_BI,
     ZERO_BD,
@@ -25,8 +25,8 @@ import {
     fetchTokenBalance,
     updateStatistics,
 } from './helpers'
-import {DODOBirth} from '../../types/DODOZoo/DODOZoo'
-import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../../types/templates/DODO/DODO';
+import {DODOBirth} from '../../types/dodoex/DODOZoo/DODOZoo'
+import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../../types/dodoex/templates/DODO/DODO';
 
 import {
     SMART_ROUTE_ADDRESSES,

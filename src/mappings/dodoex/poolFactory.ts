@@ -17,7 +17,7 @@ import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/DPPFactory/DPP
 import {NewCP} from "../../types/CrowdPoolingFactory/CrowdPoolingFactory"
 import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../../types/templates"
 import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
-import {CP} from "../../types/CrowdPoolingFactory/CP";
+import {CP} from "../../types/dodoex/CrowdPoolingFactory/CP";
 import {ADDRESS_ZERO} from "../constant"
 
 export function handleNewDVM(event: NewDVM): void {

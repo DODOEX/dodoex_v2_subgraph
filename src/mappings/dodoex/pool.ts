@@ -8,7 +8,7 @@ import {
     LpToken,
     LiquidityHistory,
     PairTrader
-} from "../../types/schema"
+} from "../../types/dodoex/schema"
 import {
     createLpToken,
     createUser,
@@ -22,9 +22,9 @@ import {
     getDODOZoo,
     updateStatistics,
 } from "./helpers"
-import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/templates/DVM/DVM"
-import {LpFeeRateChange, DPP} from "../../types/templates/DPP/DPP"
-import {DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM";
+import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/dodoex/templates/DVM/DVM"
+import {LpFeeRateChange, DPP} from "../../types/dodoex/templates/DPP/DPP"
+import {DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM";
 
 import {
     SMART_ROUTE_ADDRESSES,

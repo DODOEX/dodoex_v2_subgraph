@@ -1,7 +1,7 @@
 import {
     IncentiveRewardHistory,
     TradingIncentive
-} from "../../types/schema"
+} from "../../types/dodoex/schema"
 import {
     createUser,
     ZERO_BI,
@@ -11,7 +11,7 @@ import {
     convertTokenToDecimal,
 } from "./helpers"
 
-import {Incentive} from "../../types/DODOIncentive/DODOIncentive"
+import {Incentive} from "../../types/dodoex/DODOIncentive/DODOIncentive"
 
 import {
     TRADING_INCENTIVE_ADDRESS,

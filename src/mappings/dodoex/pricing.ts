@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import {Pair, Token} from '../../types/schema'
+import {Pair, Token} from '../../types/dodoex/schema'
 import {BigDecimal, Address, BigInt, log} from '@graphprotocol/graph-ts/index'
 import {
     ZERO_BD,
@@ -9,9 +9,9 @@ import {
     dvmFactoryContract,
     classicFactoryContract
 } from './helpers'
-import {DODO} from '../../types/DODOV1Proxy01/DODO'
-import {DVM} from '../../types/DVMFactory/DVM'
-import {DPP} from '../../types/DPPFactory/DPP'
+import {DODO} from '../../types/dodoex/DODOV1Proxy01/DODO'
+import {DVM} from '../../types/dodoex/DVMFactory/DVM'
+import {DPP} from '../../types/dodoex/DPPFactory/DPP'
 
 import {
     WETH_ADDRESS,
