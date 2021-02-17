@@ -559,7 +559,7 @@ type Pool @entity{
     "pid"
     id: ID!
     "lp token"
-    lpToken: LpToken!
+    lpToken: String!
     "staked balance"
     staked: BigDecimal!
 }

@@ -2,14 +2,8 @@ import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-t
 import {createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal, BI_18, createLpToken,createPool} from "./helpers"
 import {Deposit, Withdraw, Claim} from "../../types/dodoex/DODOMine/DODOMine"
 import {LiquidityPosition, LpToken} from "../../types/dodoex/schema"
-import {insertAllPairs4V1Mainnet} from "./classicPoolFromV1"
 
 export function handleDeposit(event: Deposit): void {
-
-    //only beta
-    // if(event.block.number.lt(BigInt.fromI32(10972196))){
-    //     insertAllPairs4V1Mainnet(event);
-    // }
 
     let pool = createPool(event.params.pid);
     let lpToken = LpToken.load(pool.lpToken);
@@ -30,6 +24,9 @@ export function handleDeposit(event: Deposit): void {
     }
     liquidityPosition.liquidityTokenInMining = liquidityPosition.liquidityTokenInMining.plus(dealedAmount);
     liquidityPosition.save();
+
+    pool.staked = pool.staked.plus(dealedAmount);
+    pool.save();
 }
 
 export function handleWithdraw(event: Withdraw): void {
@@ -53,5 +50,8 @@ export function handleWithdraw(event: Withdraw): void {
     }
     liquidityPosition.liquidityTokenInMining = liquidityPosition.liquidityTokenInMining.minus(dealedAmount);
     liquidityPosition.save();
+
+    pool.staked = pool.staked.minus(dealedAmount);
+    pool.save();
 }
 
