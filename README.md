@@ -15,7 +15,21 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
  
 **Where to find pool information**
  - In *Pair* schema we track pool status.
- 
+
+**Endpoints**
+ - dodoex 
+    - mainnet : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2
+    - bsc : https://api.bscgraph.org/subgraphs/name/dodoex-v2
+    - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-v2
+- token
+    - mainnet : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
+    - bsc : https://api.bscgraph.org/subgraphs/name/dodoex-token
+    - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
+- vdodo
+    - mainnet : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
+    - bsc : https://api.bscgraph.org/subgraphs/name/dodoex-token
+    - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
+  
 ## 2、 Graphql Examples
  - to get user info
 ```

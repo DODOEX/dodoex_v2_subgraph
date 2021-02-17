@@ -1,0 +1,58 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./token.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ERC20Factory
+    network: mainnet
+    source:
+      address: '0x5e84190a270333aCe5B9202a3F4ceBf11b81bB01'
+      abi: ERC20Factory
+      startBlock: 4201536
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/token/factory.ts
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: ERC20Factory
+          file: ../abis/ERC20Factory.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewERC20(address,address,bool)
+          handler: handleNewERC20
+templates:
+  - kind: ethereum/contract
+    name: ERC20
+    network: mainnet
+    source:
+      abi: ERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/token/erc20.ts
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: ERC20
+          file: ../abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+

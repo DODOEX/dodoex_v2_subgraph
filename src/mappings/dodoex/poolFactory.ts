@@ -1,5 +1,5 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {OrderHistory, Token, Pair, CrowdPooling} from "../../types/schema"
+import {OrderHistory, Token, Pair, CrowdPooling} from "../../types/dodoex/schema"
 import {
     createToken,
     createLpToken,
@@ -10,12 +10,12 @@ import {
     convertTokenToDecimal,
     getDODOZoo
 } from "./helpers"
-import {NewDPP} from "../../types/DPPFactory/DPPFactory"
-import {NewDVM} from "../../types/DVMFactory/DVMFactory"
-import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/DVMFactory/DVM"
-import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/DPPFactory/DPP"
-import {NewCP} from "../../types/CrowdPoolingFactory/CrowdPoolingFactory"
-import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../../types/templates"
+import {NewDPP} from "../../types/dodoex/DPPFactory/DPPFactory"
+import {NewDVM} from "../../types/dodoex/DVMFactory/DVMFactory"
+import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
+import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/dodoex/DPPFactory/DPP"
+import {NewCP} from "../../types/dodoex/CrowdPoolingFactory/CrowdPoolingFactory"
+import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../../types/dodoex/templates"
 import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
 import {CP} from "../../types/dodoex/CrowdPoolingFactory/CP";
 import {ADDRESS_ZERO} from "../constant"
@@ -50,6 +50,9 @@ export function handleNewDVM(event: NewDVM): void {
         pair.feeBase = ZERO_BD;
         pair.feeQuote = ZERO_BD;
         pair.traderCount = ZERO_BI;
+        pair.isTradeAllowed = true;
+        pair.isDepositBaseAllowed = true;
+        pair.isDepositQuoteAllowed = true;
 
         let dvm = DVM.bind(event.params.dvm);
         let pmmState = dvm.try_getPMMState();
@@ -109,6 +112,9 @@ export function handleNewDPP(event: NewDPP): void {
         pair.feeBase = ZERO_BD;
         pair.feeQuote = ZERO_BD;
         pair.traderCount = ZERO_BI;
+        pair.isTradeAllowed = true;
+        pair.isDepositBaseAllowed = false;
+        pair.isDepositQuoteAllowed = false;
 
         let dpp = DPP.bind(event.params.dpp);
         let pmmState = dpp.try_getPMMState();
@@ -173,10 +179,13 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.settled = false;
         crowdPooling.dvm = ADDRESS_ZERO;
         crowdPooling.liquidator = Address.fromString(ADDRESS_ZERO);
-        crowdPooling.save();
 
         let dodoZoo = getDODOZoo();
         dodoZoo.crowdpoolingCount = dodoZoo.crowdpoolingCount.plus(ONE_BI);
+
+        crowdPooling.serialNumber =dodoZoo.crowdpoolingCount;
+
+        crowdPooling.save();
         dodoZoo.save();
     }
 

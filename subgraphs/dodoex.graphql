@@ -207,6 +207,13 @@ type Pair @entity {
 
     "trader count"
     traderCount: BigInt!
+
+    "trade allowed"
+    isTradeAllowed: Boolean!
+    "deposit base allowed"
+    isDepositBaseAllowed: Boolean!
+    "deposit quote allowed"
+    isDepositQuoteAllowed: Boolean!
 }
 
 type PairTrader @entity{
@@ -396,6 +403,8 @@ type TokenDayData @entity {
 type CrowdPooling @entity {
     "cp address"
     id: ID!
+    "serial number"
+    serialNumber: BigInt!
     "creator"
     creator: Bytes!
     "create time"
@@ -553,4 +562,11 @@ type Pool @entity{
     lpToken: LpToken!
     "staked balance"
     staked: BigDecimal!
+}
+
+type MiningPool @entity{
+    "pool id"
+    id: ID!
+    "lp token"
+    lpToken: LpToken!
 }

@@ -26,7 +26,15 @@ import {
     updateStatistics,
 } from './helpers'
 import {DODOBirth} from '../../types/dodoex/DODOZoo/DODOZoo'
-import {Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken,UpdateLiquidityProviderFeeRate} from '../../types/dodoex/templates/DODO/DODO';
+import {
+    Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken, UpdateLiquidityProviderFeeRate,
+    DisableBaseDepositCall,
+    EnableBaseDepositCall,
+    DisableQuoteDepositCall,
+    EnableQuoteDepositCall,
+    DisableTradingCall,
+    EnableTradingCall
+} from '../../types/dodoex/templates/DODO/DODO';
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -180,6 +188,9 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.feeBase = ZERO_BD;
             pair.feeQuote = ZERO_BD;
             pair.traderCount = ZERO_BI;
+            pair.isTradeAllowed = true;
+            pair.isDepositBaseAllowed = false;
+            pair.isDepositQuoteAllowed = false;
 
             pair.i = ZERO_BI;
             pair.k = ZERO_BI;
@@ -246,6 +257,9 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.feeBase = ZERO_BD;
             pair.feeQuote = ZERO_BD;
             pair.traderCount = ZERO_BI;
+            pair.isTradeAllowed = true;
+            pair.isDepositBaseAllowed = true;
+            pair.isDepositQuoteAllowed = true;
 
             pair.i = ZERO_BI;
             pair.k = ZERO_BI;
@@ -343,7 +357,7 @@ export function handleDeposit(event: Deposit): void {
         liquidityHistory.type = "DEPOSIT";
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
-        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply,lpToken.decimals);
+        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
     }
 
     liquidityPosition.save();
@@ -425,7 +439,7 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityHistory.type = "WITHDRAW";
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
-        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply,lpToken.decimals);
+        liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
     }
 
     liquidityPosition.save();
@@ -674,6 +688,54 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {
     let pair = Pair.load(event.address.toHexString());
-    pair.lpFeeRate = convertTokenToDecimal(event.params.newLiquidityProviderFeeRate,BI_18);
+    pair.lpFeeRate = convertTokenToDecimal(event.params.newLiquidityProviderFeeRate, BI_18);
     pair.save();
+}
+
+export function handleDisableTrading(call: DisableTradingCall): void {
+    let pairAddress = dataSource.address().toHexString();
+    let pair = Pair.load(pairAddress);
+    if (pair != null) {
+        pair.isTradeAllowed = false;
+    }
+}
+
+export function handleEnableTrading(call: EnableTradingCall): void {
+    let pairAddress = dataSource.address().toHexString();
+    let pair = Pair.load(pairAddress);
+    if (pair != null) {
+        pair.isTradeAllowed = true;
+    }
+}
+
+export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
+    let pairAddress = dataSource.address().toHexString();
+    let pair = Pair.load(pairAddress);
+    if (pair != null) {
+        pair.isDepositQuoteAllowed = false;
+    }
+}
+
+export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
+    let pairAddress = dataSource.address().toHexString();
+    let pair = Pair.load(pairAddress);
+    if (pair != null) {
+        pair.isDepositQuoteAllowed = true;
+    }
+}
+
+export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
+    let pairAddress = dataSource.address().toHexString();
+    let pair = Pair.load(pairAddress);
+    if (pair != null) {
+        pair.isDepositBaseAllowed = false;
+    }
+}
+
+export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
+    let pairAddress = dataSource.address().toHexString();
+    let pair = Pair.load(pairAddress);
+    if (pair != null) {
+        pair.isDepositBaseAllowed = true;
+    }
 }
