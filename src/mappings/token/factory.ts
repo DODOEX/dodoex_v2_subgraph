@@ -1,7 +1,7 @@
 import {NewERC20} from "../../types/token/ERC20Factory/ERC20Factory"
-import {createUser,fetchTokenBalance,fetchTokenName,fetchTokenDecimals,fetchTokenSymbol,fetchTokenTotalSupply,ONE_BI} from "./helpers"
+import {createUser,fetchTokenBalance,fetchTokenName,fetchTokenDecimals,fetchTokenSymbol,fetchTokenTotalSupply,ZERO_BI} from "./helpers"
 import {Token} from "../../types/token/schema"
-import {ERC20 as ERC20Telplate} from "../../types/token/templates"
+import {MintableERC20 as MintableERC20Template} from "../../types/token/templates"
 export function handleNewERC20(event: NewERC20): void{
     let user = createUser(event.params.creator);
     let token = Token.load(event.params.erc20.toHexString());
@@ -13,10 +13,10 @@ export function handleNewERC20(event: NewERC20): void{
         token.decimals = fetchTokenDecimals(event.params.erc20);
         token.totalSupply = fetchTokenTotalSupply(event.params.erc20);
         token.timestamp = event.block.timestamp;
-        token.holderCount = ONE_BI;
+        token.holderCount = ZERO_BI;
     }
 
     token.save();
 
-    ERC20Telplate.create(event.params.erc20);
+    MintableERC20Template.create(event.params.erc20);
 }

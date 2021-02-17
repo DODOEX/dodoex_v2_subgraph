@@ -23,6 +23,9 @@ export function handleMintVDODO(event: MintVDODO): void {
 
     let user = User.load(event.params.user.toHexString());
     if (user == null) {
+        if(vdodo.totalUsers.equals(ZERO_BI)){
+            vdodo.totalUsers = vdodo.totalUsers.plus(ONE_BI);
+        }
         vdodo.totalUsers = vdodo.totalUsers.plus(ONE_BI);
         user = createUser(event.params.user);
     }

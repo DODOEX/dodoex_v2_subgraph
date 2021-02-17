@@ -1,4 +1,4 @@
-import {Transfer} from "../../types/token/ERC20Factory/ERC20"
+import {Transfer,Mint,Burn} from "../../types/token/templates/MintableERC20/MintableERC20"
 import {
     createUser,
     ONE_BI,
@@ -27,7 +27,7 @@ export function handleTransfer(event: Transfer): void {
         toUserTokenBalance.balance=ZERO_BD;
     }
 
-    let dealedAmount = convertTokenToDecimal(event.params.value, token.decimals);
+    let dealedAmount = convertTokenToDecimal(event.params.amount, token.decimals);
 
     fromUserTokenBalance.balance = fromUserTokenBalance.balance.minus(dealedAmount);
     toUserTokenBalance.balance = toUserTokenBalance.balance.plus(dealedAmount);
@@ -53,4 +53,16 @@ export function handleTransfer(event: Transfer): void {
     toUserTokenBalance.save();
     token.save();
     transferHistory.save();
+}
+
+export function handleMint(event: Mint): void{
+    let token = Token.load(dataSource.address().toHexString());
+    token.totalSupply = token.totalSupply.plus(event.params.value);
+    token.save()
+}
+
+export function handleBurn(event: Burn): void{
+    let token = Token.load(dataSource.address().toHexString());
+    token.totalSupply = token.totalSupply.minus(event.params.value);
+    token.save()
 }

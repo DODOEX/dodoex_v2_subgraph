@@ -35,24 +35,27 @@ dataSources:
           handler: handleNewERC20
 templates:
   - kind: ethereum/contract
-    name: ERC20
+    name: MintableERC20
     network: kovan
     source:
-      abi: ERC20
+      abi: MintableERC20
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/token/erc20.ts
+      file: ../src/mappings/token/mintableERC20.ts
       entities:
         - User
         - Token
         - UserTokenBlance
         - TransferHistories
       abis:
-        - name: ERC20
-          file: ../abis/ERC20.json
+        - name: MintableERC20
+          file: ../abis/MintableERC20.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-
+        - event: Mint(indexed address,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256)
+          handler: handleBurn
