@@ -24,8 +24,9 @@ import {
     updatePairTraderCount,
     fetchTokenBalance,
     updateStatistics,
+    createTokenByCall
 } from './helpers'
-import {DODOBirth} from '../../types/dodoex/DODOZoo/DODOZoo'
+import {DODOBirth, AddDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
 import {
     Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken, UpdateLiquidityProviderFeeRate,
     DisableBaseDepositCall,
@@ -287,6 +288,75 @@ export function handleDODOBirth(event: DODOBirth): void {
         }
     }
 
+}
+
+export function handleAddDODO(call: AddDODOCall): void {
+
+    // if (DODOZooID != "dodoex-v2-bsc") {
+    //     return;
+    // }
+    //
+    // let dodoZoo = getDODOZoo();
+    //
+    // let pair = Pair.load(call.inputs.dodo.toHexString());
+    // if (pair == null) {
+    //     //tokens
+    //     let dodo = DODO.bind(call.inputs.dodo);
+    //     let pair = new Pair(call.inputs.dodo.toHexString()) as Pair;
+    //
+    //     let baseToken = createTokenByCall(call.inputs.dodo, call);
+    //     let quoteToken = createTokenByCall(call.inputs.dodo, call);
+    //     let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_(), pair);
+    //     let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_(), pair);
+    //
+    //     pair.baseLpToken = baseLpToken.id;
+    //     pair.quoteLpToken = quoteLpToken.id;
+    //     pair.baseToken = baseToken.id;
+    //     pair.quoteToken = quoteToken.id;
+    //     pair.type = TYPE_CLASSICAL_POOL;
+    //
+    //     pair.creator = Address.fromString(ADDRESS_ZERO);
+    //     pair.createdAtTimestamp = call.block.timestamp;
+    //     pair.createdAtBlockNumber = call.block.number;
+    //
+    //     pair.txCount = ZERO_BI;
+    //     pair.volumeBaseToken = ZERO_BD;
+    //     pair.volumeQuoteToken = ZERO_BD;
+    //     pair.liquidityProviderCount = ZERO_BI;
+    //     pair.untrackedBaseVolume = ZERO_BD;
+    //     pair.untrackedQuoteVolume = ZERO_BD;
+    //     pair.feeBase = ZERO_BD;
+    //     pair.feeQuote = ZERO_BD;
+    //     pair.traderCount = ZERO_BI;
+    //     pair.isTradeAllowed = true;
+    //     pair.isDepositBaseAllowed = true;
+    //     pair.isDepositQuoteAllowed = true;
+    //
+    //     pair.i = ZERO_BI;
+    //     pair.k = ZERO_BI;
+    //     pair.baseReserve = ZERO_BD;
+    //     pair.quoteReserve = ZERO_BD;
+    //
+    //     pair.lpFeeRate = ZERO_BD;
+    //
+    //     pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+    //     pair.maintainer = Address.fromString(ADDRESS_ZERO);
+    //
+    //     baseToken.save();
+    //     quoteToken.save();
+    //     baseLpToken.save();
+    //     quoteLpToken.save();
+    //     pair.save();
+    //
+    //     dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+    //     DODOTemplate.create(call.inputs.dodo);
+    //
+    //     DODOLpTokenTemplate.create(Address.fromString(baseLpToken.id));
+    //     DODOLpTokenTemplate.create(Address.fromString(quoteLpToken.id));
+    //
+    //     dodoZoo.save();
+    //
+    // }
 }
 
 export function handleDeposit(event: Deposit): void {
@@ -698,6 +768,7 @@ export function handleDisableTrading(call: DisableTradingCall): void {
     if (pair != null) {
         pair.isTradeAllowed = false;
     }
+    pair.save();
 }
 
 export function handleEnableTrading(call: EnableTradingCall): void {
@@ -706,6 +777,7 @@ export function handleEnableTrading(call: EnableTradingCall): void {
     if (pair != null) {
         pair.isTradeAllowed = true;
     }
+    pair.save();
 }
 
 export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
@@ -714,6 +786,7 @@ export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
     if (pair != null) {
         pair.isDepositQuoteAllowed = false;
     }
+    pair.save();
 }
 
 export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
@@ -722,6 +795,7 @@ export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
     if (pair != null) {
         pair.isDepositQuoteAllowed = true;
     }
+    pair.save();
 }
 
 export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
@@ -730,6 +804,7 @@ export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
     if (pair != null) {
         pair.isDepositBaseAllowed = false;
     }
+    pair.save();
 }
 
 export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
@@ -738,4 +813,5 @@ export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
     if (pair != null) {
         pair.isDepositBaseAllowed = true;
     }
+    pair.save();
 }

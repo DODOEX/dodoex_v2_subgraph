@@ -273,6 +273,54 @@ export function createToken(address: Address, event: ethereum.Event): Token {
     return token as Token;
 }
 
+export function createTokenByCall(address: Address, call: ethereum.Call): Token {
+    let token = Token.load(address.toHexString());
+    if (token == null) {
+        if (address.toHexString() == ETH_ADDRESS) {
+            token = new Token(address.toHexString());
+            token.symbol = "ETH";
+            token.name = "ether";
+            token.totalSupply = fetchTokenTotalSupply(address);
+
+            let decimals = fetchTokenDecimals(address);
+
+            token.decimals = decimals;
+            token.tradeVolume = ZERO_BD;
+            token.totalLiquidityOnDODO = ZERO_BD;
+        } else {
+            token = new Token(address.toHexString());
+            token.symbol = fetchTokenSymbol(address);
+            token.name = fetchTokenName(address);
+            token.totalSupply = fetchTokenTotalSupply(address);
+
+            let decimals = fetchTokenDecimals(address);
+
+            token.decimals = decimals;
+            token.tradeVolume = ZERO_BD;
+            token.totalLiquidityOnDODO = ZERO_BD;
+        }
+        token.txCount = ZERO_BI;
+        token.untrackedVolume = ZERO_BD;
+        token.timestamp = call.block.timestamp;
+        token.save();
+
+        let dodoZoo = getDODOZoo();
+        dodoZoo.tokenCount = dodoZoo.tokenCount.plus(ONE_BI);
+        dodoZoo.save();
+    }
+
+    //for V1 classical hardcode pools
+    if(token.symbol=="unknown"){
+        token.symbol = fetchTokenSymbol(address);
+        token.totalSupply = fetchTokenTotalSupply(address);
+        token.name = fetchTokenName(address);
+        token.decimals = fetchTokenDecimals(address);
+        token.save();
+    }
+
+    return token as Token;
+}
+
 export function createLpToken(address: Address,pair: Pair): LpToken {
     let lpToken = LpToken.load(address.toHexString());
 
