@@ -451,7 +451,7 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
 export function createPool(pid: BigInt): Pool {
 
     let pool = Pool.load(pid.toString());
-
+log.error("Pool ID {}",[pid.toString()])
     if (pool == null) {
         pool = new Pool(pid.toString());
         let dodoMineContract = DODOMine.bind(Address.fromString(DODO_MINE_ADDRESS));

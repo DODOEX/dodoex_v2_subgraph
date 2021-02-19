@@ -55,3 +55,6 @@ export function handleWithdraw(event: Withdraw): void {
     pool.save();
 }
 
+export function handleClaim(event: Claim): void {
+
+}

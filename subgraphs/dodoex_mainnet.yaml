@@ -33,6 +33,8 @@ dataSources:
           handler: handleDeposit
         - event: Withdraw(indexed address,indexed uint256,uint256)
           handler: handleWithdraw
+        - event: Claim(indexed address,uint256)
+          handler: handleClaim
   - kind: ethereum/contract
     name: DODOIncentive
     network: mainnet
