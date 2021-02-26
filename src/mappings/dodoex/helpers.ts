@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-ts'
+import {log, BigInt, BigDecimal, Address, ethereum, dataSource} from '@graphprotocol/graph-ts'
 import {ERC20} from "../../types/dodoex/DODOV1Proxy01/ERC20"
 import {ERC20NameBytes} from "../../types/dodoex/DODOV1Proxy01/ERC20NameBytes"
 import {ERC20SymbolBytes} from "../../types/dodoex/DODOV1Proxy01/ERC20SymbolBytes"
@@ -25,7 +25,6 @@ import {
     DVM_FACTORY_ADDRESS,
     CLASSIC_FACTORY_ADDRESS,
     ETH_ADDRESS,
-    DODO_MINE_ADDRESS
 } from "../constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
 import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
@@ -214,12 +213,13 @@ export function getDODOZoo(): DodoZoo {
 
 }
 
-export function createUser(address: Address): User {
+export function createUser(address: Address,event: ethereum.Event): User {
     let user = User.load(address.toHexString())
     if (user === null) {
         user = new User(address.toHexString())
         user.txCount = ZERO_BI
         user.tradingRewardRecieved = ZERO_BD
+        user.timestamp = event.block.timestamp
         user.save()
     }
     return user as User;
@@ -370,7 +370,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
     if (fromTraderPair == null) {
         fromTraderPair = new PairTrader(fromPairID);
         fromTraderPair.pair = pair.id;
-        fromTraderPair.trader = createUser(from).id;
+        fromTraderPair.trader = createUser(from,event).id;
         fromTraderPair.lastTxTime = ZERO_BI;
         fromTraderPair.save();
 
@@ -381,7 +381,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
     if (toTraderPair == null) {
         toTraderPair = new PairTrader(toPairID);
         toTraderPair.pair = pair.id;
-        toTraderPair.trader = createUser(to).id;
+        toTraderPair.trader = createUser(to,event).id;
         toTraderPair.lastTxTime = ZERO_BI;
         toTraderPair.save();
         pair.traderCount = pair.traderCount.plus(ONE_BI);
@@ -451,10 +451,9 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
 export function createPool(pid: BigInt): Pool {
 
     let pool = Pool.load(pid.toString());
-log.error("Pool ID {}",[pid.toString()])
     if (pool == null) {
         pool = new Pool(pid.toString());
-        let dodoMineContract = DODOMine.bind(Address.fromString(DODO_MINE_ADDRESS));
+        let dodoMineContract = DODOMine.bind(dataSource.address());
         let poolInfo = dodoMineContract.poolInfos(pid)
         pool.lpToken = poolInfo.value0.toHexString();
         pool.staked = ZERO_BD;

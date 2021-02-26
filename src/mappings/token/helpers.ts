@@ -6,12 +6,7 @@ import {ERC20SymbolBytes} from "../../types/token/ERC20Factory/ERC20SymbolBytes"
 import {User} from "../../types/token/schema"
 
 import {
-    DODOZooID,
-    DPP_FACTORY_ADDRESS,
-    DVM_FACTORY_ADDRESS,
-    CLASSIC_FACTORY_ADDRESS,
     ETH_ADDRESS,
-    DODO_MINE_ADDRESS
 } from "../constant"
 
 export let ZERO_BI = BigInt.fromI32(0)
@@ -179,10 +174,11 @@ export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
     return balanceResult.value;
 }
 
-export function createUser(address: Address): User {
+export function createUser(address: Address,event: ethereum.Event): User {
     let user = User.load(address.toHexString())
     if (user === null) {
         user = new User(address.toHexString())
+        user.timestamp = event.block.timestamp
         user.save()
     }
     return user as User;

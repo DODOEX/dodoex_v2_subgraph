@@ -21,7 +21,7 @@ import {CP} from "../../types/dodoex/CrowdPoolingFactory/CP";
 import {ADDRESS_ZERO} from "../constant"
 
 export function handleNewDVM(event: NewDVM): void {
-    createUser(event.params.creator);
+    createUser(event.params.creator,event);
     //1、获取token schema信息
     let baseToken = createToken(event.params.baseToken,event);
     let quoteToken = createToken(event.params.quoteToken,event);
@@ -86,7 +86,7 @@ export function handleNewDVM(event: NewDVM): void {
 }
 
 export function handleNewDPP(event: NewDPP): void {
-    createUser(event.params.creator);
+    createUser(event.params.creator,event);
     //1、获取token schema信息
     let baseToken = createToken(event.params.baseToken,event);
     let quoteToken = createToken(event.params.quoteToken,event);
@@ -148,7 +148,7 @@ export function handleNewDPP(event: NewDPP): void {
 }
 
 export function handleNewCP(event: NewCP): void {
-    createUser(event.params.creator);
+    createUser(event.params.creator,event);
     //1、检查token情况
     let baseToken = createToken(event.params.baseToken,event);
     let quoteToken = createToken(event.params.quoteToken,event);

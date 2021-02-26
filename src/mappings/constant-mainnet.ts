@@ -35,6 +35,4 @@ export const USDT_USDC_PAIR = '0xc9f93163c99695c6526b799ebca2207fdf7d61ad'; // c
 export const WETH_USDC_BLOCK = 10616399;
 export const USDT_USDC_BLOCK = 11106395;
 
-export const TRADING_INCENTIVE_ADDRESS = "0x989dcaa95801c527c5b73aa65d3962df9ace1b0c";
-export  const DODO_MINE_ADDRESS = "0xaed7384f03844af886b830862ff0a7afce0a632c"
 

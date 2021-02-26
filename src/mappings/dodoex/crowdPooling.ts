@@ -16,8 +16,8 @@ export function handleBid(event: Bid): void {
     cp.poolQuote = cp.poolQuote.plus(dealedAmount);
     cp.totalShares = cp.totalShares.plus(event.params.amount.toBigDecimal());
 
-    let toUser = createUser(event.params.to);
-    let fromUser = createUser(event.transaction.from);
+    let toUser = createUser(event.params.to,event);
+    let fromUser = createUser(event.transaction.from,event);
 
     let newcome: boolean = false;
     //用户信息

@@ -60,7 +60,7 @@ export function isNullEthValue(value: string): boolean {
     return value == '0x0000000000000000000000000000000000000000000000000000000000000001'
 }
 
-export function createUser(userAddr: Address): User {
+export function createUser(userAddr: Address,event: ethereum.Event): User {
     let user = User.load(userAddr.toHexString())
 
     if (user == null) {
@@ -74,6 +74,7 @@ export function createUser(userAddr: Address): User {
         user.redeemFeeAmount = ZERO_BD;
         user.redeemBurnAmount = ZERO_BD;
         user.creditOfSuperior = ZERO_BD;
+        user.timestamp = event.block.timestamp;
     }
     return user as User;
 }
@@ -217,6 +218,8 @@ export function initTokenInfo(): void {
         vdodo.totalDonate = ZERO_BD;
         vdodo.totalStakingPower = ZERO_BI;
         vdodo.dodoPerBlock = ZERO_BD;
+        vdodo.feeAmount = ZERO_BD;
+        vdodo.burnAmount = ZERO_BD;
     }
 
     let dodo = DODO.load(DODOAddress.toHexString());

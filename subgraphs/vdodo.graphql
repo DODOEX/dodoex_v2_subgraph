@@ -19,6 +19,8 @@ type User @entity {
     redeemFeeAmount: BigDecimal!
     "redeem burn amount"
     redeemBurnAmount: BigDecimal!
+    "timestamp"
+    timestamp: BigInt!
 }
 
 type UserOperationHistory @entity{
@@ -94,6 +96,10 @@ type vDODO @entity {
     mintAmount: BigDecimal!
     "redeem dodo amount"
     redeemAmount: BigDecimal!
+    "fee dodo amount"
+    feeAmount: BigDecimal!
+    "burn dodo amount"
+    burnAmount: BigDecimal!
     "dodo balance of vdodo contract"
     dodoBalance: BigDecimal!
     "dodo per block"

@@ -13,8 +13,8 @@ export function handleTransfer(event: Transfer): void {
 
     if (token == null) return;
 
-    let fromUser = createUser(event.params.from);
-    let toUser = createUser(event.params.to);
+    let fromUser = createUser(event.params.from,event);
+    let toUser = createUser(event.params.to,event);
 
     let fromUserTokenBalance = UserTokenBlance.load(fromUser.id.concat("-").concat(dataSource.address().toHexString()))
     let toUserTokenBalance = UserTokenBlance.load(toUser.id.concat("-").concat(dataSource.address().toHexString()))

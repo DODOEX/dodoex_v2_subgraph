@@ -292,8 +292,8 @@ export function handleDODOBirth(event: DODOBirth): void {
 
 export function handleDeposit(event: Deposit): void {
     let pair = Pair.load(event.address.toHexString());
-    let toUser = createUser(event.params.receiver);
-    let fromUser = createUser(event.transaction.from);
+    let toUser = createUser(event.params.receiver,event);
+    let fromUser = createUser(event.transaction.from,event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
     let quoteToken = createToken(Address.fromString(pair.quoteToken), event);
 
@@ -378,8 +378,8 @@ export function handleDeposit(event: Deposit): void {
 
 export function handleWithdraw(event: Withdraw): void {
     let pair = Pair.load(event.address.toHexString());
-    let toUser = createUser(event.params.receiver);
-    let fromUser = createUser(event.transaction.from);
+    let toUser = createUser(event.params.receiver,event);
+    let fromUser = createUser(event.transaction.from,event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
     let quoteToken = createToken(Address.fromString(pair.quoteToken), event);
     let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken), pair as Pair);
@@ -462,7 +462,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    let user = createUser(event.transaction.from);
+    let user = createUser(event.transaction.from,event);
     let fromToken = createToken(Address.fromString(pair.baseToken), event);
     let toToken = createToken(Address.fromString(pair.quoteToken), event);
     let dealedFromAmount = convertTokenToDecimal(event.params.payBase, fromToken.decimals);
@@ -576,7 +576,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    let user = createUser(event.transaction.from);
+    let user = createUser(event.transaction.from,event);
     let fromToken = createToken(Address.fromString(pair.quoteToken), event);
     let toToken = createToken(Address.fromString(pair.baseToken), event);
     let dealedFromAmount = convertTokenToDecimal(event.params.payQuote, fromToken.decimals);

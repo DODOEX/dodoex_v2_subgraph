@@ -13,7 +13,7 @@ import {log, BigInt, store} from '@graphprotocol/graph-ts'
 import {trimTokenDayData, updateTokenDayData} from "./dayUpdates";
 
 export function handleOrderHistory(event: OrderHistoryV2): void {
-    let user = createUser(event.transaction.from);
+    let user = createUser(event.transaction.from,event);
     let fromToken = createToken(event.params.fromToken, event);
     let toToken = createToken(event.params.toToken, event);
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);

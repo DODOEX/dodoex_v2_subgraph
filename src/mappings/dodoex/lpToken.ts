@@ -9,8 +9,8 @@ export function handleTransfer(event: Transfer): void{
     if (event.params.to.toHexString() == ADDRESS_ZERO || event.params.from.toHexString() == ADDRESS_ZERO) {
         return;
     }
-    let fromUser = createUser(event.params.from);
-    let toUser = createUser(event.params.to);
+    let fromUser = createUser(event.params.from,event);
+    let toUser = createUser(event.params.to,event);
     let lpToken = LpToken.load(event.address.toHexString());
     let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 

@@ -146,12 +146,43 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DVMFactory
+    name: DVMFactory_20200221
     network: mainnet
     source:
       address: '0xf50bdc9e90b7a1c138cb7935071b85c417c4cb8e'
       abi: DVMFactory
       startBlock: 4208093
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVMFactory
+          file: ../abis/DVMFactory.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: FeeRateModel
+          file: ../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewDVM(address,address,address,address)
+          handler: handleNewDVM
+  - kind: ethereum/contract
+    name: DVMFactory
+    network: mainnet
+    source:
+      address: '0x790b4a80fb1094589a3c0efc8740aa9b0c1733fb'
+      abi: DVMFactory
+      startBlock: 4926603
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -270,12 +301,45 @@ dataSources:
         - event: NewDPP(address,address,address,address)
           handler: handleNewDPP
   - kind: ethereum/contract
-    name: CrowdPoolingFactory
+    name: CrowdPoolingFactory_20200721
     network: mainnet
     source:
       address: '0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5'
       abi: CrowdPoolingFactory
       startBlock: 4208124
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: CrowdPoolingFactory
+          file: ../abis/CrowdPoolingFactory.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../abis/CP.json
+      eventHandlers:
+        - event: NewCP(address,address,address,address)
+          handler: handleNewCP
+  - kind: ethereum/contract
+    name: CrowdPoolingFactory
+    network: mainnet
+    source:
+      address: '0x778df5b12170e8af8df94356bfc864e57ce185dc'
+      abi: CrowdPoolingFactory
+      startBlock: 4926634
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

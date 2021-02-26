@@ -20,6 +20,8 @@ type User @entity {
     tradingRewardRecieved: BigDecimal!
     "liquidity Positions"
     liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
+    "timestamp"
+    timestamp: BigInt!
 }
 
 type LiquidityPosition @entity {

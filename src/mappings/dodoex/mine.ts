@@ -1,5 +1,5 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {createUser, ZERO_BI, ZERO_BD, ONE_BI, convertTokenToDecimal, BI_18, createLpToken,createPool} from "./helpers"
+import { ZERO_BD, convertTokenToDecimal, createPool} from "./helpers"
 import {Deposit, Withdraw, Claim} from "../../types/dodoex/DODOMine/DODOMine"
 import {LiquidityPosition, LpToken} from "../../types/dodoex/schema"
 

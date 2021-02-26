@@ -3,6 +3,8 @@ type User @entity {
     id: ID!
     "tokens"
     tokens: [Token!]
+    "timestamp"
+    timestamp: BigInt!
 }
 
 type Token @entity {

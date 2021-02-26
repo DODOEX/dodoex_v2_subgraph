@@ -37,7 +37,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    let user = createUser(event.transaction.from);
+    let user = createUser(event.transaction.from, event);
     let fromToken = Token.load(event.params.fromToken.toHexString());
     let toToken = Token.load(event.params.toToken.toHexString());
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
@@ -156,8 +156,8 @@ export function handleDODOSwap(event: DODOSwap): void {
 
 export function handleBuyShares(event: BuyShares): void {
     let pair = Pair.load(event.address.toHexString());
-    let toUser = createUser(event.params.to);
-    let fromUser = createUser(event.transaction.from);
+    let toUser = createUser(event.params.to, event);
+    let fromUser = createUser(event.transaction.from, event);
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
     let pmmState = getPMMState(event.address);
@@ -231,8 +231,8 @@ export function handleBuyShares(event: BuyShares): void {
 
 export function handleSellShares(event: SellShares): void {
     let pair = Pair.load(event.address.toHexString());
-    let toUser = createUser(event.params.to);
-    let fromUser = createUser(event.transaction.from);
+    let toUser = createUser(event.params.to, event);
+    let fromUser = createUser(event.transaction.from, event);
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
 
@@ -336,8 +336,8 @@ export function handleTransfer(event: Transfer): void {
         return;
     }
 
-    let fromUser = createUser(event.params.from);
-    let toUser = createUser(event.params.to);
+    let fromUser = createUser(event.params.from,event);
+    let toUser = createUser(event.params.to,event);
     let lpToken = LpToken.load(event.address.toHexString());
     let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 

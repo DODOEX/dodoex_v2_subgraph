@@ -3,7 +3,7 @@ import {createUser,fetchTokenBalance,fetchTokenName,fetchTokenDecimals,fetchToke
 import {Token} from "../../types/token/schema"
 import {MintableERC20 as MintableERC20Template} from "../../types/token/templates"
 export function handleNewERC20(event: NewERC20): void{
-    let user = createUser(event.params.creator);
+    let user = createUser(event.params.creator,event);
     let token = Token.load(event.params.erc20.toHexString());
     if(token==null){
         token = new Token(event.params.erc20.toHexString())
