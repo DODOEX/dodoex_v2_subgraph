@@ -34,7 +34,8 @@ import {
     DisableQuoteDepositCall,
     EnableQuoteDepositCall,
     DisableTradingCall,
-    EnableTradingCall
+    EnableTradingCall,
+    ClaimAssets
 } from '../../types/dodoex/templates/DODO/DODO';
 
 import {
@@ -267,7 +268,7 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.baseReserve = ZERO_BD;
             pair.quoteReserve = ZERO_BD;
 
-            pair.lpFeeRate = ZERO_BD;
+            pair.lpFeeRate = convertTokenToDecimal(dodo._LP_FEE_RATE_(), BI_18);
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
@@ -292,8 +293,8 @@ export function handleDODOBirth(event: DODOBirth): void {
 
 export function handleDeposit(event: Deposit): void {
     let pair = Pair.load(event.address.toHexString());
-    let toUser = createUser(event.params.receiver,event);
-    let fromUser = createUser(event.transaction.from,event);
+    let toUser = createUser(event.params.receiver, event);
+    let fromUser = createUser(event.transaction.from, event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
     let quoteToken = createToken(Address.fromString(pair.quoteToken), event);
 
@@ -378,8 +379,8 @@ export function handleDeposit(event: Deposit): void {
 
 export function handleWithdraw(event: Withdraw): void {
     let pair = Pair.load(event.address.toHexString());
-    let toUser = createUser(event.params.receiver,event);
-    let fromUser = createUser(event.transaction.from,event);
+    let toUser = createUser(event.params.receiver, event);
+    let fromUser = createUser(event.transaction.from, event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
     let quoteToken = createToken(Address.fromString(pair.quoteToken), event);
     let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken), pair as Pair);
@@ -462,7 +463,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    let user = createUser(event.transaction.from,event);
+    let user = createUser(event.transaction.from, event);
     let fromToken = createToken(Address.fromString(pair.baseToken), event);
     let toToken = createToken(Address.fromString(pair.quoteToken), event);
     let dealedFromAmount = convertTokenToDecimal(event.params.payBase, fromToken.decimals);
@@ -576,7 +577,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    let user = createUser(event.transaction.from,event);
+    let user = createUser(event.transaction.from, event);
     let fromToken = createToken(Address.fromString(pair.quoteToken), event);
     let toToken = createToken(Address.fromString(pair.baseToken), event);
     let dealedFromAmount = convertTokenToDecimal(event.params.payQuote, fromToken.decimals);
@@ -745,4 +746,15 @@ export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
         pair.isDepositBaseAllowed = true;
     }
     pair.save();
+}
+
+export function handleClaimAssets(event: ClaimAssets): void {
+    let pair = Pair.load(dataSource.address().toHexString());
+    if (pair != null) {
+        let baseToken = Token.load(pair.baseToken);
+        let quoteToken = Token.load(pair.quoteToken);
+        pair.baseReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.baseToken), dataSource.address()), baseToken.decimals);
+        pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.quoteToken), dataSource.address()), quoteToken.decimals);
+        pair.save();
+    }
 }

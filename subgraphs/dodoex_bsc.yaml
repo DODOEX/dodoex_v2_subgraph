@@ -549,6 +549,8 @@ templates:
           handler: handleBuyBaseToken
         - event: UpdateLiquidityProviderFeeRate(uint256,uint256)
           handler: handleUpdateLiquidityProviderFeeRate
+        - event: ClaimAssets(indexed address,uint256,uint256)
+          handler: handleClaimAssets
   - kind: ethereum/contract
     name: ERC20
     network: mainnet
