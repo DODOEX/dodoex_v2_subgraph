@@ -9,7 +9,7 @@ import {
     getDODOZoo, updatePairTraderCount,
 } from "./helpers"
 import {SOURCE_SMART_ROUTE} from "../constant";
-import {log, BigInt, store} from '@graphprotocol/graph-ts'
+import {Address, BigInt, store} from '@graphprotocol/graph-ts'
 import {trimTokenDayData, updateTokenDayData} from "./dayUpdates";
 
 export function handleOrderHistory(event: OrderHistoryV2): void {
@@ -37,8 +37,8 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
         let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());
         let orderHistoryAbove = OrderHistory.load(orderHistoryAboveID);
         if (orderHistoryAbove != null) {
-            trimTokenDayData(fromToken, orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, event);
-            trimTokenDayData(toToken, orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, event);
+            trimTokenDayData(createToken(Address.fromString(orderHistoryAbove.fromToken), event), orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, event);
+            trimTokenDayData(createToken(Address.fromString(orderHistoryAbove.toToken), event), orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, event);
 
             store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
         }

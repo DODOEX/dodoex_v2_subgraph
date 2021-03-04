@@ -1,4 +1,4 @@
-import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
+import {BigInt, BigDecimal, ethereum, log, Address,store} from '@graphprotocol/graph-ts'
 import {OrderHistory, Token, Pair, CrowdPooling} from "../../types/dodoex/schema"
 import {
     createToken,
@@ -10,8 +10,8 @@ import {
     convertTokenToDecimal,
     getDODOZoo
 } from "./helpers"
-import {NewDPP} from "../../types/dodoex/DPPFactory/DPPFactory"
-import {NewDVM} from "../../types/dodoex/DVMFactory/DVMFactory"
+import {NewDPP,RemoveDPP} from "../../types/dodoex/DPPFactory/DPPFactory"
+import {NewDVM,RemoveDVM} from "../../types/dodoex/DVMFactory/DVMFactory"
 import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
 import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/dodoex/DPPFactory/DPP"
 import {NewCP} from "../../types/dodoex/CrowdPoolingFactory/CrowdPoolingFactory"
@@ -191,4 +191,12 @@ export function handleNewCP(event: NewCP): void {
 
     CPTemplate.create(event.params.cp);
 
+}
+
+export function handleRemoveDPP(event: RemoveDPP): void{
+    store.remove("Pair",event.params.dpp.toHexString())
+}
+
+export function handleRemoveDVM(event: RemoveDVM): void{
+    store.remove("Pair",event.params.dvm.toHexString())
 }

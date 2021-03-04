@@ -122,6 +122,8 @@ dataSources:
       eventHandlers:
         - event: NewDVM(address,address,address,address)
           handler: handleNewDVM
+        - event: RemoveDVM(address)
+          handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
     network: kovan
@@ -153,6 +155,8 @@ dataSources:
       eventHandlers:
         - event: NewDPP(address,address,address,address)
           handler: handleNewDPP
+        - event: RemoveDPP(address)
+          handler: handleRemoveDPP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
     network: kovan
