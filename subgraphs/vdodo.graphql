@@ -11,6 +11,8 @@ type User @entity {
     credit: BigDecimal!
     "credit of superior"
     creditOfSuperior: BigDecimal!
+    "sp get from invited"
+    spFromInvited: BigInt!
     "mint dodo amount"
     mintAmount: BigDecimal!
     "redeem recieve dodo amount"

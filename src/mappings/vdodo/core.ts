@@ -66,6 +66,7 @@ export function handleMintVDODO(event: MintVDODO): void {
     superior.superiorSP = superiorUserInfo.value1;
     superior.credit = convertTokenToDecimal(superiorUserInfo.value3,dodo.decimals);
     superior.superior = superiorUserInfo.value2;
+    superior.spFromInvited = superior.spFromInvited.plus(superiorSpChange);
 
     operation.superiorSpChange = superiorSpChange;
     operation.superiorCreditChange = superiorCreditChange;
@@ -135,6 +136,7 @@ export function handleRedeemVDODO(event: RedeemVDODO): void {
     superior.superiorSP = superiorUserInfo.value1;
     superior.credit = convertTokenToDecimal(superiorUserInfo.value3,dodo.decimals);
     superior.superior = superiorUserInfo.value2;
+    superior.spFromInvited = superior.spFromInvited.plus(superiorSpChange);
 
     operation.superiorSpChange = superiorSpChange;
     operation.superiorCreditChange = superiorCreditChange;
