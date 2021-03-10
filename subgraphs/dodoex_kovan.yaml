@@ -191,6 +191,41 @@ dataSources:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
   - kind: ethereum/contract
+    name: UpCrowdPoolingFactory
+    network: kovan
+    source:
+      address: '0xe1C4300B47ccE8B162D8d036Db356c563a904757'
+      abi: UpCrowdPoolingFactory
+      startBlock: 23851403
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: CrowdPoolingFactory
+          file: ../abis/CrowdPoolingFactory.json
+        - name: UpCrowdPoolingFactory
+          file: ../abis/UpCrowdPoolingFactory.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../abis/CP.json
+      eventHandlers:
+        - event: NewCP(address,address,address,address)
+          handler: handleNewCP
+  - kind: ethereum/contract
     name: DODOZoo
     network: kovan
     source:
@@ -332,6 +367,8 @@ templates:
           handler: handleCancel
         - event: Settle()
           handler: handleSettle
+        - event: Claim(address,uint256,uint256)
+          handler: handleClaim
   - kind: ethereum/contract
     name: DODO
     network: kovan

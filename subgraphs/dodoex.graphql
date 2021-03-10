@@ -463,6 +463,8 @@ type BidPosition @entity {
     investedQuote: BigDecimal!
     "last bid time"
     lastTxTime: BigInt!
+    "claimed"
+    claimed: Boolean!
 }
 
 type BidHistory @entity {

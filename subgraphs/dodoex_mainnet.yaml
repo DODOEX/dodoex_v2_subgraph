@@ -536,6 +536,8 @@ templates:
           handler: handleCancel
         - event: Settle()
           handler: handleSettle
+        - event: Claim(address,uint256,uint256)
+          handler: handleClaim
   - kind: ethereum/contract
     name: DODO
     network: mainnet

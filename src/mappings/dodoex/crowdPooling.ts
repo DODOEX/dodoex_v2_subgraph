@@ -6,7 +6,7 @@ import {
 } from "../../types/dodoex/schema"
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken, createUser, getDODOZoo} from './helpers'
-import {Bid, Cancel, Settle,CP} from "../../types/dodoex/templates/CP/CP"
+import {Bid, Cancel, Settle,Claim,CP} from "../../types/dodoex/templates/CP/CP"
 import {updateCrowdPoolingDayData, updateCrowdPoolingHourData} from "./dayUpdates"
 
 export function handleBid(event: Bid): void {
@@ -168,4 +168,12 @@ export function handleSettle(event: Settle): void {
     pair.save();
     cp.save();
 
+}
+
+export function handleClaim(event: Claim):void {
+    //用户信息
+    let bidPositionID = event.params.user.toHexString().concat("-").concat(event.address.toHexString());
+    let bidPosition = BidPosition.load(bidPositionID);
+    bidPosition.claimed = true;
+    bidPosition.save();
 }
