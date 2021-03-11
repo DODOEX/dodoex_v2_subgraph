@@ -33,6 +33,7 @@ export function handleBid(event: Bid): void {
         bidPosition.investedQuote = ZERO_BD;
         bidPosition.shares = ZERO_BD;
         bidPosition.lastTxTime = ZERO_BI;
+        bidPosition.claimed = false;
     }
     bidPosition.investedQuote = dealedAmount.plus(bidPosition.investedQuote);
     bidPosition.shares = event.params.amount.minus(event.params.fee).toBigDecimal().plus(bidPosition.shares);
@@ -105,6 +106,7 @@ export function handleCancel(event: Cancel): void {
         bidPosition.investedQuote = ZERO_BD;
         bidPosition.shares = ZERO_BD;
         bidPosition.lastTxTime = ZERO_BI;
+        bidPosition.claimed = false;
     }
     bidPosition.investedQuote = bidPosition.investedQuote.minus(dealedAmount);
     bidPosition.shares = bidPosition.shares.minus(event.params.amount.toBigDecimal());
