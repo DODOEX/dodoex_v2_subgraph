@@ -160,10 +160,11 @@ export function handleSettle(event: Settle): void {
     let dvmAddress = cpContrct._POOL_();
 
     let pair = Pair.load(dvmAddress.toHexString());
+    if(pair!=null){
+        pair.creator = cp.creator;
+        cp.dvm = pair.id;
+    }
 
-    pair.creator = cp.creator;
-
-    cp.dvm = pair.id;
     cp.settled = true;
     cp.liquidator = event.transaction.from;
 
