@@ -180,6 +180,9 @@ type Pair @entity {
     "quote token reserve"
     quoteReserve: BigDecimal!
 
+    "last trade price (quote/base)"
+    lastTradePrice: BigDecimal!
+
     "untracked base volume"
     untrackedBaseVolume: BigDecimal!
     "untracked quote volume"

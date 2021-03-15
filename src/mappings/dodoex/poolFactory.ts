@@ -41,6 +41,7 @@ export function handleNewDVM(event: NewDVM): void {
         pair.quoteLpToken = event.params.dvm.toHexString();
         createLpToken(event.params.dvm,pair as Pair);
 
+        pair.lastTradePrice = ZERO_BD;
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;
         pair.volumeQuoteToken = ZERO_BD;
@@ -103,6 +104,7 @@ export function handleNewDPP(event: NewDPP): void {
         pair.createdAtTimestamp = event.block.timestamp;
         pair.createdAtBlockNumber = event.block.number;
 
+        pair.lastTradePrice = ZERO_BD;
         pair.txCount = ZERO_BI;
         pair.volumeBaseToken = ZERO_BD;
         pair.volumeQuoteToken = ZERO_BD;

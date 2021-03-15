@@ -81,6 +81,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
+    pair.lastTradePrice = quoteVolume.div(baseVolume);
     pair.save();
 
     //2、更新两个token的记录数据

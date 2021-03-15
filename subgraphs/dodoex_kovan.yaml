@@ -194,9 +194,9 @@ dataSources:
     name: UpCrowdPoolingFactory
     network: kovan
     source:
-      address: '0xe1C4300B47ccE8B162D8d036Db356c563a904757'
+      address: '0x25ae560522165eaccfbf2287493af12b8ad718e7'
       abi: UpCrowdPoolingFactory
-      startBlock: 23851403
+      startBlock: 23929185
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

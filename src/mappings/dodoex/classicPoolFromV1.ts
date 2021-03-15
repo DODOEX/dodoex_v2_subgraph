@@ -179,6 +179,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             let baseLpToken = createLpToken(Address.fromString(BASE_LP_TOKENS[i]), pair);
             let quoteLpToken = createLpToken(Address.fromString(QUOTE_LP_TOKENS[i]), pair);
 
+            pair.lastTradePrice = ZERO_BD;
             pair.baseLpToken = baseLpToken.id;
             pair.quoteLpToken = quoteLpToken.id;
             pair.txCount = ZERO_BI;
@@ -249,7 +250,7 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.creator = Address.fromString(ADDRESS_ZERO);
             pair.createdAtTimestamp = event.block.timestamp;
             pair.createdAtBlockNumber = event.block.number;
-
+            pair.lastTradePrice = ZERO_BD;
             pair.txCount = ZERO_BI;
             pair.volumeBaseToken = ZERO_BD;
             pair.volumeQuoteToken = ZERO_BD;
@@ -503,6 +504,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.plus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.minus(quoteVolume);
+    pair.lastTradePrice = quoteVolume.div(baseVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -617,6 +619,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.minus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.plus(quoteVolume);
+    pair.lastTradePrice = quoteVolume.div(baseVolume);
     pair.save();
 
     //2、更新两个token的记录数据

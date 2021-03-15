@@ -163,12 +163,12 @@ export function handleSettle(event: Settle): void {
     if(pair!=null){
         pair.creator = cp.creator;
         cp.dvm = pair.id;
+        pair.save();
     }
 
     cp.settled = true;
     cp.liquidator = event.transaction.from;
 
-    pair.save();
     cp.save();
 
 }
