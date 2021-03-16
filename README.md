@@ -23,15 +23,15 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 **Endpoints**
  - dodoex 
     - mainnet : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2
-    - bsc : https://api.bscgraph.org/subgraphs/name/dodoex-v2
+    - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-bsc
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-v2
 - token
     - mainnet : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
-    - bsc : https://api.bscgraph.org/subgraphs/name/dodoex-token
+    - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-bsc
     - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
 - vdodo
     - mainnet : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
-    - bsc : https://api.bscgraph.org/subgraphs/name/dodoex-vdodo
+    - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
   
 ## 2、 Graphql Examples

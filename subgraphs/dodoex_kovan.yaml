@@ -41,7 +41,7 @@ dataSources:
     source:
       address: '0x5cfcc14f7c8be8b138d9fdf7438391b0bfe0589f'
       abi: DODOIncentive
-      startBlock: 23379874
+      startBlock: 23501827
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -97,7 +97,7 @@ dataSources:
     source:
       address: '0x322f8014c125da09314d3a68d4d9f427823f17fd'
       abi: DVMFactory
-      startBlock: 23379878
+      startBlock: 23939142
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

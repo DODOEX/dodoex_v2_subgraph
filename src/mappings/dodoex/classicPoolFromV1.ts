@@ -504,7 +504,9 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.plus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.minus(quoteVolume);
-    pair.lastTradePrice = quoteVolume.div(baseVolume);
+    if(baseVolume.gt(ZERO_BD)){
+        pair.lastTradePrice = quoteVolume.div(baseVolume);
+    }
     pair.save();
 
     //2、更新两个token的记录数据
@@ -619,7 +621,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.minus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.plus(quoteVolume);
-    pair.lastTradePrice = quoteVolume.div(baseVolume);
+    if(baseVolume.gt(ZERO_BD)){
+        pair.lastTradePrice = quoteVolume.div(baseVolume);
+    }
     pair.save();
 
     //2、更新两个token的记录数据
