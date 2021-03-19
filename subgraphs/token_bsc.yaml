@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20Factory
-    network: mainnet
+    network: bsc
     source:
       address: '0x5e84190a270333aCe5B9202a3F4ceBf11b81bB01'
       abi: ERC20Factory
@@ -36,7 +36,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: mainnet
+    network: bsc
     source:
       abi: MintableERC20
     mapping:

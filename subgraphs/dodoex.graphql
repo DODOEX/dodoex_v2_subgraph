@@ -30,7 +30,7 @@ type LiquidityPosition @entity {
     "user"
     user: User!
     "pair"
-    pair: Pair!
+    pair: Pair
     "lp token"
     lpToken: LpToken!
     "lp token balance"
@@ -73,7 +73,7 @@ type LpToken @entity {
     "token address"
     id: ID!
     "belong pair"
-    pair: Pair!
+    pair: Pair
 
     "token symbol"
     symbol: String!
@@ -139,7 +139,7 @@ type LiquidityHistory @entity {
     "balance in wallet"
     balance: BigDecimal!
     "pair"
-    pair: Pair!
+    pair: Pair
     "base reserve"
     baseReserve: BigDecimal
     "quote reserve"
@@ -225,7 +225,7 @@ type PairTrader @entity{
     "pair address - user address"
     id: ID!
     "pair"
-    pair: Pair!
+    pair: Pair
     "user"
     trader: User!
     "last trade time"
@@ -240,7 +240,7 @@ type Swap @entity {
     "transaction timestamp"
     timestamp: BigInt!
     "trading pair"
-    pair: Pair!
+    pair: Pair
 
     "msg.sender"
     sender: Bytes!
@@ -278,7 +278,7 @@ type FlashLoan @entity {
     "transaction timestamp"
     timestamp: BigInt!
     "trading pair"
-    pair: Pair!
+    pair: Pair
     "msg.sender"
     sender: Bytes!
     "tx from address"
