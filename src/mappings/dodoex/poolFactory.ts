@@ -146,7 +146,6 @@ export function handleNewDPP(event: NewDPP): void {
     }
 
     DPPTemplate.create(event.params.dpp);
-
 }
 
 export function handleNewCP(event: NewCP): void {

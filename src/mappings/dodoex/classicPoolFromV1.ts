@@ -294,6 +294,9 @@ export function handleDODOBirth(event: DODOBirth): void {
 
 export function handleDeposit(event: Deposit): void {
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     let toUser = createUser(event.params.receiver, event);
     let fromUser = createUser(event.transaction.from, event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
@@ -380,6 +383,9 @@ export function handleDeposit(event: Deposit): void {
 
 export function handleWithdraw(event: Withdraw): void {
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     let toUser = createUser(event.params.receiver, event);
     let fromUser = createUser(event.transaction.from, event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
@@ -464,6 +470,9 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     let user = createUser(event.transaction.from, event);
     let fromToken = createToken(Address.fromString(pair.baseToken), event);
     let toToken = createToken(Address.fromString(pair.quoteToken), event);
@@ -581,6 +590,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     let user = createUser(event.transaction.from, event);
     let fromToken = createToken(Address.fromString(pair.quoteToken), event);
     let toToken = createToken(Address.fromString(pair.baseToken), event);
@@ -697,6 +709,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     pair.lpFeeRate = convertTokenToDecimal(event.params.newLiquidityProviderFeeRate, BI_18);
     pair.save();
 }
@@ -704,6 +719,9 @@ export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProvi
 export function handleDisableTrading(call: DisableTradingCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
+    if(pair === null){
+        return;
+    }
     if (pair != null) {
         pair.isTradeAllowed = false;
     }
@@ -713,6 +731,9 @@ export function handleDisableTrading(call: DisableTradingCall): void {
 export function handleEnableTrading(call: EnableTradingCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
+    if(pair === null){
+        return;
+    }
     if (pair != null) {
         pair.isTradeAllowed = true;
     }
@@ -722,6 +743,9 @@ export function handleEnableTrading(call: EnableTradingCall): void {
 export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
+    if(pair === null){
+        return;
+    }
     if (pair != null) {
         pair.isDepositQuoteAllowed = false;
     }
@@ -731,6 +755,9 @@ export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
 export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
+    if(pair === null){
+        return;
+    }
     if (pair != null) {
         pair.isDepositQuoteAllowed = true;
     }
@@ -740,6 +767,9 @@ export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
 export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
+    if(pair === null){
+        return;
+    }
     if (pair != null) {
         pair.isDepositBaseAllowed = false;
     }
@@ -749,6 +779,9 @@ export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
 export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
+    if(pair === null){
+        return;
+    }
     if (pair != null) {
         pair.isDepositBaseAllowed = true;
     }

@@ -37,6 +37,9 @@ export function handleDODOSwap(event: DODOSwap): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     let user = createUser(event.transaction.from, event);
     let fromToken = Token.load(event.params.fromToken.toHexString());
     let toToken = Token.load(event.params.toToken.toHexString());
@@ -159,6 +162,10 @@ export function handleDODOSwap(event: DODOSwap): void {
 
 export function handleBuyShares(event: BuyShares): void {
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
+
     let toUser = createUser(event.params.to, event);
     let fromUser = createUser(event.transaction.from, event);
     let baseToken = Token.load(pair.baseToken);
@@ -234,6 +241,9 @@ export function handleBuyShares(event: BuyShares): void {
 
 export function handleSellShares(event: SellShares): void {
     let pair = Pair.load(event.address.toHexString());
+    if(pair === null){
+        return;
+    }
     let toUser = createUser(event.params.to, event);
     let fromUser = createUser(event.transaction.from, event);
     let baseToken = Token.load(pair.baseToken);
@@ -314,7 +324,9 @@ export function handleSellShares(event: SellShares): void {
 
 export function handleLpFeeRateChange(event: LpFeeRateChange): void {
     let pair = Pair.load(event.address.toHexString());
-
+    if(pair === null){
+        return;
+    }
     if (pair.type == TYPE_DPP_POOL) {
         let dpp = DPP.bind(event.address);
         pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(), BigInt.fromI32(18));
