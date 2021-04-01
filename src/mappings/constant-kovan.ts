@@ -5,6 +5,9 @@ export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
 export const DODOZooID = "dodoex-v2-kovan";
+export const CHAIN_BASE_COIN_SYMBOL = "ETH";
+export const CHAIN_BASE_COIN_NAME = "ethereum";
+
 export const SMART_ROUTE_ADDRESSES: string[]= ["0x85caa68ae47f047aa01c48bcaa711ca70a950ffb"];
 export const DVM_FACTORY_ADDRESS = "0x322f8014c125da09314d3a68d4d9f427823f17fd";
 export const DPP_FACTORY_ADDRESS = "0xc65f8087288aa0a118aa6f3228ef9ecc8187f4b6";

@@ -138,6 +138,10 @@ type LiquidityHistory @entity {
     amount: BigDecimal!
     "balance in wallet"
     balance: BigDecimal!
+    "baseToken amount change"
+    baseAmountChange: BigDecimal
+    "quoteToken amount change"
+    quoteAmountChange: BigDecimal
     "pair"
     pair: Pair
     "base reserve"

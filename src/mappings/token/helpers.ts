@@ -7,6 +7,8 @@ import {User} from "../../types/token/schema"
 
 import {
     ETH_ADDRESS,
+    CHAIN_BASE_COIN_SYMBOL,
+    CHAIN_BASE_COIN_NAME
 } from "../constant"
 
 export let ZERO_BI = BigInt.fromI32(0)

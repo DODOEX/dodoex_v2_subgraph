@@ -172,6 +172,9 @@ export function handleBuyShares(event: BuyShares): void {
     let quoteToken = Token.load(pair.quoteToken);
     let pmmState = getPMMState(event.address);
 
+    let baseAmountChange =convertTokenToDecimal(pmmState.B, baseToken.decimals).minus(pair.baseReserve);
+    let quoteAmountChange =convertTokenToDecimal(pmmState.Q, quoteToken.decimals).minus(pair.quoteReserve);
+
     let lpToken = createLpToken(event.address, pair as Pair);
 
     let dealedSharesAmount = convertTokenToDecimal(event.params.increaseShares, lpToken.decimals);
@@ -222,6 +225,8 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
         liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
+        liquidityHistory.baseAmountChange = baseAmountChange;
+        liquidityHistory.quoteAmountChange = quoteAmountChange;
     }
 
     liquidityPosition.save();

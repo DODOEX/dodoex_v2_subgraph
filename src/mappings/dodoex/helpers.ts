@@ -25,6 +25,8 @@ import {
     DVM_FACTORY_ADDRESS,
     CLASSIC_FACTORY_ADDRESS,
     ETH_ADDRESS,
+    CHAIN_BASE_COIN_NAME,
+    CHAIN_BASE_COIN_SYMBOL
 } from "../constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
 import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
@@ -230,8 +232,8 @@ export function createToken(address: Address, event: ethereum.Event): Token {
     if (token == null) {
         if (address.toHexString() == ETH_ADDRESS) {
             token = new Token(address.toHexString());
-            token.symbol = "ETH";
-            token.name = "ether";
+            token.symbol = CHAIN_BASE_COIN_SYMBOL;
+            token.name = CHAIN_BASE_COIN_NAME;
             token.totalSupply = fetchTokenTotalSupply(address);
 
             let decimals = fetchTokenDecimals(address);

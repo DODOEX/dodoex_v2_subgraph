@@ -294,7 +294,7 @@ export function handleDODOBirth(event: DODOBirth): void {
 
 export function handleDeposit(event: Deposit): void {
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     let toUser = createUser(event.params.receiver, event);
@@ -306,6 +306,8 @@ export function handleDeposit(event: Deposit): void {
     let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken), pair as Pair);
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
+    let baseAmountChange = ZERO_BD;
+    let quoteAmountChange = ZERO_BD;
     let dealedSharesAmount: BigDecimal;
 
     //更新用户LP token信息
@@ -314,11 +316,14 @@ export function handleDeposit(event: Deposit): void {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
         lpToken = LpToken.load(pair.baseLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
+        baseAmountChange = amount;
     } else {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
         lpToken = LpToken.load(pair.quoteLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
+        quoteAmountChange = amount;
     }
+
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
         liquidityPosition = new LiquidityPosition(liquidityPositionID);
@@ -331,12 +336,8 @@ export function handleDeposit(event: Deposit): void {
     liquidityPosition.lastTxTime = event.block.timestamp;
     liquidityPosition.liquidityTokenBalance = liquidityPosition.liquidityTokenBalance.plus(dealedSharesAmount);
 
-    //classical 在这里校准
-    if (event.params.isBaseToken) {
-        pair.baseReserve = pair.baseReserve.plus(amount);
-    } else {
-        pair.quoteReserve = pair.quoteReserve.plus(amount);
-    }
+    pair.baseReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(baseToken.id), event.address), baseToken.decimals);
+    pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(quoteToken.id), event.address), quoteToken.decimals);
 
     fromUser.txCount = fromUser.txCount.plus(ONE_BI);
     toUser.txCount = toUser.txCount.plus(ONE_BI);
@@ -364,6 +365,8 @@ export function handleDeposit(event: Deposit): void {
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
         liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
+        liquidityHistory.baseAmountChange = baseAmountChange;
+        liquidityHistory.quoteAmountChange = quoteAmountChange;
     }
 
     liquidityPosition.save();
@@ -383,7 +386,7 @@ export function handleDeposit(event: Deposit): void {
 
 export function handleWithdraw(event: Withdraw): void {
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     let toUser = createUser(event.params.receiver, event);
@@ -394,6 +397,8 @@ export function handleWithdraw(event: Withdraw): void {
     let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken), pair as Pair);
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
+    let baseAmountChange = ZERO_BD;
+    let quoteAmountChange = ZERO_BD;
     let dealedSharesAmount: BigDecimal;
     //更新用户LP token信息
     let liquidityPositionID: string, lpToken: LpToken;
@@ -401,10 +406,12 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
         lpToken = LpToken.load(pair.baseLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
+        baseAmountChange = amount;
     } else {
         liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
         lpToken = LpToken.load(pair.quoteLpToken) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
+        quoteAmountChange = amount;
     }
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
     if (liquidityPosition == null) {
@@ -449,6 +456,8 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityHistory.baseReserve = pair.baseReserve;
         liquidityHistory.quoteReserve = pair.quoteReserve;
         liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
+        liquidityHistory.baseAmountChange = baseAmountChange;
+        liquidityHistory.quoteAmountChange = quoteAmountChange;
     }
 
     liquidityPosition.save();
@@ -470,7 +479,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     let user = createUser(event.transaction.from, event);
@@ -513,7 +522,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.plus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.minus(quoteVolume);
-    if(baseVolume.gt(ZERO_BD)){
+    if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
     pair.save();
@@ -590,7 +599,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     let user = createUser(event.transaction.from, event);
@@ -633,7 +642,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.minus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.plus(quoteVolume);
-    if(baseVolume.gt(ZERO_BD)){
+    if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
     pair.save();
@@ -709,7 +718,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     pair.lpFeeRate = convertTokenToDecimal(event.params.newLiquidityProviderFeeRate, BI_18);
@@ -719,7 +728,7 @@ export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProvi
 export function handleDisableTrading(call: DisableTradingCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair != null) {
@@ -731,7 +740,7 @@ export function handleDisableTrading(call: DisableTradingCall): void {
 export function handleEnableTrading(call: EnableTradingCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair != null) {
@@ -743,7 +752,7 @@ export function handleEnableTrading(call: EnableTradingCall): void {
 export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair != null) {
@@ -755,7 +764,7 @@ export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
 export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair != null) {
@@ -767,7 +776,7 @@ export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
 export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair != null) {
@@ -779,7 +788,7 @@ export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
 export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
     let pairAddress = dataSource.address().toHexString();
     let pair = Pair.load(pairAddress);
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair != null) {
