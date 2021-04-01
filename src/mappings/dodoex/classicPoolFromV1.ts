@@ -198,6 +198,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.isTradeAllowed = true;
             pair.isDepositBaseAllowed = false;
             pair.isDepositQuoteAllowed = false;
+            pair.volumeUSD = ZERO_BD;
 
             pair.i = ZERO_BI;
             pair.k = ZERO_BI;
@@ -267,6 +268,7 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.isTradeAllowed = true;
             pair.isDepositBaseAllowed = true;
             pair.isDepositQuoteAllowed = true;
+            pair.volumeUSD = ZERO_BD;
 
             pair.i = ZERO_BI;
             pair.k = ZERO_BI;
@@ -527,8 +529,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair);
-    let volumeUSD = calculateUsdVolume(baseToken, quoteToken, baseVolume, quoteVolume);
+    updatePrice(pair as Pair);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
     pair.volumeUSD = volumeUSD;
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
@@ -658,8 +660,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair);
-    let volumeUSD = calculateUsdVolume(baseToken, quoteToken, baseVolume, quoteVolume);
+    updatePrice(pair as Pair);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
     pair.volumeUSD = volumeUSD;
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);

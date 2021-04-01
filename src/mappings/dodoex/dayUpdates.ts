@@ -43,6 +43,7 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         pairDayData.feeBase = ZERO_BD;
         pairDayData.feeQuote = ZERO_BD;
         pairDayData.traders = ZERO_BI;
+        pairDayData.volumeUSD = ZERO_BD;
     }
 
     pairDayData.baseTokenReserve = pair.baseReserve;
@@ -94,6 +95,7 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
         pairHourData.feeBase = ZERO_BD;
         pairHourData.feeQuote = ZERO_BD;
         pairHourData.traders = ZERO_BI;
+        pairHourData.volumeUSD = ZERO_BD;
     }
 
     pairHourData.baseTokenReserve = pair.baseReserve;
@@ -135,6 +137,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData.fee = ZERO_BD;
         tokenDayData.traders = ZERO_BI;
         tokenDayData.volumeBridge = ZERO_BD;
+        tokenDayData.volumeUSD = ZERO_BD;
     }
 
     tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
@@ -163,6 +166,7 @@ export function trimTokenDayData(token: Token, volume: BigDecimal, bridge: BigDe
         tokenDayData.fee = ZERO_BD;
         tokenDayData.traders = ZERO_BI;
         tokenDayData.volumeBridge = ZERO_BD;
+        tokenDayData.volumeUSD = ZERO_BD;
     } else {
         tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
         tokenDayData.volume = tokenDayData.volume.minus(volume);

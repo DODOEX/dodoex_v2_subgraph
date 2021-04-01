@@ -54,6 +54,7 @@ export function handleNewDVM(event: NewDVM): void {
         pair.isTradeAllowed = true;
         pair.isDepositBaseAllowed = true;
         pair.isDepositQuoteAllowed = true;
+        pair.volumeUSD = ZERO_BD;
 
         let dvm = DVM.bind(event.params.dvm);
         let pmmState = dvm.try_getPMMState();
@@ -117,6 +118,7 @@ export function handleNewDPP(event: NewDPP): void {
         pair.isTradeAllowed = true;
         pair.isDepositBaseAllowed = false;
         pair.isDepositQuoteAllowed = false;
+        pair.volumeUSD = ZERO_BD;
 
         let dpp = DPP.bind(event.params.dpp);
         let pmmState = dpp.try_getPMMState();

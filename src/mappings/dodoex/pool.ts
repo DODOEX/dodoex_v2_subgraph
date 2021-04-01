@@ -89,8 +89,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair);
-    let volumeUSD = calculateUsdVolume(baseToken, quoteToken, baseVolume, quoteVolume);
+    updatePrice(pair as Pair);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
     pair.volumeUSD = volumeUSD;
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);

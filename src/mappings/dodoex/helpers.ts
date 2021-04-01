@@ -256,6 +256,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         token.txCount = ZERO_BI;
         token.untrackedVolume = ZERO_BD;
         token.timestamp = event.block.timestamp;
+        token.volumeUSD = ZERO_BD;
         token.save();
 
         let dodoZoo = getDODOZoo();
@@ -304,6 +305,7 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
         token.txCount = ZERO_BI;
         token.untrackedVolume = ZERO_BD;
         token.timestamp = call.block.timestamp;
+        token.volumeUSD = ZERO_BD;
         token.save();
 
         let dodoZoo = getDODOZoo();

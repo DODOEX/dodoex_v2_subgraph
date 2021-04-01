@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import {log, BigInt, BigDecimal, Address, String} from '@graphprotocol/graph-ts'
+import {log, BigInt, BigDecimal, Address} from '@graphprotocol/graph-ts'
 import {Pair, Token} from '../../types/dodoex/schema'
 import {
     ZERO_BD,
@@ -19,7 +19,7 @@ import {
     TYPE_DVM_POOL,
 } from "../constant"
 
-const VALID_PRICING_TVL = BigDecimal.fromString("100000");//100k usd
+let VALID_PRICING_TVL = BigDecimal.fromString("100000");//100k usd
 
 const STANDARD_TOKEN: string[] = [
     STABLE_ONE_ADDRESS,
@@ -52,11 +52,11 @@ function priceCore(): void {
         quoteToken.usdPrice = quoteUsdPrice;
 
         if (baseCurrencyPair != null) {
-            if (stableOnePair.baseToken == baseCurrencyPair.quoteToken) {
-                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(baseToken.usdPrice);
+            if (stableOnePair.baseToken == baseCurrencyPair.quoteToken && baseToken.usdPrice !=null) {
+                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(baseToken.usdPrice as BigDecimal);
             }
-            if (stableOnePair.quoteToken == baseCurrencyPair.quoteToken) {
-                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(quoteToken.usdPrice);
+            if (stableOnePair.quoteToken == baseCurrencyPair.quoteToken && quoteToken.usdPrice != null) {
+                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(quoteToken.usdPrice  as BigDecimal);
             }
             wrappedBaseCoin.save();
         }
@@ -91,10 +91,10 @@ function updateWhiteListPrice(pair: Pair): void {
         let baseToken = Token.load(pair.baseToken);
 
         if (quoteToken.usdPrice != null) {
-            let quoteTVL = pair.quoteReserve.times(quoteToken.usdPrice);
-            let baseTVL = pair.baseReserve.times(pair.lastTradePrice).times(quoteToken.usdPrice);
+            let quoteTVL = pair.quoteReserve.times(quoteToken.usdPrice as BigDecimal);
+            let baseTVL = pair.baseReserve.times(pair.lastTradePrice).times(quoteToken.usdPrice as BigDecimal);
             if (quoteTVL.plus(baseTVL).ge(VALID_PRICING_TVL)) {
-                baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice);
+                baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
                 baseToken.save();
             } else {
                 baseToken.usdPrice = null;
