@@ -17,14 +17,18 @@ export const DVM_FACTORY_DEPLOY_BLOCK = 23379878;
 export const DPP_FACTORY_DEPLOY_BLOCK = 23388901;
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
-export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
-export const WETH_ADDRESS = '0x5eca15b12d959dfcf9c71c59f8b467eb8c6efd0b';
-export const USDT_ADDRESS = '0x9d48172b0189de70f8788de10196a1fb622b8e6b';
-export const USDC_ADDRESS = '0x69c8a7fc6e05d7aa36114b3e35f62deca8e11f6e';
+/**
+ * usd pricing
+ */
+export const WRAPPED_BASE_COIN = '0x5eca15b12d959dfcf9c71c59f8b467eb8c6efd0b';
+//pricing supported stable coins
+export const STABLE_ONE_ADDRESS = '0xd02de455eeaa9d6bf8f8d56db13ce6178b46a9c2';//usdt
+export const STABLE_TWO_ADDRESS = '0x3a9fdfef1382a146f390b699413f63a996c6981f';//usdc
+//stable coins pairs
+export const STABLE_COIN_PAIR_ONE = '0xe8c1b7e0505c97c59ff2f12ebf91a8eaa59d4c73';//[USDT_USDC_PAIR]
+//base currency pair
+export const BASE_COIN_PAIR = '0x75f5d66a7bbb9330a9067c0833ec9b3198b71666';//[WETH_USDC_PAIR]
 
-export const WETH_USDC_PAIR = '0x2b517ba87eae60de363b7295b08167ba7ee25143'; // created 10008355
-export const USDT_USDC_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11'; // created block 10042267
-export const WETH_USDC_BLOCK = 23016939;
-export const USDT_USDC_BLOCK = 23016946;
 

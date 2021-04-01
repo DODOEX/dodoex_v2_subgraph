@@ -6,8 +6,7 @@ import {
     Token,
     Swap,
     OrderHistory,
-    LpToken,
-    PairTrader
+    LpToken
 } from '../../types/dodoex/schema'
 import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../../types/dodoex/templates'
 import {
@@ -45,6 +44,11 @@ import {
     TYPE_CLASSICAL_POOL,
     SOURCE_POOL_SWAP
 } from "../constant"
+
+import {
+    updatePrice,
+    calculateUsdVolume
+} from "./pricing"
 
 const POOLS_ADDRESS: string[] = [
     "0x75c23271661d9d143dcb617222bc4bec783eff34",//WETH-USDC
@@ -518,13 +522,22 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.feeBase = pair.feeBase.plus(baseLpFee);
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
-    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
-    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.plus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.minus(quoteVolume);
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
+    updatePrice(pair);
+    let volumeUSD = calculateUsdVolume(baseToken, quoteToken, baseVolume, quoteVolume);
+    pair.volumeUSD = volumeUSD;
+    if (volumeUSD.equals(ZERO_BD)) {
+        pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
+        pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
+        untrackedBaseVolume = baseVolume;
+        untrackedQuoteVolume = quoteVolume;
+    }
+    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -560,6 +573,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         swap.feeQuote = quoteLpFee;
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
+        swap.volumeUSD = volumeUSD;
         swap.save();
     }
 
@@ -580,6 +594,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         orderHistory.amountOut = dealedToAmount;
         orderHistory.logIndex = event.logIndex;
         orderHistory.tradingReward = ZERO_BD;
+        orderHistory.volumeUSD = volumeUSD;
         orderHistory.save();
     }
 
@@ -592,7 +607,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     dodoZoo.save();
 
     //更新日报表数据
-    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.seller);
+    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.seller, volumeUSD);
 }
 
 export function handleBuyBaseToken(event: BuyBaseToken): void {
@@ -638,13 +653,22 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.feeBase = pair.feeBase.plus(baseLpFee);
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
-    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
-    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.baseReserve = pair.baseReserve.minus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.plus(quoteVolume);
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
+    updatePrice(pair);
+    let volumeUSD = calculateUsdVolume(baseToken, quoteToken, baseVolume, quoteVolume);
+    pair.volumeUSD = volumeUSD;
+    if (volumeUSD.equals(ZERO_BD)) {
+        pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
+        pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
+        untrackedBaseVolume = baseVolume;
+        untrackedQuoteVolume = quoteVolume;
+    }
+    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -681,6 +705,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         swap.feeQuote = quoteLpFee;
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
+        swap.volumeUSD = volumeUSD;
         swap.save();
     }
 
@@ -701,6 +726,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         orderHistory.amountOut = dealedToAmount;
         orderHistory.logIndex = event.logIndex;
         orderHistory.tradingReward = ZERO_BD;
+        orderHistory.volumeUSD = volumeUSD;
         orderHistory.save();
     }
 
@@ -713,7 +739,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     dodoZoo.save();
 
     //更新报表数据
-    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer);
+    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer, volumeUSD);
 }
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {

@@ -16,7 +16,7 @@ import {
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000';
 export const USDT_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';
 export const WBTC_ADDRESS = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599';
-export const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
@@ -144,7 +144,7 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)
@@ -160,7 +160,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
         return BigInt.fromI32(18)
     }
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(18)
     }
 
@@ -175,7 +175,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
 }
 
 export function fetchTokenBalance(tokenAddress: Address, user: Address): BigInt {
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)

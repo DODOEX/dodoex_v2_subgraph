@@ -6,7 +6,7 @@ import {ERC20SymbolBytes} from "../../types/token/ERC20Factory/ERC20SymbolBytes"
 import {User} from "../../types/token/schema"
 
 import {
-    ETH_ADDRESS,
+    BASE_COIN,
     CHAIN_BASE_COIN_SYMBOL,
     CHAIN_BASE_COIN_NAME
 } from "../constant"
@@ -133,7 +133,7 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)
@@ -149,7 +149,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
         return BigInt.fromI32(18)
     }
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(18)
     }
 
@@ -164,7 +164,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
 }
 
 export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)

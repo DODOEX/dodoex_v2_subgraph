@@ -58,6 +58,8 @@ type Token @entity {
     untrackedVolume: BigDecimal!
     "total trade volume"
     tradeVolume: BigDecimal!
+    "traded volume of USD"
+    volumeUSD: BigDecimal!
 
     "transactions across all pairs"
     txCount: BigInt!
@@ -67,6 +69,9 @@ type Token @entity {
 
     "timestamp"
     timestamp: BigInt!
+
+    "usd price(only stable coin and classical pool has usd price)"
+    usdPrice: BigDecimal
 }
 
 type LpToken @entity {
@@ -112,6 +117,9 @@ type OrderHistory @entity {
     amountIn: BigDecimal!
     "to token amount"
     amountOut: BigDecimal!
+
+    "traded volume of USD"
+    volumeUSD: BigDecimal!
 
     "trading incentive reward"
     tradingReward: BigDecimal!
@@ -195,6 +203,8 @@ type Pair @entity {
     volumeBaseToken: BigDecimal!
     "trade volume of quotetoken"
     volumeQuoteToken: BigDecimal!
+    "traded volume of USD"
+    volumeUSD: BigDecimal!
     "lp fee base"
     feeBase: BigDecimal!
     "lp fee quote"
@@ -271,6 +281,8 @@ type Swap @entity {
     baseVolume: BigDecimal!
     "quote volume"
     quoteVolume: BigDecimal!
+    "traded volume of USD"
+    volumeUSD: BigDecimal!
 
 }
 
@@ -291,6 +303,8 @@ type FlashLoan @entity {
     baseAmount: BigDecimal!
     "quote amount"
     quoteAmount: BigDecimal!
+    "traded volume of USD"
+    volumeUSD: BigDecimal!
 }
 
 type PairDayData @entity {
@@ -323,6 +337,8 @@ type PairDayData @entity {
     volumeBase: BigDecimal!
     "quote token volume"
     volumeQuote: BigDecimal!
+    "USD volume"
+    volumeUSD: BigDecimal!
 
     "daily txns"
     txns: BigInt!
@@ -367,6 +383,8 @@ type PairHourData @entity {
     volumeBase: BigDecimal!
     "quote token volume"
     volumeQuote: BigDecimal!
+    "USD volume"
+    volumeUSD: BigDecimal!
 
     "daily txns"
     txns: BigInt!
@@ -396,6 +414,8 @@ type TokenDayData @entity {
     volume: BigDecimal!
     "bridge volume"
     volumeBridge: BigDecimal!
+    "traded volume of USD"
+    volumeUSD: BigDecimal!
     "tx occured"
     txns: BigInt!
 

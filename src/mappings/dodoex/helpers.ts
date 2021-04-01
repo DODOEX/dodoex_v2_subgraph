@@ -24,12 +24,12 @@ import {
     DPP_FACTORY_ADDRESS,
     DVM_FACTORY_ADDRESS,
     CLASSIC_FACTORY_ADDRESS,
-    ETH_ADDRESS,
+    BASE_COIN,
     CHAIN_BASE_COIN_NAME,
     CHAIN_BASE_COIN_SYMBOL
 } from "../constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
-import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
+import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
@@ -157,7 +157,7 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)
@@ -173,7 +173,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
         return BigInt.fromI32(18)
     }
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(18)
     }
 
@@ -187,8 +187,8 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     return BigInt.fromI32(decimalValue as i32)
 }
 
-export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
-    if (tokenAddress.toHexString() == ETH_ADDRESS) {
+export function fetchTokenBalance(tokenAddress: Address, user: Address): BigInt {
+    if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
     let contract = ERC20.bind(tokenAddress)
@@ -215,7 +215,7 @@ export function getDODOZoo(): DodoZoo {
 
 }
 
-export function createUser(address: Address,event: ethereum.Event): User {
+export function createUser(address: Address, event: ethereum.Event): User {
     let user = User.load(address.toHexString())
     if (user === null) {
         user = new User(address.toHexString())
@@ -230,7 +230,7 @@ export function createUser(address: Address,event: ethereum.Event): User {
 export function createToken(address: Address, event: ethereum.Event): Token {
     let token = Token.load(address.toHexString());
     if (token == null) {
-        if (address.toHexString() == ETH_ADDRESS) {
+        if (address.toHexString() == BASE_COIN) {
             token = new Token(address.toHexString());
             token.symbol = CHAIN_BASE_COIN_SYMBOL;
             token.name = CHAIN_BASE_COIN_NAME;
@@ -264,7 +264,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
     }
 
     //for V1 classical hardcode pools
-    if(token.symbol=="unknown"){
+    if (token.symbol == "unknown") {
         token.symbol = fetchTokenSymbol(address);
         token.totalSupply = fetchTokenTotalSupply(address);
         token.name = fetchTokenName(address);
@@ -278,7 +278,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
 export function createTokenByCall(address: Address, call: ethereum.Call): Token {
     let token = Token.load(address.toHexString());
     if (token == null) {
-        if (address.toHexString() == ETH_ADDRESS) {
+        if (address.toHexString() == BASE_COIN) {
             token = new Token(address.toHexString());
             token.symbol = "ETH";
             token.name = "ether";
@@ -312,7 +312,7 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
     }
 
     //for V1 classical hardcode pools
-    if(token.symbol=="unknown"){
+    if (token.symbol == "unknown") {
         token.symbol = fetchTokenSymbol(address);
         token.totalSupply = fetchTokenTotalSupply(address);
         token.name = fetchTokenName(address);
@@ -323,7 +323,7 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
     return token as Token;
 }
 
-export function createLpToken(address: Address,pair: Pair): LpToken {
+export function createLpToken(address: Address, pair: Pair): LpToken {
     let lpToken = LpToken.load(address.toHexString());
 
     if (lpToken == null) {
@@ -338,7 +338,7 @@ export function createLpToken(address: Address,pair: Pair): LpToken {
     }
 
     //for V1 classical hardcode pools
-    if(lpToken.symbol=="unknown"){
+    if (lpToken.symbol == "unknown") {
         lpToken.symbol = fetchTokenSymbol(address);
         lpToken.totalSupply = fetchTokenTotalSupply(address);
         lpToken.name = fetchTokenName(address);
@@ -351,12 +351,12 @@ export function createLpToken(address: Address,pair: Pair): LpToken {
 
 export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateStruct {
     let pair = Pair.load(poolAddress.toHexString());
-    if(pair.type == TYPE_DVM_POOL){
+    if (pair.type == TYPE_DVM_POOL) {
         let pool = DVM.bind(poolAddress);
         let pmmState = pool.getPMMState();
         return pmmState as DVM__getPMMStateResultStateStruct;
     }
-    if(pair.type == TYPE_DPP_POOL){
+    if (pair.type == TYPE_DPP_POOL) {
         let pool = DVM.bind(poolAddress);
         let pmmState = pool.getPMMState();
         return pmmState as DVM__getPMMStateResultStateStruct;
@@ -364,7 +364,7 @@ export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateSt
     return null;
 }
 
-export function updatePairTraderCount(from: Address, to: Address, pair: Pair,event: ethereum.Event): void {
+export function updatePairTraderCount(from: Address, to: Address, pair: Pair, event: ethereum.Event): void {
     let fromPairID = from.toHexString().concat("-").concat(pair.id);
     let toPairID = to.toHexString().concat("-").concat(pair.id);
 
@@ -372,7 +372,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
     if (fromTraderPair == null) {
         fromTraderPair = new PairTrader(fromPairID);
         fromTraderPair.pair = pair.id;
-        fromTraderPair.trader = createUser(from,event).id;
+        fromTraderPair.trader = createUser(from, event).id;
         fromTraderPair.lastTxTime = ZERO_BI;
         fromTraderPair.save();
 
@@ -383,7 +383,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
     if (toTraderPair == null) {
         toTraderPair = new PairTrader(toPairID);
         toTraderPair.pair = pair.id;
-        toTraderPair.trader = createUser(to,event).id;
+        toTraderPair.trader = createUser(to, event).id;
         toTraderPair.lastTxTime = ZERO_BI;
         toTraderPair.save();
         pair.traderCount = pair.traderCount.plus(ONE_BI);
@@ -391,7 +391,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair,eve
     pair.save();
 }
 
-export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: BigDecimal,quoteVolume: BigDecimal,feeBase: BigDecimal,feeQuote: BigDecimal,untrackedBaseVolume: BigDecimal,untrackedQuoteVolume: BigDecimal,baseToken: Token,quoteToken: Token,to: Address):void {
+export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: BigDecimal, quoteVolume: BigDecimal, feeBase: BigDecimal, feeQuote: BigDecimal, untrackedBaseVolume: BigDecimal, untrackedQuoteVolume: BigDecimal, baseToken: Token, quoteToken: Token, to: Address, volumeUSD: BigDecimal): void {
     let pairHourData = updatePairHourData(event);
     pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
@@ -399,6 +399,7 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
     pairHourData.volumeQuote = pairHourData.volumeQuote.plus(quoteVolume);
     pairHourData.feeBase = pairHourData.feeBase.plus(feeBase);
     pairHourData.feeQuote = pairHourData.feeQuote.plus(feeQuote);
+    pairHourData.volumeUSD = pairHourData.volumeUSD.plus(volumeUSD);
 
     let pairDayData = updatePairDayData(event);
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
@@ -407,24 +408,27 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
     pairDayData.volumeQuote = pairDayData.volumeQuote.plus(quoteVolume);
     pairDayData.feeBase = pairDayData.feeBase.plus(feeBase);
     pairDayData.feeQuote = pairDayData.feeQuote.plus(feeQuote);
+    pairDayData.volumeUSD = pairDayData.volumeUSD.plus(volumeUSD);
 
     let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
     baseDayData.volume = baseDayData.volume.plus(baseVolume);
     baseDayData.fee = baseDayData.fee.plus(feeBase);
     baseDayData.txns = baseDayData.txns.plus(ONE_BI);
+    baseDayData.volumeUSD = baseDayData.volumeUSD.plus(volumeUSD);
 
     let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
     quoteDayData.volume = quoteDayData.volume.plus(quoteVolume);
     quoteDayData.fee = quoteDayData.fee.plus(feeQuote);
     quoteDayData.txns = quoteDayData.txns.plus(ONE_BI);
+    quoteDayData.volumeUSD = quoteDayData.volumeUSD.plus(volumeUSD);
 
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
+    if (fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))) {
         pairHourData.traders = pairHourData.traders.plus(ONE_BI);
     }
-    if(fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
+    if (fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))) {
         pairDayData.traders = pairDayData.traders.plus(ONE_BI);
         baseDayData.traders = baseDayData.traders.plus(ONE_BI);
         quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
@@ -433,10 +437,10 @@ export function updateStatistics(event: ethereum.Event,pair: Pair,baseVolume: Bi
     fromTraderPair.save();
 
     let toTraderPair = PairTrader.load(to.toHexString().concat("-").concat(pair.id));
-    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))){
+    if (toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))) {
         pairHourData.traders = pairHourData.traders.plus(ONE_BI);
     }
-    if(toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))){
+    if (toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))) {
         pairDayData.traders = pairDayData.traders.plus(ONE_BI);
         baseDayData.traders = baseDayData.traders.plus(ONE_BI);
         quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);

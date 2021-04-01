@@ -1,144 +1,126 @@
 /* eslint-disable prefer-const */
+import {log, BigInt, BigDecimal, Address, String} from '@graphprotocol/graph-ts'
 import {Pair, Token} from '../../types/dodoex/schema'
-import {BigDecimal, Address, BigInt, log} from '@graphprotocol/graph-ts/index'
 import {
     ZERO_BD,
     ONE_BD,
     convertTokenToDecimal,
-    dppFactoryContract,
-    dvmFactoryContract,
-    classicFactoryContract
 } from './helpers'
-import {DODO} from '../../types/dodoex/DODOV1Proxy01/DODO'
-import {DVM} from '../../types/dodoex/DVMFactory/DVM'
-import {DPP} from '../../types/dodoex/DPPFactory/DPP'
 
 import {
-    WETH_ADDRESS,
-    USDT_ADDRESS,
-    USDC_ADDRESS,
-    WETH_USDC_PAIR,
-    USDT_USDC_PAIR,
-    ADDRESS_ZERO,
-    DPP_FACTORY_DEPLOY_BLOCK,
-    DVM_FACTORY_DEPLOY_BLOCK,
-    WETH_USDC_BLOCK,
-    USDT_USDC_BLOCK,
-    DODOZooID,
-    TYPE_DVM_POOL,
-    TYPE_DPP_POOL,
+    STABLE_COIN_PAIR_ONE,
+    STABLE_ONE_ADDRESS,
+    STABLE_TWO_ADDRESS,
+    BASE_COIN,
+    WRAPPED_BASE_COIN,
+    BASE_COIN_PAIR,
     TYPE_CLASSICAL_POOL,
+    TYPE_DPP_POOL,
+    TYPE_DVM_POOL,
 } from "../constant"
 
-const WHITELIST: string[] = [
-    WETH_ADDRESS,
-    USDT_ADDRESS
+const VALID_PRICING_TVL = BigDecimal.fromString("100000");//100k usd
+
+const STANDARD_TOKEN: string[] = [
+    STABLE_ONE_ADDRESS,
+    STABLE_TWO_ADDRESS,
+    BASE_COIN,
+    WRAPPED_BASE_COIN
 ];
 
-const WHITELIST_PAIR: string[] = [
-    WETH_USDC_PAIR,
-    USDT_USDC_PAIR
-]
+function priceCore(): void {
+    let stableOnePair = Pair.load(STABLE_COIN_PAIR_ONE);
+    let baseCurrencyPair = Pair.load(BASE_COIN_PAIR);
+    let wrappedBaseCoin = Token.load(WRAPPED_BASE_COIN);
 
-const WHITELIST_BLOCK: i32[] = [
-    WETH_USDC_BLOCK,
-    USDT_USDC_BLOCK
-]
+    let stableCoinOne = Token.load(STABLE_ONE_ADDRESS);
+    let stableCoinTwo = Token.load(STABLE_TWO_ADDRESS);
 
-function getPriceFromExistPair(i: i32): BigDecimal {
-    switch (i) {
-        case 1:
-            let contract1 = DODO.bind(Address.fromString(WHITELIST_PAIR[i]));
-            return convertTokenToDecimal(contract1.getMidPrice(), BigInt.fromI32(18));
-        case 2:
-            let contract2 = DODO.bind(Address.fromString(USDT_USDC_PAIR[i]));
-            return convertTokenToDecimal(contract2.getMidPrice(), BigInt.fromI32(18));
-        default:
-            return ZERO_BD;
-    }
-}
+    let baseCoin = Token.load(BASE_COIN);
 
-function getPriceFromWhiteList(token: Token, block: BigInt): BigDecimal {
+    if (stableOnePair != null) {
 
-    //1、查找交易对
-    for (let i = 0; i < WHITELIST.length; i++) {
+        let lastTradePrice = stableOnePair.lastTradePrice;
+        let baseWeight = stableOnePair.baseReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
+        let quoteWeight = stableOnePair.quoteReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
+        let baseUsdPrice = lastTradePrice.minus(ONE_BD).times(ONE_BD.minus(baseWeight)).plus(ONE_BD);
+        let quoteUsdPrice = lastTradePrice.minus(ONE_BD).times(ONE_BD.minus(quoteWeight)).plus(ONE_BD);
 
-        if (block.lt(BigInt.fromI32(WHITELIST_BLOCK[i]) ) ){
-            continue;
-        }
+        let baseToken = Token.load(stableOnePair.baseToken);
+        let quoteToken = Token.load(stableOnePair.quoteToken);
+        baseToken.usdPrice = baseUsdPrice;
+        quoteToken.usdPrice = quoteUsdPrice;
 
-        //先去classic 池寻找
-        let address = classicFactoryContract.getDODO(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-        if (address.toHexString() != ADDRESS_ZERO) {
-            let pair: DODO;
-            pair = DODO.bind(address);
-            let price1 = pair.getMidPrice();
-            let price2 = getPriceFromExistPair(i);
-            return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
-        }
-
-        if (block.toI32() > DVM_FACTORY_DEPLOY_BLOCK) {
-            let addresses = dvmFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-            if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
-                let pair: DVM;
-                pair = DVM.bind(addresses[0]);
-                let price1 = pair.getMidPrice();
-                let price2 = getPriceFromExistPair(i);
-                return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
+        if (baseCurrencyPair != null) {
+            if (stableOnePair.baseToken == baseCurrencyPair.quoteToken) {
+                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(baseToken.usdPrice);
             }
+            if (stableOnePair.quoteToken == baseCurrencyPair.quoteToken) {
+                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(quoteToken.usdPrice);
+            }
+            wrappedBaseCoin.save();
         }
 
-        //dpp reset will cause uncertain consequences
-        // if (block.toI32() > DPP_FACTORY_DEPLOY_BLOCK) {
-        //     let addresses = dppFactoryContract.getDODOPool(Address.fromString(token.id), Address.fromString(WHITELIST[i]));
-        //     if (addresses.length != 0 && addresses[0].toHexString() != ADDRESS_ZERO) {
-        //         let pair: DPP;
-        //         log.warning(`dpp pool address:{}`,[addresses[0].toHexString()])
-        //         pair = DPP.bind(addresses[0]);
-        //         let price1 = pair.getMidPrice();
-        //         let price2 = getPriceFromExistPair(i);
-        //         return convertTokenToDecimal(price1, BigInt.fromI32(18)).minus(price2)
-        //     }
-        // }
-
+        baseToken.save();
+        quoteToken.save();
+    } else {
+        if (baseCurrencyPair != null) {
+            wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice;
+            wrappedBaseCoin.save();
+        }
+        if (stableCoinOne != null) {
+            stableCoinOne.usdPrice = ONE_BD;
+            stableCoinOne.save();
+        }
+        if (stableCoinTwo != null) {
+            stableCoinTwo.usdPrice = ONE_BD;
+            stableCoinTwo.save();
+        }
     }
-
-    return ZERO_BD;
+    if (baseCoin != null) {
+        baseCoin.usdPrice = wrappedBaseCoin.usdPrice;
+        baseCoin.save();
+    }
 
 }
 
-export function getUSDCPrice(pair: Pair, isBase: boolean, block: BigInt): BigDecimal {
+function updateWhiteListPrice(pair: Pair): void {
+    if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL) {
 
-    if(DODOZooID != " "){
-        return ZERO_BD;
-    }
+        let quoteToken = Token.load(pair.quoteToken);
+        let baseToken = Token.load(pair.baseToken);
 
-    if (pair.baseToken == USDC_ADDRESS && isBase == true) {
-        return ONE_BD;
-    }
+        if (quoteToken.usdPrice != null) {
+            let quoteTVL = pair.quoteReserve.times(quoteToken.usdPrice);
+            let baseTVL = pair.baseReserve.times(pair.lastTradePrice).times(quoteToken.usdPrice);
+            if (quoteTVL.plus(baseTVL).ge(VALID_PRICING_TVL)) {
+                baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice);
+                baseToken.save();
+            } else {
+                baseToken.usdPrice = null;
+                baseToken.save();
+            }
 
-    if (pair.quoteToken == USDC_ADDRESS && isBase == false) {
-        return ONE_BD;
-    }
-
-    if (pair.quoteToken == USDC_ADDRESS) {
-        if (pair.type == TYPE_DVM_POOL) {
-            let contract = DVM.bind(Address.fromString(pair.id));
-            return convertTokenToDecimal(contract.getMidPrice(), BigInt.fromI32(18));
-        } else if (pair.type == TYPE_DPP_POOL) {
-            let contract = DPP.bind(Address.fromString(pair.id))
-            return convertTokenToDecimal(contract.getMidPrice(), BigInt.fromI32(18));
-        } else if (pair.type == TYPE_CLASSICAL_POOL) {
-            let contract = DODO.bind(Address.fromString(pair.id))
-            return convertTokenToDecimal(contract.getMidPrice(), BigInt.fromI32(18));
         }
     }
 
-    if (isBase == true) {
-        return getPriceFromWhiteList(Token.load(pair.baseToken) as Token, block);
-    }
-
-    return getPriceFromWhiteList(Token.load(pair.quoteToken) as Token, block);
 }
 
+export function updatePrice(pair: Pair): void {
+    priceCore()
+    updateWhiteListPrice(pair)
+}
+
+export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
+    let volumeUSD = ZERO_BD;
+    if (token0.usdPrice != null && token1.usdPrice == null) {
+        volumeUSD = volumeUSD.plus(token0.usdPrice.times(amount0));
+    } else if (token0.usdPrice == null && token1.usdPrice != null) {
+        volumeUSD = volumeUSD.plus(token1.usdPrice.times(amount1));
+    } else if (token0.usdPrice == null && token1.usdPrice != null) {
+        volumeUSD = volumeUSD.plus(token0.usdPrice.times(amount0)).plus(token1.usdPrice.times(amount1)).div(BigDecimal.fromString("2"));
+    }
+
+    return volumeUSD;
+}
 

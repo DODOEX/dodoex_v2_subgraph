@@ -7,7 +7,6 @@ import {
     LiquidityPosition,
     LpToken,
     LiquidityHistory,
-    PairTrader
 } from "../../types/dodoex/schema"
 import {
     createLpToken,
@@ -33,11 +32,16 @@ import {
     TYPE_DPP_POOL
 } from "../constant"
 
+import {
+    calculateUsdVolume,
+    updatePrice
+} from "./pricing"
+
 export function handleDODOSwap(event: DODOSwap): void {
     //base data
     let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     let user = createUser(event.transaction.from, event);
@@ -82,11 +86,20 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.feeBase = pair.feeBase.plus(baseLpFee);
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
-    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
-    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
-    if(baseVolume.gt(ZERO_BD)){
+    if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
+    updatePrice(pair);
+    let volumeUSD = calculateUsdVolume(baseToken, quoteToken, baseVolume, quoteVolume);
+    pair.volumeUSD = volumeUSD;
+    if (volumeUSD.equals(ZERO_BD)) {
+        pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
+        pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
+        untrackedBaseVolume = baseVolume;
+        untrackedQuoteVolume = quoteVolume;
+    }
+    pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
+    pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
 
     //2、更新两个token的记录数据
@@ -123,6 +136,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.feeQuote = quoteLpFee;
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
+        swap.volumeUSD = volumeUSD;
         swap.save();
     }
 
@@ -144,6 +158,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         orderHistory.amountOut = dealedToAmount;
         orderHistory.logIndex = event.logIndex;
         orderHistory.tradingReward = ZERO_BD;
+        orderHistory.volumeUSD = volumeUSD;
         orderHistory.save();
     }
 
@@ -156,13 +171,13 @@ export function handleDODOSwap(event: DODOSwap): void {
     dodoZoo.save();
 
     //更新报表数据
-    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver);
+    updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
 
 }
 
 export function handleBuyShares(event: BuyShares): void {
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
 
@@ -172,8 +187,8 @@ export function handleBuyShares(event: BuyShares): void {
     let quoteToken = Token.load(pair.quoteToken);
     let pmmState = getPMMState(event.address);
 
-    let baseAmountChange =convertTokenToDecimal(pmmState.B, baseToken.decimals).minus(pair.baseReserve);
-    let quoteAmountChange =convertTokenToDecimal(pmmState.Q, quoteToken.decimals).minus(pair.quoteReserve);
+    let baseAmountChange = convertTokenToDecimal(pmmState.B, baseToken.decimals).minus(pair.baseReserve);
+    let quoteAmountChange = convertTokenToDecimal(pmmState.Q, quoteToken.decimals).minus(pair.quoteReserve);
 
     let lpToken = createLpToken(event.address, pair as Pair);
 
@@ -246,7 +261,7 @@ export function handleBuyShares(event: BuyShares): void {
 
 export function handleSellShares(event: SellShares): void {
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     let toUser = createUser(event.params.to, event);
@@ -329,7 +344,7 @@ export function handleSellShares(event: SellShares): void {
 
 export function handleLpFeeRateChange(event: LpFeeRateChange): void {
     let pair = Pair.load(event.address.toHexString());
-    if(pair === null){
+    if (pair === null) {
         return;
     }
     if (pair.type == TYPE_DPP_POOL) {
@@ -356,8 +371,8 @@ export function handleTransfer(event: Transfer): void {
         return;
     }
 
-    let fromUser = createUser(event.params.from,event);
-    let toUser = createUser(event.params.to,event);
+    let fromUser = createUser(event.params.from, event);
+    let toUser = createUser(event.params.to, event);
     let lpToken = LpToken.load(event.address.toHexString());
     let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 
