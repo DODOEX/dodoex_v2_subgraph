@@ -38,7 +38,7 @@ function priceCore(): void {
 
     let baseCoin = Token.load(BASE_COIN);
 
-    if (stableOnePair != null) {
+    if (stableOnePair != null && stableOnePair.baseReserve.plus(stableOnePair.quoteReserve).gt(ZERO_BD) ) {
 
         let lastTradePrice = stableOnePair.lastTradePrice;
         let baseWeight = stableOnePair.baseReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
@@ -52,11 +52,11 @@ function priceCore(): void {
         quoteToken.usdPrice = quoteUsdPrice;
 
         if (baseCurrencyPair != null) {
-            if (stableOnePair.baseToken == baseCurrencyPair.quoteToken && baseToken.usdPrice !=null) {
+            if (stableOnePair.baseToken == baseCurrencyPair.quoteToken && baseToken.usdPrice != null) {
                 wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(baseToken.usdPrice as BigDecimal);
             }
             if (stableOnePair.quoteToken == baseCurrencyPair.quoteToken && quoteToken.usdPrice != null) {
-                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(quoteToken.usdPrice  as BigDecimal);
+                wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
             }
             wrappedBaseCoin.save();
         }
