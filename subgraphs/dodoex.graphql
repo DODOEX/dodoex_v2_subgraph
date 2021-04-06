@@ -72,6 +72,8 @@ type Token @entity {
 
     "usd price(only stable coin and classical pool has usd price)"
     usdPrice: BigDecimal
+    "price update time"
+    priceUpdateTimestamp: BigInt
 }
 
 type LpToken @entity {

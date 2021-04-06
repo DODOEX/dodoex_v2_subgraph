@@ -28,7 +28,7 @@ const STANDARD_TOKEN: string[] = [
     WRAPPED_BASE_COIN
 ];
 
-function priceCore(): void {
+function priceCore(time: BigInt): void {
     let stableOnePair = Pair.load(STABLE_COIN_PAIR_ONE);
     let baseCurrencyPair = Pair.load(BASE_COIN_PAIR);
     let wrappedBaseCoin = Token.load(WRAPPED_BASE_COIN);
@@ -38,7 +38,7 @@ function priceCore(): void {
 
     let baseCoin = Token.load(BASE_COIN);
 
-    if (stableOnePair != null && stableOnePair.baseReserve.plus(stableOnePair.quoteReserve).gt(ZERO_BD) ) {
+    if (stableOnePair != null && stableOnePair.baseReserve.plus(stableOnePair.quoteReserve).gt(ZERO_BD)) {
 
         let lastTradePrice = stableOnePair.lastTradePrice;
         let baseWeight = stableOnePair.baseReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
@@ -50,13 +50,17 @@ function priceCore(): void {
         let quoteToken = Token.load(stableOnePair.quoteToken);
         baseToken.usdPrice = baseUsdPrice;
         quoteToken.usdPrice = quoteUsdPrice;
+        baseToken.priceUpdateTimestamp = time;
+        quoteToken.priceUpdateTimestamp = time;
 
         if (baseCurrencyPair != null) {
             if (stableOnePair.baseToken == baseCurrencyPair.quoteToken && baseToken.usdPrice != null) {
                 wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(baseToken.usdPrice as BigDecimal);
+                wrappedBaseCoin.priceUpdateTimestamp = time;
             }
             if (stableOnePair.quoteToken == baseCurrencyPair.quoteToken && quoteToken.usdPrice != null) {
                 wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
+                wrappedBaseCoin.priceUpdateTimestamp = time;
             }
             wrappedBaseCoin.save();
         }
@@ -66,25 +70,29 @@ function priceCore(): void {
     } else {
         if (baseCurrencyPair != null) {
             wrappedBaseCoin.usdPrice = baseCurrencyPair.lastTradePrice;
+            wrappedBaseCoin.priceUpdateTimestamp = time;
             wrappedBaseCoin.save();
         }
         if (stableCoinOne != null) {
             stableCoinOne.usdPrice = ONE_BD;
+            stableCoinOne.priceUpdateTimestamp = time;
             stableCoinOne.save();
         }
         if (stableCoinTwo != null) {
             stableCoinTwo.usdPrice = ONE_BD;
+            stableCoinTwo.priceUpdateTimestamp = time;
             stableCoinTwo.save();
         }
     }
     if (baseCoin != null) {
         baseCoin.usdPrice = wrappedBaseCoin.usdPrice;
+        baseCoin.priceUpdateTimestamp = time;
         baseCoin.save();
     }
 
 }
 
-function updateWhiteListPrice(pair: Pair): void {
+function updateWhiteListPrice(pair: Pair, time: BigInt): void {
     if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL) {
 
         let quoteToken = Token.load(pair.quoteToken);
@@ -95,6 +103,7 @@ function updateWhiteListPrice(pair: Pair): void {
             let baseTVL = pair.baseReserve.times(pair.lastTradePrice).times(quoteToken.usdPrice as BigDecimal);
             if (quoteTVL.plus(baseTVL).ge(VALID_PRICING_TVL)) {
                 baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
+                baseToken.priceUpdateTimestamp = time;
                 baseToken.save();
             } else {
                 baseToken.usdPrice = null;
@@ -106,9 +115,9 @@ function updateWhiteListPrice(pair: Pair): void {
 
 }
 
-export function updatePrice(pair: Pair): void {
-    priceCore()
-    updateWhiteListPrice(pair)
+export function updatePrice(pair: Pair, time: BigInt): void {
+    priceCore(time)
+    updateWhiteListPrice(pair, time)
 }
 
 export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDecimal, amount1: BigDecimal): BigDecimal {

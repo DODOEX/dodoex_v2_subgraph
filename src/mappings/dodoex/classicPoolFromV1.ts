@@ -529,7 +529,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair as Pair);
+    updatePrice(pair as Pair,event.block.timestamp);
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
     pair.volumeUSD = volumeUSD;
     if (volumeUSD.equals(ZERO_BD)) {
@@ -660,7 +660,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair as Pair);
+    updatePrice(pair as Pair,event.block.timestamp);
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
     pair.volumeUSD = volumeUSD;
     if (volumeUSD.equals(ZERO_BD)) {
