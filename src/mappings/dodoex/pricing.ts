@@ -92,7 +92,7 @@ function priceCore(time: BigInt): void {
 
 }
 
-function updateWhiteListPrice(pair: Pair, time: BigInt): void {
+function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
     if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL) {
 
         let quoteToken = Token.load(pair.quoteToken);
@@ -117,7 +117,7 @@ function updateWhiteListPrice(pair: Pair, time: BigInt): void {
 
 export function updatePrice(pair: Pair, time: BigInt): void {
     priceCore(time)
-    updateWhiteListPrice(pair, time)
+    updatePoolTokenPrice(pair, time)
 }
 
 export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
