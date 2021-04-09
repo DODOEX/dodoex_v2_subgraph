@@ -19,6 +19,10 @@ export const DPP_FACTORY_DEPLOY_BLOCK = 23388901;
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
+export const TRANSACTION_TYPE_SWAP = "SWAP"
+export const TRANSACTION_TYPE_LP = "LP"
+export const TRANSACTION_TYPE_CP = "CP"
+
 /**
  * usd pricing
  */

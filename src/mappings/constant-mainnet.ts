@@ -21,11 +21,12 @@ export const DVM_FACTORY_ADDRESS = "0x72d220ce168c4f361dd4dee5d826a01ad8598f6c";
 export const DPP_FACTORY_ADDRESS = "0xb5dc5e183c2acf02ab879a8569ab4edaf147d537";
 export const CLASSIC_FACTORY_ADDRESS = "0x3a97247df274a17c59a3bd12735ea3fcdfb49950";//dodo zoo
 
-export const DVM_FACTORY_DEPLOY_BLOCK = 11704651;
-export const DPP_FACTORY_DEPLOY_BLOCK = 11704659;
-
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
+export const TRANSACTION_TYPE_SWAP = "SWAP"
+export const TRANSACTION_TYPE_LP = "LP"
+export const TRANSACTION_TYPE_CP = "CP"
 
 /**
  * usd pricing

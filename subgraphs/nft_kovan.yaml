@@ -1,0 +1,115 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./nft.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DODONFTProxy
+    network: kovan
+    source:
+      address: '0xed662e5391a3aa6f2ff610a5b33c62815b342b35'
+      abi: DODONFTProxy
+      startBlock: 24202203
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/proxy.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: DODONFTProxy
+          file: ../abis/DODONFTProxy.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: CreateNFTCollateralVault(address,address,string,string)
+          handler: handleCreateNFTCollateralVault
+        - event: CreateFragment(address,address,address,address)
+          handler: handleCreateFragment
+templates:
+  - kind: ethereum/contract
+    name: NFTCollateralVault
+    network: kovan
+    source:
+      abi: NFTCollateralVault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/vault.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: NFTCollateralVault
+          file: ../abis/NFTCollateralVault.json
+        - name: InitializableERC721
+          file: ../abis/InitializableERC721.json
+        - name: InitializableERC1155
+          file: ../abis/InitializableERC1155.json
+      eventHandlers:
+        - event: AddNftToken(address,uint256,uint256)
+          handler: handleAddNftToken
+        - event: RemoveNftToken(address,uint256,uint256)
+          handler: handleRemoveNftToken
+  - kind: ethereum/contract
+    name: Fragment
+    network: kovan
+    source:
+      abi: Fragment
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/fragment.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: Fragment
+          file: ../abis/Fragment.json
+      eventHandlers:
+        - event: Buyout(address)
+          handler: handleBuyout
+        - event: Redeem(address,uint256,uint256)
+          handler: handleRedeem
+  - kind: ethereum/contract
+    name: NFTTokenFactory
+    network: kovan
+    source:
+      abi: NFTTokenFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/proxy.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: NFTTokenFactory
+          file: ../abis/NFTTokenFactory.json
+        - name: InitializableERC721
+          file: ../abis/InitializableERC721.json
+        - name: InitializableERC1155
+          file: ../abis/InitializableERC1155.json
+      eventHandlers:
+        - event: NewERC721(address,address)
+          handler: handleNewERC721
+        - event: NewERC1155(address,address)
+          handler: handleNewERC1155

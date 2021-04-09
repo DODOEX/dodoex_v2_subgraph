@@ -7,7 +7,9 @@ import {
     Token,
     Pair,
     LpToken,
-    CrowdPoolingHourData
+    CrowdPoolingHourData,
+    DodoDayData,
+    Transaction
 } from "../../types/dodoex/schema"
 import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from './helpers'
@@ -226,4 +228,29 @@ export function updateCrowdPoolingHourData(cp: CrowdPooling, event: ethereum.Eve
     }
     return cpHourData as CrowdPoolingHourData;
 
+}
+
+export function getDodoDayData(event: ethereum.Event): DodoDayData {
+    let timestamp = event.block.timestamp.toI32();
+    let dayID = timestamp / 86400;
+    let dayStartTimestamp = dayID * 86400;
+    let dodoDayDataID = BigInt.fromI32(dayID).toString();
+
+    let dodoDayData = DodoDayData.load(dodoDayDataID);
+
+    if (dodoDayData == null) {
+        dodoDayData = new DodoDayData(dodoDayDataID);
+        dodoDayData.date = dayStartTimestamp;
+        dodoDayData.txCount = ZERO_BI;
+        dodoDayData.save();
+    }
+
+    return dodoDayData as DodoDayData;
+}
+
+export function increaseTxCount(event: ethereum.Event): DodoDayData {
+    let dodoDayData = getDodoDayData(event);
+    dodoDayData.txCount = dodoDayData.txCount.plus(ONE_BI);
+    dodoDayData.save();
+    return dodoDayData as DodoDayData;
 }

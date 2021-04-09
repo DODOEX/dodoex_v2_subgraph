@@ -41,7 +41,6 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     toToken.tradeVolume = toToken.tradeVolume.plus(dealedToAmount);
     toToken.txCount = toToken.txCount.plus(ONE_BI);
 
-
     //3、trim
     for (let i = BigInt.fromI32(0); i.lt(event.logIndex); i = i.plus(ONE_BI)) {
         let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());

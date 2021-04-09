@@ -20,6 +20,7 @@
     "deploy:vdodo_mainnet": "graph codegen subgraphs/vdodo_mainnet.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo subgraphs/vdodo_mainnet.yaml",
     "deploy:vdodo_mainnet_alpha": "graph codegen subgraphs/vdodo_mainnet.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo-alpha subgraphs/vdodo_mainnet.yaml",
     "deploy:vdodo_mainnet_beta": "graph codegen subgraphs/vdodo_mainnet.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo-beta subgraphs/vdodo_mainnet.yaml",
+    "deploy:nft_kovan": "graph codegen subgraphs/nft_kovan.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodo-nft subgraphs/nft_kovan.yaml",
     "create": "graph create autarkxu/dodoex --node https://api.thegraph.com/deploy/",
     "create-local": "graph create autarkxu/dodoex --node http://127.0.0.1:8020",
     "deploy-local": "graph deploy autarkxu/dodoex --ipfs http://localhost:5001 --node http://127.0.0.1:8020"

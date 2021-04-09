@@ -1,0 +1,117 @@
+type User @entity {
+    "user address"
+    id: ID!
+    "stakingPower amount"
+    stakingPower: BigInt!
+    "superior stakingPower"
+    superiorSP: BigInt!
+    "superior address"
+    superior:Bytes!
+    "credit"
+    credit: BigDecimal!
+    "credit of superior"
+    creditOfSuperior: BigDecimal!
+    "sp get from invited"
+    spFromInvited: BigInt!
+    "mint dodo amount"
+    mintAmount: BigDecimal!
+    "redeem recieve dodo amount"
+    redeemRecieveAmount: BigDecimal!
+    "redeem fee amount"
+    redeemFeeAmount: BigDecimal!
+    "redeem burn amount"
+    redeemBurnAmount: BigDecimal!
+    "timestamp"
+    timestamp: BigInt!
+}
+
+type UserOperationHistory @entity{
+    "hash"
+    id: ID!
+    "operation type (MINT、REDEEM)"
+    type: String!
+    "user"
+    user: User!
+    "amount"
+    amount: BigDecimal!
+    "timestamp"
+    timestamp: BigInt!
+	"superior sp change"
+	superiorSpChange: BigInt!
+	"superior credit change"
+	superiorCreditChange: BigDecimal!
+}
+
+type MintHistory @entity {
+    "transaction hash"
+    id: ID!
+    "user"
+    user: User!
+    "dodo amount"
+    amount: BigDecimal!
+    "timestamp"
+    timestamp: BigInt!
+}
+
+type RedeemHistory @entity {
+    "transaction hash"
+    id: ID!
+    "superior address"
+    user: User!
+    "recieve dodo amount"
+    recieve: BigDecimal!
+    "burn dodo amount"
+    burn: BigDecimal!
+    "fee dodo amount"
+    fee: BigDecimal!
+    "timestamp"
+    timestamp: BigInt!
+}
+
+type DODO @entity {
+    "address"
+    id: ID!
+    "symbol"
+    symbol: String!
+    "name"
+    name: String!
+    "decimals"
+    decimals: BigInt!
+    "totalsuppy"
+    totalSupply: BigInt!
+}
+
+type vDODO @entity {
+    "address"
+    id: ID!
+    "symbol"
+    symbol: String!
+    "name"
+    name: String!
+    "decimals"
+    decimals: BigInt!
+    "participated user count"
+    totalUsers: BigInt!
+    "dodo address"
+    dodo:Bytes!
+    "mint dodo amount"
+    mintAmount: BigDecimal!
+    "redeem dodo amount"
+    redeemAmount: BigDecimal!
+    "fee dodo amount"
+    feeAmount: BigDecimal!
+    "burn dodo amount"
+    burnAmount: BigDecimal!
+    "dodo balance of vdodo contract"
+    dodoBalance: BigDecimal!
+    "dodo per block"
+    dodoPerBlock: BigDecimal!
+	"total block reward"
+	totalBlockReward: BigDecimal!
+	"total block distribution"
+	totalBlockDistribution: BigDecimal!
+	"donate"
+	totalDonate: BigDecimal!
+    "total staking power"
+    totalStakingPower: BigInt!
+}

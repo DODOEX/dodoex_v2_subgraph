@@ -1,0 +1,46 @@
+type User @entity {
+    "user address"
+    id: ID!
+    "tokens"
+    tokens: [Token!]
+    "timestamp"
+    timestamp: BigInt!
+}
+
+type Token @entity {
+    "token address"
+    id: ID!
+
+    "token symbol"
+    symbol: String!
+    "token name"
+    name: String!
+    "token decimals"
+    decimals: BigInt!
+    "total supply"
+    totalSupply: BigInt!
+    "creator"
+    creator: String!
+    "create timestamp"
+    timestamp: BigInt!
+    "holder count"
+    holderCount: BigInt!
+}
+
+type UserTokenBlance @entity{
+    "user address - token address"
+    id: ID!
+    "balance"
+    balance: BigDecimal!
+}
+
+type TransferHistory @entity{
+    "token - hash"
+    id: ID!
+    "from"
+    from: User!
+    "to"
+    to: User!
+    "amount"
+    amount: BigDecimal!
+}

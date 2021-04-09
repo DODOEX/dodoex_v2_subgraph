@@ -1,0 +1,66 @@
+type NftCollateralVault @entity {
+    "vault address"
+    id: ID!
+    "creator"
+    creator: String!
+    "name"
+    name: String!
+    "baseURI"
+    baseURI: String!
+}
+
+type Nft @entity{
+    "vault address - nft address - tokenid"
+    id: ID!
+    "type(721、1155)"
+    type: String
+    "creator"
+    creator: String
+    "baseUrl"
+    baseUrl: String
+}
+
+type VaultNft @entity{
+    "vault address - nft address"
+    id: ID!
+    "vault"
+    vault: NftCollateralVault!
+    "nft"
+    nft: Nft!
+    "token id"
+    tokenID:  BigInt!
+    "token amount"
+    amount: BigInt!
+}
+
+type Fragment @entity{
+    "address"
+    id: ID!
+    "vault"
+    vault: NftCollateralVault!
+    "name"
+    name: String!
+    "symbol"
+    symbol: String!
+    "decimals"
+    decimals: BigInt!
+    "total supply"
+    totalSupply: BigInt!
+    "vaultPreOwnerBalance"
+    vaultPreOwnerBalance: BigInt!
+    "is buyout"
+    isBuyOut: Boolean!
+    "dvm address"
+    dvm: String!
+    "feeDistributor address"
+    feeDistributor: String!
+    "initialized"
+    initialized: Boolean!
+    "quote token address"
+    quote: String!
+    "vault pre owner"
+    vaultPreOwner: String!
+    "buyoutTimestamp"
+    buyoutTimestamp: BigInt!
+}
+
