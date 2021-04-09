@@ -33,17 +33,3 @@ export class Fragment extends DataSourceTemplate {
     );
   }
 }
-
-export class NFTTokenFactory extends DataSourceTemplate {
-  static create(address: Address): void {
-    DataSourceTemplate.create("NFTTokenFactory", [address.toHex()]);
-  }
-
-  static createWithContext(address: Address, context: DataSourceContext): void {
-    DataSourceTemplate.createWithContext(
-      "NFTTokenFactory",
-      [address.toHex()],
-      context
-    );
-  }
-}

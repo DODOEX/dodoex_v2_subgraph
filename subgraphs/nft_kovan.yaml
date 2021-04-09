@@ -8,9 +8,9 @@ dataSources:
     name: DODONFTProxy
     network: kovan
     source:
-      address: '0xed662e5391a3aa6f2ff610a5b33c62815b342b35'
+      address: '0x41c5eDe987bd61c75925Ab2657256D75270a55D4'
       abi: DODONFTProxy
-      startBlock: 24202203
+      startBlock: 24201746
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -35,6 +35,35 @@ dataSources:
           handler: handleCreateNFTCollateralVault
         - event: CreateFragment(address,address,address,address)
           handler: handleCreateFragment
+  - kind: ethereum/contract
+    name: NFTTokenFactory
+    network: kovan
+    source:
+      abi: NFTTokenFactory
+      address: '0x38c109aF4f3454172BA4eecf5676aA213b589e75'
+      startBlock: 24200162
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/tokenFactory.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: NFTTokenFactory
+          file: ../abis/NFTTokenFactory.json
+        - name: InitializableERC721
+          file: ../abis/InitializableERC721.json
+        - name: InitializableERC1155
+          file: ../abis/InitializableERC1155.json
+      eventHandlers:
+        - event: NewERC721(address,address)
+          handler: handleNewERC721
+        - event: NewERC1155(address,address)
+          handler: handleNewERC1155
 templates:
   - kind: ethereum/contract
     name: NFTCollateralVault
@@ -86,30 +115,3 @@ templates:
           handler: handleBuyout
         - event: Redeem(address,uint256,uint256)
           handler: handleRedeem
-  - kind: ethereum/contract
-    name: NFTTokenFactory
-    network: kovan
-    source:
-      abi: NFTTokenFactory
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../src/mappings/nft/proxy.ts
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: NFTTokenFactory
-          file: ../abis/NFTTokenFactory.json
-        - name: InitializableERC721
-          file: ../abis/InitializableERC721.json
-        - name: InitializableERC1155
-          file: ../abis/InitializableERC1155.json
-      eventHandlers:
-        - event: NewERC721(address,address)
-          handler: handleNewERC721
-        - event: NewERC1155(address,address)
-          handler: handleNewERC1155

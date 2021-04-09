@@ -28,16 +28,17 @@ export function createAndGetFragment(address: Address): Fragment {
     let fragment = Fragment.load(address.toHexString());
     if (fragment == null) {
         fragment = new Fragment(address.toHexString());
+        fragment.isBuyOut = fragmentContract._IS_BUYOUT_();
+        fragment.buyoutTimestamp = fragmentContract._BUYOUT_TIMESTAMP_();
+        fragment.decimals = fragmentContract.decimals();
+        fragment.dvm = fragmentContract._DVM_().toHexString();
+        fragment.initialized = fragmentContract.initialized();
+        fragment.name = fragmentContract.name();
+        fragment.symbol = fragmentContract.symbol();
+        fragment.quote = fragmentContract._QUOTE_().toHexString();
+        fragment.totalSupply = fragmentContract.totalSupply();
+        fragment.vaultPreOwner = fragmentContract._VAULT_PRE_OWNER_().toHexString();
+        fragment.save()
     }
-    fragment.isBuyOut = fragmentContract._IS_BUYOUT_();
-    fragment.buyoutTimestamp = fragmentContract._BUYOUT_TIMESTAMP_();
-    fragment.decimals = fragmentContract.decimals();
-    fragment.dvm = fragmentContract._DVM_().toHexString();
-    fragment.initialized = fragmentContract.initialized();
-    fragment.name = fragmentContract.name();
-    fragment.symbol = fragmentContract.symbol();
-    fragment.quote = fragmentContract._QUOTE_().toHexString();
-    fragment.totalSupply = fragmentContract.totalSupply();
-    fragment.vaultPreOwner = fragmentContract._VAULT_PRE_OWNER_().toHexString();
     return fragment as Fragment;
 }

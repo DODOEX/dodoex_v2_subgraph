@@ -42,13 +42,18 @@ import {
     ADDRESS_ZERO,
     DODOZooID,
     TYPE_CLASSICAL_POOL,
-    SOURCE_POOL_SWAP
+    SOURCE_POOL_SWAP,
+    TRANSACTION_TYPE_SWAP,
+    TRANSACTION_TYPE_CP,
+    TRANSACTION_TYPE_LP
 } from "../constant"
 
 import {
     updatePrice,
     calculateUsdVolume
 } from "./pricing"
+
+import {addTransaction} from "./transaction"
 
 const POOLS_ADDRESS: string[] = [
     "0x75c23271661d9d143dcb617222bc4bec783eff34",//WETH-USDC
@@ -388,6 +393,8 @@ export function handleDeposit(event: Deposit): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+
+    addTransaction(event,event.params.payer.toHexString(),)
 }
 
 export function handleWithdraw(event: Withdraw): void {
