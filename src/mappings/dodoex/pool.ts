@@ -29,13 +29,16 @@ import {
     SMART_ROUTE_ADDRESSES,
     ADDRESS_ZERO,
     SOURCE_POOL_SWAP,
-    TYPE_DPP_POOL
+    TYPE_DPP_POOL,
+    TRANSACTION_TYPE_SWAP,
+    TRANSACTION_TYPE_LP
 } from "../constant"
 
 import {
     calculateUsdVolume,
     updatePrice
 } from "./pricing"
+import {addTransaction} from "./transaction";
 
 export function handleDODOSwap(event: DODOSwap): void {
     //base data
@@ -89,7 +92,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair as Pair,event.block.timestamp);
+    updatePrice(pair as Pair, event.block.timestamp);
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
     pair.volumeUSD = volumeUSD;
     if (volumeUSD.equals(ZERO_BD)) {
@@ -172,7 +175,7 @@ export function handleDODOSwap(event: DODOSwap): void {
 
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
-
+    addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP)
 }
 
 export function handleBuyShares(event: BuyShares): void {
@@ -257,6 +260,8 @@ export function handleBuyShares(event: BuyShares): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP)
 }
 
 export function handleSellShares(event: SellShares): void {
@@ -340,6 +345,8 @@ export function handleSellShares(event: SellShares): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP)
 }
 
 export function handleLpFeeRateChange(event: LpFeeRateChange): void {

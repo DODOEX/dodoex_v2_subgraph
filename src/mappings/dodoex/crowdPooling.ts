@@ -8,6 +8,8 @@ import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-t
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken, createUser, getDODOZoo} from './helpers'
 import {Bid, Cancel, Settle,Claim,CP} from "../../types/dodoex/templates/CP/CP"
 import {updateCrowdPoolingDayData, updateCrowdPoolingHourData} from "./dayUpdates"
+import {addTransaction} from "./transaction";
+import {TRANSACTION_TYPE_CP} from "../constant";
 
 export function handleBid(event: Bid): void {
     let cp = CrowdPooling.load(event.address.toHexString());
@@ -87,6 +89,8 @@ export function handleBid(event: Bid): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP)
 }
 
 export function handleCancel(event: Cancel): void {
@@ -150,6 +154,8 @@ export function handleCancel(event: Cancel): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP)
 }
 
 export function handleSettle(event: Settle): void {
@@ -179,4 +185,5 @@ export function handleClaim(event: Claim):void {
     let bidPosition = BidPosition.load(bidPositionID);
     bidPosition.claimed = true;
     bidPosition.save();
+    addTransaction(event, event.params.user.toHexString(), TRANSACTION_TYPE_CP)
 }
