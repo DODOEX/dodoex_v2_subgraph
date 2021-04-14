@@ -46,8 +46,6 @@ type Fragment @entity{
     decimals: BigInt!
     "total supply"
     totalSupply: BigInt!
-    "vaultPreOwnerBalance"
-    vaultPreOwnerBalance: BigInt!
     "is buyout"
     isBuyOut: Boolean!
     "dvm address"

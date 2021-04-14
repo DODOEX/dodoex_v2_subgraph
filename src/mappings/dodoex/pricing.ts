@@ -19,7 +19,7 @@ import {
     TYPE_DVM_POOL,
 } from "../constant"
 
-let VALID_PRICING_TVL = BigDecimal.fromString("100000");//100k usd
+let VALID_PRICING_TVL = BigDecimal.fromString("500");//1k usd
 
 const STANDARD_TOKEN: string[] = [
     STABLE_ONE_ADDRESS,
@@ -93,7 +93,7 @@ function priceCore(time: BigInt): void {
 }
 
 function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
-    if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL) {
+    if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL || pair.type == TYPE_DVM_POOL) {
 
         let quoteToken = Token.load(pair.quoteToken);
         let baseToken = Token.load(pair.baseToken);
@@ -126,7 +126,7 @@ export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDec
         volumeUSD = volumeUSD.plus(token0.usdPrice.times(amount0));
     } else if (token0.usdPrice == null && token1.usdPrice != null) {
         volumeUSD = volumeUSD.plus(token1.usdPrice.times(amount1));
-    } else if (token0.usdPrice == null && token1.usdPrice != null) {
+    } else if (token0.usdPrice != null && token1.usdPrice != null) {
         volumeUSD = volumeUSD.plus(token0.usdPrice.times(amount0)).plus(token1.usdPrice.times(amount1)).div(BigDecimal.fromString("2"));
     }
 

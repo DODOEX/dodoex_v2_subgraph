@@ -294,15 +294,6 @@ export class Fragment extends Entity {
     this.set("totalSupply", Value.fromBigInt(value));
   }
 
-  get vaultPreOwnerBalance(): BigInt {
-    let value = this.get("vaultPreOwnerBalance");
-    return value.toBigInt();
-  }
-
-  set vaultPreOwnerBalance(value: BigInt) {
-    this.set("vaultPreOwnerBalance", Value.fromBigInt(value));
-  }
-
   get isBuyOut(): boolean {
     let value = this.get("isBuyOut");
     return value.toBoolean();

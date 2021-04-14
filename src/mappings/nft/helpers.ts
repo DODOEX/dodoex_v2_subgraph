@@ -38,7 +38,6 @@ export function createAndGetFragment(address: Address): Fragment {
         fragment.quote = fragmentContract._QUOTE_().toHexString();
         fragment.totalSupply = fragmentContract.totalSupply();
         fragment.vaultPreOwner = fragmentContract._VAULT_PRE_OWNER_().toHexString();
-        fragment.save()
     }
     return fragment as Fragment;
 }
