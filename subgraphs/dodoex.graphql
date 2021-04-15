@@ -338,6 +338,8 @@ type PairDayData @entity {
     date: Int!
     "pair address"
     pairAddress: Bytes!
+    "pair"
+    pair: Pair
     "base token"
     baseToken: Token!
     "quote token"
@@ -384,6 +386,8 @@ type PairHourData @entity {
     hour: Int!
     "pair address"
     pairAddress: Bytes!
+    "pair"
+    pair: Pair
     "base token"
     baseToken: Token!
     "quote token"

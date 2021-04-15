@@ -1750,6 +1750,23 @@ export class PairDayData extends Entity {
     this.set("pairAddress", Value.fromBytes(value));
   }
 
+  get pair(): string | null {
+    let value = this.get("pair");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set pair(value: string | null) {
+    if (value === null) {
+      this.unset("pair");
+    } else {
+      this.set("pair", Value.fromString(value as string));
+    }
+  }
+
   get baseToken(): string {
     let value = this.get("baseToken");
     return value.toString();
@@ -1941,6 +1958,23 @@ export class PairHourData extends Entity {
 
   set pairAddress(value: Bytes) {
     this.set("pairAddress", Value.fromBytes(value));
+  }
+
+  get pair(): string | null {
+    let value = this.get("pair");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set pair(value: string | null) {
+    if (value === null) {
+      this.unset("pair");
+    } else {
+      this.set("pair", Value.fromString(value as string));
+    }
   }
 
   get baseToken(): string {

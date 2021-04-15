@@ -46,6 +46,7 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
         pairDayData.feeQuote = ZERO_BD;
         pairDayData.traders = ZERO_BI;
         pairDayData.volumeUSD = ZERO_BD;
+        pairDayData.pair = pair.id;
     }
 
     pairDayData.baseTokenReserve = pair.baseReserve;
@@ -98,6 +99,7 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
         pairHourData.feeQuote = ZERO_BD;
         pairHourData.traders = ZERO_BI;
         pairHourData.volumeUSD = ZERO_BD;
+        pairHourData.pair
     }
 
     pairHourData.baseTokenReserve = pair.baseReserve;
