@@ -16,7 +16,6 @@ import {
 import {DVMFactory} from "../../types/dodoex/DVMFactory/DVMFactory"
 import {DPPFactory} from "../../types/dodoex/DPPFactory/DPPFactory"
 import {DODOZoo as DODOZooContract} from "../../types/dodoex/DODOZoo/DODOZoo"
-import {DPP} from "../../types/dodoex/templates/DPP/DPP"
 import {DODOMine} from "../../types/dodoex/DODOMine/DODOMine"
 
 import {
