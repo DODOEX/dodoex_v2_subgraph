@@ -6,7 +6,7 @@ import {
 } from "../../types/dodoex/schema"
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken, createUser, getDODOZoo} from './helpers'
-import {Bid, Cancel, Settle,Claim,CP} from "../../types/dodoex/templates/CP/CP"
+import {Bid, Cancel, Settle, Claim, CP} from "../../types/dodoex/templates/CP/CP"
 import {updateCrowdPoolingDayData, updateCrowdPoolingHourData} from "./dayUpdates"
 import {addTransaction} from "./transaction";
 import {TRANSACTION_TYPE_CP} from "../constant";
@@ -18,8 +18,8 @@ export function handleBid(event: Bid): void {
     cp.poolQuote = cp.poolQuote.plus(dealedAmount);
     cp.totalShares = cp.totalShares.plus(event.params.amount.toBigDecimal());
 
-    let toUser = createUser(event.params.to,event);
-    let fromUser = createUser(event.transaction.from,event);
+    let toUser = createUser(event.params.to, event);
+    let fromUser = createUser(event.transaction.from, event);
 
     let newcome: boolean = false;
     //用户信息
@@ -166,7 +166,7 @@ export function handleSettle(event: Settle): void {
     let dvmAddress = cpContrct._POOL_();
 
     let pair = Pair.load(dvmAddress.toHexString());
-    if(pair!=null){
+    if (pair != null) {
         pair.creator = cp.creator;
         cp.dvm = pair.id;
         pair.save();
@@ -179,11 +179,13 @@ export function handleSettle(event: Settle): void {
 
 }
 
-export function handleClaim(event: Claim):void {
+export function handleClaim(event: Claim): void {
     //用户信息
     let bidPositionID = event.params.user.toHexString().concat("-").concat(event.address.toHexString());
     let bidPosition = BidPosition.load(bidPositionID);
-    bidPosition.claimed = true;
-    bidPosition.save();
-    addTransaction(event, event.params.user.toHexString(), TRANSACTION_TYPE_CP)
+    if (bidPosition !== null) {
+        bidPosition.claimed = true;
+        bidPosition.save();
+        addTransaction(event, event.params.user.toHexString(), TRANSACTION_TYPE_CP)
+    }
 }
