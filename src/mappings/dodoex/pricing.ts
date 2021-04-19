@@ -19,7 +19,7 @@ import {
     TYPE_DVM_POOL,
 } from "../constant"
 
-let VALID_PRICING_TVL = BigDecimal.fromString("500");//1k usd
+let VALID_PRICING_TVL = BigDecimal.fromString("500");//500 usd
 
 const STANDARD_TOKEN: string[] = [
     STABLE_ONE_ADDRESS,
@@ -99,17 +99,9 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
         let baseToken = Token.load(pair.baseToken);
 
         if (quoteToken.usdPrice != null) {
-            let quoteTVL = pair.quoteReserve.times(quoteToken.usdPrice as BigDecimal);
-            let baseTVL = pair.baseReserve.times(pair.lastTradePrice).times(quoteToken.usdPrice as BigDecimal);
-            if (quoteTVL.plus(baseTVL).ge(VALID_PRICING_TVL)) {
-                baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
-                baseToken.priceUpdateTimestamp = time;
-                baseToken.save();
-            } else {
-                baseToken.usdPrice = null;
-                baseToken.save();
-            }
-
+            baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
+            baseToken.priceUpdateTimestamp = time;
+            baseToken.save();
         }
     }
 
