@@ -8,7 +8,8 @@ import {
     Pair,
     LpToken,
     CrowdPoolingHourData,
-    DodoDayData
+    DodoDayData,
+    UserDayData
 } from "../../types/dodoex/schema"
 import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from './helpers'
@@ -243,6 +244,7 @@ export function getDodoDayData(event: ethereum.Event): DodoDayData {
         dodoDayData = new DodoDayData(dodoDayDataID);
         dodoDayData.date = dayStartTimestamp;
         dodoDayData.txCount = ZERO_BI;
+        dodoDayData.uniqueUsersCount = ZERO_BI;
         dodoDayData.save();
     }
 
@@ -254,4 +256,28 @@ export function increaseTxCount(event: ethereum.Event): DodoDayData {
     dodoDayData.txCount = dodoDayData.txCount.plus(ONE_BI);
     dodoDayData.save();
     return dodoDayData as DodoDayData;
+}
+
+export function updateUserDayData(event: ethereum.Event): UserDayData {
+    let timestamp = event.block.timestamp.toI32();
+    let dayID = timestamp / 86400;
+    let dayStartTimestamp = dayID * 86400;
+    let userDayDataID = BigInt.fromI32(dayID).toString();
+
+    let userDayData = UserDayData.load(userDayDataID);
+    if (userDayData == null) {
+        let dodoDayData = getDodoDayData(event);
+        dodoDayData.uniqueUsersCount = dodoDayData.uniqueUsersCount.plus(ONE_BI);
+
+        userDayData = new UserDayData(userDayDataID);
+        userDayData.date = dayStartTimestamp;
+        userDayData.tradeCount = ZERO_BI;
+        userDayData.addLPCount = ZERO_BI;
+        userDayData.removeLPCount = ZERO_BI;
+        userDayData.bidCount = ZERO_BI;
+        userDayData.cancelCount = ZERO_BI;
+        userDayData.claimCount = ZERO_BI;
+    }
+    userDayData.save();
+    return userDayData as UserDayData;
 }

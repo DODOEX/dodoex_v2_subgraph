@@ -126,6 +126,15 @@ export class DodoDayData extends Entity {
   set txCount(value: BigInt) {
     this.set("txCount", Value.fromBigInt(value));
   }
+
+  get uniqueUsersCount(): BigInt {
+    let value = this.get("uniqueUsersCount");
+    return value.toBigInt();
+  }
+
+  set uniqueUsersCount(value: BigInt) {
+    this.set("uniqueUsersCount", Value.fromBigInt(value));
+  }
 }
 
 export class Transaction extends Entity {
@@ -270,6 +279,100 @@ export class User extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class UserDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save UserDayData entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save UserDayData entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("UserDayData", id.toString(), this);
+  }
+
+  static load(id: string): UserDayData | null {
+    return store.get("UserDayData", id) as UserDayData | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get tradeCount(): BigInt {
+    let value = this.get("tradeCount");
+    return value.toBigInt();
+  }
+
+  set tradeCount(value: BigInt) {
+    this.set("tradeCount", Value.fromBigInt(value));
+  }
+
+  get addLPCount(): BigInt {
+    let value = this.get("addLPCount");
+    return value.toBigInt();
+  }
+
+  set addLPCount(value: BigInt) {
+    this.set("addLPCount", Value.fromBigInt(value));
+  }
+
+  get removeLPCount(): BigInt {
+    let value = this.get("removeLPCount");
+    return value.toBigInt();
+  }
+
+  set removeLPCount(value: BigInt) {
+    this.set("removeLPCount", Value.fromBigInt(value));
+  }
+
+  get bidCount(): BigInt {
+    let value = this.get("bidCount");
+    return value.toBigInt();
+  }
+
+  set bidCount(value: BigInt) {
+    this.set("bidCount", Value.fromBigInt(value));
+  }
+
+  get cancelCount(): BigInt {
+    let value = this.get("cancelCount");
+    return value.toBigInt();
+  }
+
+  set cancelCount(value: BigInt) {
+    this.set("cancelCount", Value.fromBigInt(value));
+  }
+
+  get claimCount(): BigInt {
+    let value = this.get("claimCount");
+    return value.toBigInt();
+  }
+
+  set claimCount(value: BigInt) {
+    this.set("claimCount", Value.fromBigInt(value));
   }
 }
 

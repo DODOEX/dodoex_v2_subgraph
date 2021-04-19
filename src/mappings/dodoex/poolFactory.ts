@@ -12,11 +12,13 @@ import {
 } from "./helpers"
 import {NewDPP,RemoveDPP} from "../../types/dodoex/DPPFactory/DPPFactory"
 import {NewDVM,RemoveDVM} from "../../types/dodoex/DVMFactory/DVMFactory"
+import {NewDSP,RemoveDSP} from "../../types/dodoex/DSPFactory/DSPFactory"
 import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
 import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/dodoex/DPPFactory/DPP"
+import {DSP, DSP__getPMMStateResultStateStruct} from "../../types/dodoex/DSPFactory/DSP"
 import {NewCP} from "../../types/dodoex/CrowdPoolingFactory/CrowdPoolingFactory"
-import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate} from "../../types/dodoex/templates"
-import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
+import {DVM as DVMTemplate, DPP as DPPTemplate, CP as CPTemplate,DSP as DSPTemplate} from "../../types/dodoex/templates"
+import {TYPE_DVM_POOL,TYPE_DPP_POOL,TYPE_DSP_POOL,TYPE_CLASSICAL_POOL,SOURCE_SMART_ROUTE,SOURCE_POOL_SWAP} from "../constant"
 import {CP} from "../../types/dodoex/CrowdPoolingFactory/CP";
 import {ADDRESS_ZERO} from "../constant"
 
@@ -148,6 +150,73 @@ export function handleNewDPP(event: NewDPP): void {
     }
 
     DPPTemplate.create(event.params.dpp);
+}
+
+export function handleNewDSP(event: NewDSP): void {
+    createUser(event.params.creator,event);
+    //1、获取token schema信息
+    let baseToken = createToken(event.params.baseToken,event);
+    let quoteToken = createToken(event.params.quoteToken,event);
+    let pair = Pair.load(event.params.DSP.toHexString());
+
+    if (pair == null) {
+        pair = new Pair(event.params.DSP.toHexString());
+        pair.baseToken = event.params.baseToken.toHexString();
+        pair.type = TYPE_DSP_POOL;
+
+        pair.quoteToken = event.params.quoteToken.toHexString();
+        pair.creator = event.params.creator;
+        pair.createdAtTimestamp = event.block.timestamp;
+        pair.createdAtBlockNumber = event.block.number;
+
+        pair.baseLpToken = event.params.DSP.toHexString();
+        pair.quoteLpToken = event.params.DSP.toHexString();
+        createLpToken(event.params.DSP,pair as Pair);
+
+        pair.lastTradePrice = ZERO_BD;
+        pair.txCount = ZERO_BI;
+        pair.volumeBaseToken = ZERO_BD;
+        pair.volumeQuoteToken = ZERO_BD;
+        pair.liquidityProviderCount = ZERO_BI;
+        pair.untrackedBaseVolume = ZERO_BD;
+        pair.untrackedQuoteVolume = ZERO_BD;
+        pair.feeBase = ZERO_BD;
+        pair.feeQuote = ZERO_BD;
+        pair.traderCount = ZERO_BI;
+        pair.isTradeAllowed = true;
+        pair.isDepositBaseAllowed = true;
+        pair.isDepositQuoteAllowed = true;
+        pair.volumeUSD = ZERO_BD;
+
+        let dsp = DSP.bind(event.params.DSP);
+        let pmmState = dsp.try_getPMMState();
+        if(pmmState.reverted==false){
+            pair.i = pmmState.value.i;
+            pair.k = pmmState.value.K;
+            pair.baseReserve = convertTokenToDecimal(pmmState.value.B, baseToken.decimals);
+            pair.quoteReserve = convertTokenToDecimal(pmmState.value.Q, quoteToken.decimals);
+            pair.lpFeeRate = convertTokenToDecimal(dsp._LP_FEE_RATE_(),BigInt.fromI32(18));
+            pair.mtFeeRateModel = dsp._MT_FEE_RATE_MODEL_();
+            pair.maintainer = dsp._MAINTAINER_();
+        }else{
+            pair.i = ZERO_BI;
+            pair.k = ZERO_BI;
+            pair.baseReserve = ZERO_BD;
+            pair.quoteReserve = ZERO_BD;
+            pair.lpFeeRate = ZERO_BD;
+            pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+            pair.maintainer = Address.fromString(ADDRESS_ZERO);
+        }
+
+        pair.save()
+
+        let dodoZoo = getDODOZoo();
+        dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.save()
+    }
+
+    DSPTemplate.create(event.params.DSP);
+
 }
 
 export function handleNewCP(event: NewCP): void {

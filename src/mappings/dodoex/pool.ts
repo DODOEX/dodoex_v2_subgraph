@@ -20,6 +20,7 @@ import {
     updatePairTraderCount,
     getDODOZoo,
     updateStatistics,
+    updateUserDayDataAndDodoDayData
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/dodoex/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../../types/dodoex/templates/DPP/DPP"
@@ -31,7 +32,8 @@ import {
     SOURCE_POOL_SWAP,
     TYPE_DPP_POOL,
     TRANSACTION_TYPE_SWAP,
-    TRANSACTION_TYPE_LP
+    TRANSACTION_TYPE_LP_ADD,
+    TRANSACTION_TYPE_LP_REMOVE, TRANSACTION_TYPE_CP_CLAIM
 } from "../constant"
 
 import {
@@ -175,7 +177,8 @@ export function handleDODOSwap(event: DODOSwap): void {
 
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
-    addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP)
+    addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_SWAP);
 }
 
 export function handleBuyShares(event: BuyShares): void {
@@ -261,7 +264,8 @@ export function handleBuyShares(event: BuyShares): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP)
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_ADD);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_ADD);
 }
 
 export function handleSellShares(event: SellShares): void {
@@ -346,7 +350,8 @@ export function handleSellShares(event: SellShares): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP)
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_REMOVE);
 }
 
 export function handleLpFeeRateChange(event: LpFeeRateChange): void {

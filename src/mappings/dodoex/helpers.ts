@@ -25,9 +25,16 @@ import {
     CLASSIC_FACTORY_ADDRESS,
     BASE_COIN,
     CHAIN_BASE_COIN_NAME,
-    CHAIN_BASE_COIN_SYMBOL
+    CHAIN_BASE_COIN_SYMBOL,
+
+    TRANSACTION_TYPE_SWAP,
+    TRANSACTION_TYPE_LP_ADD,
+    TRANSACTION_TYPE_LP_REMOVE,
+    TRANSACTION_TYPE_CP_CLAIM,
+    TRANSACTION_TYPE_CP_CANCEL,
+    TRANSACTION_TYPE_CP_BID
 } from "../constant"
-import {updatePairDayData, updatePairHourData, updateTokenDayData} from "./dayUpdates";
+import {updatePairDayData, updatePairHourData, updateTokenDayData, updateUserDayData} from "./dayUpdates";
 import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
@@ -468,4 +475,27 @@ export function createPool(pid: BigInt): Pool {
     }
 
     return pool as Pool;
+}
+
+export function updateUserDayDataAndDodoDayData(event: ethereum.Event, type: string): void {
+    let userDayData = updateUserDayData(event);
+    if(type === TRANSACTION_TYPE_SWAP){
+        userDayData.tradeCount = userDayData.tradeCount.plus(ONE_BI)
+    }
+    if(type === TRANSACTION_TYPE_LP_ADD){
+        userDayData.tradeCount = userDayData.addLPCount.plus(ONE_BI)
+    }
+    if(type === TRANSACTION_TYPE_LP_REMOVE){
+        userDayData.tradeCount = userDayData.removeLPCount.plus(ONE_BI)
+    }
+    if(type === TRANSACTION_TYPE_CP_BID){
+        userDayData.tradeCount = userDayData.bidCount.plus(ONE_BI)
+    }
+    if(type === TRANSACTION_TYPE_CP_CANCEL){
+        userDayData.tradeCount = userDayData.cancelCount.plus(ONE_BI)
+    }
+    if(type === TRANSACTION_TYPE_CP_CLAIM){
+        userDayData.tradeCount = userDayData.claimCount.plus(ONE_BI)
+    }
+    userDayData.save();
 }

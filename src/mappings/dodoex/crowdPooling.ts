@@ -5,11 +5,16 @@ import {
     Pair
 } from "../../types/dodoex/schema"
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken, createUser, getDODOZoo} from './helpers'
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken, createUser, getDODOZoo,updateUserDayDataAndDodoDayData} from './helpers'
 import {Bid, Cancel, Settle, Claim, CP} from "../../types/dodoex/templates/CP/CP"
 import {updateCrowdPoolingDayData, updateCrowdPoolingHourData} from "./dayUpdates"
 import {addTransaction} from "./transaction";
-import {TRANSACTION_TYPE_CP} from "../constant";
+import {
+    TRANSACTION_TYPE_CP_BID,
+    TRANSACTION_TYPE_CP_CLAIM,
+    TRANSACTION_TYPE_CP_CANCEL,
+    TRANSACTION_TYPE_SWAP
+} from "../constant";
 
 export function handleBid(event: Bid): void {
     let cp = CrowdPooling.load(event.address.toHexString());
@@ -90,7 +95,8 @@ export function handleBid(event: Bid): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP)
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP_BID);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_CP_BID);
 }
 
 export function handleCancel(event: Cancel): void {
@@ -155,7 +161,8 @@ export function handleCancel(event: Cancel): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP)
+    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP_CANCEL);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_CP_CANCEL);
 }
 
 export function handleSettle(event: Settle): void {
@@ -186,6 +193,7 @@ export function handleClaim(event: Claim): void {
     if (bidPosition !== null) {
         bidPosition.claimed = true;
         bidPosition.save();
-        addTransaction(event, event.params.user.toHexString(), TRANSACTION_TYPE_CP)
+        addTransaction(event, event.params.user.toHexString(), TRANSACTION_TYPE_CP_CLAIM);
+        updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_CP_CLAIM);
     }
 }

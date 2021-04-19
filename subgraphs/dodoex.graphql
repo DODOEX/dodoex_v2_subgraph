@@ -18,6 +18,8 @@ type DodoDayData @entity {
     date: Int!
     "transactions count"
     txCount: BigInt!
+    "unique users"
+    uniqueUsersCount: BigInt!
 }
 
 type Transaction @entity {
@@ -44,6 +46,25 @@ type User @entity {
     liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
     "timestamp"
     timestamp: BigInt!
+}
+
+type UserDayData @entity {
+    "user address - date"
+    id: ID!
+    "date"
+    date: Int!
+    "trade count"
+    tradeCount: BigInt!
+    "add liquidity count"
+    addLPCount: BigInt!
+    "remove liquidity count"
+    removeLPCount: BigInt!
+    "cp bid count"
+    bidCount: BigInt!
+    "cp cancel count"
+    cancelCount: BigInt!
+    "cp claim count"
+    claimCount: BigInt!
 }
 
 type LiquidityPosition @entity {

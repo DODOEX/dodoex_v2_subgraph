@@ -23,7 +23,8 @@ import {
     updatePairTraderCount,
     fetchTokenBalance,
     updateStatistics,
-    createTokenByCall
+    createTokenByCall,
+    updateUserDayDataAndDodoDayData
 } from './helpers'
 import {DODOBirth, AddDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
 import {
@@ -44,7 +45,8 @@ import {
     TYPE_CLASSICAL_POOL,
     SOURCE_POOL_SWAP,
     TRANSACTION_TYPE_SWAP,
-    TRANSACTION_TYPE_LP
+    TRANSACTION_TYPE_LP_REMOVE,
+    TRANSACTION_TYPE_LP_ADD
 } from "../constant"
 
 import {
@@ -393,7 +395,8 @@ export function handleDeposit(event: Deposit): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event,event.params.payer.toHexString(),TRANSACTION_TYPE_LP)
+    addTransaction(event,event.params.payer.toHexString(),TRANSACTION_TYPE_LP_ADD);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_ADD);
 }
 
 export function handleWithdraw(event: Withdraw): void {
@@ -486,7 +489,8 @@ export function handleWithdraw(event: Withdraw): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event,event.params.payer.toHexString(),TRANSACTION_TYPE_LP)
+    addTransaction(event,event.params.payer.toHexString(),TRANSACTION_TYPE_LP_REMOVE);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_REMOVE);
 }
 
 export function handleSellBaseToken(event: SellBaseToken): void {
@@ -619,7 +623,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //更新日报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.seller, volumeUSD);
 
-    addTransaction(event,event.params.seller.toHexString(),TRANSACTION_TYPE_SWAP)
+    addTransaction(event,event.params.seller.toHexString(),TRANSACTION_TYPE_SWAP);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_SWAP);
 
 }
 
@@ -753,7 +758,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer, volumeUSD);
-    addTransaction(event,event.params.buyer.toHexString(),TRANSACTION_TYPE_SWAP)
+
+    addTransaction(event,event.params.buyer.toHexString(),TRANSACTION_TYPE_SWAP);
+    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_SWAP);
 }
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {
