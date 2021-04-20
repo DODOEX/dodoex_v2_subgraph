@@ -262,7 +262,7 @@ export function updateUserDayData(event: ethereum.Event): UserDayData {
     let timestamp = event.block.timestamp.toI32();
     let dayID = timestamp / 86400;
     let dayStartTimestamp = dayID * 86400;
-    let userDayDataID = BigInt.fromI32(dayID).toString();
+    let userDayDataID = event.transaction.from.toHexString().concat(BigInt.fromI32(dayID).toString());
 
     let userDayData = UserDayData.load(userDayDataID);
     if (userDayData == null) {

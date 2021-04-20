@@ -359,12 +359,7 @@ export function createLpToken(address: Address, pair: Pair): LpToken {
 
 export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateStruct {
     let pair = Pair.load(poolAddress.toHexString());
-    if (pair.type == TYPE_DVM_POOL) {
-        let pool = DVM.bind(poolAddress);
-        let pmmState = pool.getPMMState();
-        return pmmState as DVM__getPMMStateResultStateStruct;
-    }
-    if (pair.type == TYPE_DPP_POOL) {
+    if (pair.type != TYPE_CLASSICAL_POOL) {
         let pool = DVM.bind(poolAddress);
         let pmmState = pool.getPMMState();
         return pmmState as DVM__getPMMStateResultStateStruct;
