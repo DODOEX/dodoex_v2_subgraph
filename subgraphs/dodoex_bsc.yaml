@@ -332,9 +332,9 @@ dataSources:
           file: ../abis/FeeRateModel.json
       eventHandlers:
         - event: NewDSP(address,address,address,address)
-          handler: handleNewDPP
+          handler: handleNewDSP
         - event: RemoveDSP(address)
-          handler: handleRemoveDPP
+          handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory_20200721
     network: bsc
