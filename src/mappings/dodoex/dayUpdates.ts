@@ -268,7 +268,7 @@ export function updateUserDayData(event: ethereum.Event): UserDayData {
     if (userDayData == null) {
         let dodoDayData = getDodoDayData(event);
         dodoDayData.uniqueUsersCount = dodoDayData.uniqueUsersCount.plus(ONE_BI);
-
+        dodoDayData.save()
         userDayData = new UserDayData(userDayDataID);
         userDayData.date = dayStartTimestamp;
         userDayData.tradeCount = ZERO_BI;

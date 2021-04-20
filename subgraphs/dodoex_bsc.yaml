@@ -303,38 +303,38 @@ dataSources:
         - event: RemoveDPP(address)
           handler: handleRemoveDPP
   - kind: ethereum/contract
-      name: DSPFactory
-      network: bsc
-      source:
-        address: '0x0fb9815938ad069bf90e14fe6c596c514bede767'
-        abi: DSPFactory
-        startBlock: 6695425
-      mapping:
-        kind: ethereum/events
-        apiVersion: 0.0.4
-        language: wasm/assemblyscript
-        file: ../src/mappings/dodoex/poolFactory.ts
-        entities:
-          - Pair
-          - Token
-        abis:
-          - name: DSPFactory
-            file: ../abis/DSPFactory.json
-          - name: ERC20
-            file: ../abis/ERC20.json
-          - name: ERC20SymbolBytes
-            file: ../abis/ERC20SymbolBytes.json
-          - name: ERC20NameBytes
-            file: ../abis/ERC20NameBytes.json
-          - name: DSP
-            file: ../abis/DSP.json
-          - name: FeeRateModel
-            file: ../abis/FeeRateModel.json
-        eventHandlers:
-          - event: NewDSP(address,address,address,address)
-            handler: handleNewDPP
-          - event: RemoveDSP(address)
-            handler: handleRemoveDPP
+    name: DSPFactory
+    network: bsc
+    source:
+      address: '0x0fb9815938ad069bf90e14fe6c596c514bede767'
+      abi: DSPFactory
+      startBlock: 6695425
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DSPFactory
+          file: ../abis/DSPFactory.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+        - name: DSP
+          file: ../abis/DSP.json
+        - name: FeeRateModel
+          file: ../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewDSP(address,address,address,address)
+          handler: handleNewDPP
+        - event: RemoveDSP(address)
+          handler: handleRemoveDPP
   - kind: ethereum/contract
     name: CrowdPoolingFactory_20200721
     network: bsc
