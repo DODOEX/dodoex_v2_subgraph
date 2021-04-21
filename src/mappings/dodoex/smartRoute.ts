@@ -10,7 +10,7 @@ import {
 } from "./helpers"
 import {SOURCE_SMART_ROUTE} from "../constant";
 import {Address, BigInt, store} from '@graphprotocol/graph-ts'
-import {trimTokenDayData, updateTokenDayData} from "./dayUpdates";
+import {trimTokenData, updateTokenDayData} from "./dayUpdates";
 import {
     calculateUsdVolume,
     updatePrice
@@ -24,11 +24,14 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     let dealedToAmount = convertTokenToDecimal(event.params.returnAmount, toToken.decimals);
 
     let trim = false;
-    let volumeUSD = calculateUsdVolume(fromToken as Token, toToken as Token, dealedFromAmount, dealedToAmount);
+    let volumeUSD = calculateUsdVolume(fromToken as Token, toToken as Token, dealedFromAmount, dealedToAmount,event.block.timestamp);
     if (volumeUSD.equals(ZERO_BD)) {
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
         toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
     }
+
+    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
+    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
 
     //1、更新用户交易数据(用户的交易次数在下层)
     user.txCount = user.txCount.plus(ONE_BI);
@@ -46,16 +49,12 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
         let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());
         let orderHistoryAbove = OrderHistory.load(orderHistoryAboveID);
         if (orderHistoryAbove != null) {
-            trimTokenDayData(createToken(Address.fromString(orderHistoryAbove.fromToken), event), orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, event);
-            trimTokenDayData(createToken(Address.fromString(orderHistoryAbove.toToken), event), orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, event);
+            trimTokenData(createToken(Address.fromString(orderHistoryAbove.fromToken), event), orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, volumeUSD, event);
+            trimTokenData(createToken(Address.fromString(orderHistoryAbove.toToken), event), orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, volumeUSD, event);
 
             store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
             trim = true;
         }
-    }
-    if (!trim) {
-        fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
-        toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     }
 
     fromToken.save();

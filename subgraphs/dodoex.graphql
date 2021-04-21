@@ -101,8 +101,12 @@ type Token @entity {
     untrackedVolume: BigDecimal!
     "total trade volume"
     tradeVolume: BigDecimal!
+    "total trade volume for bridge"
+    tradeVolumeBridge: BigDecimal!
     "traded volume of USD"
     volumeUSD: BigDecimal!
+    "traded volume of USD for bridge"
+    volumeUSDBridge: BigDecimal!
 
     "transactions across all pairs"
     txCount: BigInt!

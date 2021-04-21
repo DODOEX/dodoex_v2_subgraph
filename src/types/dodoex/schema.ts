@@ -553,6 +553,15 @@ export class Token extends Entity {
     this.set("tradeVolume", Value.fromBigDecimal(value));
   }
 
+  get tradeVolumeBridge(): BigDecimal {
+    let value = this.get("tradeVolumeBridge");
+    return value.toBigDecimal();
+  }
+
+  set tradeVolumeBridge(value: BigDecimal) {
+    this.set("tradeVolumeBridge", Value.fromBigDecimal(value));
+  }
+
   get volumeUSD(): BigDecimal {
     let value = this.get("volumeUSD");
     return value.toBigDecimal();
@@ -560,6 +569,15 @@ export class Token extends Entity {
 
   set volumeUSD(value: BigDecimal) {
     this.set("volumeUSD", Value.fromBigDecimal(value));
+  }
+
+  get volumeUSDBridge(): BigDecimal {
+    let value = this.get("volumeUSDBridge");
+    return value.toBigDecimal();
+  }
+
+  set volumeUSDBridge(value: BigDecimal) {
+    this.set("volumeUSDBridge", Value.fromBigDecimal(value));
   }
 
   get txCount(): BigInt {

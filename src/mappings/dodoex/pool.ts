@@ -95,13 +95,15 @@ export function handleDODOSwap(event: DODOSwap): void {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
     updatePrice(pair as Pair, event.block.timestamp);
-    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
-    pair.volumeUSD = volumeUSD;
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume,event.block.timestamp);
+    pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
         untrackedBaseVolume = baseVolume;
         untrackedQuoteVolume = quoteVolume;
+        fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
+        toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
     }
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
@@ -110,12 +112,12 @@ export function handleDODOSwap(event: DODOSwap): void {
     //2、更新两个token的记录数据
     fromToken.txCount = fromToken.txCount.plus(ONE_BI);
     fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
-
+    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
     fromToken.save();
 
     toToken.txCount = toToken.txCount.plus(ONE_BI);
     toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-
+    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     toToken.save();
 
     //3、更新用户信息

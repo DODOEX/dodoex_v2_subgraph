@@ -395,8 +395,8 @@ export function handleDeposit(event: Deposit): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event,event.params.payer.toHexString(),TRANSACTION_TYPE_LP_ADD);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_ADD);
+    addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_ADD);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_ADD);
 }
 
 export function handleWithdraw(event: Withdraw): void {
@@ -489,8 +489,8 @@ export function handleWithdraw(event: Withdraw): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event,event.params.payer.toHexString(),TRANSACTION_TYPE_LP_REMOVE);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_REMOVE);
+    addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_REMOVE);
 }
 
 export function handleSellBaseToken(event: SellBaseToken): void {
@@ -541,14 +541,16 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair as Pair,event.block.timestamp);
-    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
-    pair.volumeUSD = volumeUSD;
+    updatePrice(pair as Pair, event.block.timestamp);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume,event.block.timestamp);
+    pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
         untrackedBaseVolume = baseVolume;
         untrackedQuoteVolume = quoteVolume;
+        fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
+        toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
     }
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
@@ -557,11 +559,12 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //2、更新两个token的记录数据
     fromToken.txCount = fromToken.txCount.plus(ONE_BI);
     fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
+    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
     fromToken.save();
 
     toToken.txCount = toToken.txCount.plus(ONE_BI);
     toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-
+    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     toToken.save();
 
     //3、更新用户信息
@@ -623,8 +626,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //更新日报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.seller, volumeUSD);
 
-    addTransaction(event,event.params.seller.toHexString(),TRANSACTION_TYPE_SWAP);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_SWAP);
+    addTransaction(event, event.params.seller.toHexString(), TRANSACTION_TYPE_SWAP);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
 
 }
 
@@ -676,14 +679,16 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
     }
-    updatePrice(pair as Pair,event.block.timestamp);
-    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume);
-    pair.volumeUSD = volumeUSD;
+    updatePrice(pair as Pair, event.block.timestamp);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume,event.block.timestamp);
+    pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
         untrackedBaseVolume = baseVolume;
         untrackedQuoteVolume = quoteVolume;
+        fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
+        toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
     }
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
@@ -692,13 +697,17 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //2、更新两个token的记录数据
     fromToken.txCount = fromToken.txCount.plus(ONE_BI);
     fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
-
+    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
     fromToken.save();
 
     toToken.txCount = toToken.txCount.plus(ONE_BI);
     toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-
+    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     toToken.save();
+
+    if(volumeUSD.div(BigDecimal.fromString("1.2")).gt(quoteVolume)){
+        log.warning("base {},quote {},baseVolume {}, quoteVolume {} ,volumeUSD {}",[baseToken.symbol,quoteToken.symbol,baseVolume.toString(),quoteVolume.toString(),volumeUSD.toString()])
+    }
 
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);
@@ -759,8 +768,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer, volumeUSD);
 
-    addTransaction(event,event.params.buyer.toHexString(),TRANSACTION_TYPE_SWAP);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_SWAP);
+    addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
 }
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {

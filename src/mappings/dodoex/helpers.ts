@@ -259,6 +259,8 @@ export function createToken(address: Address, event: ethereum.Event): Token {
             token.tradeVolume = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
         }
+        token.volumeUSDBridge = ZERO_BD;
+        token.tradeVolumeBridge = ZERO_BD;
         token.txCount = ZERO_BI;
         token.untrackedVolume = ZERO_BD;
         token.timestamp = event.block.timestamp;
@@ -474,22 +476,22 @@ export function createPool(pid: BigInt): Pool {
 
 export function updateUserDayDataAndDodoDayData(event: ethereum.Event, type: string): void {
     let userDayData = updateUserDayData(event);
-    if(type === TRANSACTION_TYPE_SWAP){
+    if (type === TRANSACTION_TYPE_SWAP) {
         userDayData.tradeCount = userDayData.tradeCount.plus(ONE_BI)
     }
-    if(type === TRANSACTION_TYPE_LP_ADD){
+    if (type === TRANSACTION_TYPE_LP_ADD) {
         userDayData.tradeCount = userDayData.addLPCount.plus(ONE_BI)
     }
-    if(type === TRANSACTION_TYPE_LP_REMOVE){
+    if (type === TRANSACTION_TYPE_LP_REMOVE) {
         userDayData.tradeCount = userDayData.removeLPCount.plus(ONE_BI)
     }
-    if(type === TRANSACTION_TYPE_CP_BID){
+    if (type === TRANSACTION_TYPE_CP_BID) {
         userDayData.tradeCount = userDayData.bidCount.plus(ONE_BI)
     }
-    if(type === TRANSACTION_TYPE_CP_CANCEL){
+    if (type === TRANSACTION_TYPE_CP_CANCEL) {
         userDayData.tradeCount = userDayData.cancelCount.plus(ONE_BI)
     }
-    if(type === TRANSACTION_TYPE_CP_CLAIM){
+    if (type === TRANSACTION_TYPE_CP_CLAIM) {
         userDayData.tradeCount = userDayData.claimCount.plus(ONE_BI)
     }
     userDayData.save();

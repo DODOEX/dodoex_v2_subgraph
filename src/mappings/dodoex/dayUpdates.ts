@@ -152,7 +152,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
 
 }
 
-export function trimTokenDayData(token: Token, volume: BigDecimal, bridge: BigDecimal, event: ethereum.Event): TokenDayData {
+export function trimTokenData(token: Token, volume: BigDecimal, bridge: BigDecimal, usdBridge: BigDecimal, event: ethereum.Event): void {
     let timestamp = event.block.timestamp.toI32();
     let dayID = timestamp / 86400;
     let dayStartTimestamp = dayID * 86400;
@@ -180,8 +180,12 @@ export function trimTokenDayData(token: Token, volume: BigDecimal, bridge: BigDe
         }
     }
     tokenDayData.save();
-    return tokenDayData as TokenDayData;
 
+    token.tradeVolume = token.tradeVolume.minus(volume);
+    token.tradeVolumeBridge = token.tradeVolume.plus(volume);
+    token.volumeUSD = token.volumeUSD.minus(usdBridge);
+    token.volumeUSDBridge = token.volumeUSDBridge.plus(usdBridge);
+    token.save();
 }
 
 export function updateCrowdPoolingDayData(cp: CrowdPooling, event: ethereum.Event): CrowdPoolingDayData {

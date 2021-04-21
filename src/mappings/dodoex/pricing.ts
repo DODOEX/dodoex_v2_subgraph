@@ -2,6 +2,7 @@
 import {log, BigInt, BigDecimal, Address} from '@graphprotocol/graph-ts'
 import {Pair, Token} from '../../types/dodoex/schema'
 import {
+    ZERO_BI,
     ZERO_BD,
     ONE_BD,
     convertTokenToDecimal,
@@ -17,6 +18,7 @@ import {
     TYPE_CLASSICAL_POOL,
     TYPE_DPP_POOL,
     TYPE_DVM_POOL,
+    TYPE_DSP_POOL,
 } from "../constant"
 
 let VALID_PRICING_TVL = BigDecimal.fromString("500");//500 usd
@@ -93,17 +95,33 @@ function priceCore(time: BigInt): void {
 }
 
 function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
-    if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL || pair.type == TYPE_DVM_POOL) {
+    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = Token.load(pair.baseToken);
 
-        let quoteToken = Token.load(pair.quoteToken);
-        let baseToken = Token.load(pair.baseToken);
+    if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL || pair.type == TYPE_DVM_POOL || pair.type === TYPE_DSP_POOL) {
 
-        if (quoteToken.usdPrice != null) {
+        if (quoteToken.usdPrice != null && baseToken != null) {
+            //I'm confused that I can't update the value here without clearing the parameters first
+            baseToken.usdPrice = null;
+            baseToken.priceUpdateTimestamp = null;
+            baseToken.save();
+
             baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
             baseToken.priceUpdateTimestamp = time;
             baseToken.save();
+
+            // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
+            //     log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
+            // }
+
         }
+
+        // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
+        //     log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
+        // }
+
     }
+    baseToken.save();
 
 }
 
@@ -112,14 +130,19 @@ export function updatePrice(pair: Pair, time: BigInt): void {
     updatePoolTokenPrice(pair, time)
 }
 
-export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
+export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDecimal, amount1: BigDecimal, timestamp: BigInt): BigDecimal {
     let volumeUSD = ZERO_BD;
-    if (token0.usdPrice != null && token1.usdPrice == null) {
-        volumeUSD = volumeUSD.plus(token0.usdPrice.times(amount0));
-    } else if (token0.usdPrice == null && token1.usdPrice != null) {
-        volumeUSD = volumeUSD.plus(token1.usdPrice.times(amount1));
-    } else if (token0.usdPrice != null && token1.usdPrice != null) {
-        volumeUSD = volumeUSD.plus(token0.usdPrice.times(amount0)).plus(token1.usdPrice.times(amount1)).div(BigDecimal.fromString("2"));
+    let validUpdateTime = timestamp.minus(BigInt.fromI32(60 * 60));
+    if (token0.usdPrice != null && token1.usdPrice == null && token0.priceUpdateTimestamp.ge(validUpdateTime)) {
+        volumeUSD = token0.usdPrice.times(amount0);
+    }else if (token0.usdPrice == null && token1.usdPrice != null && token1.priceUpdateTimestamp.ge(validUpdateTime)) {
+        volumeUSD = token1.usdPrice.times(amount1);
+    }else if(token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.ge(validUpdateTime) && token1.priceUpdateTimestamp.lt(validUpdateTime)){
+        volumeUSD = token0.usdPrice.times(amount0);
+    }else if(token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.lt(validUpdateTime) && token1.priceUpdateTimestamp.ge(validUpdateTime)){
+        volumeUSD = token1.usdPrice.times(amount1);
+    } else if (token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.ge(validUpdateTime) && token1.priceUpdateTimestamp.ge(validUpdateTime)) {
+        volumeUSD = (token0.usdPrice.times(amount0).plus(token1.usdPrice.times(amount1))).div(BigDecimal.fromString("2"));
     }
 
     return volumeUSD;
