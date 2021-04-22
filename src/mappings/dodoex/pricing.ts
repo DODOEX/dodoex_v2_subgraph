@@ -98,15 +98,12 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
     let quoteToken = Token.load(pair.quoteToken);
     let baseToken = Token.load(pair.baseToken);
 
-    let baseTokenAddress = baseToken.id;
-
-    let price: BigDecimal;
     if (quoteToken.usdPrice != null) {
         //I'm confused that I can't update the value here
         baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
         baseToken.priceUpdateTimestamp = time;
+
         baseToken.save();
-        price = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
         // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
         //     log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
         // }
@@ -116,10 +113,7 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
     // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
     //     log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
     // }
-    let newBaseEntity = Token.load(baseTokenAddress);
-    newBaseEntity.usdPrice = price;
-    newBaseEntity.priceUpdateTimestamp = time;
-    newBaseEntity.save()
+
 }
 
 export function updatePrice(pair: Pair, time: BigInt): void {
