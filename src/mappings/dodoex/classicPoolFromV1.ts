@@ -705,9 +705,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     toToken.save();
 
-    if(volumeUSD.div(BigDecimal.fromString("1.2")).gt(quoteVolume)){
-        log.warning("base {},quote {},baseVolume {}, quoteVolume {} ,volumeUSD {}",[baseToken.symbol,quoteToken.symbol,baseVolume.toString(),quoteVolume.toString(),volumeUSD.toString()])
-    }
+    // if(volumeUSD.div(BigDecimal.fromString("1.2")).gt(quoteVolume)){
+    //     log.warning("base {},quote {},baseVolume {}, quoteVolume {} ,volumeUSD {}",[baseToken.symbol,quoteToken.symbol,baseVolume.toString(),quoteVolume.toString(),volumeUSD.toString()])
+    // }
 
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);

@@ -607,38 +607,22 @@ export class Token extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
-  get usdPrice(): BigDecimal | null {
+  get usdPrice(): BigDecimal {
     let value = this.get("usdPrice");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value.toBigDecimal();
   }
 
-  set usdPrice(value: BigDecimal | null) {
-    if (value === null) {
-      this.unset("usdPrice");
-    } else {
-      this.set("usdPrice", Value.fromBigDecimal(value as BigDecimal));
-    }
+  set usdPrice(value: BigDecimal) {
+    this.set("usdPrice", Value.fromBigDecimal(value));
   }
 
-  get priceUpdateTimestamp(): BigInt | null {
+  get priceUpdateTimestamp(): BigInt {
     let value = this.get("priceUpdateTimestamp");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set priceUpdateTimestamp(value: BigInt | null) {
-    if (value === null) {
-      this.unset("priceUpdateTimestamp");
-    } else {
-      this.set("priceUpdateTimestamp", Value.fromBigInt(value as BigInt));
-    }
+  set priceUpdateTimestamp(value: BigInt) {
+    this.set("priceUpdateTimestamp", Value.fromBigInt(value));
   }
 }
 

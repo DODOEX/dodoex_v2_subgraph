@@ -118,9 +118,9 @@ type Token @entity {
     timestamp: BigInt!
 
     "usd price(only stable coin and classical pool has usd price)"
-    usdPrice: BigDecimal
+    usdPrice: BigDecimal!
     "price update time"
-    priceUpdateTimestamp: BigInt
+    priceUpdateTimestamp: BigInt!
 }
 
 type LpToken @entity {

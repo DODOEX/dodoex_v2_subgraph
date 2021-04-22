@@ -8,9 +8,9 @@ dataSources:
     name: ERC20Factory
     network: mainnet
     source:
-      address: '0x8476de046e1923add9002a73133230b9e5be4127'
+      address: '0x2ccdf6f742afbe813b68ec6bb421c1bea74fbd46'
       abi: ERC20Factory
-      startBlock: 2444230
+      startBlock: 3606103
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

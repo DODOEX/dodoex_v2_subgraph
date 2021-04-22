@@ -102,17 +102,18 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
         //I'm confused that I can't update the value here
         baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
         baseToken.priceUpdateTimestamp = time;
-
         baseToken.save();
-        // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-        //     log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
-        // }
+
+        if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
+            log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
+        }
+
+        if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
+            log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
+        }
 
     }
 
-    // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-    //     log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
-    // }
 
 }
 
