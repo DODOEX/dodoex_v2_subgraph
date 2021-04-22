@@ -98,31 +98,28 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
     let quoteToken = Token.load(pair.quoteToken);
     let baseToken = Token.load(pair.baseToken);
 
-    if (pair.type == TYPE_CLASSICAL_POOL || pair.type == TYPE_DPP_POOL || pair.type == TYPE_DVM_POOL || pair.type === TYPE_DSP_POOL) {
+    let baseTokenAddress = baseToken.id;
 
-        if (quoteToken.usdPrice != null && baseToken != null) {
-            //I'm confused that I can't update the value here without clearing the parameters first
-            baseToken.usdPrice = null;
-            baseToken.priceUpdateTimestamp = null;
-            baseToken.save();
-
-            baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
-            baseToken.priceUpdateTimestamp = time;
-            baseToken.save();
-
-            // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-            //     log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
-            // }
-
-        }
-
+    let price: BigDecimal;
+    if (quoteToken.usdPrice != null) {
+        //I'm confused that I can't update the value here
+        baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
+        baseToken.priceUpdateTimestamp = time;
+        baseToken.save();
+        price = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
         // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-        //     log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
+        //     log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
         // }
 
     }
-    baseToken.save();
 
+    // if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
+    //     log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
+    // }
+    let newBaseEntity = Token.load(baseTokenAddress);
+    newBaseEntity.usdPrice = price;
+    newBaseEntity.priceUpdateTimestamp = time;
+    newBaseEntity.save()
 }
 
 export function updatePrice(pair: Pair, time: BigInt): void {
@@ -135,11 +132,11 @@ export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDec
     let validUpdateTime = timestamp.minus(BigInt.fromI32(60 * 60));
     if (token0.usdPrice != null && token1.usdPrice == null && token0.priceUpdateTimestamp.ge(validUpdateTime)) {
         volumeUSD = token0.usdPrice.times(amount0);
-    }else if (token0.usdPrice == null && token1.usdPrice != null && token1.priceUpdateTimestamp.ge(validUpdateTime)) {
+    } else if (token0.usdPrice == null && token1.usdPrice != null && token1.priceUpdateTimestamp.ge(validUpdateTime)) {
         volumeUSD = token1.usdPrice.times(amount1);
-    }else if(token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.ge(validUpdateTime) && token1.priceUpdateTimestamp.lt(validUpdateTime)){
+    } else if (token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.ge(validUpdateTime) && token1.priceUpdateTimestamp.lt(validUpdateTime)) {
         volumeUSD = token0.usdPrice.times(amount0);
-    }else if(token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.lt(validUpdateTime) && token1.priceUpdateTimestamp.ge(validUpdateTime)){
+    } else if (token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.lt(validUpdateTime) && token1.priceUpdateTimestamp.ge(validUpdateTime)) {
         volumeUSD = token1.usdPrice.times(amount1);
     } else if (token0.usdPrice != null && token1.usdPrice != null && token0.priceUpdateTimestamp.ge(validUpdateTime) && token1.priceUpdateTimestamp.ge(validUpdateTime)) {
         volumeUSD = (token0.usdPrice.times(amount0).plus(token1.usdPrice.times(amount1))).div(BigDecimal.fromString("2"));
