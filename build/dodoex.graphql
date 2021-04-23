@@ -88,15 +88,6 @@ type Token @entity {
     "token address"
     id: ID!
 
-    "token symbol"
-    symbol: String!
-    "token name"
-    name: String!
-    "token decimals"
-    decimals: BigInt!
-    "total supply"
-    totalSupply: BigInt!
-
     "untracked volume"
     untrackedVolume: BigDecimal!
     "total trade volume"
@@ -114,13 +105,21 @@ type Token @entity {
     "liquidity across all pairs"
     totalLiquidityOnDODO: BigDecimal!
 
-    "timestamp"
-    timestamp: BigInt!
-
     "usd price(only stable coin and classical pool has usd price)"
     usdPrice: BigDecimal!
     "price update time"
     priceUpdateTimestamp: BigInt!
+
+    "token symbol"
+    symbol: String!
+    "token name"
+    name: String!
+    "token decimals"
+    decimals: BigInt!
+    "total supply"
+    totalSupply: BigInt!
+    "timestamp"
+    timestamp: BigInt!
 }
 
 type LpToken @entity {
