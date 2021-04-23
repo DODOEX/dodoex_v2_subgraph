@@ -13,7 +13,6 @@ import {Address, BigInt, store} from '@graphprotocol/graph-ts'
 import {trimTokenData, updateTokenDayData} from "./dayUpdates";
 import {
     calculateUsdVolume,
-    updatePrice
 } from "./pricing"
 
 export function handleOrderHistory(event: OrderHistoryV2): void {

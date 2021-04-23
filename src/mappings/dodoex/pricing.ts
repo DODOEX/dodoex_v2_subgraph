@@ -95,6 +95,7 @@ function priceCore(time: BigInt): void {
 }
 
 function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
+    //The function that didn't go through
     let quoteToken = Token.load(pair.quoteToken);
     let baseToken = Token.load(pair.baseToken);
 
@@ -113,7 +114,6 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
 }
 
 export function updatePrice(pair: Pair, time: BigInt): void {
-    updatePoolTokenPrice(pair, time)
     priceCore(time)
 }
 
