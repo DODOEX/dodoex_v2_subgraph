@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import {log, BigInt, BigDecimal, Address} from '@graphprotocol/graph-ts'
+import {log, BigInt, BigDecimal, store} from '@graphprotocol/graph-ts'
 import {Pair, Token} from '../../types/dodoex/schema'
 import {
     ZERO_BI,
@@ -100,26 +100,21 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
 
     if (quoteToken.usdPrice != null) {
         //I'm confused that I can't update the value here
-        baseToken.usdPrice = pair.lastTradePrice.times(quoteToken.usdPrice as BigDecimal);
+        let price = pair.lastTradePrice.times(quoteToken.usdPrice);
+        baseToken.usdPrice = price;
         baseToken.priceUpdateTimestamp = time;
         baseToken.save();
 
         if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-            log.warning("pair in :{},lasttrade {},quote price {}",[pair.id,pair.lastTradePrice.toString(),quoteToken.usdPrice.toString()]);
+            log.warning("token :{},price: {},time: {}",[baseToken.id,price.toString(),time.toString()]);
         }
-
-        if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-            log.warning("token {} ,price {} time {}",[baseToken.symbol,baseToken.usdPrice.toString(),time.toString()])
-        }
-
     }
-
 
 }
 
 export function updatePrice(pair: Pair, time: BigInt): void {
-    priceCore(time)
     updatePoolTokenPrice(pair, time)
+    priceCore(time)
 }
 
 export function calculateUsdVolume(token0: Token, token1: Token, amount0: BigDecimal, amount1: BigDecimal, timestamp: BigInt): BigDecimal {
