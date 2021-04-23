@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20Factory
-    network: mainnet
+    network: kovan
     source:
-      address: "0x2ccdf6f742afbe813b68ec6bb421c1bea74fbd46"
+      address: "0xCb1A2f64EfB02803276BFB5a8D511C4D950282a0"
       abi: ERC20Factory
-      startBlock: 3606103
+      startBlock: 22652741
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -36,7 +36,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: mainnet
+    network: kovan
     source:
       abi: MintableERC20
     mapping:
