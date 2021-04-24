@@ -112,15 +112,6 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.save();
 
     //2、更新两个token的记录数据
-    fromToken.txCount = fromToken.txCount.plus(ONE_BI);
-    fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
-    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
-    fromToken.save();
-
-    toToken.txCount = toToken.txCount.plus(ONE_BI);
-    toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
-    toToken.save();
 
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);
@@ -169,7 +160,17 @@ export function handleDODOSwap(event: DODOSwap): void {
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.volumeUSD = volumeUSD;
         orderHistory.save();
+
+        fromToken.txCount = fromToken.txCount.plus(ONE_BI);
+        fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
+        fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
+
+        toToken.txCount = toToken.txCount.plus(ONE_BI);
+        toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
+        toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     }
+    fromToken.save();
+    toToken.save();
 
     // 更新交易人数
     updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair, event);

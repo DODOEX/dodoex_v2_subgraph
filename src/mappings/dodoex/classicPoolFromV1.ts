@@ -558,17 +558,6 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
 
-    //2、更新两个token的记录数据
-    fromToken.txCount = fromToken.txCount.plus(ONE_BI);
-    fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
-    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
-    fromToken.save();
-
-    toToken.txCount = toToken.txCount.plus(ONE_BI);
-    toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
-    toToken.save();
-
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);
     user.save();
@@ -599,6 +588,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
     if (SMART_ROUTE_ADDRESSES.indexOf(event.params.seller.toHexString()) == -1 && orderHistory == null) {
+        log.warning("seller: {},hash: {}",[event.params.seller.toHexString(),event.transaction.hash.toHexString()])
         orderHistory = new OrderHistory(swapID);
         orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
@@ -615,7 +605,17 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.volumeUSD = volumeUSD;
         orderHistory.save();
+
+        fromToken.txCount = fromToken.txCount.plus(ONE_BI);
+        fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
+        fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
+
+        toToken.txCount = toToken.txCount.plus(ONE_BI);
+        toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
+        toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     }
+    fromToken.save();
+    toToken.save();
 
     // 更新交易人数
     updatePairTraderCount(event.transaction.from, event.params.seller, pair as Pair, event);
@@ -699,15 +699,6 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.save();
 
     //2、更新两个token的记录数据
-    fromToken.txCount = fromToken.txCount.plus(ONE_BI);
-    fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
-    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
-    fromToken.save();
-
-    toToken.txCount = toToken.txCount.plus(ONE_BI);
-    toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
-    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
-    toToken.save();
 
     // if(volumeUSD.div(BigDecimal.fromString("1.2")).gt(quoteVolume)){
     //     log.warning("base {},quote {},baseVolume {}, quoteVolume {} ,volumeUSD {}",[baseToken.symbol,quoteToken.symbol,baseVolume.toString(),quoteVolume.toString(),volumeUSD.toString()])
@@ -743,6 +734,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
     if (SMART_ROUTE_ADDRESSES.indexOf(event.params.buyer.toHexString()) == -1 && orderHistory == null) {
+        log.warning("seller: {},hash: {}",[event.params.buyer.toHexString(),event.transaction.hash.toHexString()])
         orderHistory = new OrderHistory(swapID);
         orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
@@ -759,7 +751,17 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.volumeUSD = volumeUSD;
         orderHistory.save();
+
+        fromToken.txCount = fromToken.txCount.plus(ONE_BI);
+        fromToken.tradeVolume = fromToken.tradeVolume.plus(dealedFromAmount);
+        fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
+
+        toToken.txCount = toToken.txCount.plus(ONE_BI);
+        toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
+        toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     }
+    fromToken.save();
+    toToken.save();
 
     // 更新交易人数
     updatePairTraderCount(event.transaction.from, event.params.buyer, pair as Pair, event);

@@ -182,9 +182,9 @@ export function trimTokenData(token: Token, volume: BigDecimal, bridge: BigDecim
     tokenDayData.save();
 
     token.tradeVolume = token.tradeVolume.minus(volume);
-    token.tradeVolumeBridge = token.tradeVolume.plus(volume);
+    if (bridge.gt(ZERO_BD)) token.tradeVolumeBridge = token.tradeVolume.plus(volume);
     token.volumeUSD = token.volumeUSD.minus(usdBridge);
-    token.volumeUSDBridge = token.volumeUSDBridge.plus(usdBridge);
+    if (bridge.gt(ZERO_BD)) token.volumeUSDBridge = token.volumeUSDBridge.plus(usdBridge);
     token.save();
 }
 
