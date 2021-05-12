@@ -342,9 +342,8 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
 export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount: BigDecimal, dealedToAmount: BigDecimal,volumeUSD: BigDecimal): Pair {
     let id = event.params.fromToken.toHexString().concat("-").concat(event.params.toToken.toHexString())
     let pair = Pair.load(id);
-    log.warning("111111111111",[])
     if (pair === null) {
-        let pair = new Pair(id) as Pair;
+        pair = new Pair(id) as Pair;
 
         let baseToken = createToken(event.params.fromToken, event);
         let quoteToken = createToken(event.params.toToken, event);
@@ -352,7 +351,6 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
         pair.baseToken = baseToken.id;
         pair.quoteToken = quoteToken.id;
         pair.type = TYPE_VIRTUAL_POOL;
-        log.warning("22222222",[])
 
         pair.creator = Address.fromString(ADDRESS_ZERO);
         pair.createdAtTimestamp = event.block.timestamp;
@@ -371,7 +369,6 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
         pair.isDepositBaseAllowed = true;
         pair.isDepositQuoteAllowed = true;
         pair.volumeUSD = ZERO_BD;
-        log.warning("33333333",[])
 
         pair.i = ZERO_BI;
         pair.k = ZERO_BI;
@@ -379,21 +376,23 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
         pair.quoteReserve = ZERO_BD;
 
         pair.lpFeeRate = ZERO_BD;
-        log.warning("44444444",[])
 
         pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
         pair.maintainer = Address.fromString(ADDRESS_ZERO);
+
     }
-    log.warning(`tx count: {}`,[pair.txCount.toString()])
-    // pair.txCount = pair.txCount.plus(ONE_BI);
+
+    pair.txCount = pair.txCount.plus(ONE_BI);
     pair.volumeBaseToken = pair.volumeBaseToken.plus(dealedFromAmount);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(dealedToAmount);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
+
     if(volumeUSD.equals(ZERO_BD)){
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(dealedFromAmount);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(dealedToAmount);
     }
     pair.save();
+
     return pair as Pair;
 }
 
