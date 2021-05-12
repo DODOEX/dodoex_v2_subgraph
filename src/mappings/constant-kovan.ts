@@ -1,4 +1,5 @@
 //kovan
+export const TYPE_VIRTUAL_POOL = "VIRTUAL";
 export const TYPE_DVM_POOL = "DVM";
 export const TYPE_DPP_POOL = "DPP";
 export const TYPE_DSP_POOL = "DSP";

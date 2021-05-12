@@ -68,6 +68,23 @@ export class NftCollateralVault extends Entity {
   set baseURI(value: string) {
     this.set("baseURI", Value.fromString(value));
   }
+
+  get vaultNfts(): Array<string> | null {
+    let value = this.get("vaultNfts");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set vaultNfts(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("vaultNfts");
+    } else {
+      this.set("vaultNfts", Value.fromStringArray(value as Array<string>));
+    }
+  }
 }
 
 export class Nft extends Entity {
@@ -191,13 +208,30 @@ export class VaultNft extends Entity {
     this.set("vault", Value.fromString(value));
   }
 
-  get nft(): string {
-    let value = this.get("nft");
+  get nftAddress(): string {
+    let value = this.get("nftAddress");
     return value.toString();
   }
 
-  set nft(value: string) {
-    this.set("nft", Value.fromString(value));
+  set nftAddress(value: string) {
+    this.set("nftAddress", Value.fromString(value));
+  }
+
+  get nft(): string | null {
+    let value = this.get("nft");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set nft(value: string | null) {
+    if (value === null) {
+      this.unset("nft");
+    } else {
+      this.set("nft", Value.fromString(value as string));
+    }
   }
 
   get tokenID(): BigInt {
@@ -312,13 +346,21 @@ export class Fragment extends Entity {
     this.set("dvm", Value.fromString(value));
   }
 
-  get feeDistributor(): string {
+  get feeDistributor(): string | null {
     let value = this.get("feeDistributor");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set feeDistributor(value: string) {
-    this.set("feeDistributor", Value.fromString(value));
+  set feeDistributor(value: string | null) {
+    if (value === null) {
+      this.unset("feeDistributor");
+    } else {
+      this.set("feeDistributor", Value.fromString(value as string));
+    }
   }
 
   get initialized(): boolean {

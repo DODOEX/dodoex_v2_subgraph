@@ -2,20 +2,20 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: nft.graphql
+  file: ./nft.graphql
 dataSources:
   - kind: ethereum/contract
     name: DODONFTProxy
-    network: kovan
+    network: mainnet
     source:
-      address: "0x649cfcc1713cb7f4866dcaf0fad52903a3902373"
+      address: '0x8812e32b31530d21d1fe70a45bba66bbeb3641c5'
       abi: DODONFTProxy
-      startBlock: 24703394
+      startBlock: 24276182
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTProxy/DODONFTProxy.wasm
+      file: ../src/mappings/nft/proxy.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -23,32 +23,32 @@ dataSources:
         - Fragment
       abis:
         - name: DODONFTProxy
-          file: abis/DODONFTProxy.json
+          file: ../abis/DODONFTProxy.json
         - name: Fragment
-          file: abis/Fragment.json
+          file: ../abis/Fragment.json
         - name: ERC20
-          file: abis/ERC20.json
+          file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
+          file: ../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
+          file: ../abis/ERC20NameBytes.json
       eventHandlers:
         - event: CreateNFTCollateralVault(address,address,string,string)
           handler: handleCreateNFTCollateralVault
-        - event: CreateFragment(address,address,address)
+        - event: CreateFragment(address,address,address,address)
           handler: handleCreateFragment
   - kind: ethereum/contract
     name: NFTTokenFactory
-    network: kovan
+    network: mainnet
     source:
       abi: NFTTokenFactory
-      address: "0x834d13ca0322ccfe67596f09cc26ee3584297b94"
-      startBlock: 24703373
+      address: '0xdebb45acfff3b5e610c1edf45dfaaea0030eadaf'
+      startBlock: 24276157
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: NFTTokenFactory/NFTTokenFactory.wasm
+      file: ../src/mappings/nft/tokenFactory.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -56,11 +56,11 @@ dataSources:
         - Fragment
       abis:
         - name: NFTTokenFactory
-          file: abis/NFTTokenFactory.json
+          file: ../abis/NFTTokenFactory.json
         - name: InitializableERC721
-          file: abis/InitializableERC721.json
+          file: ../abis/InitializableERC721.json
         - name: InitializableERC1155
-          file: abis/InitializableERC1155.json
+          file: ../abis/InitializableERC1155.json
       eventHandlers:
         - event: NewERC721(address,address)
           handler: handleNewERC721
@@ -69,14 +69,14 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: NFTCollateralVault
-    network: kovan
+    network: mainnet
     source:
       abi: NFTCollateralVault
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/NFTCollateralVault/NFTCollateralVault.wasm
+      file: ../src/mappings/nft/vault.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -84,11 +84,11 @@ templates:
         - Fragment
       abis:
         - name: NFTCollateralVault
-          file: abis/NFTCollateralVault.json
+          file: ../abis/NFTCollateralVault.json
         - name: InitializableERC721
-          file: abis/InitializableERC721.json
+          file: ../abis/InitializableERC721.json
         - name: InitializableERC1155
-          file: abis/InitializableERC1155.json
+          file: ../abis/InitializableERC1155.json
       eventHandlers:
         - event: AddNftToken(address,uint256,uint256)
           handler: handleAddNftToken
@@ -96,14 +96,14 @@ templates:
           handler: handleRemoveNftToken
   - kind: ethereum/contract
     name: Fragment
-    network: kovan
+    network: mainnet
     source:
       abi: Fragment
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/Fragment/Fragment.wasm
+      file: ../src/mappings/nft/fragment.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -111,7 +111,7 @@ templates:
         - Fragment
       abis:
         - name: Fragment
-          file: abis/Fragment.json
+          file: ../abis/Fragment.json
       eventHandlers:
         - event: Buyout(address)
           handler: handleBuyout

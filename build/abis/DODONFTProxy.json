@@ -18,7 +18,12 @@
       },
       {
         "internalType": "address",
-        "name": "dvmFactory",
+        "name": "defaultMaintainer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "mtFeeRateModel",
         "type": "address"
       },
       {
@@ -33,7 +38,7 @@
       },
       {
         "internalType": "address",
-        "name": "feeTemplate",
+        "name": "dvmTemplate",
         "type": "address"
       },
       {
@@ -75,12 +80,25 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "newBuyoutFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "ChangeBuyoutFee",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "newFeeTemplate",
+        "name": "newDvmTemplate",
         "type": "address"
       }
     ],
-    "name": "ChangeFeeTemplate",
+    "name": "ChangeDvmTemplate",
     "type": "event"
   },
   {
@@ -94,6 +112,19 @@
       }
     ],
     "name": "ChangeFragTemplate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newMtFeeRateTemplate",
+        "type": "address"
+      }
+    ],
+    "name": "ChangeMtFeeRateTemplate",
     "type": "event"
   },
   {
@@ -128,12 +159,6 @@
         "indexed": false,
         "internalType": "address",
         "name": "dvm",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "feeDistributor",
         "type": "address"
       }
     ],
@@ -210,37 +235,38 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "feeDistributor",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Stake",
-    "type": "event"
-  },
-  {
     "stateMutability": "payable",
     "type": "fallback"
   },
   {
     "inputs": [],
     "name": "_CLONE_FACTORY_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_DEFAULT_BUYOUT_FEE_",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_DEFAULT_MAINTAINER_",
     "outputs": [
       {
         "internalType": "address",
@@ -266,20 +292,7 @@
   },
   {
     "inputs": [],
-    "name": "_DVM_FACTORY_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_FEE_TEMPLATE_",
+    "name": "_DVM_TEMPLATE_",
     "outputs": [
       {
         "internalType": "address",
@@ -293,6 +306,19 @@
   {
     "inputs": [],
     "name": "_FRAG_TEMPLATE_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_MT_FEE_RATE_MODEL_",
     "outputs": [
       {
         "internalType": "address",
@@ -438,17 +464,7 @@
       },
       {
         "internalType": "address",
-        "name": "collateralVault",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "vaultPreOwner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "stakeToken",
         "type": "address"
       },
       {
@@ -463,7 +479,7 @@
       },
       {
         "internalType": "bool",
-        "name": "isOpenBuyout",
+        "name": "isOpenTwap",
         "type": "bool"
       }
     ],
@@ -477,11 +493,6 @@
       {
         "internalType": "address",
         "name": "newDvm",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "newFeeDistributor",
         "type": "address"
       }
     ],
@@ -497,39 +508,21 @@
       },
       {
         "internalType": "uint256",
-        "name": "quoteAmount",
+        "name": "quoteMaxAmount",
         "type": "uint256"
       },
       {
         "internalType": "uint8",
         "name": "flag",
         "type": "uint8"
-      }
-    ],
-    "name": "buyout",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "feeDistributor",
-        "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "stakeAmount",
+        "name": "deadLine",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "flag",
-        "type": "uint8"
       }
     ],
-    "name": "stakeToFeeDistributor",
+    "name": "buyout",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -564,11 +557,37 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "newFeeTemplate",
+        "name": "newMtFeeRateTemplate",
         "type": "address"
       }
     ],
-    "name": "updateFeeTemplate",
+    "name": "updateMtFeeRateTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newDvmTemplate",
+        "type": "address"
+      }
+    ],
+    "name": "updateDvmTemplate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "buyoutFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateBuyoutFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

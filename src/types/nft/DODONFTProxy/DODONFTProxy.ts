@@ -36,20 +36,38 @@ export class Buyout__Params {
   }
 }
 
-export class ChangeFeeTemplate extends ethereum.Event {
-  get params(): ChangeFeeTemplate__Params {
-    return new ChangeFeeTemplate__Params(this);
+export class ChangeBuyoutFee extends ethereum.Event {
+  get params(): ChangeBuyoutFee__Params {
+    return new ChangeBuyoutFee__Params(this);
   }
 }
 
-export class ChangeFeeTemplate__Params {
-  _event: ChangeFeeTemplate;
+export class ChangeBuyoutFee__Params {
+  _event: ChangeBuyoutFee;
 
-  constructor(event: ChangeFeeTemplate) {
+  constructor(event: ChangeBuyoutFee) {
     this._event = event;
   }
 
-  get newFeeTemplate(): Address {
+  get newBuyoutFee(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class ChangeDvmTemplate extends ethereum.Event {
+  get params(): ChangeDvmTemplate__Params {
+    return new ChangeDvmTemplate__Params(this);
+  }
+}
+
+export class ChangeDvmTemplate__Params {
+  _event: ChangeDvmTemplate;
+
+  constructor(event: ChangeDvmTemplate) {
+    this._event = event;
+  }
+
+  get newDvmTemplate(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 }
@@ -68,6 +86,24 @@ export class ChangeFragTemplate__Params {
   }
 
   get newFragTemplate(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class ChangeMtFeeRateTemplate extends ethereum.Event {
+  get params(): ChangeMtFeeRateTemplate__Params {
+    return new ChangeMtFeeRateTemplate__Params(this);
+  }
+}
+
+export class ChangeMtFeeRateTemplate__Params {
+  _event: ChangeMtFeeRateTemplate;
+
+  constructor(event: ChangeMtFeeRateTemplate) {
+    this._event = event;
+  }
+
+  get newMtFeeRateTemplate(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 }
@@ -113,10 +149,6 @@ export class CreateFragment__Params {
 
   get dvm(): Address {
     return this._event.parameters[2].value.toAddress();
-  }
-
-  get feeDistributor(): Address {
-    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -194,48 +226,19 @@ export class OwnershipTransferred__Params {
   }
 }
 
-export class Stake extends ethereum.Event {
-  get params(): Stake__Params {
-    return new Stake__Params(this);
-  }
-}
-
-export class Stake__Params {
-  _event: Stake;
-
-  constructor(event: Stake) {
-    this._event = event;
-  }
-
-  get from(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get feeDistributor(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
 export class DODONFTProxy__createFragmentResult {
   value0: Address;
   value1: Address;
-  value2: Address;
 
-  constructor(value0: Address, value1: Address, value2: Address) {
+  constructor(value0: Address, value1: Address) {
     this.value0 = value0;
     this.value1 = value1;
-    this.value2 = value2;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromAddress(this.value0));
     map.set("value1", ethereum.Value.fromAddress(this.value1));
-    map.set("value2", ethereum.Value.fromAddress(this.value2));
     return map;
   }
 }
@@ -268,6 +271,52 @@ export class DODONFTProxy extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  _DEFAULT_BUYOUT_FEE_(): BigInt {
+    let result = super.call(
+      "_DEFAULT_BUYOUT_FEE_",
+      "_DEFAULT_BUYOUT_FEE_():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try__DEFAULT_BUYOUT_FEE_(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "_DEFAULT_BUYOUT_FEE_",
+      "_DEFAULT_BUYOUT_FEE_():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  _DEFAULT_MAINTAINER_(): Address {
+    let result = super.call(
+      "_DEFAULT_MAINTAINER_",
+      "_DEFAULT_MAINTAINER_():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try__DEFAULT_MAINTAINER_(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "_DEFAULT_MAINTAINER_",
+      "_DEFAULT_MAINTAINER_():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   _DODO_APPROVE_PROXY_(): Address {
     let result = super.call(
       "_DODO_APPROVE_PROXY_",
@@ -291,35 +340,16 @@ export class DODONFTProxy extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  _DVM_FACTORY_(): Address {
-    let result = super.call("_DVM_FACTORY_", "_DVM_FACTORY_():(address)", []);
+  _DVM_TEMPLATE_(): Address {
+    let result = super.call("_DVM_TEMPLATE_", "_DVM_TEMPLATE_():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try__DVM_FACTORY_(): ethereum.CallResult<Address> {
+  try__DVM_TEMPLATE_(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "_DVM_FACTORY_",
-      "_DVM_FACTORY_():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  _FEE_TEMPLATE_(): Address {
-    let result = super.call("_FEE_TEMPLATE_", "_FEE_TEMPLATE_():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try__FEE_TEMPLATE_(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "_FEE_TEMPLATE_",
-      "_FEE_TEMPLATE_():(address)",
+      "_DVM_TEMPLATE_",
+      "_DVM_TEMPLATE_():(address)",
       []
     );
     if (result.reverted) {
@@ -343,6 +373,29 @@ export class DODONFTProxy extends ethereum.SmartContract {
     let result = super.tryCall(
       "_FRAG_TEMPLATE_",
       "_FRAG_TEMPLATE_():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  _MT_FEE_RATE_MODEL_(): Address {
+    let result = super.call(
+      "_MT_FEE_RATE_MODEL_",
+      "_MT_FEE_RATE_MODEL_():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try__MT_FEE_RATE_MODEL_(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "_MT_FEE_RATE_MODEL_",
+      "_MT_FEE_RATE_MODEL_():(address)",
       []
     );
     if (result.reverted) {
@@ -467,54 +520,45 @@ export class DODONFTProxy extends ethereum.SmartContract {
 
   createFragment(
     quoteToken: Address,
-    collateralVault: Address,
     vaultPreOwner: Address,
-    stakeToken: Address,
     dvmParams: Array<BigInt>,
     fragParams: Array<BigInt>,
-    isOpenBuyout: boolean
+    isOpenTwap: boolean
   ): DODONFTProxy__createFragmentResult {
     let result = super.call(
       "createFragment",
-      "createFragment(address,address,address,address,uint256[],uint256[],bool):(address,address,address)",
+      "createFragment(address,address,uint256[],uint256[],bool):(address,address)",
       [
         ethereum.Value.fromAddress(quoteToken),
-        ethereum.Value.fromAddress(collateralVault),
         ethereum.Value.fromAddress(vaultPreOwner),
-        ethereum.Value.fromAddress(stakeToken),
         ethereum.Value.fromUnsignedBigIntArray(dvmParams),
         ethereum.Value.fromUnsignedBigIntArray(fragParams),
-        ethereum.Value.fromBoolean(isOpenBuyout)
+        ethereum.Value.fromBoolean(isOpenTwap)
       ]
     );
 
     return new DODONFTProxy__createFragmentResult(
       result[0].toAddress(),
-      result[1].toAddress(),
-      result[2].toAddress()
+      result[1].toAddress()
     );
   }
 
   try_createFragment(
     quoteToken: Address,
-    collateralVault: Address,
     vaultPreOwner: Address,
-    stakeToken: Address,
     dvmParams: Array<BigInt>,
     fragParams: Array<BigInt>,
-    isOpenBuyout: boolean
+    isOpenTwap: boolean
   ): ethereum.CallResult<DODONFTProxy__createFragmentResult> {
     let result = super.tryCall(
       "createFragment",
-      "createFragment(address,address,address,address,uint256[],uint256[],bool):(address,address,address)",
+      "createFragment(address,address,uint256[],uint256[],bool):(address,address)",
       [
         ethereum.Value.fromAddress(quoteToken),
-        ethereum.Value.fromAddress(collateralVault),
         ethereum.Value.fromAddress(vaultPreOwner),
-        ethereum.Value.fromAddress(stakeToken),
         ethereum.Value.fromUnsignedBigIntArray(dvmParams),
         ethereum.Value.fromUnsignedBigIntArray(fragParams),
-        ethereum.Value.fromBoolean(isOpenBuyout)
+        ethereum.Value.fromBoolean(isOpenTwap)
       ]
     );
     if (result.reverted) {
@@ -524,8 +568,7 @@ export class DODONFTProxy extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new DODONFTProxy__createFragmentResult(
         value[0].toAddress(),
-        value[1].toAddress(),
-        value[2].toAddress()
+        value[1].toAddress()
       )
     );
   }
@@ -560,24 +603,28 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get dvmFactory(): Address {
+  get defaultMaintainer(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get vaultTemplate(): Address {
+  get mtFeeRateModel(): Address {
     return this._call.inputValues[4].value.toAddress();
   }
 
-  get fragTemplate(): Address {
+  get vaultTemplate(): Address {
     return this._call.inputValues[5].value.toAddress();
   }
 
-  get feeTemplate(): Address {
+  get fragTemplate(): Address {
     return this._call.inputValues[6].value.toAddress();
   }
 
-  get nftRegistry(): Address {
+  get dvmTemplate(): Address {
     return this._call.inputValues[7].value.toAddress();
+  }
+
+  get nftRegistry(): Address {
+    return this._call.inputValues[8].value.toAddress();
   }
 }
 
@@ -760,28 +807,20 @@ export class CreateFragmentCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get collateralVault(): Address {
+  get vaultPreOwner(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get vaultPreOwner(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
-  get stakeToken(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
   get dvmParams(): Array<BigInt> {
-    return this._call.inputValues[4].value.toBigIntArray();
+    return this._call.inputValues[2].value.toBigIntArray();
   }
 
   get fragParams(): Array<BigInt> {
-    return this._call.inputValues[5].value.toBigIntArray();
+    return this._call.inputValues[3].value.toBigIntArray();
   }
 
-  get isOpenBuyout(): boolean {
-    return this._call.inputValues[6].value.toBoolean();
+  get isOpenTwap(): boolean {
+    return this._call.inputValues[4].value.toBoolean();
   }
 }
 
@@ -798,10 +837,6 @@ export class CreateFragmentCall__Outputs {
 
   get newDvm(): Address {
     return this._call.outputValues[1].value.toAddress();
-  }
-
-  get newFeeDistributor(): Address {
-    return this._call.outputValues[2].value.toAddress();
   }
 }
 
@@ -826,12 +861,16 @@ export class BuyoutCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get quoteAmount(): BigInt {
+  get quoteMaxAmount(): BigInt {
     return this._call.inputValues[1].value.toBigInt();
   }
 
   get flag(): i32 {
     return this._call.inputValues[2].value.toI32();
+  }
+
+  get deadLine(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
   }
 }
 
@@ -839,44 +878,6 @@ export class BuyoutCall__Outputs {
   _call: BuyoutCall;
 
   constructor(call: BuyoutCall) {
-    this._call = call;
-  }
-}
-
-export class StakeToFeeDistributorCall extends ethereum.Call {
-  get inputs(): StakeToFeeDistributorCall__Inputs {
-    return new StakeToFeeDistributorCall__Inputs(this);
-  }
-
-  get outputs(): StakeToFeeDistributorCall__Outputs {
-    return new StakeToFeeDistributorCall__Outputs(this);
-  }
-}
-
-export class StakeToFeeDistributorCall__Inputs {
-  _call: StakeToFeeDistributorCall;
-
-  constructor(call: StakeToFeeDistributorCall) {
-    this._call = call;
-  }
-
-  get feeDistributor(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get stakeAmount(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get flag(): i32 {
-    return this._call.inputValues[2].value.toI32();
-  }
-}
-
-export class StakeToFeeDistributorCall__Outputs {
-  _call: StakeToFeeDistributorCall;
-
-  constructor(call: StakeToFeeDistributorCall) {
     this._call = call;
   }
 }
@@ -941,32 +942,92 @@ export class UpdateFragTemplateCall__Outputs {
   }
 }
 
-export class UpdateFeeTemplateCall extends ethereum.Call {
-  get inputs(): UpdateFeeTemplateCall__Inputs {
-    return new UpdateFeeTemplateCall__Inputs(this);
+export class UpdateMtFeeRateTemplateCall extends ethereum.Call {
+  get inputs(): UpdateMtFeeRateTemplateCall__Inputs {
+    return new UpdateMtFeeRateTemplateCall__Inputs(this);
   }
 
-  get outputs(): UpdateFeeTemplateCall__Outputs {
-    return new UpdateFeeTemplateCall__Outputs(this);
+  get outputs(): UpdateMtFeeRateTemplateCall__Outputs {
+    return new UpdateMtFeeRateTemplateCall__Outputs(this);
   }
 }
 
-export class UpdateFeeTemplateCall__Inputs {
-  _call: UpdateFeeTemplateCall;
+export class UpdateMtFeeRateTemplateCall__Inputs {
+  _call: UpdateMtFeeRateTemplateCall;
 
-  constructor(call: UpdateFeeTemplateCall) {
+  constructor(call: UpdateMtFeeRateTemplateCall) {
     this._call = call;
   }
 
-  get newFeeTemplate(): Address {
+  get newMtFeeRateTemplate(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class UpdateFeeTemplateCall__Outputs {
-  _call: UpdateFeeTemplateCall;
+export class UpdateMtFeeRateTemplateCall__Outputs {
+  _call: UpdateMtFeeRateTemplateCall;
 
-  constructor(call: UpdateFeeTemplateCall) {
+  constructor(call: UpdateMtFeeRateTemplateCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateDvmTemplateCall extends ethereum.Call {
+  get inputs(): UpdateDvmTemplateCall__Inputs {
+    return new UpdateDvmTemplateCall__Inputs(this);
+  }
+
+  get outputs(): UpdateDvmTemplateCall__Outputs {
+    return new UpdateDvmTemplateCall__Outputs(this);
+  }
+}
+
+export class UpdateDvmTemplateCall__Inputs {
+  _call: UpdateDvmTemplateCall;
+
+  constructor(call: UpdateDvmTemplateCall) {
+    this._call = call;
+  }
+
+  get newDvmTemplate(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpdateDvmTemplateCall__Outputs {
+  _call: UpdateDvmTemplateCall;
+
+  constructor(call: UpdateDvmTemplateCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateBuyoutFeeCall extends ethereum.Call {
+  get inputs(): UpdateBuyoutFeeCall__Inputs {
+    return new UpdateBuyoutFeeCall__Inputs(this);
+  }
+
+  get outputs(): UpdateBuyoutFeeCall__Outputs {
+    return new UpdateBuyoutFeeCall__Outputs(this);
+  }
+}
+
+export class UpdateBuyoutFeeCall__Inputs {
+  _call: UpdateBuyoutFeeCall;
+
+  constructor(call: UpdateBuyoutFeeCall) {
+    this._call = call;
+  }
+
+  get buyoutFee(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class UpdateBuyoutFeeCall__Outputs {
+  _call: UpdateBuyoutFeeCall;
+
+  constructor(call: UpdateBuyoutFeeCall) {
     this._call = call;
   }
 }

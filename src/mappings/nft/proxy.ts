@@ -21,7 +21,6 @@ export function handleCreateFragment(event: CreateFragment): void {
     if (vault == null) return;
     let fragment = createAndGetFragment(event.params.fragment);
     fragment.vault = event.params.vault.toHexString();
-    fragment.feeDistributor = event.params.feeDistributor.toHexString();
     fragment.dvm = event.params.dvm.toHexString();
     fragment.save();
     FragmentTemplate.create(event.params.fragment);

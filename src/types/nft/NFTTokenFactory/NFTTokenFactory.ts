@@ -192,19 +192,19 @@ export class NFTTokenFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  createERC721(baseUrl: string): Address {
+  createERC721(uri: string): Address {
     let result = super.call("createERC721", "createERC721(string):(address)", [
-      ethereum.Value.fromString(baseUrl)
+      ethereum.Value.fromString(uri)
     ]);
 
     return result[0].toAddress();
   }
 
-  try_createERC721(baseUrl: string): ethereum.CallResult<Address> {
+  try_createERC721(uri: string): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "createERC721",
       "createERC721(string):(address)",
-      [ethereum.Value.fromString(baseUrl)]
+      [ethereum.Value.fromString(uri)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -213,29 +213,26 @@ export class NFTTokenFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  createERC1155(amount: BigInt, baseUrl: string): Address {
+  createERC1155(amount: BigInt, uri: string): Address {
     let result = super.call(
       "createERC1155",
       "createERC1155(uint256,string):(address)",
       [
         ethereum.Value.fromUnsignedBigInt(amount),
-        ethereum.Value.fromString(baseUrl)
+        ethereum.Value.fromString(uri)
       ]
     );
 
     return result[0].toAddress();
   }
 
-  try_createERC1155(
-    amount: BigInt,
-    baseUrl: string
-  ): ethereum.CallResult<Address> {
+  try_createERC1155(amount: BigInt, uri: string): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "createERC1155",
       "createERC1155(uint256,string):(address)",
       [
         ethereum.Value.fromUnsignedBigInt(amount),
-        ethereum.Value.fromString(baseUrl)
+        ethereum.Value.fromString(uri)
       ]
     );
     if (result.reverted) {
@@ -324,7 +321,7 @@ export class CreateERC721Call__Inputs {
     this._call = call;
   }
 
-  get baseUrl(): string {
+  get uri(): string {
     return this._call.inputValues[0].value.toString();
   }
 }
@@ -362,7 +359,7 @@ export class CreateERC1155Call__Inputs {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get baseUrl(): string {
+  get uri(): string {
     return this._call.inputValues[1].value.toString();
   }
 }

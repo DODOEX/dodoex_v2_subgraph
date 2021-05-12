@@ -6,7 +6,7 @@ import {
     ZERO_BD,
     ONE_BI,
     convertTokenToDecimal,
-    getDODOZoo, updatePairTraderCount,
+    getDODOZoo, updateVirtualPairVolume,
 } from "./helpers"
 import {SOURCE_SMART_ROUTE} from "../constant";
 import {Address, BigInt, store} from '@graphprotocol/graph-ts'
@@ -23,7 +23,7 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     let dealedToAmount = convertTokenToDecimal(event.params.returnAmount, toToken.decimals);
 
     let trim = false;
-    let volumeUSD = calculateUsdVolume(fromToken as Token, toToken as Token, dealedFromAmount, dealedToAmount,event.block.timestamp);
+    let volumeUSD = calculateUsdVolume(fromToken as Token, toToken as Token, dealedFromAmount, dealedToAmount, event.block.timestamp);
     if (volumeUSD.equals(ZERO_BD)) {
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
         toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
@@ -54,6 +54,10 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
             store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
             trim = true;
         }
+    }
+
+    if (trim === false) {
+        updateVirtualPairVolume(event, dealedFromAmount, dealedToAmount, volumeUSD);
     }
 
     fromToken.save();

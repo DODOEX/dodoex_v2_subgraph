@@ -588,7 +588,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
     if (SMART_ROUTE_ADDRESSES.indexOf(event.params.seller.toHexString()) == -1 && orderHistory == null) {
-        log.warning("seller: {},hash: {}",[event.params.seller.toHexString(),event.transaction.hash.toHexString()])
+        // log.warning("seller: {},hash: {}",[event.params.seller.toHexString(),event.transaction.hash.toHexString()])
         orderHistory = new OrderHistory(swapID);
         orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();
@@ -734,7 +734,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //1、同步到OrderHistory
     let orderHistory = OrderHistory.load(swapID);
     if (SMART_ROUTE_ADDRESSES.indexOf(event.params.buyer.toHexString()) == -1 && orderHistory == null) {
-        log.warning("seller: {},hash: {}",[event.params.buyer.toHexString(),event.transaction.hash.toHexString()])
+        // log.warning("seller: {},hash: {}",[event.params.buyer.toHexString(),event.transaction.hash.toHexString()])
         orderHistory = new OrderHistory(swapID);
         orderHistory.source = SOURCE_POOL_SWAP;
         orderHistory.hash = event.transaction.hash.toHexString();

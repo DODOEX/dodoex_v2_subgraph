@@ -1,4 +1,4 @@
-import {VaultNft} from "../../types/nft/schema";
+import {VaultNft,NftCollateralVault} from "../../types/nft/schema";
 import {
     AddNftToken,
     RemoveNftToken
@@ -10,6 +10,7 @@ export function handleAddNftToken(event: AddNftToken): void {
     let vaultNft = VaultNft.load(vaultNftID);
     if (vaultNft == null) {
         vaultNft = new VaultNft(vaultNftID);
+        vaultNft.nftAddress = event.params.nftContract.toHexString();
         vaultNft.nft = event.params.nftContract.toHexString();
         vaultNft.vault = event.address.toHexString();
         vaultNft.tokenID = event.params.tokenId;
@@ -18,6 +19,11 @@ export function handleAddNftToken(event: AddNftToken): void {
         vaultNft.amount = vaultNft.amount.plus(event.params.amount);
     }
     vaultNft.save();
+
+    let vault = NftCollateralVault.load(event.address.toHexString());
+    vault.vaultNfts.push(vaultNftID)
+    vault.save();
+
 }
 
 export function handleRemoveNftToken(event: RemoveNftToken): void {

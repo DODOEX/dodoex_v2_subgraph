@@ -32,10 +32,11 @@ import {
     TRANSACTION_TYPE_LP_REMOVE,
     TRANSACTION_TYPE_CP_CLAIM,
     TRANSACTION_TYPE_CP_CANCEL,
-    TRANSACTION_TYPE_CP_BID
+    TRANSACTION_TYPE_CP_BID, ADDRESS_ZERO
 } from "../constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData, updateUserDayData} from "./dayUpdates";
-import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
+import {TYPE_DVM_POOL, TYPE_VIRTUAL_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
+import {OrderHistory as OrderHistoryV2} from "../../types/dodoex/DODOV2Proxy02/DODOV2Proxy02"
 
 export let dvmFactoryContract = DVMFactory.bind(Address.fromString(DVM_FACTORY_ADDRESS));
 export let dppFactoryContract = DPPFactory.bind(Address.fromString(DPP_FACTORY_ADDRESS));
@@ -336,6 +337,64 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
     }
 
     return token as Token;
+}
+
+export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount: BigDecimal, dealedToAmount: BigDecimal,volumeUSD: BigDecimal): Pair {
+    let id = event.params.fromToken.toHexString().concat("-").concat(event.params.toToken.toHexString())
+    let pair = Pair.load(id);
+    log.warning("111111111111",[])
+    if (pair === null) {
+        let pair = new Pair(id) as Pair;
+
+        let baseToken = createToken(event.params.fromToken, event);
+        let quoteToken = createToken(event.params.toToken, event);
+
+        pair.baseToken = baseToken.id;
+        pair.quoteToken = quoteToken.id;
+        pair.type = TYPE_VIRTUAL_POOL;
+        log.warning("22222222",[])
+
+        pair.creator = Address.fromString(ADDRESS_ZERO);
+        pair.createdAtTimestamp = event.block.timestamp;
+        pair.createdAtBlockNumber = event.block.number;
+        pair.lastTradePrice = ZERO_BD;
+        pair.txCount = ZERO_BI;
+        pair.volumeBaseToken = ZERO_BD;
+        pair.volumeQuoteToken = ZERO_BD;
+        pair.liquidityProviderCount = ZERO_BI;
+        pair.untrackedBaseVolume = ZERO_BD;
+        pair.untrackedQuoteVolume = ZERO_BD;
+        pair.feeBase = ZERO_BD;
+        pair.feeQuote = ZERO_BD;
+        pair.traderCount = ZERO_BI;
+        pair.isTradeAllowed = true;
+        pair.isDepositBaseAllowed = true;
+        pair.isDepositQuoteAllowed = true;
+        pair.volumeUSD = ZERO_BD;
+        log.warning("33333333",[])
+
+        pair.i = ZERO_BI;
+        pair.k = ZERO_BI;
+        pair.baseReserve = ZERO_BD;
+        pair.quoteReserve = ZERO_BD;
+
+        pair.lpFeeRate = ZERO_BD;
+        log.warning("44444444",[])
+
+        pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+        pair.maintainer = Address.fromString(ADDRESS_ZERO);
+    }
+    log.warning(`tx count: {}`,[pair.txCount.toString()])
+    // pair.txCount = pair.txCount.plus(ONE_BI);
+    pair.volumeBaseToken = pair.volumeBaseToken.plus(dealedFromAmount);
+    pair.volumeQuoteToken = pair.volumeQuoteToken.plus(dealedToAmount);
+    pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
+    if(volumeUSD.equals(ZERO_BD)){
+        pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(dealedFromAmount);
+        pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(dealedToAmount);
+    }
+    pair.save();
+    return pair as Pair;
 }
 
 export function createLpToken(address: Address, pair: Pair): LpToken {

@@ -36,20 +36,6 @@ export class AddNftToken__Params {
   }
 }
 
-export class CreateFragment extends ethereum.Event {
-  get params(): CreateFragment__Params {
-    return new CreateFragment__Params(this);
-  }
-}
-
-export class CreateFragment__Params {
-  _event: CreateFragment;
-
-  constructor(event: CreateFragment) {
-    this._event = event;
-  }
-}
-
 export class OwnershipTransferPrepared extends ethereum.Event {
   get params(): OwnershipTransferPrepared__Params {
     return new OwnershipTransferPrepared__Params(this);
@@ -120,46 +106,6 @@ export class RemoveNftToken__Params {
   }
 }
 
-export class NFTCollateralVault__nftInfosResult {
-  value0: BigInt;
-  value1: BigInt;
-  value2: Address;
-
-  constructor(value0: BigInt, value1: BigInt, value2: Address) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    map.set("value2", ethereum.Value.fromAddress(this.value2));
-    return map;
-  }
-}
-
-export class NFTCollateralVault__getNftInfoByIdResult {
-  value0: Address;
-  value1: BigInt;
-  value2: BigInt;
-
-  constructor(value0: Address, value1: BigInt, value2: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromAddress(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
-    return map;
-  }
-}
-
 export class NFTCollateralVault extends ethereum.SmartContract {
   static bind(address: Address): NFTCollateralVault {
     return new NFTCollateralVault("NFTCollateralVault", address);
@@ -223,108 +169,6 @@ export class NFTCollateralVault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
-  nftInfos(param0: BigInt): NFTCollateralVault__nftInfosResult {
-    let result = super.call(
-      "nftInfos",
-      "nftInfos(uint256):(uint256,uint256,address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return new NFTCollateralVault__nftInfosResult(
-      result[0].toBigInt(),
-      result[1].toBigInt(),
-      result[2].toAddress()
-    );
-  }
-
-  try_nftInfos(
-    param0: BigInt
-  ): ethereum.CallResult<NFTCollateralVault__nftInfosResult> {
-    let result = super.tryCall(
-      "nftInfos",
-      "nftInfos(uint256):(uint256,uint256,address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new NFTCollateralVault__nftInfosResult(
-        value[0].toBigInt(),
-        value[1].toBigInt(),
-        value[2].toAddress()
-      )
-    );
-  }
-
-  getNftInfoById(i: BigInt): NFTCollateralVault__getNftInfoByIdResult {
-    let result = super.call(
-      "getNftInfoById",
-      "getNftInfoById(uint256):(address,uint256,uint256)",
-      [ethereum.Value.fromUnsignedBigInt(i)]
-    );
-
-    return new NFTCollateralVault__getNftInfoByIdResult(
-      result[0].toAddress(),
-      result[1].toBigInt(),
-      result[2].toBigInt()
-    );
-  }
-
-  try_getNftInfoById(
-    i: BigInt
-  ): ethereum.CallResult<NFTCollateralVault__getNftInfoByIdResult> {
-    let result = super.tryCall(
-      "getNftInfoById",
-      "getNftInfoById(uint256):(address,uint256,uint256)",
-      [ethereum.Value.fromUnsignedBigInt(i)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new NFTCollateralVault__getNftInfoByIdResult(
-        value[0].toAddress(),
-        value[1].toBigInt(),
-        value[2].toBigInt()
-      )
-    );
-  }
-
-  getIdByTokenIdAndAddr(nftContract: Address, tokenId: BigInt): BigInt {
-    let result = super.call(
-      "getIdByTokenIdAndAddr",
-      "getIdByTokenIdAndAddr(address,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(nftContract),
-        ethereum.Value.fromUnsignedBigInt(tokenId)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getIdByTokenIdAndAddr(
-    nftContract: Address,
-    tokenId: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getIdByTokenIdAndAddr",
-      "getIdByTokenIdAndAddr(address,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(nftContract),
-        ethereum.Value.fromUnsignedBigInt(tokenId)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   supportsInterface(interfaceId: Bytes): boolean {
