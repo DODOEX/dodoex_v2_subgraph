@@ -11,7 +11,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 ## 1、 Introduce
 
 **Attention**
- - In `Pair` entities,there is a virtual pool type,this is what we use when we do data statistics. In fact, DODO does not have these Pools. Please ignore the Pairs of type VIRTUAL.
+ - In `Pair` entities,there is a virtual pool type,this is what we use when we do data statistics. In fact, DODO does not have these Pools. Please ignore the Pairs of type 'VIRTUAL'.
 
 **What is in OrderHistory**
  - Each *OrderHistory* event emit by DODOSmartRoute contract，if swap goes into the dodo liquidity pool, pool swap event will be ignored. 
