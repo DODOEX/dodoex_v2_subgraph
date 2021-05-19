@@ -8,9 +8,9 @@ dataSources:
     name: ERC20Factory
     network: kovan
     source:
-      address: '0xCb1A2f64EfB02803276BFB5a8D511C4D950282a0'
+      address: '0x57c729221da919f8183b11a3ee1e6808430ee304'
       abi: ERC20Factory
-      startBlock: 22652741
+      startBlock: 23910775
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

@@ -69,6 +69,7 @@ const POOLS_ADDRESS: string[] = [
     "0xc9f93163c99695c6526b799ebca2207fdf7d61ad",//USDT-USDC
     "0x94512fd4fb4feb63a6c0f4bedecc4a00ee260528",//AAVE-USDC
     "0x85f9569b69083c3e6aeffd301bb2c65606b5d575",//wCRES-USDT
+    "0x181d93ea28023bf40c8bb94796c55138719803b4",//WOO-USDT
 ]
 
 const BASE_TOKENS: string[] = [
@@ -84,6 +85,7 @@ const BASE_TOKENS: string[] = [
     "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
     "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",//AAVE
     "0xa0afaa285ce85974c3c881256cb7f225e3a1178a",//wCRES
+    "0x4691937a7508860f876c9c0a2a617e7d9e945d4b",//WOO
 ]
 
 const QUOTE_TOKENS: string[] = [
@@ -98,6 +100,7 @@ const QUOTE_TOKENS: string[] = [
     "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
     "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
     "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",//USDC
+    "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
     "0xdac17f958d2ee523a2206206994597c13d831ec7",//USDT
 ]
 
@@ -114,6 +117,7 @@ const BASE_LP_TOKENS: string[] = [
     "0x50b11247bf14ee5116c855cde9963fa376fcec86",//USDT
     "0x30ad5b6d4e531591591113b49eae2fafbc2236d5",//AAVE
     "0xcfba2e0f1bbf6ad96960d8866316b02e36ed1761",//wCRES
+    "0xbf83ca9f0da7cf33da68b4cb2511885de955f094",//WOO
 ]
 
 const QUOTE_LP_TOKENS: string[] = [
@@ -128,7 +132,8 @@ const QUOTE_LP_TOKENS: string[] = [
     "0x1e5bfc8c1225a6ce59504988f823c44e08414a49",
     "0x05a54b466f01510e92c02d3a180bae83a64baab8",
     "0x5840a9e733960f591856a5d13f6366658535bbe5",
-    "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022"
+    "0xe236b57de7f3e9c3921391c4cb9a42d9632c0022",
+    "0xa5b607d0b8e5963bbd8a2709c72c6362654e2b4b"
 ]
 
 const OWNER: string[] = [
@@ -144,6 +149,7 @@ const OWNER: string[] = [
     "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
     "0x95c4f5b83aa70810d4f142d58e5f7242bd891cb0",
     "0x9c59990ec0177d87ed7d60a56f584e6b06c639a2",
+    "0x9c59990ec0177d87ed7d60a56f584e6b06c639a2",
 ]
 
 const createTime: i32[] = [
@@ -158,7 +164,8 @@ const createTime: i32[] = [
     1601348330,
     1603302872,
     1604862756,
-    1606415616
+    1606415616,
+    1603911960
 ]
 
 export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
