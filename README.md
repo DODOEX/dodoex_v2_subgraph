@@ -21,7 +21,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
  - Each swap event emit from dodo liquidity pool
  
 **Where to find pool information**
- - In *Pair* schema we track pool status.
+ - In *Pair*  we track pool status.
 
 **Endpoints**
  - dodoex 
