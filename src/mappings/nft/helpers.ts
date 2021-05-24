@@ -1,10 +1,16 @@
 import {InitializableERC721} from "../../types/nft/templates/NFTTokenFactory/InitializableERC721"
 import {InitializableERC1155} from "../../types/nft/templates/NFTTokenFactory/InitializableERC1155"
-import {Nft, Fragment} from "../../types/nft/schema";
-import {Address} from "@graphprotocol/graph-ts";
+import {Nft, Fragment, User} from "../../types/nft/schema";
+import {Address, BigDecimal, BigInt} from "@graphprotocol/graph-ts";
 import {Fragment as FragmentContract} from "../../types/nft/templates/Fragment/Fragment"
 
-function fetchNFTName(address: Address): String{
+export let ZERO_BI = BigInt.fromI32(0)
+export let ONE_BI = BigInt.fromI32(1)
+export let ZERO_BD = BigDecimal.fromString('0')
+export let ONE_BD = BigDecimal.fromString('1')
+export let BI_18 = BigInt.fromI32(18)
+
+function fetchNFTName(address: Address): String {
     let name = null;
     let erc721Contract = InitializableERC721.bind(address);
     let erc721name = erc721Contract.try_name();
@@ -40,4 +46,13 @@ export function createAndGetFragment(address: Address): Fragment {
         fragment.vaultPreOwner = fragmentContract._VAULT_PRE_OWNER_().toHexString();
     }
     return fragment as Fragment;
+}
+
+export function createUser(address: Address): User {
+    let user = User.load(address.toHexString());
+    if (user == null) {
+        user = new User(address.toHexString());
+        user.save();
+    }
+    return user as User;
 }

@@ -131,48 +131,6 @@ export class InitializableERC1155 extends ethereum.SmartContract {
     return new InitializableERC1155("InitializableERC1155", address);
   }
 
-  supportsInterface(interfaceId: Bytes): boolean {
-    let result = super.call(
-      "supportsInterface",
-      "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)]
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_supportsInterface(interfaceId: Bytes): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "supportsInterface",
-      "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  uri(param0: BigInt): string {
-    let result = super.call("uri", "uri(uint256):(string)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
-
-    return result[0].toString();
-  }
-
-  try_uri(param0: BigInt): ethereum.CallResult<string> {
-    let result = super.tryCall("uri", "uri(uint256):(string)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
   balanceOf(account: Address, id: BigInt): BigInt {
     let result = super.call(
       "balanceOf",
@@ -265,72 +223,92 @@ export class InitializableERC1155 extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
-}
 
-export class InitCall extends ethereum.Call {
-  get inputs(): InitCall__Inputs {
-    return new InitCall__Inputs(this);
+  supportsInterface(interfaceId: Bytes): boolean {
+    let result = super.call(
+      "supportsInterface",
+      "supportsInterface(bytes4):(bool)",
+      [ethereum.Value.fromFixedBytes(interfaceId)]
+    );
+
+    return result[0].toBoolean();
   }
 
-  get outputs(): InitCall__Outputs {
-    return new InitCall__Outputs(this);
+  try_supportsInterface(interfaceId: Bytes): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "supportsInterface",
+      "supportsInterface(bytes4):(bool)",
+      [ethereum.Value.fromFixedBytes(interfaceId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  uri(tokenId: BigInt): string {
+    let result = super.call("uri", "uri(uint256):(string)", [
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    ]);
+
+    return result[0].toString();
+  }
+
+  try_uri(tokenId: BigInt): ethereum.CallResult<string> {
+    let result = super.tryCall("uri", "uri(uint256):(string)", [
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
   }
 }
 
-export class InitCall__Inputs {
-  _call: InitCall;
+export class SafeBatchTransferFromCall extends ethereum.Call {
+  get inputs(): SafeBatchTransferFromCall__Inputs {
+    return new SafeBatchTransferFromCall__Inputs(this);
+  }
 
-  constructor(call: InitCall) {
+  get outputs(): SafeBatchTransferFromCall__Outputs {
+    return new SafeBatchTransferFromCall__Outputs(this);
+  }
+}
+
+export class SafeBatchTransferFromCall__Inputs {
+  _call: SafeBatchTransferFromCall;
+
+  constructor(call: SafeBatchTransferFromCall) {
     this._call = call;
   }
 
-  get amount(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get baseUrI(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-}
-
-export class InitCall__Outputs {
-  _call: InitCall;
-
-  constructor(call: InitCall) {
-    this._call = call;
-  }
-}
-
-export class SetApprovalForAllCall extends ethereum.Call {
-  get inputs(): SetApprovalForAllCall__Inputs {
-    return new SetApprovalForAllCall__Inputs(this);
-  }
-
-  get outputs(): SetApprovalForAllCall__Outputs {
-    return new SetApprovalForAllCall__Outputs(this);
-  }
-}
-
-export class SetApprovalForAllCall__Inputs {
-  _call: SetApprovalForAllCall;
-
-  constructor(call: SetApprovalForAllCall) {
-    this._call = call;
-  }
-
-  get operator(): Address {
+  get from(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get approved(): boolean {
-    return this._call.inputValues[1].value.toBoolean();
+  get to(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get ids(): Array<BigInt> {
+    return this._call.inputValues[2].value.toBigIntArray();
+  }
+
+  get amounts(): Array<BigInt> {
+    return this._call.inputValues[3].value.toBigIntArray();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
   }
 }
 
-export class SetApprovalForAllCall__Outputs {
-  _call: SetApprovalForAllCall;
+export class SafeBatchTransferFromCall__Outputs {
+  _call: SafeBatchTransferFromCall;
 
-  constructor(call: SetApprovalForAllCall) {
+  constructor(call: SafeBatchTransferFromCall) {
     this._call = call;
   }
 }
@@ -381,48 +359,74 @@ export class SafeTransferFromCall__Outputs {
   }
 }
 
-export class SafeBatchTransferFromCall extends ethereum.Call {
-  get inputs(): SafeBatchTransferFromCall__Inputs {
-    return new SafeBatchTransferFromCall__Inputs(this);
+export class SetApprovalForAllCall extends ethereum.Call {
+  get inputs(): SetApprovalForAllCall__Inputs {
+    return new SetApprovalForAllCall__Inputs(this);
   }
 
-  get outputs(): SafeBatchTransferFromCall__Outputs {
-    return new SafeBatchTransferFromCall__Outputs(this);
+  get outputs(): SetApprovalForAllCall__Outputs {
+    return new SetApprovalForAllCall__Outputs(this);
   }
 }
 
-export class SafeBatchTransferFromCall__Inputs {
-  _call: SafeBatchTransferFromCall;
+export class SetApprovalForAllCall__Inputs {
+  _call: SetApprovalForAllCall;
 
-  constructor(call: SafeBatchTransferFromCall) {
+  constructor(call: SetApprovalForAllCall) {
     this._call = call;
   }
 
-  get from(): Address {
+  get operator(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get to(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get ids(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-
-  get amounts(): Array<BigInt> {
-    return this._call.inputValues[3].value.toBigIntArray();
-  }
-
-  get data(): Bytes {
-    return this._call.inputValues[4].value.toBytes();
+  get approved(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
   }
 }
 
-export class SafeBatchTransferFromCall__Outputs {
-  _call: SafeBatchTransferFromCall;
+export class SetApprovalForAllCall__Outputs {
+  _call: SetApprovalForAllCall;
 
-  constructor(call: SafeBatchTransferFromCall) {
+  constructor(call: SetApprovalForAllCall) {
+    this._call = call;
+  }
+}
+
+export class InitCall extends ethereum.Call {
+  get inputs(): InitCall__Inputs {
+    return new InitCall__Inputs(this);
+  }
+
+  get outputs(): InitCall__Outputs {
+    return new InitCall__Outputs(this);
+  }
+}
+
+export class InitCall__Inputs {
+  _call: InitCall;
+
+  constructor(call: InitCall) {
+    this._call = call;
+  }
+
+  get creator(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get uri(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+}
+
+export class InitCall__Outputs {
+  _call: InitCall;
+
+  constructor(call: InitCall) {
     this._call = call;
   }
 }

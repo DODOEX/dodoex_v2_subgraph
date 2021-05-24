@@ -117,3 +117,47 @@ templates:
           handler: handleBuyout
         - event: Redeem(address,uint256,uint256)
           handler: handleRedeem
+  - kind: ethereum/contract
+    name: InitializableERC721
+    network: kovan
+    source:
+      abi: InitializableERC721
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/erc721.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: InitializableERC721
+          file: ../abis/InitializableERC721.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: InitializableERC1155
+    network: kovan
+    source:
+      abi: InitializableERC1155
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mappings/nft/erc1155.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: InitializableERC1155
+          file: ../abis/InitializableERC1155.json
+      eventHandlers:
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle

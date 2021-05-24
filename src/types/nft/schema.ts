@@ -399,3 +399,109 @@ export class Fragment extends Entity {
     this.set("buyoutTimestamp", Value.fromBigInt(value));
   }
 }
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save User entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save User entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("User", id.toString(), this);
+  }
+
+  static load(id: string): User | null {
+    return store.get("User", id) as User | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+}
+
+export class UserNft extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save UserNft entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save UserNft entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("UserNft", id.toString(), this);
+  }
+
+  static load(id: string): UserNft | null {
+    return store.get("UserNft", id) as UserNft | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get nft(): string | null {
+    let value = this.get("nft");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set nft(value: string | null) {
+    if (value === null) {
+      this.unset("nft");
+    } else {
+      this.set("nft", Value.fromString(value as string));
+    }
+  }
+
+  get tokenID(): BigInt {
+    let value = this.get("tokenID");
+    return value.toBigInt();
+  }
+
+  set tokenID(value: BigInt) {
+    this.set("tokenID", Value.fromBigInt(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+}

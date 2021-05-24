@@ -33,3 +33,31 @@ export class Fragment extends DataSourceTemplate {
     );
   }
 }
+
+export class InitializableERC721 extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("InitializableERC721", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "InitializableERC721",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class InitializableERC1155 extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("InitializableERC1155", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "InitializableERC1155",
+      [address.toHex()],
+      context
+    );
+  }
+}

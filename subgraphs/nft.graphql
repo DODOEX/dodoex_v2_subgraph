@@ -12,7 +12,7 @@ type NftCollateralVault @entity {
 }
 
 type Nft @entity{
-    "vault address - nft address - tokenid"
+    "nft address"
     id: ID!
     "type(721、1155)"
     type: String
@@ -64,5 +64,23 @@ type Fragment @entity{
     vaultPreOwner: String!
     "buyoutTimestamp"
     buyoutTimestamp: BigInt!
+}
+
+type User @entity{
+    "user address"
+    id: ID!
+}
+
+type UserNft @entity{
+    "user address - nft address"
+    id: ID!
+    "vault"
+    owner: User!
+    "nft"
+    nft: Nft
+    "token id"
+    tokenID:  BigInt!
+    "token amount"
+    amount: BigInt!
 }
 
