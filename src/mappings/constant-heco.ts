@@ -35,9 +35,9 @@ export const WRAPPED_BASE_COIN = '0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f';
 export const STABLE_ONE_ADDRESS = '0xa71edc38d189767582c38a3145b5873052c3e47a';//usdt
 export const STABLE_TWO_ADDRESS = '0x0298c2b32eae4da002a15f36fdf7615bea3da047';//husd
 //stable coins pairs
-export const STABLE_COIN_PAIR_ONE = '0xbe60d4c4250438344bec816ec2dec99925deb4c7';//[USDT_BUSD_PAIR]
+export const STABLE_COIN_PAIR_ONE = '0x1053152a60abec125f96f13a980ef469048f978f';//[USDT_BUSD_PAIR]
 //base currency pair
-export const BASE_COIN_PAIR = '0x327134de48fcdd75320f4c32498d1980470249ae';//[WBNB_USDC_PAIR]
+export const BASE_COIN_PAIR = '0x294c1e26eb5c26fb78eff91b9d662d3ed3b63425';//[WBNB_USDC_PAIR]
 
 
 

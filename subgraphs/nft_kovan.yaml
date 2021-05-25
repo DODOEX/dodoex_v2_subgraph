@@ -8,9 +8,9 @@ dataSources:
     name: DODONFTProxy
     network: kovan
     source:
-      address: '0x649cfcc1713cb7f4866dcaf0fad52903a3902373'
+      address: '0x5a6ba7ad175a2be5176f76cfaf61e63abe9a7d12'
       abi: DODONFTProxy
-      startBlock: 24703394
+      startBlock: 25049733
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
