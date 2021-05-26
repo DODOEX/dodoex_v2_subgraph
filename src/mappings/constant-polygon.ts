@@ -31,10 +31,10 @@ export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM"
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
+export const WRAPPED_BASE_COIN = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270';
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';//usdt
-export const STABLE_TWO_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';//usdc
+export const STABLE_ONE_ADDRESS = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f';//usdt
+export const STABLE_TWO_ADDRESS = '0x2791bca1f2de4661ed88a30c99a7a9449aa84174';//usdc
 //stable coins pairs
 export const STABLE_COIN_PAIR_ONE = '0xc9f93163c99695c6526b799ebca2207fdf7d61ad';//[USDT_USDC_PAIR]
 //base currency pair

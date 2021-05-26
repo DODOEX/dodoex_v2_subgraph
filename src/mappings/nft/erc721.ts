@@ -14,7 +14,7 @@ export function handleTransfer(event: Transfer): void {
     let toUserNft = UserNft.load(toUserNftId);
 
     if (fromUserNft == null) {
-        fromUserNft = new UserNft(fromUserNftId)
+        fromUserNft = new UserNft(fromUserNftId);
         fromUserNft.owner = fromUser.id;
         fromUserNft.nft = nft.id;
     }
@@ -23,9 +23,9 @@ export function handleTransfer(event: Transfer): void {
     fromUserNft.save();
 
     if (toUserNft == null) {
-        toUserNft = new UserNft(toUserNftId)
+        toUserNft = new UserNft(toUserNftId);
         toUserNft.owner = toUser.id;
-        fromUserNft.nft = nft.id;
+        toUserNft.nft = nft.id;
     }
     toUserNft.tokenID = event.params.tokenId;
     toUserNft.amount = ONE_BI;
