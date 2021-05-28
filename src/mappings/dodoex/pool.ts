@@ -95,9 +95,15 @@ export function handleDODOSwap(event: DODOSwap): void {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
         baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
         baseToken.priceUpdateTimestamp = event.block.timestamp;
+
+        if (quoteVolume.gt(ZERO_BD)) {
+            quoteToken.usdPrice = baseToken.usdPrice.times(baseVolume).div(quoteVolume);
+            quoteToken.priceUpdateTimestamp = event.block.timestamp;
+        }
     }
+
     updatePrice(pair as Pair, event.block.timestamp);
-    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume,event.block.timestamp);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
@@ -183,7 +189,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
     addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_SWAP);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
 }
 
 export function handleBuyShares(event: BuyShares): void {
@@ -270,7 +276,7 @@ export function handleBuyShares(event: BuyShares): void {
     dodoZoo.save();
 
     addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_ADD);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_ADD);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_ADD);
 }
 
 export function handleSellShares(event: SellShares): void {
@@ -356,7 +362,7 @@ export function handleSellShares(event: SellShares): void {
     dodoZoo.save();
 
     addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_LP_REMOVE);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_REMOVE);
 }
 
 export function handleLpFeeRateChange(event: LpFeeRateChange): void {

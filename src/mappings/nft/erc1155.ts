@@ -2,6 +2,7 @@ import {Nft, Fragment, User, UserNft} from "../../types/nft/schema";
 import {Address,BigInt} from "@graphprotocol/graph-ts";
 import {TransferBatch, TransferSingle} from "../../types/nft/templates/InitializableERC1155/InitializableERC1155"
 import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
+import {DODONFTBurn, DODONFTMint} from "../../types/nft/DODONFT/DODONFT";
 
 export function handleTransferSingle(event: TransferSingle): void {
     let fromUser = createUser(event.params.from);
@@ -66,4 +67,12 @@ export function handleTransferBatch(event: TransferBatch): void {
         toUserNft.amount = toUserNft.amount.plus(amount);
         toUserNft.save();
     }
+}
+
+export function handleDODONFTMint(event: DODONFTMint): void {
+
+}
+
+export function handleDODONFTBurn(event: DODONFTBurn): void {
+
 }

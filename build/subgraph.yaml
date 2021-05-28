@@ -2,26 +2,30 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: dodoex.graphql
+  file: nft.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOV2Proxy02
-    network: matic
+    name: DODONFTProxy
+    network: kovan
     source:
-      address: "0xa222e6a71d1a1dd5f279805fbe38d5329c1d0e70"
-      abi: DODOV2Proxy02
-      startBlock: 14604506
+      address: "0xe121c6C90735e2Ca12e21708F2F379A55Ce61426"
+      abi: DODONFTProxy
+      startBlock: 25049733
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODOV2Proxy02/DODOV2Proxy02.wasm
+      file: DODONFTProxy/DODONFTProxy.wasm
       entities:
-        - Pair
-        - Token
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
       abis:
-        - name: DODOV2Proxy02
-          file: abis/DODOV2Proxy02.json
+        - name: DODONFTProxy
+          file: abis/DODONFTProxy.json
+        - name: Fragment
+          file: abis/Fragment.json
         - name: ERC20
           file: abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -29,428 +33,189 @@ dataSources:
         - name: ERC20NameBytes
           file: abis/ERC20NameBytes.json
       eventHandlers:
-        - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
+        - event: CreateNFTCollateralVault(address,address,string,string)
+          handler: handleCreateNFTCollateralVault
+        - event: CreateFragment(address,address,address)
+          handler: handleCreateFragment
   - kind: ethereum/contract
-    name: DVMFactory_2021_05_18
-    network: matic
+    name: NFTTokenFactory
+    network: kovan
     source:
-      address: "0x79887f65f83bdf15Bcc8736b5e5BcDB48fb8fE13"
-      abi: DVMFactory
-      startBlock: 14604348
+      abi: NFTTokenFactory
+      address: "0x834d13ca0322ccfe67596f09cc26ee3584297b94"
+      startBlock: 24703373
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DVMFactory_2021_05_18/DVMFactory_2021_05_18.wasm
+      file: NFTTokenFactory/NFTTokenFactory.wasm
       entities:
-        - Pair
-        - Token
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
       abis:
-        - name: DVMFactory
-          file: abis/DVMFactory.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: DVM
-          file: abis/DVM.json
-        - name: FeeRateModel
-          file: abis/FeeRateModel.json
+        - name: NFTTokenFactory
+          file: abis/NFTTokenFactory.json
+        - name: InitializableERC721
+          file: abis/InitializableERC721.json
+        - name: InitializableERC1155
+          file: abis/InitializableERC1155.json
       eventHandlers:
-        - event: NewDVM(address,address,address,address)
-          handler: handleNewDVM
-        - event: RemoveDVM(address)
-          handler: handleRemoveDVM
+        - event: NewERC721(address,address)
+          handler: handleNewERC721
+        - event: NewERC1155(address,address)
+          handler: handleNewERC1155
   - kind: ethereum/contract
-    name: DPPFactory_2021_05_18
-    network: matic
+    name: DODONFT
+    network: kovan
     source:
-      address: "0x95E887aDF9EAa22cC1c6E3Cb7f07adC95b4b25a8"
-      abi: DPPFactory
-      startBlock: 14604383
+      abi: DODONFT
+      address: "0x98f2a8d6100635ecb40ada1b1ffb1ff4f0b3c5d8"
+      startBlock: 25096268
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DVMFactory_2021_05_18/DVMFactory_2021_05_18.wasm
+      file: DODONFT/DODONFT.wasm
       entities:
-        - Pair
-        - Token
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
       abis:
-        - name: DPPFactory
-          file: abis/DPPFactory.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: FeeRateModel
-          file: abis/FeeRateModel.json
+        - name: DODONFT
+          file: abis/DODONFT.json
       eventHandlers:
-        - event: NewDPP(address,address,address,address)
-          handler: handleNewDPP
+        - event: DODONFTMint(address,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(uint256)
+          handler: handleDODONFTBurn
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
   - kind: ethereum/contract
-    name: DSPFactory
-    network: matic
+    name: DODONFT1155
+    network: kovan
     source:
-      address: "0x43C49f8DD240e1545F147211Ec9f917376Ac1e87"
-      abi: DSPFactory
-      startBlock: 14604455
+      abi: DODONFT1155
+      address: "0xe9c572287936db1b0a951ca0768c1b0d26b62a04"
+      startBlock: 25096274
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DVMFactory_2021_05_18/DVMFactory_2021_05_18.wasm
+      file: DODONFT1155/DODONFT1155.wasm
       entities:
-        - Pair
-        - Token
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
       abis:
-        - name: DSPFactory
-          file: abis/DSPFactory.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: DSP
-          file: abis/DSP.json
-        - name: FeeRateModel
-          file: abis/FeeRateModel.json
+        - name: DODONFT
+          file: abis/DODONFT.json
+        - name: DODONFT1155
+          file: abis/DODONFT1155.json
       eventHandlers:
-        - event: NewDSP(address,address,address,address)
-          handler: handleNewDSP
-        - event: RemoveDSP(address)
-          handler: handleRemoveDSP
-  - kind: ethereum/contract
-    name: CrowdPoolingFactory
-    network: matic
-    source:
-      address: "0x42ddEc68db70F5992eB7AB22dfaD8A57109841C9"
-      abi: CrowdPoolingFactory
-      startBlock: 14604437
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DVMFactory_2021_05_18/DVMFactory_2021_05_18.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DODO
-          file: abis/DODO.json
-        - name: CrowdPoolingFactory
-          file: abis/CrowdPoolingFactory.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: CP
-          file: abis/CP.json
-      eventHandlers:
-        - event: NewCP(address,address,address,address)
-          handler: handleNewCP
-  - kind: ethereum/contract
-    name: UpCrowdPoolingFactory
-    network: matic
-    source:
-      address: "0x326c788c4C236f2bceC9476C66F8593Aa31be4Fc"
-      abi: UpCrowdPoolingFactory
-      startBlock: 14604410
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DVMFactory_2021_05_18/DVMFactory_2021_05_18.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: CrowdPoolingFactory
-          file: abis/CrowdPoolingFactory.json
-        - name: UpCrowdPoolingFactory
-          file: abis/UpCrowdPoolingFactory.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: CP
-          file: abis/CP.json
-      eventHandlers:
-        - event: NewCP(address,address,address,address)
-          handler: handleNewCP
-  - kind: ethereum/contract
-    name: DODOZoo
-    network: matic
-    source:
-      address: "0x357c5E9cfA8B834EDcef7C7aAbD8F9Db09119d11"
-      abi: DODOZoo
-      startBlock: 14359435
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODOZoo/DODOZoo.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOZoo
-          file: abis/DODOZoo.json
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DODO
-          file: abis/DODO.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: DODOBirth(address,address,address)
-          handler: handleDODOBirth
+        - event: DODONFTMint(address,uint256,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(address,uint256,uint256)
+          handler: handleDODONFTBurn
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
 templates:
   - kind: ethereum/contract
-    name: DVM
-    network: matic
+    name: NFTCollateralVault
+    network: kovan
     source:
-      abi: DVM
+      abi: NFTCollateralVault
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/DVM/DVM.wasm
+      file: templates/NFTCollateralVault/NFTCollateralVault.wasm
       entities:
-        - Pair
-        - Token
-        - DODOSwap
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
       abis:
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DODO
-          file: abis/DODO.json
-        - name: DVMFactory
-          file: abis/DVMFactory.json
-        - name: DPPFactory
-          file: abis/DPPFactory.json
-        - name: FeeRateModel
-          file: abis/FeeRateModel.json
-        - name: DODOZoo
-          file: abis/DODOZoo.json
+        - name: NFTCollateralVault
+          file: abis/NFTCollateralVault.json
+        - name: InitializableERC721
+          file: abis/InitializableERC721.json
+        - name: InitializableERC1155
+          file: abis/InitializableERC1155.json
       eventHandlers:
-        - event: DODOSwap(address,address,uint256,uint256,address,address)
-          handler: handleDODOSwap
-        - event: BuyShares(address,uint256,uint256)
-          handler: handleBuyShares
-        - event: SellShares(address,address,uint256,uint256)
-          handler: handleSellShares
-        - event: Transfer(indexed address,indexed address,uint256)
+        - event: AddNftToken(address,uint256,uint256)
+          handler: handleAddNftToken
+        - event: RemoveNftToken(address,uint256,uint256)
+          handler: handleRemoveNftToken
+  - kind: ethereum/contract
+    name: Fragment
+    network: kovan
+    source:
+      abi: Fragment
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: templates/Fragment/Fragment.wasm
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: Fragment
+          file: abis/Fragment.json
+      eventHandlers:
+        - event: Buyout(address)
+          handler: handleBuyout
+        - event: Redeem(address,uint256,uint256)
+          handler: handleRedeem
+  - kind: ethereum/contract
+    name: InitializableERC721
+    network: kovan
+    source:
+      abi: InitializableERC721
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: DODONFT/DODONFT.wasm
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: InitializableERC721
+          file: abis/InitializableERC721.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
   - kind: ethereum/contract
-    name: DPP
-    network: matic
+    name: InitializableERC1155
+    network: kovan
     source:
-      abi: DPP
+      abi: InitializableERC1155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/DVM/DVM.wasm
+      file: DODONFT1155/DODONFT1155.wasm
       entities:
-        - Pair
-        - Token
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
       abis:
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DODO
-          file: abis/DODO.json
-        - name: DVMFactory
-          file: abis/DVMFactory.json
-        - name: DPPFactory
-          file: abis/DPPFactory.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: FeeRateModel
-          file: abis/FeeRateModel.json
-        - name: DODOZoo
-          file: abis/DODOZoo.json
+        - name: InitializableERC1155
+          file: abis/InitializableERC1155.json
       eventHandlers:
-        - event: DODOSwap(address,address,uint256,uint256,address,address)
-          handler: handleDODOSwap
-        - event: LpFeeRateChange(uint256)
-          handler: handleLpFeeRateChange
-  - kind: ethereum/contract
-    name: DSP
-    network: matic
-    source:
-      abi: DSP
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates/DVM/DVM.wasm
-      entities:
-        - Pair
-        - Token
-        - DODOSwap
-      abis:
-        - name: DVMFactory
-          file: abis/DVMFactory.json
-        - name: DPPFactory
-          file: abis/DPPFactory.json
-        - name: DSPFactory
-          file: abis/DSPFactory.json
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DSP
-          file: abis/DSP.json
-        - name: FeeRateModel
-          file: abis/FeeRateModel.json
-        - name: DODOZoo
-          file: abis/DODOZoo.json
-      eventHandlers:
-        - event: DODOSwap(address,address,uint256,uint256,address,address)
-          handler: handleDODOSwap
-        - event: BuyShares(address,uint256,uint256)
-          handler: handleBuyShares
-        - event: SellShares(address,address,uint256,uint256)
-          handler: handleSellShares
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-  - kind: ethereum/contract
-    name: CP
-    network: matic
-    source:
-      abi: CP
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates/CP/CP.wasm
-      entities:
-        - CrowdPooling
-        - Token
-      abis:
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DODO
-          file: abis/DODO.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-        - name: CP
-          file: abis/CP.json
-        - name: DVMFactory
-          file: abis/DVMFactory.json
-        - name: DODOZoo
-          file: abis/DODOZoo.json
-      eventHandlers:
-        - event: Bid(address,uint256,uint256)
-          handler: handleBid
-        - event: Cancel(address,uint256)
-          handler: handleCancel
-        - event: Settle()
-          handler: handleSettle
-        - event: Claim(address,uint256,uint256)
-          handler: handleClaim
-  - kind: ethereum/contract
-    name: DODO
-    network: matic
-    source:
-      abi: DODO
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODOZoo/DODOZoo.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: abis/DVM.json
-        - name: DPP
-          file: abis/DPP.json
-        - name: DODO
-          file: abis/DODO.json
-        - name: DVMFactory
-          file: abis/DVMFactory.json
-        - name: DPPFactory
-          file: abis/DPPFactory.json
-        - name: DODOZoo
-          file: abis/DODOZoo.json
-        - name: ERC20
-          file: abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleWithdraw
-        - event: SellBaseToken(indexed address,uint256,uint256)
-          handler: handleSellBaseToken
-        - event: BuyBaseToken(indexed address,uint256,uint256)
-          handler: handleBuyBaseToken
-        - event: UpdateLiquidityProviderFeeRate(uint256,uint256)
-          handler: handleUpdateLiquidityProviderFeeRate
-        - event: ClaimAssets(indexed address,uint256,uint256)
-          handler: handleClaimAssets
-  - kind: ethereum/contract
-    name: DODOLpToken
-    network: matic
-    source:
-      abi: DODOLpToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates/DODOLpToken/DODOLpToken.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOLpToken
-          file: abis/DODOLpToken.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
