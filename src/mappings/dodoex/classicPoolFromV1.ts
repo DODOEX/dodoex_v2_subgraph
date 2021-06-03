@@ -24,7 +24,8 @@ import {
     fetchTokenBalance,
     updateStatistics,
     createTokenByCall,
-    updateUserDayDataAndDodoDayData
+    updateUserDayDataAndDodoDayData,
+    updateTokenTraderCount
 } from './helpers'
 import {DODOBirth, AddDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
 import {
@@ -551,7 +552,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         baseToken.priceUpdateTimestamp = event.block.timestamp;
     }
     updatePrice(pair as Pair, event.block.timestamp);
-    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume,event.block.timestamp);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
@@ -637,6 +638,8 @@ export function handleSellBaseToken(event: SellBaseToken): void {
 
     addTransaction(event, event.params.seller.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
+    updateTokenTraderCount(Address.fromString(pair.baseToken), event.transaction.from, event);
+    updateTokenTraderCount(Address.fromString(pair.quoteToken), event.transaction.from, event);
 
 }
 
@@ -691,7 +694,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         baseToken.priceUpdateTimestamp = event.block.timestamp;
     }
     updatePrice(pair as Pair, event.block.timestamp);
-    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume,event.block.timestamp);
+    let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);

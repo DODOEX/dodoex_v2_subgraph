@@ -553,6 +553,15 @@ export class Token extends Entity {
     this.set("txCount", Value.fromBigInt(value));
   }
 
+  get traderCount(): BigInt {
+    let value = this.get("traderCount");
+    return value.toBigInt();
+  }
+
+  set traderCount(value: BigInt) {
+    this.set("traderCount", Value.fromBigInt(value));
+  }
+
   get totalLiquidityOnDODO(): BigDecimal {
     let value = this.get("totalLiquidityOnDODO");
     return value.toBigDecimal();
@@ -623,6 +632,64 @@ export class Token extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class TokenTrader extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save TokenTrader entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save TokenTrader entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("TokenTrader", id.toString(), this);
+  }
+
+  static load(id: string): TokenTrader | null {
+    return store.get("TokenTrader", id) as TokenTrader | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get trader(): string {
+    let value = this.get("trader");
+    return value.toString();
+  }
+
+  set trader(value: string) {
+    this.set("trader", Value.fromString(value));
+  }
+
+  get lastTxTime(): BigInt {
+    let value = this.get("lastTxTime");
+    return value.toBigInt();
+  }
+
+  set lastTxTime(value: BigInt) {
+    this.set("lastTxTime", Value.fromBigInt(value));
   }
 }
 

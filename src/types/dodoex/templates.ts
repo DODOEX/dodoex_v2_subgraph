@@ -56,16 +56,6 @@ export class DODO extends DataSourceTemplate {
   }
 }
 
-export class ERC20 extends DataSourceTemplate {
-  static create(address: Address): void {
-    DataSourceTemplate.create("ERC20", [address.toHex()]);
-  }
-
-  static createWithContext(address: Address, context: DataSourceContext): void {
-    DataSourceTemplate.createWithContext("ERC20", [address.toHex()], context);
-  }
-}
-
 export class DODOLpToken extends DataSourceTemplate {
   static create(address: Address): void {
     DataSourceTemplate.create("DODOLpToken", [address.toHex()]);

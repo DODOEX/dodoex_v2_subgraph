@@ -6,7 +6,9 @@ import {
     ZERO_BD,
     ONE_BI,
     convertTokenToDecimal,
-    getDODOZoo, updateVirtualPairVolume,
+    getDODOZoo,
+    updateVirtualPairVolume,
+    updateTokenTraderCount
 } from "./helpers"
 import {SOURCE_SMART_ROUTE} from "../constant";
 import {Address, BigInt, store} from '@graphprotocol/graph-ts'
@@ -104,4 +106,7 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
+
+    updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
+    updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
 }

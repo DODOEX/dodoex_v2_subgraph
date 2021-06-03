@@ -20,7 +20,8 @@ import {
     updatePairTraderCount,
     getDODOZoo,
     updateStatistics,
-    updateUserDayDataAndDodoDayData
+    updateUserDayDataAndDodoDayData,
+    updateTokenTraderCount
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/dodoex/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../../types/dodoex/templates/DPP/DPP"
@@ -69,7 +70,6 @@ export function handleDODOSwap(event: DODOSwap): void {
 
         baseLpFee = ZERO_BD;
         quoteLpFee = quoteVolume.times(pair.lpFeeRate);
-
     } else {
         baseToken = toToken as Token;
         quoteToken = fromToken as Token;
@@ -78,7 +78,6 @@ export function handleDODOSwap(event: DODOSwap): void {
 
         baseLpFee = baseVolume.times(pair.lpFeeRate);
         quoteLpFee = ZERO_BD;
-
     }
 
     //1、更新pair
@@ -91,18 +90,23 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(quoteVolume);
     pair.feeBase = pair.feeBase.plus(baseLpFee);
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
+
+    updatePrice(pair as Pair, event.block.timestamp);//price update
+
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
-        baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
-        baseToken.priceUpdateTimestamp = event.block.timestamp;
 
-        if (quoteVolume.gt(ZERO_BD)) {
+        if(quoteToken.usdPrice.gt(ZERO_BD)){
+            baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
+            baseToken.priceUpdateTimestamp = event.block.timestamp;
+        }
+
+        if (quoteVolume.gt(ZERO_BD) && quoteToken.usdPrice.gt(ZERO_BD)) {
             quoteToken.usdPrice = baseToken.usdPrice.times(baseVolume).div(quoteVolume);
             quoteToken.priceUpdateTimestamp = event.block.timestamp;
         }
     }
 
-    updatePrice(pair as Pair, event.block.timestamp);
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
@@ -190,6 +194,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
     addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
+    updateTokenTraderCount(event.params.fromToken,event.transaction.from,event);
+    updateTokenTraderCount(event.params.toToken,event.transaction.from,event);
 }
 
 export function handleBuyShares(event: BuyShares): void {

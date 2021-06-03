@@ -11,7 +11,8 @@ import {
     LpToken,
     DodoZoo,
     PairTrader,
-    Pool
+    Pool,
+    TokenTrader
 } from '../../types/dodoex/schema'
 import {DVMFactory} from "../../types/dodoex/DVMFactory/DVMFactory"
 import {DPPFactory} from "../../types/dodoex/DPPFactory/DPPFactory"
@@ -268,6 +269,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         token.untrackedVolume = ZERO_BD;
         token.timestamp = event.block.timestamp;
         token.volumeUSD = ZERO_BD;
+        token.traderCount = ZERO_BI;
 
         token.save();
 
@@ -386,7 +388,7 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
     pair.volumeBaseToken = pair.volumeBaseToken.plus(dealedFromAmount);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(dealedToAmount);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
-    pair.lastTradePrice = dealedFromAmount.gt(ZERO_BD)?dealedToAmount.div(dealedFromAmount):ZERO_BD;
+    pair.lastTradePrice = dealedFromAmount.gt(ZERO_BD) ? dealedToAmount.div(dealedFromAmount) : ZERO_BD;
 
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(dealedFromAmount);
@@ -458,6 +460,28 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair, ev
         pair.traderCount = pair.traderCount.plus(ONE_BI);
     }
     pair.save();
+}
+
+export function updateTokenTraderCount(tokenAddress: Address, userAddress: Address, event: ethereum.Event): void {
+    //todo
+    let tokenTraderID = tokenAddress.toHexString().concat("-").concat(userAddress.toHexString());
+
+    let tokenTrader = TokenTrader.load(tokenTraderID);
+    if (tokenTrader == null) {
+
+        let token = createToken(tokenAddress, event);
+        let user = createUser(userAddress, event);
+        token.traderCount = token.traderCount.plus(ONE_BI);
+        token.save();
+
+        tokenTrader = new TokenTrader(tokenTraderID);
+        tokenTrader.token = token.id;
+        tokenTrader.trader = user.id;
+
+    }
+    tokenTrader.lastTxTime = event.block.timestamp;
+    tokenTrader.save();
+
 }
 
 export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: BigDecimal, quoteVolume: BigDecimal, feeBase: BigDecimal, feeQuote: BigDecimal, untrackedBaseVolume: BigDecimal, untrackedQuoteVolume: BigDecimal, baseToken: Token, quoteToken: Token, to: Address, volumeUSD: BigDecimal): void {

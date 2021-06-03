@@ -101,6 +101,8 @@ type Token @entity {
 
     "transactions across all pairs"
     txCount: BigInt!
+    "trader count"
+    traderCount: BigInt!
 
     "liquidity across all pairs"
     totalLiquidityOnDODO: BigDecimal!
@@ -120,6 +122,17 @@ type Token @entity {
     totalSupply: BigInt!
     "timestamp"
     timestamp: BigInt!
+}
+
+type TokenTrader @entity{
+    "token address - user address"
+    id: ID!
+    "pair"
+    token: Token!
+    "user"
+    trader: User!
+    "last trade time"
+    lastTxTime: BigInt!
 }
 
 type LpToken @entity {
