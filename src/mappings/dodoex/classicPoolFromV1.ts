@@ -38,6 +38,12 @@ import {
     EnableTradingCall,
     ClaimAssets
 } from '../../types/dodoex/templates/DODO/DODO';
+import {
+    updatePrice,
+    calculateUsdVolume
+} from "./pricing"
+import {addTransaction} from "./transaction";
+import {increaseVolume} from "./dayUpdates";
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -50,12 +56,7 @@ import {
     TRANSACTION_TYPE_LP_ADD
 } from "../constant"
 
-import {
-    updatePrice,
-    calculateUsdVolume
-} from "./pricing"
 
-import {addTransaction} from "./transaction"
 
 const POOLS_ADDRESS: string[] = [
     "0x75c23271661d9d143dcb617222bc4bec783eff34",//WETH-USDC
@@ -640,6 +641,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     updateTokenTraderCount(Address.fromString(pair.baseToken), event.transaction.from, event);
     updateTokenTraderCount(Address.fromString(pair.quoteToken), event.transaction.from, event);
+    increaseVolume(event,volumeUSD);
 
 }
 
@@ -786,6 +788,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
+    increaseVolume(event,volumeUSD);
 }
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {

@@ -20,6 +20,8 @@ type DodoDayData @entity {
     txCount: BigInt!
     "unique users"
     uniqueUsersCount: BigInt!
+    "volume usd"
+    volumeUSD: BigDecimal!
 }
 
 type Transaction @entity {

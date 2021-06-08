@@ -135,6 +135,15 @@ export class DodoDayData extends Entity {
   set uniqueUsersCount(value: BigInt) {
     this.set("uniqueUsersCount", Value.fromBigInt(value));
   }
+
+  get volumeUSD(): BigDecimal {
+    let value = this.get("volumeUSD");
+    return value.toBigDecimal();
+  }
+
+  set volumeUSD(value: BigDecimal) {
+    this.set("volumeUSD", Value.fromBigDecimal(value));
+  }
 }
 
 export class Transaction extends Entity {

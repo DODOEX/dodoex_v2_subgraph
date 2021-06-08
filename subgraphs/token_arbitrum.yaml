@@ -2,20 +2,20 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: token.graphql
+  file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
     name: ERC20Factory
     network: arbitrum-one
     source:
-      address: "0x141b4497a298340E8B451ac4eeE947B00aDbe07A"
+      address: '0x141b4497a298340E8B451ac4eeE947B00aDbe07A'
       abi: ERC20Factory
       startBlock: 1
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ERC20Factory/ERC20Factory.wasm
+      file: ../src/mappings/token/factory.ts
       entities:
         - User
         - Token
@@ -23,13 +23,13 @@ dataSources:
         - TransferHistories
       abis:
         - name: ERC20Factory
-          file: abis/ERC20Factory.json
+          file: ../abis/ERC20Factory.json
         - name: ERC20
-          file: abis/ERC20.json
+          file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: abis/ERC20SymbolBytes.json
+          file: ../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: abis/ERC20NameBytes.json
+          file: ../abis/ERC20NameBytes.json
       eventHandlers:
         - event: NewERC20(address,address,bool)
           handler: handleNewERC20
@@ -43,7 +43,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/MintableERC20/MintableERC20.wasm
+      file: ../src/mappings/token/mintableERC20.ts
       entities:
         - User
         - Token
@@ -51,7 +51,7 @@ templates:
         - TransferHistories
       abis:
         - name: MintableERC20
-          file: abis/MintableERC20.json
+          file: ../abis/MintableERC20.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -59,3 +59,4 @@ templates:
           handler: handleMint
         - event: Burn(indexed address,uint256)
           handler: handleBurn
+

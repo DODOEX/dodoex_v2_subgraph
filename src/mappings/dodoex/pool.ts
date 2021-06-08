@@ -26,6 +26,12 @@ import {
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/dodoex/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../../types/dodoex/templates/DPP/DPP"
 import {DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM";
+import {
+    calculateUsdVolume,
+    updatePrice
+} from "./pricing"
+import {addTransaction} from "./transaction";
+import {increaseVolume} from "./dayUpdates"
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -37,11 +43,6 @@ import {
     TRANSACTION_TYPE_LP_REMOVE, TRANSACTION_TYPE_CP_CLAIM
 } from "../constant"
 
-import {
-    calculateUsdVolume,
-    updatePrice
-} from "./pricing"
-import {addTransaction} from "./transaction";
 
 export function handleDODOSwap(event: DODOSwap): void {
     //base data
@@ -96,12 +97,12 @@ export function handleDODOSwap(event: DODOSwap): void {
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
 
-        if(quoteToken.usdPrice.gt(ZERO_BD)){
+        if (quoteToken.usdPrice.gt(ZERO_BD)) {
             baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
             baseToken.priceUpdateTimestamp = event.block.timestamp;
         }
 
-        if (quoteVolume.gt(ZERO_BD) && quoteToken.usdPrice.gt(ZERO_BD)) {
+        if (quoteVolume.gt(ZERO_BD) && baseToken.usdPrice.gt(ZERO_BD)) {
             quoteToken.usdPrice = baseToken.usdPrice.times(baseVolume).div(quoteVolume);
             quoteToken.priceUpdateTimestamp = event.block.timestamp;
         }
@@ -194,8 +195,9 @@ export function handleDODOSwap(event: DODOSwap): void {
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
     addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
-    updateTokenTraderCount(event.params.fromToken,event.transaction.from,event);
-    updateTokenTraderCount(event.params.toToken,event.transaction.from,event);
+    updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
+    updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
+    increaseVolume(event,volumeUSD);
 }
 
 export function handleBuyShares(event: BuyShares): void {
