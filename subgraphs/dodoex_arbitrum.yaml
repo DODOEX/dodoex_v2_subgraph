@@ -32,7 +32,7 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DVMFactory_2021_05_18
+    name: DVMFactory
     network: arbitrum-one
     source:
       address: '0xb0C7cB15b52b0093130487209e96CFeC0Ba4Ff66'
@@ -65,7 +65,7 @@ dataSources:
         - event: RemoveDVM(address)
           handler: handleRemoveDVM
   - kind: ethereum/contract
-    name: DPPFactory_2021_05_18
+    name: DPPFactory
     network: arbitrum-one
     source:
       address: "0xF0B4338E3e3dfE9B6934FD68697ba8cF1055A1aD"
