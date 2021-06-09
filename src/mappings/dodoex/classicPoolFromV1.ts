@@ -547,12 +547,22 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
     pair.baseReserve = pair.baseReserve.plus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.minus(quoteVolume);
+
+    updatePrice(pair as Pair, event.block.timestamp);
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
-        baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
-        baseToken.priceUpdateTimestamp = event.block.timestamp;
+
+        if (quoteToken.usdPrice.gt(ZERO_BD)) {
+            baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
+            baseToken.priceUpdateTimestamp = event.block.timestamp;
+        }
+
+        if (quoteVolume.gt(ZERO_BD) && baseToken.usdPrice.gt(ZERO_BD)) {
+            quoteToken.usdPrice = baseToken.usdPrice.times(baseVolume).div(quoteVolume);
+            quoteToken.priceUpdateTimestamp = event.block.timestamp;
+        }
     }
-    updatePrice(pair as Pair, event.block.timestamp);
+
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
@@ -690,12 +700,23 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
     pair.baseReserve = pair.baseReserve.minus(baseVolume);
     pair.quoteReserve = pair.quoteReserve.plus(quoteVolume);
+
+    //update price
+    updatePrice(pair as Pair, event.block.timestamp);
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
-        baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
-        baseToken.priceUpdateTimestamp = event.block.timestamp;
+
+        if (quoteToken.usdPrice.gt(ZERO_BD)) {
+            baseToken.usdPrice = quoteToken.usdPrice.times(pair.lastTradePrice);
+            baseToken.priceUpdateTimestamp = event.block.timestamp;
+        }
+
+        if (quoteVolume.gt(ZERO_BD) && baseToken.usdPrice.gt(ZERO_BD)) {
+            quoteToken.usdPrice = baseToken.usdPrice.times(baseVolume).div(quoteVolume);
+            quoteToken.priceUpdateTimestamp = event.block.timestamp;
+        }
     }
-    updatePrice(pair as Pair, event.block.timestamp);
+
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {

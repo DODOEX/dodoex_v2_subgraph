@@ -81,7 +81,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         quoteLpFee = ZERO_BD;
     }
 
-    //1、更新pair
+    //1、update pair basic info
     pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
     pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
     pair.i = pmmState.i;
@@ -92,8 +92,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.feeBase = pair.feeBase.plus(baseLpFee);
     pair.feeQuote = pair.feeQuote.plus(quoteLpFee);
 
-    updatePrice(pair as Pair, event.block.timestamp);//price update
-
+    //price update
+    updatePrice(pair as Pair, event.block.timestamp);
     if (baseVolume.gt(ZERO_BD)) {
         pair.lastTradePrice = quoteVolume.div(baseVolume);
 
@@ -108,6 +108,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         }
     }
 
+    //volume update
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
@@ -122,13 +123,11 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
     pair.save();
 
-    //2、更新两个token的记录数据
-
-    //3、更新用户信息
+    //3、user info update
     user.txCount = user.txCount.plus(ONE_BI);
     user.save();
 
-    //4、增加swap条目
+    //4、swap info update
     let swap = Swap.load(swapID);
     if (swap == null) {
         swap = new Swap(swapID)
@@ -151,7 +150,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.save();
     }
 
-    //1、同步到OrderHistory
+    // add to OrderHistory
     let orderHistory = OrderHistory.load(swapID);
     if (SMART_ROUTE_ADDRESSES.indexOf(event.params.trader.toHexString()) == -1 && orderHistory == null) {
         log.warning(`external swap from {},hash : {}`, [event.params.trader.toHexString(), event.transaction.hash.toHexString()]);
@@ -183,15 +182,15 @@ export function handleDODOSwap(event: DODOSwap): void {
     fromToken.save();
     toToken.save();
 
-    // 更新交易人数
+    // update unique user
     updatePairTraderCount(event.transaction.from, event.params.receiver, pair as Pair, event);
 
-    //更新DODOZoo
+    // update DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    //更新报表数据
+    //update day datas
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
     addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
