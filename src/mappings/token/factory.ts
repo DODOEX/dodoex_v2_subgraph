@@ -1,7 +1,6 @@
 import {NewERC20} from "../../types/token/ERC20Factory/ERC20Factory"
 import {
     createUser,
-    fetchTokenBalance,
     fetchTokenName,
     fetchTokenDecimals,
     fetchTokenSymbol,
@@ -17,10 +16,10 @@ export function handleNewERC20(event: NewERC20): void{
     if(token==null){
         token = new Token(event.params.erc20.toHexString())
         token.creator = user.id;
-        token.name = fetchTokenNameByCall(event.params.erc20);
-        token.symbol = fetchTokenSymbolByCall(event.params.erc20);
-        token.decimals = fetchTokenDecimalsByCall(event.params.erc20);
-        token.totalSupply = fetchTokenTotalSupplyByCall(event.params.erc20);
+        token.name = fetchTokenName(event.params.erc20);
+        token.symbol = fetchTokenSymbol(event.params.erc20);
+        token.decimals = fetchTokenDecimals(event.params.erc20);
+        token.totalSupply = fetchTokenTotalSupply(event.params.erc20);
         token.timestamp = event.block.timestamp;
         token.type = ZERO_BI;
         token.holderCount = ZERO_BI;
