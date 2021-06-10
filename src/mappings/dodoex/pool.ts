@@ -31,7 +31,7 @@ import {
     updatePrice
 } from "./pricing"
 import {addTransaction} from "./transaction";
-import {increaseVolume} from "./dayUpdates"
+import {increaseVolumeAndFee} from "./dayUpdates"
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -110,8 +110,9 @@ export function handleDODOSwap(event: DODOSwap): void {
 
     //volume update
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
+    let feeUSD = volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal())
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
-    pair.feeUSD = pair.feeUSD.plus(volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal()))
+    pair.feeUSD = pair.feeUSD.plus(feeUSD)
 
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
@@ -190,6 +191,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     // update DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.feeUSD = dodoZoo.feeUSD.plus(feeUSD);
     dodoZoo.save();
 
     //update day datas
@@ -198,7 +200,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
     updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
-    increaseVolume(event,volumeUSD);
+    increaseVolumeAndFee(event,volumeUSD,feeUSD);
 }
 
 export function handleBuyShares(event: BuyShares): void {

@@ -9,7 +9,7 @@ export const SOURCE_POOL_SWAP = "DODO_POOL";
 
 export const DODOV2Proxy02 = "0x45894c062e6f4e58b257e0826675355305dfef0d";
 
-export const DODOZooID = "dodoex-v2-polygon";
+export const DODOZooID = "dodoex-v2-arbitrum";
 export const CHAIN_BASE_COIN_SYMBOL = "MATIC";
 export const CHAIN_BASE_COIN_NAME = "MATIC";
 

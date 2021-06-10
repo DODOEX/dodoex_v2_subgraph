@@ -102,6 +102,26 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
     return symbolValue
 }
 
+export function fetchTokenSymbolByCall(tokenAddress: Address): string {
+    // hard coded overrides
+    if (tokenAddress.toHexString() == '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a') {
+        return 'DGD'
+    }
+    if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
+        return 'AAVE'
+    }
+    if (tokenAddress.toHexString() == '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48') {
+        return 'USDC'
+    }
+
+    let contract = ERC20.bind(tokenAddress)
+
+    // try types string and bytes32 for symbol
+    let symbolValue = contract.symbol()
+
+    return symbolValue
+}
+
 export function fetchTokenName(tokenAddress: Address): string {
     // hard coded overrides
     if (tokenAddress.toHexString() == '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a') {
@@ -132,6 +152,23 @@ export function fetchTokenName(tokenAddress: Address): string {
     return nameValue
 }
 
+export function fetchTokenNameByCall(tokenAddress: Address): string {
+    // hard coded overrides
+    if (tokenAddress.toHexString() == '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a') {
+        return 'DGD'
+    }
+    if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
+        return 'Aave Token'
+    }
+
+    let contract = ERC20.bind(tokenAddress)
+
+    // try types string and bytes32 for name
+    let nameValue = contract.name()
+
+    return nameValue
+}
+
 export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
     if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
@@ -142,6 +179,16 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
         return BigInt.fromI32(0)
     }
     return totalSupplyResult.value
+}
+
+export function fetchTokenTotalSupplyByCall(tokenAddress: Address): BigInt {
+    if (tokenAddress.toHexString() == BASE_COIN) {
+        return BigInt.fromI32(0)
+    }
+    let contract = ERC20.bind(tokenAddress)
+    let totalSupplyResult = contract.totalSupply()
+
+    return totalSupplyResult
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
@@ -161,6 +208,21 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
         decimalValue = decimalResult.value
     }
     return BigInt.fromI32(decimalValue as i32)
+}
+
+export function fetchTokenDecimalsByCall(tokenAddress: Address): BigInt {
+    // hardcode overrides
+    if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
+        return BigInt.fromI32(18)
+    }
+    if (tokenAddress.toHexString() == BASE_COIN) {
+        return BigInt.fromI32(18)
+    }
+
+    let contract = ERC20.bind(tokenAddress)
+    let decimalResult = contract.decimals()
+
+    return BigInt.fromI32(decimalResult as i32)
 }
 
 export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {

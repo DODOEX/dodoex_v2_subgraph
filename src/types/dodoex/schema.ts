@@ -77,6 +77,24 @@ export class DodoZoo extends Entity {
   set txCount(value: BigInt) {
     this.set("txCount", Value.fromBigInt(value));
   }
+
+  get volumeUSD(): BigDecimal {
+    let value = this.get("volumeUSD");
+    return value.toBigDecimal();
+  }
+
+  set volumeUSD(value: BigDecimal) {
+    this.set("volumeUSD", Value.fromBigDecimal(value));
+  }
+
+  get feeUSD(): BigDecimal {
+    let value = this.get("feeUSD");
+    return value.toBigDecimal();
+  }
+
+  set feeUSD(value: BigDecimal) {
+    this.set("feeUSD", Value.fromBigDecimal(value));
+  }
 }
 
 export class DodoDayData extends Entity {
@@ -143,6 +161,15 @@ export class DodoDayData extends Entity {
 
   set volumeUSD(value: BigDecimal) {
     this.set("volumeUSD", Value.fromBigDecimal(value));
+  }
+
+  get feeUSD(): BigDecimal {
+    let value = this.get("feeUSD");
+    return value.toBigDecimal();
+  }
+
+  set feeUSD(value: BigDecimal) {
+    this.set("feeUSD", Value.fromBigDecimal(value));
   }
 }
 

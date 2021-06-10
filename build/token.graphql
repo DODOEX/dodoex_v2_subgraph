@@ -23,6 +23,8 @@ type Token @entity {
     creator: String!
     "create timestamp"
     timestamp: BigInt!
+    "erc20Type"
+    type: BigInt!
     "holder count"
     holderCount: BigInt!
 }

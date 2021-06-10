@@ -43,6 +43,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 - vdodo
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
+    - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo-rinkeby
 - nft
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodo-nft-rinkeby

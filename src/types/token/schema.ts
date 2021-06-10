@@ -153,6 +153,15 @@ export class Token extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
+  get type(): BigInt {
+    let value = this.get("type");
+    return value.toBigInt();
+  }
+
+  set type(value: BigInt) {
+    this.set("type", Value.fromBigInt(value));
+  }
+
   get holderCount(): BigInt {
     let value = this.get("holderCount");
     return value.toBigInt();

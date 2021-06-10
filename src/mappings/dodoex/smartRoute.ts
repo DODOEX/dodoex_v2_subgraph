@@ -105,6 +105,7 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.volumeUSD = dodoZoo.volumeUSD.plus(volumeUSD);
     dodoZoo.save();
 
     updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);

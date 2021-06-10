@@ -217,6 +217,8 @@ export function getDODOZoo(): DodoZoo {
         dodoZoo.tokenCount = ZERO_BI;
         dodoZoo.crowdpoolingCount = ZERO_BI;
         dodoZoo.txCount = ZERO_BI;
+        dodoZoo.volumeUSD = ZERO_BD;
+        dodoZoo.feeUSD = ZERO_BD;
         dodoZoo.save();
     }
     return dodoZoo as DodoZoo;

@@ -250,6 +250,7 @@ export function getDodoDayData(event: ethereum.Event): DodoDayData {
         dodoDayData.txCount = ZERO_BI;
         dodoDayData.uniqueUsersCount = ZERO_BI;
         dodoDayData.volumeUSD = ZERO_BD;
+        dodoDayData.feeUSD = ZERO_BD;
         dodoDayData.save();
     }
 
@@ -263,9 +264,10 @@ export function increaseTxCount(event: ethereum.Event): DodoDayData {
     return dodoDayData as DodoDayData;
 }
 
-export function increaseVolume(event: ethereum.Event, volumeUSD: BigDecimal): DodoDayData {
+export function increaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecimal, feeUSD: BigDecimal): DodoDayData {
     let dodoDayData = getDodoDayData(event);
     dodoDayData.volumeUSD = dodoDayData.volumeUSD.plus(volumeUSD);
+    dodoDayData.feeUSD = dodoDayData.feeUSD.plus(feeUSD);
     dodoDayData.save();
     return dodoDayData as DodoDayData;
 }

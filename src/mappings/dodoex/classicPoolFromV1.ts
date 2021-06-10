@@ -43,7 +43,7 @@ import {
     calculateUsdVolume
 } from "./pricing"
 import {addTransaction} from "./transaction";
-import {increaseVolume} from "./dayUpdates";
+import {increaseVolumeAndFee} from "./dayUpdates";
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -55,7 +55,6 @@ import {
     TRANSACTION_TYPE_LP_REMOVE,
     TRANSACTION_TYPE_LP_ADD
 } from "../constant"
-
 
 
 const POOLS_ADDRESS: string[] = [
@@ -566,8 +565,9 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     }
 
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
+    let feeUSD = volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal())
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
-    pair.feeUSD = pair.feeUSD.plus(volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal()))
+    pair.feeUSD = pair.feeUSD.plus(feeUSD);
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
@@ -645,6 +645,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.feeUSD = dodoZoo.feeUSD.plus(feeUSD);
     dodoZoo.save();
 
     //更新日报表数据
@@ -654,7 +655,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     updateTokenTraderCount(Address.fromString(pair.baseToken), event.transaction.from, event);
     updateTokenTraderCount(Address.fromString(pair.quoteToken), event.transaction.from, event);
-    increaseVolume(event,volumeUSD);
+    increaseVolumeAndFee(event, volumeUSD, feeUSD);
 
 }
 
@@ -721,8 +722,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     }
 
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
+    let feeUSD = volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal())
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
-    pair.feeUSD = pair.feeUSD.plus(volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal()))
+    pair.feeUSD = pair.feeUSD.plus(feeUSD);
 
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
@@ -807,6 +809,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.feeUSD = dodoZoo.feeUSD.plus(feeUSD);
     dodoZoo.save();
 
     //更新报表数据
@@ -814,7 +817,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
-    increaseVolume(event,volumeUSD);
+    increaseVolumeAndFee(event, volumeUSD, feeUSD);
 }
 
 export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProviderFeeRate): void {
