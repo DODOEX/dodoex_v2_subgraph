@@ -214,6 +214,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.isDepositBaseAllowed = false;
             pair.isDepositQuoteAllowed = false;
             pair.volumeUSD = ZERO_BD;
+            pair.feeUSD = ZERO_BD;
 
             pair.i = ZERO_BI;
             pair.k = ZERO_BI;
@@ -284,6 +285,7 @@ export function handleDODOBirth(event: DODOBirth): void {
             pair.isDepositBaseAllowed = true;
             pair.isDepositQuoteAllowed = true;
             pair.volumeUSD = ZERO_BD;
+            pair.feeUSD = ZERO_BD;
 
             pair.i = ZERO_BI;
             pair.k = ZERO_BI;
@@ -565,6 +567,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
 
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
+    pair.feeUSD = pair.feeUSD.plus(volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal()))
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
@@ -719,6 +722,8 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     let volumeUSD = calculateUsdVolume(baseToken as Token, quoteToken as Token, baseVolume, quoteVolume, event.block.timestamp);
     pair.volumeUSD = pair.volumeUSD.plus(volumeUSD);
+    pair.feeUSD = pair.feeUSD.plus(volumeUSD.times(pair.lpFeeRate).div(BI_18.toBigDecimal()))
+
     if (volumeUSD.equals(ZERO_BD)) {
         pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(baseVolume);
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);

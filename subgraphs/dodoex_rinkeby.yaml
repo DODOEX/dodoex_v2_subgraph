@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODONFTRegistry
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x579ebcc668b5517f733587091c35d495fe8d6b68'
+      address: '0x69efeCA5070Cb22c1094cffEbacafC09c058c139'
       abi: DODONFTRegistry
-      startBlock: 24703376
+      startBlock: 8690815
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -41,11 +41,11 @@ dataSources:
           handler: handleRemoveRegistry
   - kind: ethereum/contract
     name: DODOMine
-    network: kovan
+    network: rinkeby
     source:
       address: '0x369b918d9d940bcef4f3960b6cb6123a1bb3d7e5'
       abi: DODOMine
-      startBlock: 23501827
+      startBlock: 8690815
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -72,11 +72,11 @@ dataSources:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODOIncentive
-    network: kovan
+    network: rinkeby
     source:
       address: '0x5cfcc14f7c8be8b138d9fdf7438391b0bfe0589f'
       abi: DODOIncentive
-      startBlock: 23501827
+      startBlock: 8690815
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -101,11 +101,11 @@ dataSources:
           handler: handleIncentive
   - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x85caa68ae47f047aa01c48bcaa711ca70a950ffb'
+      address: '0xba001E96AF87bF9d8D0BDA667067A9921FE6d294'
       abi: DODOV2Proxy02
-      startBlock: 23388916
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -128,11 +128,11 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x322f8014c125da09314d3a68d4d9f427823f17fd'
+      address: '0x17DddEFA0c82E0c850a4Adac2aFE3F1fe977A242'
       abi: DVMFactory
-      startBlock: 23939142
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -161,11 +161,11 @@ dataSources:
           handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0xc65f8087288aa0a118aa6f3228ef9ecc8187f4b6'
+      address: '0x510b49803E356C750f3a93bA5508C0FFD9f71bDD'
       abi: DPPFactory
-      startBlock: 23388901
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -194,11 +194,11 @@ dataSources:
           handler: handleRemoveDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0xd54d6b7261860a3a689135ba3d333d13b65f3cee'
+      address: '0xa1ab675cB49BA0DC3F39fA4C20E216572A8dD3c8'
       abi: DSPFactory
-      startBlock: 24325556
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -227,11 +227,11 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x9e6e8985d52e91edf1671f28ca73bc4f3e219b72'
+      address: '0xDD43520779dDCfbDe373174Ee36aEaD39771cD4f'
       abi: CrowdPoolingFactory
-      startBlock: 23379891
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -260,11 +260,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x25ae560522165eaccfbf2287493af12b8ad718e7'
+      address: '0xb09E91505347234Cb722D67042290f50F1C13749'
       abi: UpCrowdPoolingFactory
-      startBlock: 23929185
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -295,11 +295,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x92230e929a2226b29ed3441ae5524886347c60c8'
+      address: '0x168442Fec1e1E782c8770185dBb8328B91dC45c0'
       abi: DODOZoo
-      startBlock: 19962676
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -327,7 +327,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: kovan
+    network: rinkeby
     source:
       abi: DVM
     mapping:
@@ -363,7 +363,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: kovan
+    network: rinkeby
     source:
       abi: DPP
     mapping:
@@ -400,7 +400,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: kovan
+    network: rinkeby
     source:
       abi: DSP
     mapping:
@@ -440,7 +440,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: kovan
+    network: rinkeby
     source:
       abi: CP
     mapping:
@@ -479,7 +479,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: kovan
+    network: rinkeby
     source:
       abi: DODO
     mapping:
@@ -535,7 +535,7 @@ templates:
           handler: handleClaimAssets
   - kind: ethereum/contract
     name: DODOLpToken
-    network: kovan
+    network: rinkeby
     source:
       abi: DODOLpToken
     mapping:

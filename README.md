@@ -31,17 +31,22 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-polygon
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-arbitrum
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-v2
-- token
+    - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-rinkeby
+ - token
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
     - bsc : https://pq.hg.network/subgraphs/name/dodoex-token/bsc
     - heco : https://q.hg.network/subgraphs/name/dodoextoken/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-polygon
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-arbitrum
     - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
+    - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-rinkeby
 - vdodo
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
-  
+- nft
+    - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
+    - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodo-nft-rinkeby
+    
 ## 2、 Graphql Examples
  - to get user info
 ```

@@ -371,6 +371,7 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
         pair.isDepositBaseAllowed = true;
         pair.isDepositQuoteAllowed = true;
         pair.volumeUSD = ZERO_BD;
+        pair.feeUSD = ZERO_BD;
 
         pair.i = ZERO_BI;
         pair.k = ZERO_BI;
@@ -431,6 +432,16 @@ export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateSt
         let pool = DVM.bind(poolAddress);
         let pmmState = pool.getPMMState();
         return pmmState as DVM__getPMMStateResultStateStruct;
+    }
+    return null;
+}
+
+export function getQuoteTokenAddress(poolAddress: Address): Address {
+    let pair = Pair.load(poolAddress.toHexString());
+    if (pair.type != TYPE_CLASSICAL_POOL) {
+        let pool = DVM.bind(poolAddress);
+        let quoteToken = pool._QUOTE_TOKEN_();
+        return quoteToken as Address;
     }
     return null;
 }

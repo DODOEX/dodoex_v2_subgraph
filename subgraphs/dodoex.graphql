@@ -232,6 +232,8 @@ type Pair @entity {
     id: ID!
     "pool type（CLASSICAL、DVM、DPP）"
     type: String!
+    "pool source(default:null)"
+    source:String
     "creator"
     creator: Bytes!
     "base token"
@@ -272,6 +274,8 @@ type Pair @entity {
     feeBase: BigDecimal!
     "lp fee quote"
     feeQuote: BigDecimal!
+    "lp fee of USD"
+    feeUSD: BigDecimal!
 
     "transactions count"
     txCount: BigInt!

@@ -1238,6 +1238,23 @@ export class Pair extends Entity {
     this.set("type", Value.fromString(value));
   }
 
+  get source(): string | null {
+    let value = this.get("source");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set source(value: string | null) {
+    if (value === null) {
+      this.unset("source");
+    } else {
+      this.set("source", Value.fromString(value as string));
+    }
+  }
+
   get creator(): Bytes {
     let value = this.get("creator");
     return value.toBytes();
@@ -1430,6 +1447,15 @@ export class Pair extends Entity {
 
   set feeQuote(value: BigDecimal) {
     this.set("feeQuote", Value.fromBigDecimal(value));
+  }
+
+  get feeUSD(): BigDecimal {
+    let value = this.get("feeUSD");
+    return value.toBigDecimal();
+  }
+
+  set feeUSD(value: BigDecimal) {
+    this.set("feeUSD", Value.fromBigDecimal(value));
   }
 
   get txCount(): BigInt {
