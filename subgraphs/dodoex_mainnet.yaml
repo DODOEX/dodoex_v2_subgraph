@@ -255,7 +255,7 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DVMFactory_2021_01_22
+    name: DVMFactory
     network: mainnet
     source:
       address: '0x72d220ce168c4f361dd4dee5d826a01ad8598f6c'

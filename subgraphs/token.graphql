@@ -1,3 +1,10 @@
+type DodoToken @entity {
+    "DODO Token"
+    id:ID!
+    "tokens count"
+    tokens: BigInt!
+}
+
 type User @entity {
     "user address"
     id: ID!

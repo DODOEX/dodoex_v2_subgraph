@@ -5,7 +5,12 @@ import {
     fetchTokenDecimals,
     fetchTokenSymbol,
     fetchTokenTotalSupply,
-    ZERO_BI, fetchTokenNameByCall, fetchTokenSymbolByCall, fetchTokenDecimalsByCall, fetchTokenTotalSupplyByCall
+    ZERO_BI,
+    fetchTokenNameByCall,
+    fetchTokenSymbolByCall,
+    fetchTokenDecimalsByCall,
+    fetchTokenTotalSupplyByCall,
+    getDODOToken, ONE_BI
 } from "./helpers"
 import {Token} from "../../types/token/schema"
 import {MintableERC20 as MintableERC20Template} from "../../types/token/templates"
@@ -13,6 +18,8 @@ import {MintableERC20 as MintableERC20Template} from "../../types/token/template
 export function handleNewERC20(event: NewERC20): void {
     let user = createUser(event.params.creator, event);
     let token = Token.load(event.params.erc20.toHexString());
+    let dodoToken = getDODOToken();
+
     if (token == null) {
         token = new Token(event.params.erc20.toHexString())
         token.creator = user.id;
@@ -23,9 +30,10 @@ export function handleNewERC20(event: NewERC20): void {
         token.timestamp = event.block.timestamp;
         token.type = event.params.erc20Type;
         token.holderCount = ZERO_BI;
+        dodoToken.tokens = dodoToken.tokens.plus(ONE_BI);
     }
 
     token.save();
-
+    dodoToken.save();
     MintableERC20Template.create(event.params.erc20);
 }

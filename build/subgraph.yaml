@@ -2,26 +2,28 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: vdodo.graphql
+  file: token.graphql
 dataSources:
   - kind: ethereum/contract
-    name: vDODOToken
-    network: rinkeby
+    name: ERC20Factory
+    network: kovan
     source:
-      address: "0x8751f874eCd2874f2a5ced95A08364C203e4146A"
-      abi: vDODOToken
-      startBlock: 8733542
+      address: "0x57c729221da919f8183b11a3ee1e6808430ee304"
+      abi: ERC20Factory
+      startBlock: 23910775
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: vDODOToken/vDODOToken.wasm
+      file: ERC20Factory/ERC20Factory.wasm
       entities:
         - User
-        - StakeHistory
+        - Token
+        - UserTokenBlance
+        - TransferHistories
       abis:
-        - name: vDODOToken
-          file: abis/vDODOToken.json
+        - name: ERC20Factory
+          file: abis/ERC20Factory.json
         - name: ERC20
           file: abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -29,13 +31,62 @@ dataSources:
         - name: ERC20NameBytes
           file: abis/ERC20NameBytes.json
       eventHandlers:
-        - event: MintVDODO(address,address,uint256)
-          handler: handleMintVDODO
-        - event: RedeemVDODO(address,uint256,uint256,uint256)
-          handler: handleRedeemVDODO
+        - event: NewERC20(address,address,bool)
+          handler: handleNewERC20
+  - kind: ethereum/contract
+    name: ERC20V2Factory
+    network: kovan
+    source:
+      address: "0xB79FB302cc994588CbC7ED8CbCb492Abaa39CeFD"
+      abi: ERC20V2Factory
+      startBlock: 25377497
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ERC20V2Factory/ERC20V2Factory.wasm
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: ERC20Factory
+          file: abis/ERC20Factory.json
+        - name: ERC20V2Factory
+          file: abis/ERC20V2Factory.json
+        - name: ERC20
+          file: abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewERC20(address,address,uint256)
+          handler: handleNewERC20
+templates:
+  - kind: ethereum/contract
+    name: MintableERC20
+    network: kovan
+    source:
+      abi: MintableERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: templates/MintableERC20/MintableERC20.wasm
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: MintableERC20
+          file: abis/MintableERC20.json
+      eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-        - event: PreDeposit(uint256)
-          handler: handlePreDeposit
-        - event: ChangePerReward(uint256)
-          handler: handleChangePerReward
+        - event: Mint(indexed address,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256)
+          handler: handleBurn

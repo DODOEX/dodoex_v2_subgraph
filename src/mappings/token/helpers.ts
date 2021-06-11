@@ -3,7 +3,7 @@ import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-t
 import {ERC20} from "../../types/token/ERC20Factory/ERC20"
 import {ERC20NameBytes} from "../../types/token/ERC20Factory/ERC20NameBytes"
 import {ERC20SymbolBytes} from "../../types/token/ERC20Factory/ERC20SymbolBytes"
-import {User} from "../../types/token/schema"
+import {User, DodoToken} from "../../types/token/schema"
 
 import {
     BASE_COIN,
@@ -225,7 +225,7 @@ export function fetchTokenDecimalsByCall(tokenAddress: Address): BigInt {
     return BigInt.fromI32(decimalResult as i32)
 }
 
-export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
+export function fetchTokenBalance(tokenAddress: Address, user: Address): BigInt {
     if (tokenAddress.toHexString() == BASE_COIN) {
         return BigInt.fromI32(0)
     }
@@ -238,7 +238,7 @@ export function fetchTokenBalance(tokenAddress: Address,user: Address): BigInt {
     return balanceResult.value;
 }
 
-export function createUser(address: Address,event: ethereum.Event): User {
+export function createUser(address: Address, event: ethereum.Event): User {
     let user = User.load(address.toHexString())
     if (user === null) {
         user = new User(address.toHexString())
@@ -248,6 +248,16 @@ export function createUser(address: Address,event: ethereum.Event): User {
     return user as User;
 }
 
+export function getDODOToken(): DodoToken {
+    let id = "DODO-Token"
+    let dodoToken = DodoToken.load(id);
+    if (dodoToken == null) {
+        dodoToken = new DodoToken(id);
+        dodoToken.tokens = ZERO_BI;
+        dodoToken.save()
+    }
+    return dodoToken as DodoToken;
+}
 
 
 
