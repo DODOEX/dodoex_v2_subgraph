@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODONFTProxy
-    network: kovan
+    network: rinkeby
     source:
-      address: "0xe121c6C90735e2Ca12e21708F2F379A55Ce61426"
+      address: "0xbC54E337DB2E99D4f5A4BDF20875C49D08a71210"
       abi: DODONFTProxy
-      startBlock: 25049733
+      startBlock: 8733899
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -22,6 +22,8 @@ dataSources:
         - VaultNft
         - Fragment
       abis:
+        - name: DODONFTProxy
+          file: abis/DODONFTProxy.json
         - name: DODONFTProxy
           file: abis/DODONFTProxy.json
         - name: Fragment
@@ -39,11 +41,11 @@ dataSources:
           handler: handleCreateFragment
   - kind: ethereum/contract
     name: DODONFT
-    network: kovan
+    network: rinkeby
     source:
       abi: DODONFT
-      address: "0x98f2a8d6100635ecb40ada1b1ffb1ff4f0b3c5d8"
-      startBlock: 25096268
+      address: "0x3Bc20358B31aD498d5a245B36bC993DDBE9A4405"
+      startBlock: 8733899
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -66,11 +68,11 @@ dataSources:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DODONFT1155
-    network: kovan
+    network: rinkeby
     source:
       abi: DODONFT1155
-      address: "0xe9c572287936db1b0a951ca0768c1b0d26b62a04"
-      startBlock: 25096274
+      address: "0xc498F36eF82Aa5dBE0ecF6DD56DD55398E80E13D"
+      startBlock: 8733899
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -98,7 +100,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: NFTCollateralVault
-    network: kovan
+    network: rinkeby
     source:
       abi: NFTCollateralVault
     mapping:
@@ -125,7 +127,7 @@ templates:
           handler: handleRemoveNftToken
   - kind: ethereum/contract
     name: Fragment
-    network: kovan
+    network: rinkeby
     source:
       abi: Fragment
     mapping:

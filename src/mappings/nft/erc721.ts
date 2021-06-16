@@ -8,6 +8,8 @@ export function handleTransfer(event: Transfer): void {
     let fromUser = createUser(event.params.from);
     let toUser = createUser(event.params.to);
     let nft = createAndGetNFT(event.address);
+    nft.type = "721";
+    nft.save();
 
     let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.tokenId.toString());
     let toUserNftId = event.params.to.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.tokenId.toString());

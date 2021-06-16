@@ -8,6 +8,8 @@ export function handleTransferSingle(event: TransferSingle): void {
     let fromUser = createUser(event.params.from);
     let toUser = createUser(event.params.to);
     let nft = createAndGetNFT(event.address);
+    nft.type = "1155";
+    nft.save();
 
     let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
     let toUserNftId = event.params.to.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
@@ -39,6 +41,8 @@ export function handleTransferBatch(event: TransferBatch): void {
     let fromUser = createUser(event.params.from);
     let toUser = createUser(event.params.to);
     let nft = createAndGetNFT(event.address);
+    nft.type = "1155";
+    nft.save();
 
     let ids = event.params.ids;
     let values = event.params.values;

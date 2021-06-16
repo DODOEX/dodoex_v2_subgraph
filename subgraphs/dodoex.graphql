@@ -450,6 +450,10 @@ type PairHourData @entity {
     baseTokenReserve: BigDecimal!
     "quote token reserve"
     quoteTokenReserve: BigDecimal!
+    "base token price"
+    baseUsdPrice: BigDecimal!
+    "quote token price"
+    quoteUsdPrice: BigDecimal!
 
     "total supply of base lp token"
     baseLpTokenTotalSupply: BigDecimal!
@@ -491,6 +495,8 @@ type TokenDayData @entity {
     "untracked base volume"
     untrackedVolume: BigDecimal!
 
+    "usdPrice"
+    usdPrice: BigDecimal!
     "volume"
     volume: BigDecimal!
     "bridge volume"

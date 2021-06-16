@@ -25,6 +25,9 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
 
     let pair = Pair.load(event.address.toHexString());
 
+    let baseToken = Token.load(pair.baseToken);
+    let quoteToken = Token.load(pair.quoteToken);
+
     let pairDayData = PairDayData.load(dayPairID);
     if (pairDayData == null) {
         pairDayData = new PairDayData(dayPairID);
@@ -51,6 +54,9 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
 
     pairDayData.baseTokenReserve = pair.baseReserve;
     pairDayData.quoteTokenReserve = pair.quoteReserve;
+    pairDayData.baseUsdPrice = baseToken.usdPrice;
+    pairDayData.quoteUsdPrice = quoteToken.usdPrice;
+
     if (pair.type != TYPE_DPP_POOL) {
         if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
             let baseLpToken = LpToken.load(pair.baseLpToken);
@@ -77,6 +83,8 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
     let hourPairID = event.address.toHexString().concat("-").concat(BigInt.fromI32(hourID).toString())
 
     let pair = Pair.load(event.address.toHexString());
+    let baseToken = Token.load(pair.baseToken);
+    let quoteToken = Token.load(pair.quoteToken);
 
     let pairHourData = PairHourData.load(hourPairID);
     if (pairHourData == null) {
@@ -104,6 +112,9 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
 
     pairHourData.baseTokenReserve = pair.baseReserve;
     pairHourData.quoteTokenReserve = pair.quoteReserve;
+    pairHourData.baseUsdPrice = baseToken.usdPrice;
+    pairHourData.quoteUsdPrice = quoteToken.usdPrice;
+
     if (pair.type != TYPE_DPP_POOL) {
         if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
             let baseLpToken = LpToken.load(pair.baseLpToken);
@@ -143,7 +154,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData.volumeBridge = ZERO_BD;
         tokenDayData.volumeUSD = ZERO_BD;
     }
-
+    tokenDayData.usdPrice = token.usdPrice
     tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
     tokenDayData.txns = tokenDayData.txns.plus(ONE_BI);
     tokenDayData.save();
