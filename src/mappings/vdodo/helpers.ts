@@ -70,6 +70,7 @@ export function createUser(userAddr: Address,event: ethereum.Event): User {
         user.stakingPower = ZERO_BI;
         user.superiorSP = ZERO_BI;
         user.spFromInvited = ZERO_BI;
+        user.creditFromInvited = ZERO_BD;
         user.mintAmount = ZERO_BD;
         user.redeemRecieveAmount = ZERO_BD;
         user.redeemFeeAmount = ZERO_BD;

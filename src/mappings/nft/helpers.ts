@@ -1,5 +1,5 @@
-import {InitializableERC721} from "../../types/nft/templates/NFTTokenFactory/InitializableERC721"
-import {InitializableERC1155} from "../../types/nft/templates/NFTTokenFactory/InitializableERC1155"
+import {DODONFT} from "../../types/nft/DODONFT1155/DODONFT"
+import {DODONFT1155} from "../../types/nft/DODONFT1155/DODONFT1155"
 import {Nft, Fragment, User} from "../../types/nft/schema";
 import {Address, BigDecimal, BigInt} from "@graphprotocol/graph-ts";
 import {Fragment as FragmentContract} from "../../types/nft/templates/Fragment/Fragment"
@@ -12,7 +12,7 @@ export let BI_18 = BigInt.fromI32(18)
 
 function fetchNFTName(address: Address): String {
     let name = null;
-    let erc721Contract = InitializableERC721.bind(address);
+    let erc721Contract = DODONFT.bind(address);
     let erc721name = erc721Contract.try_name();
     if (erc721name.reverted != true) {
         name = erc721name.value;

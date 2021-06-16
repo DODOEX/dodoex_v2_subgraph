@@ -398,6 +398,10 @@ type PairDayData @entity {
     baseTokenReserve: BigDecimal!
     "quote token reserve"
     quoteTokenReserve: BigDecimal!
+    "base token price"
+    baseUsdPrice: BigDecimal!
+    "quote token price"
+    quoteUsdPrice: BigDecimal!
 
     "total supply of base lp token"
     baseLpTokenTotalSupply: BigDecimal!

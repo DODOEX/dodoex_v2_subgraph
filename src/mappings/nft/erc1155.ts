@@ -1,6 +1,6 @@
 import {Nft, Fragment, User, UserNft} from "../../types/nft/schema";
 import {Address,BigInt} from "@graphprotocol/graph-ts";
-import {TransferBatch, TransferSingle} from "../../types/nft/templates/InitializableERC1155/InitializableERC1155"
+import {TransferBatch, TransferSingle} from "../../types/nft/DODONFT1155/DODONFT1155"
 import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
 import {DODONFTBurn, DODONFTMint} from "../../types/nft/DODONFT/DODONFT";
 
@@ -17,6 +17,7 @@ export function handleTransferSingle(event: TransferSingle): void {
     if (fromUserNft == null) {
         fromUserNft = new UserNft(fromUserNftId)
         fromUserNft.owner = fromUser.id;
+        fromUserNft.amount = ZERO_BI;
         fromUserNft.nft = nft.id;
     }
     fromUserNft.tokenID = event.params.id;
@@ -26,7 +27,8 @@ export function handleTransferSingle(event: TransferSingle): void {
     if (toUserNft == null) {
         toUserNft = new UserNft(toUserNftId)
         toUserNft.owner = toUser.id;
-        fromUserNft.nft = nft.id;
+        toUserNft.amount = ZERO_BI;
+        toUserNft.nft = nft.id;
     }
     toUserNft.tokenID = event.params.id;
     toUserNft.amount = toUserNft.amount.plus(event.params.value);
@@ -52,6 +54,7 @@ export function handleTransferBatch(event: TransferBatch): void {
         if (fromUserNft == null) {
             fromUserNft = new UserNft(fromUserNftId)
             fromUserNft.owner = fromUser.id;
+            fromUserNft.amount = ZERO_BI;
             fromUserNft.nft = nft.id;
         }
         fromUserNft.tokenID = tokenId;
@@ -61,7 +64,8 @@ export function handleTransferBatch(event: TransferBatch): void {
         if (toUserNft == null) {
             toUserNft = new UserNft(toUserNftId)
             toUserNft.owner = toUser.id;
-            fromUserNft.nft = nft.id;
+            toUserNft.amount = ZERO_BI;
+            toUserNft.nft = nft.id;
         }
         toUserNft.tokenID = tokenId;
         toUserNft.amount = toUserNft.amount.plus(amount);
