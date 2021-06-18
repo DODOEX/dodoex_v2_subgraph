@@ -8,7 +8,7 @@ dataSources:
     name: DODONFTProxy
     network: rinkeby
     source:
-      address: '0xbC54E337DB2E99D4f5A4BDF20875C49D08a71210'
+      address: '0x0CF019E13C6527BD34eC6c8323F11aB5DF6f0922'
       abi: DODONFTProxy
       startBlock: 8733899
     mapping:
