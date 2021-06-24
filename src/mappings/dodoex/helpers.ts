@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
 import {log, BigInt, BigDecimal, Address, ethereum, dataSource} from '@graphprotocol/graph-ts'
-import {ERC20} from "../../types/dodoex/DODOV1Proxy01/ERC20"
-import {ERC20NameBytes} from "../../types/dodoex/DODOV1Proxy01/ERC20NameBytes"
-import {ERC20SymbolBytes} from "../../types/dodoex/DODOV1Proxy01/ERC20SymbolBytes"
+import {ERC20} from "../../types/dodoex/DODOV2Proxy02/ERC20"
+import {ERC20NameBytes} from "../../types/dodoex/DODOV2Proxy02/ERC20NameBytes"
+import {ERC20SymbolBytes} from "../../types/dodoex/DODOV2Proxy02/ERC20SymbolBytes"
 import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
 import {
     User,
