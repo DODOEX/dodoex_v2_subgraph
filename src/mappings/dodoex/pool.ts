@@ -1,4 +1,4 @@
-import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
+import {BigInt, BigDecimal, ethereum, log} from '@graphprotocol/graph-ts'
 import {
     OrderHistory,
     Token,

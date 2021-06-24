@@ -6,17 +6,17 @@ export const TYPE_DSP_POOL = "DSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
-export const DODOZooID = "dodoex-v2-kovan";
+export const DODOZooID = "dodoex-v2-rinkby";
 export const CHAIN_BASE_COIN_SYMBOL = "ETH";
 export const CHAIN_BASE_COIN_NAME = "ethereum";
 
-export const SMART_ROUTE_ADDRESSES: string[]= ["0x85caa68ae47f047aa01c48bcaa711ca70a950ffb"];
-export const DVM_FACTORY_ADDRESS = "0x322f8014c125da09314d3a68d4d9f427823f17fd";
-export const DPP_FACTORY_ADDRESS = "0xc65f8087288aa0a118aa6f3228ef9ecc8187f4b6";
-export const CLASSIC_FACTORY_ADDRESS = "0x92230e929a2226b29ed3441ae5524886347c60c8";
+export const SMART_ROUTE_ADDRESSES: string[]= ["0xba001e96af87bf9d8d0bda667067a9921fe6d294"];
+export const DVM_FACTORY_ADDRESS = "0x17dddefa0c82e0c850a4adac2afe3f1fe977a242";
+export const DPP_FACTORY_ADDRESS = "0x510b49803e356c750f3a93ba5508c0ffd9f71bdd";
+export const CLASSIC_FACTORY_ADDRESS = "0x168442fec1e1e782c8770185dbb8328b91dc45c0";
 
-export const DVM_FACTORY_DEPLOY_BLOCK = 23379878;
-export const DPP_FACTORY_DEPLOY_BLOCK = 23388901;
+export const DVM_FACTORY_DEPLOY_BLOCK = 8732843;
+export const DPP_FACTORY_DEPLOY_BLOCK = 8732843;
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';

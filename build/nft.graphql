@@ -63,7 +63,7 @@ type Fragment @entity{
     "vault pre owner"
     vaultPreOwner: String!
     "buyoutTimestamp"
-    buyoutTimestamp: BigInt!
+    buyoutTimestamp: BigInt
 }
 
 type User @entity{
