@@ -30,7 +30,7 @@ import {
     calculateUsdVolume,
     updatePrice
 } from "./pricing"
-import {addTransaction} from "./transaction";
+import {addToken, addTransaction, addVolume} from "./transaction";
 import {increaseVolumeAndFee} from "./dayUpdates"
 
 import {
@@ -194,13 +194,18 @@ export function handleDODOSwap(event: DODOSwap): void {
     dodoZoo.feeUSD = dodoZoo.feeUSD.plus(feeUSD);
     dodoZoo.save();
 
+    //transaction
+    let transaction = addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
+    addToken(transaction, baseToken);
+    addToken(transaction, quoteToken);
+    addVolume(transaction, volumeUSD);
+
     //update day datas
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.receiver, volumeUSD);
-    addTransaction(event, event.params.trader.toHexString(), TRANSACTION_TYPE_SWAP);
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
     updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
-    increaseVolumeAndFee(event,volumeUSD,feeUSD);
+    increaseVolumeAndFee(event, volumeUSD, feeUSD);
 }
 
 export function handleBuyShares(event: BuyShares): void {
@@ -286,7 +291,9 @@ export function handleBuyShares(event: BuyShares): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_ADD);
+    let transaction = addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_ADD);
+    addToken(transaction, baseToken as Token);addToken(transaction, quoteToken as Token);
+
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_ADD);
 }
 
@@ -372,7 +379,10 @@ export function handleSellShares(event: SellShares): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
+    let transaction = addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
+    addToken(transaction, baseToken as Token);
+    addToken(transaction, quoteToken as Token);
+
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_REMOVE);
 }
 

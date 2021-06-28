@@ -6,7 +6,7 @@ export const TYPE_DSP_POOL = "DSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
-export const DODOZooID = "dodoex-v2-rinkby";
+export const DODOZooID = "dodoex-v2-rinkeby";
 export const CHAIN_BASE_COIN_SYMBOL = "ETH";
 export const CHAIN_BASE_COIN_NAME = "ethereum";
 

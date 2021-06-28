@@ -29,7 +29,7 @@ import {
 } from './helpers'
 import {DODOBirth, AddDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
 import {
-    Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken, UpdateLiquidityProviderFeeRate,
+    Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken, UpdateLiquidityProviderFeeRate,ChargeMaintainerFee,UpdateMaintainerFeeRate
     DisableBaseDepositCall,
     EnableBaseDepositCall,
     DisableQuoteDepositCall,
@@ -42,7 +42,7 @@ import {
     updatePrice,
     calculateUsdVolume
 } from "./pricing"
-import {addTransaction} from "./transaction";
+import {addToken, addTransaction, addVolume} from "./transaction";
 import {increaseVolumeAndFee} from "./dayUpdates";
 
 import {
@@ -224,7 +224,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
-
+            pair.mtFeeRate = ZERO_BD;
             baseToken.save();
             quoteToken.save();
             baseLpToken.save();
@@ -295,6 +295,7 @@ export function handleDODOBirth(event: DODOBirth): void {
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
+            pair.mtFeeRate = ZERO_BD;
 
             baseToken.save();
             quoteToken.save();
@@ -405,7 +406,10 @@ export function handleDeposit(event: Deposit): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_ADD);
+    //transaction
+    let transaction = addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_ADD);
+    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);
+
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_ADD);
 }
 
@@ -499,7 +503,9 @@ export function handleWithdraw(event: Withdraw): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.save();
 
-    addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
+    let transaction = addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
+    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);
+
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_REMOVE);
 }
 
@@ -651,7 +657,10 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     //更新日报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.seller, volumeUSD);
 
-    addTransaction(event, event.params.seller.toHexString(), TRANSACTION_TYPE_SWAP);
+    //transaction
+    let transaction= addTransaction(event, event.params.seller.toHexString(), TRANSACTION_TYPE_SWAP);
+    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);addVolume(transaction,volumeUSD);
+
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     updateTokenTraderCount(Address.fromString(pair.baseToken), event.transaction.from, event);
     updateTokenTraderCount(Address.fromString(pair.quoteToken), event.transaction.from, event);
@@ -815,7 +824,9 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer, volumeUSD);
 
-    addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
+    let transaction=addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
+    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);addVolume(transaction,volumeUSD);
+
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     increaseVolumeAndFee(event, volumeUSD, feeUSD);
 }
@@ -910,4 +921,12 @@ export function handleClaimAssets(event: ClaimAssets): void {
         pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.quoteToken), dataSource.address()), quoteToken.decimals);
         pair.save();
     }
+}
+
+export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void{
+
+}
+
+export function handleUpdateMaintainerFeeRate(event: UpdateMaintainerFeeRate): void{
+
 }

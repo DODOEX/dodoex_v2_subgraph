@@ -1,4 +1,4 @@
-import {OrderHistory, TokenDayData, IncentiveRewardHistory, Pair, Token} from "../../types/dodoex/schema"
+import {OrderHistory, TokenDayData, IncentiveRewardHistory, Pair, Token, Transaction} from "../../types/dodoex/schema"
 import {OrderHistory as OrderHistoryV2} from "../../types/dodoex/DODOV2Proxy02/DODOV2Proxy02"
 import {
     createToken,
@@ -10,14 +10,17 @@ import {
     updateVirtualPairVolume,
     updateTokenTraderCount
 } from "./helpers"
-import {SOURCE_SMART_ROUTE} from "../constant";
+import {SOURCE_SMART_ROUTE, TRANSACTION_TYPE_SWAP} from "../constant";
 import {Address, BigInt, store} from '@graphprotocol/graph-ts'
-import {trimTokenData, updateTokenDayData} from "./dayUpdates";
+import {trimTokenData, updateTokenDayData,getDodoDayData} from "./dayUpdates";
 import {
     calculateUsdVolume,
 } from "./pricing"
+import {addTransaction} from "./transaction"
 
 export function handleOrderHistory(event: OrderHistoryV2): void {
+    let transaction = addTransaction(event, event.transaction.from.toHexString(), TRANSACTION_TYPE_SWAP);
+
     let user = createUser(event.transaction.from, event);
     let fromToken = createToken(event.params.fromToken, event);
     let toToken = createToken(event.params.toToken, event);
@@ -31,8 +34,8 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
         toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
     }
 
-    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD);
-    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
+    fromToken.volumeUSD = fromToken.volumeUSD.plus(volumeUSD).minus(transaction.volumeUSD)
+    toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD).minus(transaction.volumeUSD);
 
     //1、更新用户交易数据(用户的交易次数在下层)
     user.txCount = user.txCount.plus(ONE_BI);
@@ -107,6 +110,9 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.volumeUSD = dodoZoo.volumeUSD.plus(volumeUSD);
     dodoZoo.save();
+    let dodoDayData = getDodoDayData(event);
+    dodoDayData.volumeUSD = dodoDayData.volumeUSD.plus(volumeUSD).minus(transaction.volumeUSD);
+    dodoDayData.save();
 
     updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
     updateTokenTraderCount(event.params.toToken, event.transaction.from, event);

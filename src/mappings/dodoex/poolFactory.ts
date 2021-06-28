@@ -20,7 +20,6 @@ import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/dodoex/DPPFact
 import {DSP, DSP__getPMMStateResultStateStruct} from "../../types/dodoex/DSPFactory/DSP"
 import {NewCP} from "../../types/dodoex/CrowdPoolingFactory/CrowdPoolingFactory"
 
-"../../types/dodoex/DODONFTRegistry"
 import {
     DVM as DVMTemplate,
     DPP as DPPTemplate,
@@ -94,6 +93,7 @@ export function handleNewDVM(event: NewDVM): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
+        pair.mtFeeRate = ZERO_BD;
 
         pair.save()
 
@@ -159,6 +159,7 @@ export function handleNewDPP(event: NewDPP): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
+        pair.mtFeeRate = ZERO_BD;
 
         pair.save();
 
@@ -226,6 +227,7 @@ export function handleNewDSP(event: NewDSP): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
+        pair.mtFeeRate = ZERO_BD;
 
         pair.save()
 

@@ -33,6 +33,8 @@ type DodoDayData @entity {
 type Transaction @entity {
     "hash"
     id: ID!
+    "timestamp"
+    timestamp: BigInt!
     "from"
     from: String!
     "to"
@@ -41,6 +43,10 @@ type Transaction @entity {
     sender: String!
     "type(TRADE、LP、CP)"
     type: String!
+    "tokens"
+    tokens: [Token!]
+    "volumeUSD"
+    volumeUSD: BigDecimal!
 }
 
 type User @entity {

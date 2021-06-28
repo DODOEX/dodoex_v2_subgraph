@@ -533,6 +533,10 @@ templates:
           handler: handleUpdateLiquidityProviderFeeRate
         - event: ClaimAssets(indexed address,uint256,uint256)
           handler: handleClaimAssets
+        - event: ChargeMaintainerFee(indexed address,bool,uint256)
+          handler: handleChargeMaintainerFee
+        - event: UpdateMaintainerFeeRate(uint256,uint256)
+          handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: DODOLpToken
     network: rinkeby

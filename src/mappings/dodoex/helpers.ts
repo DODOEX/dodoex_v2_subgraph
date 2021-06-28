@@ -346,11 +346,10 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
 export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount: BigDecimal, dealedToAmount: BigDecimal, volumeUSD: BigDecimal): Pair {
     let id = event.params.fromToken.toHexString().concat("-").concat(event.params.toToken.toHexString())
     let pair = Pair.load(id);
+    let baseToken = createToken(event.params.fromToken, event);
+    let quoteToken = createToken(event.params.toToken, event);
     if (pair === null) {
         pair = new Pair(id) as Pair;
-
-        let baseToken = createToken(event.params.fromToken, event);
-        let quoteToken = createToken(event.params.toToken, event);
 
         pair.baseToken = baseToken.id;
         pair.quoteToken = quoteToken.id;
@@ -398,6 +397,8 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
         pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(dealedToAmount);
     }
     pair.save();
+
+    // updateStatistics(event,pair  as Pair,pair.volumeBaseToken,pair.volumeQuoteToken,ZERO_BD,ZERO_BD,ZERO_BD,ZERO_BD,baseToken,quoteToken,event.params.sender,volumeUSD);
 
     return pair as Pair;
 }
