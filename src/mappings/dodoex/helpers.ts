@@ -4,6 +4,7 @@ import {ERC20} from "../../types/dodoex/DODOV2Proxy02/ERC20"
 import {ERC20NameBytes} from "../../types/dodoex/DODOV2Proxy02/ERC20NameBytes"
 import {ERC20SymbolBytes} from "../../types/dodoex/DODOV2Proxy02/ERC20SymbolBytes"
 import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
+import {ChargeMaintainerFee} from "../../types/dodoex/templates/DODO/DODO"
 import {
     User,
     Token,
@@ -12,7 +13,8 @@ import {
     DodoZoo,
     PairTrader,
     Pool,
-    TokenTrader
+    TokenTrader,
+    MaintainerFeeTx
 } from '../../types/dodoex/schema'
 import {DVMFactory} from "../../types/dodoex/DVMFactory/DVMFactory"
 import {DPPFactory} from "../../types/dodoex/DPPFactory/DPPFactory"
@@ -219,6 +221,7 @@ export function getDODOZoo(): DodoZoo {
         dodoZoo.txCount = ZERO_BI;
         dodoZoo.volumeUSD = ZERO_BD;
         dodoZoo.feeUSD = ZERO_BD;
+        dodoZoo.maintainerFeeUSD = ZERO_BD;
         dodoZoo.save();
     }
     return dodoZoo as DodoZoo;
@@ -383,6 +386,10 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
 
         pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
         pair.maintainer = Address.fromString(ADDRESS_ZERO);
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
 
     }
 

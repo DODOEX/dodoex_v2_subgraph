@@ -12,7 +12,7 @@ import {
     UserDayData
 } from "../../types/dodoex/schema"
 import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal} from './helpers'
+import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, getDODOZoo} from './helpers'
 import {ADDRESS_ZERO} from "../constant"
 import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
 
@@ -153,6 +153,8 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
         tokenDayData.traders = ZERO_BI;
         tokenDayData.volumeBridge = ZERO_BD;
         tokenDayData.volumeUSD = ZERO_BD;
+        tokenDayData.maintainerFee = ZERO_BD;
+        tokenDayData.maintainerFeeUSD = ZERO_BD;
     }
     tokenDayData.usdPrice = token.usdPrice
     tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
@@ -262,6 +264,7 @@ export function getDodoDayData(event: ethereum.Event): DodoDayData {
         dodoDayData.uniqueUsersCount = ZERO_BI;
         dodoDayData.volumeUSD = ZERO_BD;
         dodoDayData.feeUSD = ZERO_BD;
+        dodoDayData.maintainerFeeUSD = ZERO_BD;
         dodoDayData.save();
     }
 
@@ -280,6 +283,15 @@ export function increaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecima
     dodoDayData.volumeUSD = dodoDayData.volumeUSD.plus(volumeUSD);
     dodoDayData.feeUSD = dodoDayData.feeUSD.plus(feeUSD);
     dodoDayData.save();
+    return dodoDayData as DodoDayData;
+}
+
+export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecimal): DodoDayData {
+    let dodoDayData = getDodoDayData(event);
+    dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
+    dodoDayData.save();
+    let dodoZoo = getDODOZoo();
+    dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
     return dodoDayData as DodoDayData;
 }
 

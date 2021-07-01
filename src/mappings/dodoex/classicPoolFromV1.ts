@@ -6,7 +6,9 @@ import {
     Token,
     Swap,
     OrderHistory,
-    LpToken
+    LpToken,
+    MaintainerFeeTx,
+    MaintainerEarnings
 } from '../../types/dodoex/schema'
 import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../../types/dodoex/templates'
 import {
@@ -29,7 +31,14 @@ import {
 } from './helpers'
 import {DODOBirth, AddDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
 import {
-    Deposit, Withdraw, DODO, BuyBaseToken, SellBaseToken, UpdateLiquidityProviderFeeRate,ChargeMaintainerFee,UpdateMaintainerFeeRate
+    Deposit,
+    Withdraw,
+    DODO,
+    BuyBaseToken,
+    SellBaseToken,
+    UpdateLiquidityProviderFeeRate,
+    ChargeMaintainerFee,
+    UpdateMaintainerFeeRate,
     DisableBaseDepositCall,
     EnableBaseDepositCall,
     DisableQuoteDepositCall,
@@ -43,7 +52,7 @@ import {
     calculateUsdVolume
 } from "./pricing"
 import {addToken, addTransaction, addVolume} from "./transaction";
-import {increaseVolumeAndFee} from "./dayUpdates";
+import {increaseMaintainerFee, increaseVolumeAndFee,updateTokenDayData} from "./dayUpdates";
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -188,6 +197,8 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
             pair.baseToken = baseToken.id;
             pair.quoteToken = quoteToken.id;
+            pair.baseSymbol = baseToken.symbol;
+            pair.quoteSymbol = quoteToken.symbol;
             pair.type = TYPE_CLASSICAL_POOL;
 
             pair.creator = Address.fromString(OWNER[i]);
@@ -224,7 +235,11 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
-            pair.mtFeeRate = ZERO_BD;
+            pair.mtFeeRate = ZERO_BI;
+            pair.mtFeeBase = ZERO_BD;
+            pair.mtFeeQuote = ZERO_BD;
+            pair.mtFeeUSD = ZERO_BD;
+
             baseToken.save();
             quoteToken.save();
             baseLpToken.save();
@@ -258,6 +273,9 @@ export function handleDODOBirth(event: DODOBirth): void {
 
             let baseToken = createToken(event.params.baseToken, event);
             let quoteToken = createToken(event.params.quoteToken, event);
+            pair.baseSymbol = baseToken.symbol;
+            pair.quoteSymbol = quoteToken.symbol;
+
             let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_(), pair);
             let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_(), pair);
 
@@ -295,7 +313,10 @@ export function handleDODOBirth(event: DODOBirth): void {
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
-            pair.mtFeeRate = ZERO_BD;
+            pair.mtFeeRate = ZERO_BI;
+            pair.mtFeeBase = ZERO_BD;
+            pair.mtFeeQuote = ZERO_BD;
+            pair.mtFeeUSD = ZERO_BD;
 
             baseToken.save();
             quoteToken.save();
@@ -408,7 +429,8 @@ export function handleDeposit(event: Deposit): void {
 
     //transaction
     let transaction = addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_ADD);
-    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);
+    addToken(transaction, baseToken as Token);
+    addToken(transaction, quoteToken as Token);
 
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_ADD);
 }
@@ -504,7 +526,8 @@ export function handleWithdraw(event: Withdraw): void {
     dodoZoo.save();
 
     let transaction = addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
-    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);
+    addToken(transaction, baseToken as Token);
+    addToken(transaction, quoteToken as Token);
 
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_REMOVE);
 }
@@ -658,8 +681,10 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.seller, volumeUSD);
 
     //transaction
-    let transaction= addTransaction(event, event.params.seller.toHexString(), TRANSACTION_TYPE_SWAP);
-    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);addVolume(transaction,volumeUSD);
+    let transaction = addTransaction(event, event.params.seller.toHexString(), TRANSACTION_TYPE_SWAP);
+    addToken(transaction, baseToken as Token);
+    addToken(transaction, quoteToken as Token);
+    addVolume(transaction, volumeUSD);
 
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     updateTokenTraderCount(Address.fromString(pair.baseToken), event.transaction.from, event);
@@ -824,8 +849,10 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     //更新报表数据
     updateStatistics(event, pair as Pair, baseVolume, quoteVolume, baseLpFee, quoteLpFee, untrackedBaseVolume, untrackedQuoteVolume, baseToken, quoteToken, event.params.buyer, volumeUSD);
 
-    let transaction=addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
-    addToken(transaction,baseToken as Token);addToken(transaction,quoteToken as Token);addVolume(transaction,volumeUSD);
+    let transaction = addTransaction(event, event.params.buyer.toHexString(), TRANSACTION_TYPE_SWAP);
+    addToken(transaction, baseToken as Token);
+    addToken(transaction, quoteToken as Token);
+    addVolume(transaction, volumeUSD);
 
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_SWAP);
     increaseVolumeAndFee(event, volumeUSD, feeUSD);
@@ -923,10 +950,73 @@ export function handleClaimAssets(event: ClaimAssets): void {
     }
 }
 
-export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void{
+export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void {
+    let pair = Pair.load(event.address.toHexString());
+    if (pair == null) {
+        return;
+    }
+
+    let tokenAddress: string;
+    if (event.params.isBaseToken == true) {
+        tokenAddress = pair.baseToken;
+    } else {
+        tokenAddress = pair.quoteToken;
+    }
+    let token = Token.load(tokenAddress);
+    if (token == null) {
+        return;
+    }
+
+    let formatAmount = convertTokenToDecimal(event.params.amount, token.decimals);
+    let volumeUSD = formatAmount.times(token.usdPrice);
+
+    if (event.params.isBaseToken == true) {
+        pair.mtFeeBase = pair.mtFeeBase.plus(formatAmount);
+    } else {
+        pair.mtFeeQuote = pair.mtFeeQuote.plus(formatAmount);
+    }
+    pair.maintainer = event.params.maintainer;
+    pair.mtFeeUSD = pair.mtFeeUSD.plus(volumeUSD);
+    pair.save();
+
+    let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
+    let maintainerFeeTx = MaintainerFeeTx.load(id);
+    if (maintainerFeeTx == null) {
+        maintainerFeeTx = new MaintainerFeeTx(id);
+        maintainerFeeTx.hash = event.transaction.hash.toHexString();
+        maintainerFeeTx.token = tokenAddress;
+        maintainerFeeTx.amount = formatAmount;
+        maintainerFeeTx.volumeUSD = volumeUSD;
+    }
+    maintainerFeeTx.save();
+
+    let maintainerEarningsID = event.params.maintainer.toHexString().concat("-").concat(token.id);
+    let maintainerEarnings = MaintainerEarnings.load(maintainerEarningsID);
+    if(maintainerEarnings == null){
+        maintainerEarnings = new MaintainerEarnings(maintainerEarningsID);
+        maintainerEarnings.maintainer = pair.maintainer;
+        maintainerEarnings.token = token.id;
+        maintainerEarnings.amount = ZERO_BD;
+        maintainerEarnings.amountUSD = ZERO_BD;
+    }
+    maintainerEarnings.amount = maintainerEarnings.amount.plus(formatAmount);
+    maintainerEarnings.amountUSD = maintainerEarnings.amountUSD.plus(volumeUSD);
+    maintainerEarnings.save();
+
+    let tokenDayData = updateTokenDayData(token as Token,event);
+    tokenDayData.txns = tokenDayData.txns.minus(ONE_BI);
+    tokenDayData.maintainerFee = tokenDayData.maintainerFee.plus(formatAmount);
+    tokenDayData.maintainerFeeUSD = tokenDayData.maintainerFeeUSD.plus(volumeUSD);
+    tokenDayData.save();
+
+    increaseMaintainerFee(event, volumeUSD);
 
 }
 
-export function handleUpdateMaintainerFeeRate(event: UpdateMaintainerFeeRate): void{
-
+export function handleUpdateMaintainerFeeRate(event: UpdateMaintainerFeeRate): void {
+    let pair = Pair.load(event.address.toHexString());
+    if (pair != null) {
+        pair.mtFeeRate = event.params.newMaintainerFeeRate
+        pair.save();
+    }
 }

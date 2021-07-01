@@ -48,8 +48,10 @@ export function handleNewDVM(event: NewDVM): void {
         pair = new Pair(event.params.dvm.toHexString());
         pair.baseToken = event.params.baseToken.toHexString();
         pair.type = TYPE_DVM_POOL;
-
         pair.quoteToken = event.params.quoteToken.toHexString();
+        pair.baseSymbol = baseToken.symbol;
+        pair.quoteSymbol = quoteToken.symbol;
+
         pair.creator = event.params.creator;
         pair.createdAtTimestamp = event.block.timestamp;
         pair.createdAtBlockNumber = event.block.number;
@@ -93,7 +95,10 @@ export function handleNewDVM(event: NewDVM): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
-        pair.mtFeeRate = ZERO_BD;
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
 
         pair.save()
 
@@ -118,8 +123,9 @@ export function handleNewDPP(event: NewDPP): void {
         pair = new Pair(event.params.dpp.toHexString());
         pair.baseToken = event.params.baseToken.toHexString();
         pair.type = TYPE_DPP_POOL;
-
         pair.quoteToken = event.params.quoteToken.toHexString();
+        pair.baseSymbol = baseToken.symbol;
+        pair.quoteSymbol = quoteToken.symbol;
         pair.creator = event.params.creator;
         pair.createdAtTimestamp = event.block.timestamp;
         pair.createdAtBlockNumber = event.block.number;
@@ -159,8 +165,10 @@ export function handleNewDPP(event: NewDPP): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
-        pair.mtFeeRate = ZERO_BD;
-
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
         pair.save();
 
         let dodoZoo = getDODOZoo();
@@ -182,8 +190,9 @@ export function handleNewDSP(event: NewDSP): void {
         pair = new Pair(event.params.DSP.toHexString());
         pair.baseToken = event.params.baseToken.toHexString();
         pair.type = TYPE_DSP_POOL;
-
         pair.quoteToken = event.params.quoteToken.toHexString();
+        pair.baseSymbol = baseToken.symbol;
+        pair.quoteSymbol = quoteToken.symbol;
         pair.creator = event.params.creator;
         pair.createdAtTimestamp = event.block.timestamp;
         pair.createdAtBlockNumber = event.block.number;
@@ -227,7 +236,10 @@ export function handleNewDSP(event: NewDSP): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
-        pair.mtFeeRate = ZERO_BD;
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
 
         pair.save()
 
@@ -345,7 +357,10 @@ export function handleNewRegistry(event: NewRegistry): void {
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);
         }
-
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
         pair.save()
 
         let dodoZoo = getDODOZoo();

@@ -13,6 +13,8 @@ type DodoZoo @entity {
     volumeUSD: BigDecimal!
     "fee usd"
     feeUSD: BigDecimal!
+    "maintainer fee usd"
+    maintainerFeeUSD: BigDecimal!
 }
 
 type DodoDayData @entity {
@@ -28,6 +30,8 @@ type DodoDayData @entity {
     volumeUSD: BigDecimal!
     "fee usd"
     feeUSD: BigDecimal!
+    "maintainer fee usd"
+    maintainerFeeUSD: BigDecimal!
 }
 
 type Transaction @entity {
@@ -252,6 +256,10 @@ type Pair @entity {
     baseToken: Token!
     "quote token"
     quoteToken: Token!
+    "base token symbol"
+    baseSymbol: String
+    "quote token symbol"
+    quoteSymbol: String
     "i"
     i: BigInt
     "k"
@@ -302,6 +310,14 @@ type Pair @entity {
     mtFeeRateModel: Bytes!
     "maintainer"
     maintainer: Bytes!
+    "maintainer fee rate"
+    mtFeeRate: BigInt!
+    "maintainer fee base token"
+    mtFeeBase: BigDecimal!
+    "maintainer fee quote token"
+    mtFeeQuote: BigDecimal!
+    "maintainer fee in USD"
+    mtFeeUSD: BigDecimal!
 
     "trader count"
     traderCount: BigInt!
@@ -362,7 +378,32 @@ type Swap @entity {
     quoteVolume: BigDecimal!
     "traded volume of USD"
     volumeUSD: BigDecimal!
+}
 
+type MaintainerFeeTx @entity {
+    "ID:transaction hash - event index"
+    id: ID!
+    "transaction hash"
+    hash: String!
+    "earning token"
+    token:Token!
+    "amount"
+    amount:BigDecimal!
+    "volume in usd"
+    volumeUSD: BigDecimal!
+}
+
+type MaintainerEarnings @entity {
+    "maintainer address - token address"
+    id: ID!
+    "maintainer address"
+    maintainer: Bytes!
+    "token address"
+    token: Token!
+    "amount"
+    amount:  BigDecimal!
+    "amount of usd"
+    amountUSD:  BigDecimal!
 }
 
 type FlashLoan @entity {
@@ -520,6 +561,11 @@ type TokenDayData @entity {
 
     "trading fee lp get"
     fee: BigDecimal!
+
+    "maintainer fee"
+    maintainerFee: BigDecimal!
+    "maintainer fee in usd"
+    maintainerFeeUSD: BigDecimal!
 }
 
 type CrowdPooling @entity {

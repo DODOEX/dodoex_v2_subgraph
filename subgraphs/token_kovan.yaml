@@ -37,7 +37,7 @@ dataSources:
     name: ERC20V2Factory
     network: kovan
     source:
-      address: '0xB79FB302cc994588CbC7ED8CbCb492Abaa39CeFD'
+      address: '0xa2c1eA946dA567248c70F792b64D5F2551f29204'
       abi: ERC20V2Factory
       startBlock: 25377497
     mapping:

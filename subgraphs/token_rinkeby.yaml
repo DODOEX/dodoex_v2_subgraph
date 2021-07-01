@@ -37,7 +37,7 @@ dataSources:
     name: ERC20V2Factory
     network: rinkeby
     source:
-      address: '0xa89E003FF3378078892e2eFD0032DaED149AE266'
+      address: '0x7A22e361cB74E69B5B1C800A3aAbE3E50e84F4F6'
       abi: ERC20V2Factory
       startBlock: 8736769
     mapping:
