@@ -292,6 +292,7 @@ export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecim
     dodoDayData.save();
     let dodoZoo = getDODOZoo();
     dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
+    dodoZoo.save();
     return dodoDayData as DodoDayData;
 }
 
