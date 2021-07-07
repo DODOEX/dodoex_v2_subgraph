@@ -15,7 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/nft/proxy.ts
+      file: ../../src/mappings/nft/proxy.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -23,15 +23,15 @@ dataSources:
         - Fragment
       abis:
         - name: DODONFTProxy
-          file: ../abis/DODONFTProxy.json
+          file: ../../abis/DODONFTProxy.json
         - name: Fragment
-          file: ../abis/Fragment.json
+          file: ../../abis/Fragment.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: CreateNFTCollateralVault(address,address,string,string)
           handler: handleCreateNFTCollateralVault
@@ -48,7 +48,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/nft/tokenFactory.ts
+      file: ../../src/mappings/nft/tokenFactory.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -56,11 +56,11 @@ dataSources:
         - Fragment
       abis:
         - name: NFTTokenFactory
-          file: ../abis/NFTTokenFactory.json
+          file: ../../abis/NFTTokenFactory.json
         - name: InitializableERC721
-          file: ../abis/InitializableERC721.json
+          file: ../../abis/InitializableERC721.json
         - name: InitializableERC1155
-          file: ../abis/InitializableERC1155.json
+          file: ../../abis/InitializableERC1155.json
       eventHandlers:
         - event: NewERC721(address,address)
           handler: handleNewERC721
@@ -76,7 +76,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/nft/vault.ts
+      file: ../../src/mappings/nft/vault.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -84,11 +84,11 @@ templates:
         - Fragment
       abis:
         - name: NFTCollateralVault
-          file: ../abis/NFTCollateralVault.json
+          file: ../../abis/NFTCollateralVault.json
         - name: InitializableERC721
-          file: ../abis/InitializableERC721.json
+          file: ../../abis/InitializableERC721.json
         - name: InitializableERC1155
-          file: ../abis/InitializableERC1155.json
+          file: ../../abis/InitializableERC1155.json
       eventHandlers:
         - event: AddNftToken(address,uint256,uint256)
           handler: handleAddNftToken
@@ -103,7 +103,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/nft/fragment.ts
+      file: ../../src/mappings/nft/fragment.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -111,7 +111,7 @@ templates:
         - Fragment
       abis:
         - name: Fragment
-          file: ../abis/Fragment.json
+          file: ../../abis/Fragment.json
       eventHandlers:
         - event: Buyout(address)
           handler: handleBuyout

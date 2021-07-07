@@ -30,7 +30,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - heco : https://q.hg.network/subgraphs/name/dodoex/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-polygon
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-arbitrum
-    - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-v2
+    - kovan : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-kovan
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-rinkeby
  - token
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token

@@ -15,19 +15,19 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../src/mappings/vdodo/core.ts
+      file: ../../src/mappings/vdodo/core.ts
       entities:
         - User
         - StakeHistory
       abis:
         - name: vDODOToken
-          file: ../abis/vDODOToken.json
+          file: ../../abis/vDODOToken.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: MintVDODO(address,address,uint256)
           handler: handleMintVDODO

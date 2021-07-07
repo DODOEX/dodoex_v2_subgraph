@@ -1,0 +1,23 @@
+type MinePool @entity {
+    "id"
+    id: ID!
+    "creator"
+    creator: Bytes!
+    "mine pool address"
+    pool: Bytes!
+    "reward details"
+    rewardDetail:[RewardDetail!]! @derivedFrom(field: "minePool")
+}
+
+type RewardDetail @entity{
+    "id"
+    id: ID!
+    "minepool"
+    minePool: MinePool!
+    "rewardTokens"
+    token: Bytes!
+    "start block"
+    startBlock: BigInt!
+    "end block"
+    endBlock: BigInt!
+}
