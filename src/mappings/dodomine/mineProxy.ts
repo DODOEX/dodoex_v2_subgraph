@@ -32,5 +32,7 @@ export function handleCreateMineV3(event: CreateMineV3): void {
     }
 
     minePool.save();
+
+    //will get "fatalError":{"message":"type mismatch with parameters: expected 1 types, found 0"
     ERC20MineV3Template.create(event.params.mineV3);
 }
