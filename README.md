@@ -47,7 +47,9 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 - nft
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodo-nft-rinkeby
-    
+ - mine
+    - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodomine-rinkeby
+
 ## 2、 Graphql Examples
  - to get user info
 ```
