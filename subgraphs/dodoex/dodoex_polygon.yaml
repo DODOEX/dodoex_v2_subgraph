@@ -5,6 +5,33 @@ schema:
   file: ./dodoex.graphql
 dataSources:
   - kind: ethereum/contract
+    name: DODORouteProxy
+    network: matic
+    source:
+      address: '0x2fA4334cfD7c56a0E7Ca02BD81455205FcBDc5E9'
+      abi: DODORouteProxy
+      startBlock: 14604506
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODORouteProxy
+          file: ../../abis/DODORouteProxy.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
     name: DODOV2Proxy02
     network: matic
     source:
