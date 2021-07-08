@@ -2,9 +2,11 @@ type MinePool @entity {
     "id"
     id: ID!
     "creator"
-    creator: Bytes!
+    creator: Bytes
     "mine pool address"
     pool: Bytes!
+    "isLptoken"
+    isLpToken: Boolean
     "reward details"
     rewardDetail:[RewardDetail!]! @derivedFrom(field: "minePool")
 }
@@ -16,6 +18,8 @@ type RewardDetail @entity{
     minePool: MinePool!
     "rewardTokens"
     token: Bytes!
+    "reward per block"
+    rewardPerBlock: BigInt!
     "start block"
     startBlock: BigInt!
     "end block"

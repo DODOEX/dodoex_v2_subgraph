@@ -1,48 +1,27 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_dodoLogic",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_cloneFactory",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_defaultSupervisor",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
         "indexed": false,
         "internalType": "address",
-        "name": "newBorn",
+        "name": "mine",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "baseToken",
+        "name": "stakeToken",
         "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "quoteToken",
-        "type": "address"
+        "internalType": "bool",
+        "name": "isLpToken",
+        "type": "bool"
       }
     ],
-    "name": "DODOBirth",
+    "name": "NewMineV3",
     "type": "event"
   },
   {
@@ -84,34 +63,64 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "_CLONE_FACTORY_",
-    "outputs": [
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "mine",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "stakeToken",
+        "type": "address"
+      }
+    ],
+    "name": "RemoveMineV3",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "addAdmin",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "removeAdmin",
+    "type": "event"
+  },
+  {
+    "inputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_DEFAULT_SUPERVISOR_",
-    "outputs": [
+      },
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_DODO_LOGIC_",
+    "name": "_LP_REGISTRY_",
     "outputs": [
       {
         "internalType": "address",
@@ -125,12 +134,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
-    "name": "_DODOs",
+    "name": "_MINE_REGISTRY_",
     "outputs": [
       {
         "internalType": "address",
@@ -171,11 +180,35 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "dodo",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "_SINGLE_REGISTRY_",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "addDODO",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "contractAddr",
+        "type": "address"
+      }
+    ],
+    "name": "addAdminList",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -184,53 +217,22 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "maintainer",
+        "name": "mine",
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "baseToken",
-        "type": "address"
+        "internalType": "bool",
+        "name": "isLpToken",
+        "type": "bool"
       },
       {
         "internalType": "address",
-        "name": "quoteToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "oracle",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lpFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "mtFeeRate",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "k",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "gasPriceLimit",
-        "type": "uint256"
-      }
-    ],
-    "name": "breedDODO",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "newBornDODO",
+        "name": "stakeToken",
         "type": "address"
       }
     ],
+    "name": "addMineV3",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -245,53 +247,24 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "baseToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "quoteToken",
+        "name": "newOwner",
         "type": "address"
       }
     ],
-    "name": "getDODO",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getDODOs",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "initOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "baseToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "quoteToken",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "isDODORegistered",
+    "name": "isAdminListed",
     "outputs": [
       {
         "internalType": "bool",
@@ -306,11 +279,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "dodo",
+        "name": "contractAddr",
         "type": "address"
       }
     ],
-    "name": "removeDODO",
+    "name": "removeAdminList",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -319,37 +292,21 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_cloneFactory",
+        "name": "mine",
         "type": "address"
-      }
-    ],
-    "name": "setCloneFactory",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
+      {
+        "internalType": "bool",
+        "name": "isLpToken",
+        "type": "bool"
+      },
       {
         "internalType": "address",
-        "name": "_dodoLogic",
+        "name": "stakeToken",
         "type": "address"
       }
     ],
-    "name": "setDODOLogic",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_defaultSupervisor",
-        "type": "address"
-      }
-    ],
-    "name": "setDefaultSupervisor",
+    "name": "removeMineV3",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

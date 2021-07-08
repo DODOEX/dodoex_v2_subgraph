@@ -10,9 +10,9 @@ export function handleCreateMineV3(event: CreateMineV3): void {
 
     if (minePool == null) {
         minePool = new MinePool(event.params.mineV3.toHexString());
-        minePool.creator = event.params.account;
-        minePool.pool = event.params.mineV3;
     }
+    minePool.creator = event.params.account;
+    minePool.pool = event.params.mineV3;
 
     let rewardTokensNum = getRewardNum(event.params.mineV3);
 
@@ -28,11 +28,14 @@ export function handleCreateMineV3(event: CreateMineV3): void {
         rewardDetail.token = rewardData.value0;
         rewardDetail.startBlock = rewardData.value1;
         rewardDetail.endBlock = rewardData.value2;
+        rewardDetail.rewardPerBlock = rewardData.value4;
         rewardDetail.save();
     }
 
     minePool.save();
 
     //will get "fatalError":{"message":"type mismatch with parameters: expected 1 types, found 0"
-    ERC20MineV3Template.create(event.params.mineV3);
+    if (event.params.mineV3 != null) {
+        ERC20MineV3Template.create(event.params.mineV3);
+    }
 }

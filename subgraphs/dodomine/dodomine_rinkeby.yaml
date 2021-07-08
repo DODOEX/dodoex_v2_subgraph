@@ -8,7 +8,7 @@ dataSources:
     name: DODOMineV3Proxy
     network: rinkeby
     source:
-      address: '0x0beC8cd51dF39f8d09a1Db5AD3A8e6ed994d889D'
+      address: '0xcb15BBb59AC8a4B64A4db9B8d9F66c397d89Bd22'
       abi: DODOMineV3Proxy
       startBlock: 8887056
     mapping:
@@ -32,6 +32,36 @@ dataSources:
       eventHandlers:
         - event: CreateMineV3(address,address)
           handler: handleCreateMineV3
+  - kind: ethereum/contract
+    name: DODOMineV3Registry
+    network: rinkeby
+    source:
+      address: '0xeA12A4F762B6D8e2a122847aB1ecF60BB690fEd8'
+      abi: DODOMineV3Registry
+      startBlock: 8898426
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodomine/registry.ts
+      entities:
+        - MinePool
+      abis:
+        - name: DODOMineV3Proxy
+          file: ../../abis/DODOMineV3Proxy.json
+        - name: DODOMineV3Registry
+          file: ../../abis/DODOMineV3Registry.json
+        - name: ERC20MineV3
+          file: ../../abis/ERC20MineV3.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewMineV3(address,address,bool)
+          handler: handleNewMineV3
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
