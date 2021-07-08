@@ -12,7 +12,7 @@ import {
 } from "./helpers"
 import {SOURCE_SMART_ROUTE, TRANSACTION_TYPE_SWAP} from "../constant";
 import {Address, BigInt, store} from '@graphprotocol/graph-ts'
-import {trimTokenData, updateTokenDayData,getDodoDayData} from "./dayUpdates";
+import {trimTokenData, updateTokenDayData,getDodoDayData,increaseVolumeAndFee,decreaseVolumeAndFee} from "./dayUpdates";
 import {
     calculateUsdVolume,
 } from "./pricing"
@@ -53,8 +53,9 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
         let orderHistoryAboveID = event.transaction.hash.toHexString().concat("-").concat(i.toString());
         let orderHistoryAbove = OrderHistory.load(orderHistoryAboveID);
         if (orderHistoryAbove != null) {
-            trimTokenData(createToken(Address.fromString(orderHistoryAbove.fromToken), event), orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, volumeUSD, event);
-            trimTokenData(createToken(Address.fromString(orderHistoryAbove.toToken), event), orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, volumeUSD, event);
+            trimTokenData(createToken(Address.fromString(orderHistoryAbove.fromToken), event), orderHistoryAbove.amountIn, orderHistoryAbove.fromToken === fromToken.id ? ZERO_BD : orderHistoryAbove.amountIn, orderHistoryAbove.volumeUSD, event);
+            trimTokenData(createToken(Address.fromString(orderHistoryAbove.toToken), event), orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, orderHistoryAbove.volumeUSD, event);
+            decreaseVolumeAndFee(event,orderHistoryAbove.volumeUSD,ZERO_BD);
 
             store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
             trim = true;
@@ -116,4 +117,5 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
 
     updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
     updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
+    increaseVolumeAndFee(event,volumeUSD,ZERO_BD);
 }

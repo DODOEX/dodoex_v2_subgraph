@@ -5,12 +5,12 @@ schema:
   file: ./dodoex.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODORouteProxy_2021_05_12
+    name: DODORouteProxy
     network: mainnet
     source:
-      address: '0x8d3102e4fe76b5e1a896d8bcbc1ba2643d8bea1a'
+      address: '0xEc0fA5746E37dE75bDA9C1F874F2B75C12e505F6'
       abi: DODORouteProxy
-      startBlock: 4000022
+      startBlock: 4989249
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
