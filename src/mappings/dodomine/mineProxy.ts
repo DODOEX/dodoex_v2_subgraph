@@ -2,8 +2,8 @@ import {MinePool, RewardDetail} from "../../types/dodomine/schema"
 import {CreateMineV3} from "../../types/dodomine/DODOMineV3Proxy/DODOMineV3Proxy"
 import {ERC20MineV3 as ERC20MineV3Template} from "../../types/dodomine/templates"
 
-import {getRewardNum, rewardTokenInfos} from "./helper"
-import {BigInt} from "@graphprotocol/graph-ts";
+import {getRewardNum, rewardTokenInfos, getToken} from "./helper"
+import {BigInt,log} from "@graphprotocol/graph-ts";
 
 export function handleCreateMineV3(event: CreateMineV3): void {
     let minePool = MinePool.load(event.params.mineV3.toHexString());
@@ -13,6 +13,8 @@ export function handleCreateMineV3(event: CreateMineV3): void {
     }
     minePool.creator = event.params.account;
     minePool.pool = event.params.mineV3;
+    minePool.timestamp = event.block.timestamp;
+    minePool.stakeToken = getToken(event.params.mineV3);
 
     let rewardTokensNum = getRewardNum(event.params.mineV3);
 
@@ -35,6 +37,8 @@ export function handleCreateMineV3(event: CreateMineV3): void {
     minePool.save();
 
     //will get "fatalError":{"message":"type mismatch with parameters: expected 1 types, found 0"
+    log.debug("mineV3 address: {}",[event.params.mineV3.toHexString()]);
+    log.info("mineV3 address: {}",[event.params.mineV3.toHexString()]);
     if (event.params.mineV3 != null) {
         ERC20MineV3Template.create(event.params.mineV3);
     }

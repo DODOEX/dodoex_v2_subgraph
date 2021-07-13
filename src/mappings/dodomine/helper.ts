@@ -18,3 +18,9 @@ export function getIdByRewardToken(address: Address, token: Address): BigInt {
     let ID = contract.getIdByRewardToken(token);
     return ID;
 }
+
+export function getToken(address: Address): Address {
+    let contract = ERC20MineV3.bind(address);
+    let token = contract._TOKEN_();
+    return token;
+}

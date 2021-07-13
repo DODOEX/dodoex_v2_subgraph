@@ -37,9 +37,9 @@ dataSources:
     name: ERC20V2Factory
     network: mainnet
     source:
-      address: '0x1297264617bd34270B77c2fFD3aA110D3fd2f7aF'
+      address: '0x1297264617bd34270b77c2ffd3aa110d3fd2f7af'
       abi: ERC20V2Factory
-      startBlock: 14349331
+      startBlock: 6074427
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

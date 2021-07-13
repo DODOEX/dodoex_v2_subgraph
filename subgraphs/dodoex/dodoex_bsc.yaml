@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODORouteProxy
-    network: mainnet
+    network: bsc
     source:
       address: '0xa2398842F37465f89540430bDC00219fA9E4D28a'
       abi: DODORouteProxy
@@ -33,7 +33,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOMine
-    network: mainnet
+    network: bsc
     source:
       address: '0x01f9bfac04e6184e90bd7eafd51999ce430cc750'
       abi: DODOMine
@@ -64,7 +64,7 @@ dataSources:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODOIncentive
-    network: mainnet
+    network: bsc
     source:
       address: '0x80930cb1849f7d42531506ff45e66724338a821b'
       abi: DODOIncentive
@@ -93,7 +93,7 @@ dataSources:
           handler: handleIncentive
   - kind: ethereum/contract
     name: DODOV2Proxy01
-    network: mainnet
+    network: bsc
     source:
       address: '0xb57dd5c265dbb13ca014f2332069e90cd0e22e65'
       abi: DODOV2Proxy01
@@ -120,7 +120,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOV2Proxy02_2012_02_17
-    network: mainnet
+    network: bsc
     source:
       address: '0xd56281ef996b6b29874c77d2e1464216e8043127'
       abi: DODOV2Proxy02
@@ -147,7 +147,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: mainnet
+    network: bsc
     source:
       address: '0x8f8dd7db1bda5ed3da8c9daf3bfa471c12d58486'
       abi: DODOV2Proxy02
@@ -174,7 +174,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory_2020_02_21
-    network: mainnet
+    network: bsc
     source:
       address: '0xf50bdc9e90b7a1c138cb7935071b85c417c4cb8e'
       abi: DVMFactory
@@ -205,7 +205,7 @@ dataSources:
           handler: handleNewDVM
   - kind: ethereum/contract
     name: DVMFactory_2020_02_16
-    network: mainnet
+    network: bsc
     source:
       address: '0x790b4a80fb1094589a3c0efc8740aa9b0c1733fb'
       abi: DVMFactory
@@ -236,7 +236,7 @@ dataSources:
           handler: handleNewDVM
   - kind: ethereum/contract
     name: DPPFactory_2021_01_22
-    network: mainnet
+    network: bsc
     source:
       address: '0x7737fd30535c69545deeea54ab8dd590ccaebd3c'
       abi: DPPFactory
@@ -267,7 +267,7 @@ dataSources:
           handler: handleNewDPP
   - kind: ethereum/contract
     name: DPPFactory_2021_02_17
-    network: mainnet
+    network: bsc
     source:
       address: '0x9b64c81ba54ea51e1f6b7fefb3cff8aa6f1e2a09'
       abi: DPPFactory
@@ -298,7 +298,7 @@ dataSources:
           handler: handleNewDPP
   - kind: ethereum/contract
     name: DPPFactory
-    network: mainnet
+    network: bsc
     source:
       address: '0xafe0a75dffb395eaabd0a7e1bbbd0b11f8609eef'
       abi: DPPFactory
@@ -331,7 +331,7 @@ dataSources:
           handler: handleRemoveDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: mainnet
+    network: bsc
     source:
       address: '0x0fb9815938ad069bf90e14fe6c596c514bede767'
       abi: DSPFactory
@@ -364,7 +364,7 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory_20200721
-    network: mainnet
+    network: bsc
     source:
       address: '0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5'
       abi: CrowdPoolingFactory
@@ -397,7 +397,7 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
-    network: mainnet
+    network: bsc
     source:
       address: '0x778df5b12170e8af8df94356bfc864e57ce185dc'
       abi: CrowdPoolingFactory
@@ -430,7 +430,7 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory
-    network: mainnet
+    network: bsc
     source:
       address: '0x4f57f6929e58ae564f6ab090fe0aeecb39b0f270'
       abi: UpCrowdPoolingFactory
@@ -465,7 +465,7 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: mainnet
+    network: bsc
     source:
       address: '0xca459456a45e300aa7ef447dbb60f87cccb42828'
       abi: DODOZoo
@@ -497,7 +497,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: mainnet
+    network: bsc
     source:
       abi: DVM
     mapping:
@@ -533,7 +533,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: mainnet
+    network: bsc
     source:
       abi: DPP
     mapping:
@@ -570,7 +570,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: mainnet
+    network: bsc
     source:
       abi: DSP
     mapping:
@@ -610,7 +610,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: mainnet
+    network: bsc
     source:
       abi: CP
     mapping:
@@ -649,7 +649,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: mainnet
+    network: bsc
     source:
       abi: DODO
     mapping:
@@ -696,7 +696,7 @@ templates:
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: ERC20
-    network: mainnet
+    network: bsc
     source:
       abi: ERC20
     mapping:
@@ -729,7 +729,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DODOLpToken
-    network: mainnet
+    network: bsc
     source:
       abi: DODOLpToken
     mapping:

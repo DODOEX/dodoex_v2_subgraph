@@ -1,10 +1,14 @@
 type MinePool @entity {
     "id"
     id: ID!
+    "timestamp"
+    timestamp: BigInt
     "creator"
     creator: Bytes
     "mine pool address"
     pool: Bytes!
+    "stake token"
+    stakeToken:Bytes
     "isLptoken"
     isLpToken: Boolean
     "reward details"
