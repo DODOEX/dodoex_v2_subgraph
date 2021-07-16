@@ -21,7 +21,7 @@ import {
     getDODOZoo,
     updateStatistics,
     updateUserDayDataAndDodoDayData,
-    updateTokenTraderCount
+    updateTokenTraderCount,
 } from "./helpers"
 import {DODOSwap, BuyShares, SellShares, Transfer} from "../../types/dodoex/templates/DVM/DVM"
 import {LpFeeRateChange, DPP} from "../../types/dodoex/templates/DPP/DPP"
@@ -31,7 +31,7 @@ import {
     updatePrice
 } from "./pricing"
 import {addToken, addTransaction, addVolume} from "./transaction";
-import {increaseVolumeAndFee} from "./dayUpdates"
+import {increaseVolumeAndFee,increaseMaintainerFee} from "./dayUpdates"
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -206,6 +206,8 @@ export function handleDODOSwap(event: DODOSwap): void {
     updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
     updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
     increaseVolumeAndFee(event, volumeUSD, feeUSD);
+
+    // increaseMaintainerFee(event,volumeUSD);
 }
 
 export function handleBuyShares(event: BuyShares): void {

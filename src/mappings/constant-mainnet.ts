@@ -6,6 +6,7 @@ export const TYPE_DSP_POOL = "DSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
+export const DIP3_MAINTAINER= "0xab21016bd4127638b8c555e36636449b33df1c38";
 
 export const DODOV1Proxy01 = "0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e";
 export const DODOV1Proxy02 = "0x6ed3fd491f5b10384787b3fb162a72227fafbf63";

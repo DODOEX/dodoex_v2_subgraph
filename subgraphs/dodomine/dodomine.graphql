@@ -29,3 +29,14 @@ type RewardDetail @entity{
     "end block"
     endBlock: BigInt!
 }
+
+type UserStake @entity{
+    "user - pool"
+    id: ID!
+    "user address"
+    user:Bytes!
+    "pool"
+    pool:Bytes!
+    "balance"
+    balance:BigInt!
+}

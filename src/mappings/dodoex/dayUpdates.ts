@@ -14,7 +14,14 @@ import {
 import {BigInt, ethereum, BigDecimal, log} from '@graphprotocol/graph-ts'
 import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, getDODOZoo} from './helpers'
 import {ADDRESS_ZERO} from "../constant"
-import {TYPE_DVM_POOL, TYPE_DPP_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
+import {
+    TYPE_DVM_POOL,
+    TYPE_DPP_POOL,
+    TYPE_CLASSICAL_POOL,
+    SOURCE_SMART_ROUTE,
+    SOURCE_POOL_SWAP,
+    DIP3_MAINTAINER
+} from "../constant"
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
     let timestamp = event.block.timestamp.toI32();
@@ -296,11 +303,15 @@ export function decreaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecima
 
 export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecimal): DodoDayData {
     let dodoDayData = getDodoDayData(event);
-    dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
-    dodoDayData.save();
-    let dodoZoo = getDODOZoo();
-    dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
-    dodoZoo.save();
+
+    if (event.block.timestamp.ge(BigInt.fromI32(1624442330))) {
+        dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
+        dodoDayData.save();
+        let dodoZoo = getDODOZoo();
+        dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
+        dodoZoo.save();
+    }
+
     return dodoDayData as DodoDayData;
 }
 

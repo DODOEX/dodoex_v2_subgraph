@@ -52,7 +52,7 @@ import {
     calculateUsdVolume
 } from "./pricing"
 import {addToken, addTransaction, addVolume} from "./transaction";
-import {increaseMaintainerFee, increaseVolumeAndFee,updateTokenDayData} from "./dayUpdates";
+import {increaseMaintainerFee, increaseVolumeAndFee, updateTokenDayData} from "./dayUpdates";
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -62,7 +62,8 @@ import {
     SOURCE_POOL_SWAP,
     TRANSACTION_TYPE_SWAP,
     TRANSACTION_TYPE_LP_REMOVE,
-    TRANSACTION_TYPE_LP_ADD
+    TRANSACTION_TYPE_LP_ADD,
+    DIP3_MAINTAINER
 } from "../constant"
 
 
@@ -992,7 +993,7 @@ export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void {
 
     let maintainerEarningsID = event.params.maintainer.toHexString().concat("-").concat(token.id);
     let maintainerEarnings = MaintainerEarnings.load(maintainerEarningsID);
-    if(maintainerEarnings == null){
+    if (maintainerEarnings == null) {
         maintainerEarnings = new MaintainerEarnings(maintainerEarningsID);
         maintainerEarnings.maintainer = pair.maintainer;
         maintainerEarnings.token = token.id;
@@ -1003,13 +1004,15 @@ export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void {
     maintainerEarnings.amountUSD = maintainerEarnings.amountUSD.plus(volumeUSD);
     maintainerEarnings.save();
 
-    let tokenDayData = updateTokenDayData(token as Token,event);
+    let tokenDayData = updateTokenDayData(token as Token, event);
     tokenDayData.txns = tokenDayData.txns.minus(ONE_BI);
     tokenDayData.maintainerFee = tokenDayData.maintainerFee.plus(formatAmount);
     tokenDayData.maintainerFeeUSD = tokenDayData.maintainerFeeUSD.plus(volumeUSD);
     tokenDayData.save();
 
-    increaseMaintainerFee(event, volumeUSD);
+    if (pair.maintainer.toHexString() == DIP3_MAINTAINER) {
+        increaseMaintainerFee(event, volumeUSD);
+    }
 
 }
 
