@@ -9,7 +9,7 @@ export const SOURCE_POOL_SWAP = "DODO_POOL";
 export const DODOZooID = "dodoex-v2-kovan";
 export const CHAIN_BASE_COIN_SYMBOL = "ETH";
 export const CHAIN_BASE_COIN_NAME = "ethereum";
-export const DIP3_MAINTAINER= "0xab21016bd4127638b8c555e36636449b33df1c38";
+export const DIP3_TIMESTAMP = 1624442400;
 
 export const SMART_ROUTE_ADDRESSES: string[]= ["0x85caa68ae47f047aa01c48bcaa711ca70a950ffb"];
 export const DVM_FACTORY_ADDRESS = "0x322f8014c125da09314d3a68d4d9f427823f17fd";

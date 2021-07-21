@@ -7,7 +7,7 @@ export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
 export const DODOV2Proxy02 = "0x45894c062e6f4e58b257e0826675355305dfef0d";
-export const DIP3_MAINTAINER= "0xab21016bd4127638b8c555e36636449b33df1c38";
+export const DIP3_TIMESTAMP = 1624442400;
 
 export const DODOZooID = "dodoex-v2-arbitrum";
 export const CHAIN_BASE_COIN_SYMBOL = "MATIC";

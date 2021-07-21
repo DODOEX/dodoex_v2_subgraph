@@ -11,6 +11,7 @@ export function handleCreateNFTCollateralVault(event: CreateNFTCollateralVault):
         vault.creator = event.params.creator.toHexString();
         vault.name = event.params.name;
         vault.baseURI = event.params.baseURI;
+        vault.owner = event.params.creator;
         vault.save();
     }
     NFTCollateralVaultTemplate.create(event.params.vault)

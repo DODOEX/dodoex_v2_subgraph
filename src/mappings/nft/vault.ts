@@ -1,7 +1,8 @@
-import {VaultNft,NftCollateralVault} from "../../types/nft/schema";
+import {VaultNft, NftCollateralVault} from "../../types/nft/schema";
 import {
     AddNftToken,
-    RemoveNftToken
+    RemoveNftToken,
+    OwnershipTransferred
 } from "../../types/nft/templates/NFTCollateralVault/NFTCollateralVault"
 
 export function handleAddNftToken(event: AddNftToken): void {
@@ -34,4 +35,10 @@ export function handleRemoveNftToken(event: RemoveNftToken): void {
         vaultNft.amount = vaultNft.amount.minus(event.params.amount);
     }
     vaultNft.save();
+}
+
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {
+    let vault = NftCollateralVault.load(event.address.toHexString());
+    vault.owner=event.params.newOwner;
+    vault.save()
 }

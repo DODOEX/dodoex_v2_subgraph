@@ -125,6 +125,8 @@ templates:
           handler: handleAddNftToken
         - event: RemoveNftToken(address,uint256,uint256)
           handler: handleRemoveNftToken
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
   - kind: ethereum/contract
     name: Fragment
     network: rinkeby

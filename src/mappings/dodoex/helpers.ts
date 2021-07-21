@@ -222,10 +222,10 @@ export function getDODOZoo(): DodoZoo {
         dodoZoo.volumeUSD = ZERO_BD;
         dodoZoo.feeUSD = ZERO_BD;
         dodoZoo.maintainerFeeUSD = ZERO_BD;
+        dodoZoo.DIP3MaintainerFeeUSD = ZERO_BD;
         dodoZoo.save();
     }
     return dodoZoo as DodoZoo;
-
 }
 
 export function createUser(address: Address, event: ethereum.Event): User {

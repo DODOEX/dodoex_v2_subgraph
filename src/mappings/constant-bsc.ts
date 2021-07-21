@@ -9,7 +9,7 @@ export const SOURCE_POOL_SWAP = "DODO_POOL";
 export const DODOV2Proxy01="0xb57dd5c265dbb13ca014f2332069e90cd0e22e65";
 export const DODOV2Proxy02_2021_02_17="0xd56281ef996b6b29874c77d2e1464216e8043127";
 export const DODOV2Proxy02="0xd56281ef996b6b29874c77d2e1464216e8043127";
-export const DIP3_MAINTAINER= "0x2cb5ea673f22ef5fb3d0f5638e7fb69745073fc8";
+export const DIP3_TIMESTAMP = 1624442400;
 
 export const DODOZooID = "dodoex-v2-bsc";
 export const CHAIN_BASE_COIN_SYMBOL = "BNB";

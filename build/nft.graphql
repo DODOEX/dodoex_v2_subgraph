@@ -9,6 +9,8 @@ type NftCollateralVault @entity {
     baseURI: String!
     "vault nfts"
     vaultNfts:[VaultNft!]
+    "owner"
+    owner: Bytes!
 }
 
 type Nft @entity{
