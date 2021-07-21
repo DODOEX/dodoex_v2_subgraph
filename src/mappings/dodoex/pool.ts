@@ -31,7 +31,7 @@ import {
     updatePrice
 } from "./pricing"
 import {addToken, addTransaction, addVolume} from "./transaction";
-import {increaseVolumeAndFee,increaseMaintainerFee} from "./dayUpdates"
+import {increaseVolumeAndFee, increaseMaintainerFee} from "./dayUpdates"
 
 import {
     SMART_ROUTE_ADDRESSES,
@@ -40,7 +40,7 @@ import {
     TYPE_DPP_POOL,
     TRANSACTION_TYPE_SWAP,
     TRANSACTION_TYPE_LP_ADD,
-    TRANSACTION_TYPE_LP_REMOVE, TRANSACTION_TYPE_CP_CLAIM
+    TRANSACTION_TYPE_LP_REMOVE, TRANSACTION_TYPE_CP_CLAIM, DIP3_TIMESTAMP
 } from "../constant"
 
 
@@ -207,7 +207,9 @@ export function handleDODOSwap(event: DODOSwap): void {
     updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
     increaseVolumeAndFee(event, volumeUSD, feeUSD);
 
-    // increaseMaintainerFee(event,volumeUSD);
+    //DIP3
+    let maintainerFeeUSD = feeUSD.div(BigDecimal.fromString("4"));
+    increaseMaintainerFee(event, maintainerFeeUSD);
 }
 
 export function handleBuyShares(event: BuyShares): void {
@@ -294,7 +296,8 @@ export function handleBuyShares(event: BuyShares): void {
     dodoZoo.save();
 
     let transaction = addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_ADD);
-    addToken(transaction, baseToken as Token);addToken(transaction, quoteToken as Token);
+    addToken(transaction, baseToken as Token);
+    addToken(transaction, quoteToken as Token);
 
     updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_LP_ADD);
 }

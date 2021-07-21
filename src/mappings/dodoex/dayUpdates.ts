@@ -20,7 +20,7 @@ import {
     TYPE_CLASSICAL_POOL,
     SOURCE_SMART_ROUTE,
     SOURCE_POOL_SWAP,
-    DIP3_MAINTAINER
+    DIP3_TIMESTAMP
 } from "../constant"
 
 export function updatePairDayData(event: ethereum.Event): PairDayData {
@@ -301,17 +301,15 @@ export function decreaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecima
     return dodoDayData as DodoDayData;
 }
 
-export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecimal, dip3: boolean): DodoDayData {
+export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecimal): DodoDayData {
     let dodoDayData = getDodoDayData(event);
 
-    if (event.block.timestamp.ge(BigInt.fromI32(1624442330))) {
+    if (event.block.timestamp.ge(BigInt.fromI32(DIP3_TIMESTAMP))) {
         dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
         dodoDayData.save();
         let dodoZoo = getDODOZoo();
         dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
-        if(dip3==true){
-            dodoZoo.DIP3MaintainerFeeUSD = dodoZoo.DIP3MaintainerFeeUSD.plus(volumeUSD);
-        }
+        dodoZoo.DIP3MaintainerFeeUSD = dodoZoo.DIP3MaintainerFeeUSD.plus(volumeUSD);
         dodoZoo.save();
     }
 

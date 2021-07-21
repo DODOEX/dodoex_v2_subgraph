@@ -63,7 +63,7 @@ import {
     TRANSACTION_TYPE_SWAP,
     TRANSACTION_TYPE_LP_REMOVE,
     TRANSACTION_TYPE_LP_ADD,
-    DIP3_TIMESTAMP
+
 } from "../constant"
 
 
@@ -1010,10 +1010,7 @@ export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void {
     tokenDayData.maintainerFeeUSD = tokenDayData.maintainerFeeUSD.plus(volumeUSD);
     tokenDayData.save();
 
-    if (event.block.timestamp.gt(BigInt.fromI32(DIP3_TIMESTAMP))) {
-        increaseMaintainerFee(event, volumeUSD, true);
-    }
-
+    increaseMaintainerFee(event, volumeUSD);
 }
 
 export function handleUpdateMaintainerFeeRate(event: UpdateMaintainerFeeRate): void {
