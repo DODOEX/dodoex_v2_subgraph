@@ -304,14 +304,14 @@ export function decreaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecima
 export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecimal): DodoDayData {
     let dodoDayData = getDodoDayData(event);
 
+    dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
+    dodoDayData.save();
+    let dodoZoo = getDODOZoo();
+    dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
     if (event.block.timestamp.ge(BigInt.fromI32(DIP3_TIMESTAMP))) {
-        dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
-        dodoDayData.save();
-        let dodoZoo = getDODOZoo();
-        dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
         dodoZoo.DIP3MaintainerFeeUSD = dodoZoo.DIP3MaintainerFeeUSD.plus(volumeUSD);
-        dodoZoo.save();
     }
+    dodoZoo.save();
 
     return dodoDayData as DodoDayData;
 }

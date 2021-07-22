@@ -767,7 +767,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         untrackedBaseVolume = baseVolume;
         untrackedQuoteVolume = quoteVolume;
         fromToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedFromAmount);
-        toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
+        toToken.untrackedVolume = toToken.untrackedVolume.plus(dealedToAmount);
     }
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);

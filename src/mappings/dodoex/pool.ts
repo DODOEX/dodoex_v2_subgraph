@@ -208,7 +208,10 @@ export function handleDODOSwap(event: DODOSwap): void {
     increaseVolumeAndFee(event, volumeUSD, feeUSD);
 
     //DIP3
-    let maintainerFeeUSD = feeUSD.div(BigDecimal.fromString("4"));
+    let maintainerFeeUSD = ZERO_BD;
+    if (pair.maintainer.toHexString() != ADDRESS_ZERO) {
+        feeUSD.div(BigDecimal.fromString("4"));
+    }
     increaseMaintainerFee(event, maintainerFeeUSD);
 }
 
