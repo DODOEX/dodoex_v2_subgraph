@@ -13,7 +13,7 @@ export const DIP3_TIMESTAMP = 1624442400;
 
 export const DODOZooID = "dodoex-v2-bsc";
 export const CHAIN_BASE_COIN_SYMBOL = "BNB";
-export const CHAIN_BASE_COIN_NAME = "bnb";
+export const CHAIN_BASE_COIN_NAME = "Bnb";
 
 export const SMART_ROUTE_ADDRESSES: string[]= ["0xb57dd5c265dbb13ca014f2332069e90cd0e22e65","0xd56281ef996b6b29874c77d2e1464216e8043127","0x8f8dd7db1bda5ed3da8c9daf3bfa471c12d58486","0xbe9a66e49503e84ae59a4d0545365AABedf33b40"];
 export const DVM_FACTORY_ADDRESS = "0xf50bdc9e90b7a1c138cb7935071b85c417c4cb8e";

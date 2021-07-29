@@ -263,76 +263,74 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 export function handleDODOBirth(event: DODOBirth): void {
     insertAllPairs4V1Mainnet(event);
 
-    if (dataSource.address().toHexString() != "0x3a97247df274a17c59a3bd12735ea3fcdfb49950") {
-        let dodoZoo = getDODOZoo();
+    let dodoZoo = getDODOZoo();
 
-        let pair = Pair.load(event.params.newBorn.toHexString());
-        if (pair == null) {
-            //tokens
-            let dodo = DODO.bind(event.params.newBorn);
-            let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
+    let pair = Pair.load(event.params.newBorn.toHexString());
+    if (pair == null) {
+        //tokens
+        let dodo = DODO.bind(event.params.newBorn);
+        let pair = new Pair(event.params.newBorn.toHexString()) as Pair;
 
-            let baseToken = createToken(event.params.baseToken, event);
-            let quoteToken = createToken(event.params.quoteToken, event);
-            pair.baseSymbol = baseToken.symbol;
-            pair.quoteSymbol = quoteToken.symbol;
+        let baseToken = createToken(event.params.baseToken, event);
+        let quoteToken = createToken(event.params.quoteToken, event);
+        pair.baseSymbol = baseToken.symbol;
+        pair.quoteSymbol = quoteToken.symbol;
 
-            let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_(), pair);
-            let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_(), pair);
+        let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_(), pair);
+        let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_(), pair);
 
-            pair.baseLpToken = baseLpToken.id;
-            pair.quoteLpToken = quoteLpToken.id;
-            pair.baseToken = baseToken.id;
-            pair.quoteToken = quoteToken.id;
-            pair.type = TYPE_CLASSICAL_POOL;
+        pair.baseLpToken = baseLpToken.id;
+        pair.quoteLpToken = quoteLpToken.id;
+        pair.baseToken = baseToken.id;
+        pair.quoteToken = quoteToken.id;
+        pair.type = TYPE_CLASSICAL_POOL;
 
-            pair.creator = Address.fromString(ADDRESS_ZERO);
-            pair.createdAtTimestamp = event.block.timestamp;
-            pair.createdAtBlockNumber = event.block.number;
-            pair.lastTradePrice = ZERO_BD;
-            pair.txCount = ZERO_BI;
-            pair.volumeBaseToken = ZERO_BD;
-            pair.volumeQuoteToken = ZERO_BD;
-            pair.liquidityProviderCount = ZERO_BI;
-            pair.untrackedBaseVolume = ZERO_BD;
-            pair.untrackedQuoteVolume = ZERO_BD;
-            pair.feeBase = ZERO_BD;
-            pair.feeQuote = ZERO_BD;
-            pair.traderCount = ZERO_BI;
-            pair.isTradeAllowed = true;
-            pair.isDepositBaseAllowed = true;
-            pair.isDepositQuoteAllowed = true;
-            pair.volumeUSD = ZERO_BD;
-            pair.feeUSD = ZERO_BD;
+        pair.creator = Address.fromString(ADDRESS_ZERO);
+        pair.createdAtTimestamp = event.block.timestamp;
+        pair.createdAtBlockNumber = event.block.number;
+        pair.lastTradePrice = ZERO_BD;
+        pair.txCount = ZERO_BI;
+        pair.volumeBaseToken = ZERO_BD;
+        pair.volumeQuoteToken = ZERO_BD;
+        pair.liquidityProviderCount = ZERO_BI;
+        pair.untrackedBaseVolume = ZERO_BD;
+        pair.untrackedQuoteVolume = ZERO_BD;
+        pair.feeBase = ZERO_BD;
+        pair.feeQuote = ZERO_BD;
+        pair.traderCount = ZERO_BI;
+        pair.isTradeAllowed = true;
+        pair.isDepositBaseAllowed = true;
+        pair.isDepositQuoteAllowed = true;
+        pair.volumeUSD = ZERO_BD;
+        pair.feeUSD = ZERO_BD;
 
-            pair.i = ZERO_BI;
-            pair.k = ZERO_BI;
-            pair.baseReserve = ZERO_BD;
-            pair.quoteReserve = ZERO_BD;
+        pair.i = ZERO_BI;
+        pair.k = ZERO_BI;
+        pair.baseReserve = ZERO_BD;
+        pair.quoteReserve = ZERO_BD;
 
-            pair.lpFeeRate = convertTokenToDecimal(dodo._LP_FEE_RATE_(), BI_18);
+        pair.lpFeeRate = convertTokenToDecimal(dodo._LP_FEE_RATE_(), BI_18);
 
-            pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
-            pair.maintainer = Address.fromString(ADDRESS_ZERO);
-            pair.mtFeeRate = ZERO_BI;
-            pair.mtFeeBase = ZERO_BD;
-            pair.mtFeeQuote = ZERO_BD;
-            pair.mtFeeUSD = ZERO_BD;
+        pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+        pair.maintainer = Address.fromString(ADDRESS_ZERO);
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
 
-            baseToken.save();
-            quoteToken.save();
-            baseLpToken.save();
-            quoteLpToken.save();
-            pair.save();
+        baseToken.save();
+        quoteToken.save();
+        baseLpToken.save();
+        quoteLpToken.save();
+        pair.save();
 
-            dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
-            DODOTemplate.create(event.params.newBorn);
+        dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        DODOTemplate.create(event.params.newBorn);
 
-            DODOLpTokenTemplate.create(Address.fromString(baseLpToken.id));
-            DODOLpTokenTemplate.create(Address.fromString(quoteLpToken.id));
+        DODOLpTokenTemplate.create(Address.fromString(baseLpToken.id));
+        DODOLpTokenTemplate.create(Address.fromString(quoteLpToken.id));
 
-            dodoZoo.save();
-        }
+        dodoZoo.save();
     }
 
 }

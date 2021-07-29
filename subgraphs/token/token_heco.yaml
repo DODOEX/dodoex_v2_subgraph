@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20Factory
-    network: mainnet
+    network: heco
     source:
       address: '0x2ccdf6f742afbe813b68ec6bb421c1bea74fbd46'
       abi: ERC20Factory
@@ -35,7 +35,7 @@ dataSources:
           handler: handleNewERC20
   - kind: ethereum/contract
     name: ERC20V2Factory
-    network: mainnet
+    network: heco
     source:
       address: '0x1297264617bd34270b77c2ffd3aa110d3fd2f7af'
       abi: ERC20V2Factory
@@ -67,7 +67,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: mainnet
+    network: heco
     source:
       abi: MintableERC20
     mapping:

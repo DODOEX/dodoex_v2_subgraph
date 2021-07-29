@@ -117,3 +117,14 @@ type vDODO @entity {
     "total staking power"
     totalStakingPower: BigInt!
 }
+
+type TransferHistory @entity {
+    "transaction hash - log index"
+    id: ID!
+    "from"
+    from: Bytes!
+    "to"
+    to: Bytes!
+    "vDODO amount"
+    amount: BigDecimal!
+}

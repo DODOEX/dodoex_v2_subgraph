@@ -35,7 +35,9 @@ import {
     TRANSACTION_TYPE_LP_REMOVE,
     TRANSACTION_TYPE_CP_CLAIM,
     TRANSACTION_TYPE_CP_CANCEL,
-    TRANSACTION_TYPE_CP_BID, ADDRESS_ZERO
+    TRANSACTION_TYPE_CP_BID,
+    ADDRESS_ZERO,
+    STABLE_ONE_ADDRESS
 } from "../constant"
 import {updatePairDayData, updatePairHourData, updateTokenDayData, updateUserDayData} from "./dayUpdates";
 import {TYPE_DVM_POOL, TYPE_VIRTUAL_POOL, TYPE_CLASSICAL_POOL, SOURCE_SMART_ROUTE, SOURCE_POOL_SWAP} from "../constant"
@@ -275,6 +277,10 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         token.timestamp = event.block.timestamp;
         token.volumeUSD = ZERO_BD;
         token.traderCount = ZERO_BI;
+
+        if(address.toHexString() == STABLE_ONE_ADDRESS){
+            token.usdPrice = ONE_BD;
+        }
 
         token.save();
 

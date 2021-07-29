@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODORouteProxy
-    network: mainnet
+    network: heco
     source:
       address: '0xEc0fA5746E37dE75bDA9C1F874F2B75C12e505F6'
       abi: DODORouteProxy
@@ -33,7 +33,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOV2Proxy02_2021_04_06
-    network: mainnet
+    network: heco
     source:
       address: '0xac7cc7d2374492de2d1ce21e2feca26eb0d113e7'
       abi: DODOV2Proxy02
@@ -60,7 +60,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory_2020_04_06
-    network: mainnet
+    network: heco
     source:
       address: '0xd8c77cf0f01222b07b8343a681c46efa3faea985'
       abi: DVMFactory
@@ -91,7 +91,7 @@ dataSources:
           handler: handleNewDVM
   - kind: ethereum/contract
     name: DPPFactory_2021_04_06
-    network: mainnet
+    network: heco
     source:
       address: '0xf5420a3b91c457d336589217d45ccb8f7250eaed'
       abi: DPPFactory
@@ -122,7 +122,7 @@ dataSources:
           handler: handleNewDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: mainnet
+    network: heco
     source:
       address: '0xaec55245ab0cdcc03bc5f104dadcd0a33ef50714'
       abi: DSPFactory
@@ -155,7 +155,7 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory_2021_04_06
-    network: mainnet
+    network: heco
     source:
       address: '0x56133d0b63abf7a15d5697dd2db9e04730f1a9c2'
       abi: CrowdPoolingFactory
@@ -188,7 +188,7 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory_2021_04_06
-    network: mainnet
+    network: heco
     source:
       address: '0xf7c3467786efaa9bd4022941ecd5a00c61b17fa9'
       abi: UpCrowdPoolingFactory
@@ -223,7 +223,7 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: mainnet
+    network: heco
     source:
       address: '0x99bc90b42af3635977ed89e0e7eb6a562da22bd2'
       abi: DODOZoo
@@ -255,7 +255,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: mainnet
+    network: heco
     source:
       abi: DVM
     mapping:
@@ -291,7 +291,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: mainnet
+    network: heco
     source:
       abi: DPP
     mapping:
@@ -328,7 +328,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: mainnet
+    network: heco
     source:
       abi: DSP
     mapping:
@@ -368,7 +368,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: mainnet
+    network: heco
     source:
       abi: CP
     mapping:
@@ -407,7 +407,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: mainnet
+    network: heco
     source:
       abi: DODO
     mapping:
@@ -454,7 +454,7 @@ templates:
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: ERC20
-    network: mainnet
+    network: heco
     source:
       abi: ERC20
     mapping:
@@ -487,7 +487,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DODOLpToken
-    network: mainnet
+    network: heco
     source:
       abi: DODOLpToken
     mapping:

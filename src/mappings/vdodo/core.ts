@@ -1,5 +1,13 @@
 import {BigInt, BigDecimal, ethereum, log, Address, dataSource} from '@graphprotocol/graph-ts'
-import {User, MintHistory, RedeemHistory, DODO, vDODO, UserOperationHistory} from "../../types/vdodo/schema"
+import {
+    User,
+    MintHistory,
+    RedeemHistory,
+    DODO,
+    vDODO,
+    UserOperationHistory,
+    TransferHistory
+} from "../../types/vdodo/schema"
 import {
     ZERO_BD,
     ONE_BI,
@@ -7,7 +15,7 @@ import {
     createUser,
     fetchUserInfo,
     initTokenInfo,
-    fetchTokenBalance, ZERO_BI,fetchTotalSp
+    fetchTokenBalance, ZERO_BI, fetchTotalSp
 } from "./helpers"
 import {MintVDODO, RedeemVDODO, Transfer, PreDeposit, ChangePerReward} from "../../types/vdodo/vDODOToken/vDODOToken"
 import {
@@ -23,11 +31,11 @@ export function handleMintVDODO(event: MintVDODO): void {
 
     let user = User.load(event.params.user.toHexString());
     if (user == null) {
-        if(vdodo.totalUsers.equals(ZERO_BI)){
+        if (vdodo.totalUsers.equals(ZERO_BI)) {
             vdodo.totalUsers = vdodo.totalUsers.plus(ONE_BI);
         }
         vdodo.totalUsers = vdodo.totalUsers.plus(ONE_BI);
-        user = createUser(event.params.user,event);
+        user = createUser(event.params.user, event);
     }
     let history = MintHistory.load(event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString()));
 
@@ -36,7 +44,7 @@ export function handleMintVDODO(event: MintVDODO): void {
     let userSpChange = userInfo.value0.minus(user.stakingPower);
     user.stakingPower = userInfo.value0;
     user.superiorSP = userInfo.value1;
-    user.credit = convertTokenToDecimal(userInfo.value3,dodo.decimals);
+    user.credit = convertTokenToDecimal(userInfo.value3, dodo.decimals);
     user.superior = userInfo.value2;
 
     if (history == null) {
@@ -58,13 +66,13 @@ export function handleMintVDODO(event: MintVDODO): void {
     }
 
     let superiorUserInfo = fetchUserInfo(Address.fromString(user.superior.toHexString()));
-    let superior = createUser(Address.fromString(user.superior.toHexString()),event)
+    let superior = createUser(Address.fromString(user.superior.toHexString()), event)
 
-    let superiorCreditChange = convertTokenToDecimal(superiorUserInfo.value3,dodo.decimals).minus(superior.credit);
+    let superiorCreditChange = convertTokenToDecimal(superiorUserInfo.value3, dodo.decimals).minus(superior.credit);
 
     superior.stakingPower = superiorUserInfo.value0;
     superior.superiorSP = superiorUserInfo.value1;
-    superior.credit = convertTokenToDecimal(superiorUserInfo.value3,dodo.decimals);
+    superior.credit = convertTokenToDecimal(superiorUserInfo.value3, dodo.decimals);
     superior.superior = superiorUserInfo.value2;
     superior.spFromInvited = superior.spFromInvited.plus(superiorSpChange);
     superior.creditFromInvited = superior.creditFromInvited.plus(superiorCreditChange);
@@ -96,7 +104,7 @@ export function handleRedeemVDODO(event: RedeemVDODO): void {
     let user = User.load(event.params.user.toHexString());
     if (user == null) {
         vdodo.totalUsers = vdodo.totalUsers.plus(ONE_BI);
-        user = createUser(event.params.user,event);
+        user = createUser(event.params.user, event);
     }
 
     let history = RedeemHistory.load(event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString()));
@@ -106,7 +114,7 @@ export function handleRedeemVDODO(event: RedeemVDODO): void {
     let userSpChange = userInfo.value0.minus(user.stakingPower);
     user.stakingPower = userInfo.value0;
     user.superiorSP = userInfo.value1;
-    user.credit = convertTokenToDecimal(userInfo.value3,dodo.decimals);
+    user.credit = convertTokenToDecimal(userInfo.value3, dodo.decimals);
     user.superior = userInfo.value2;
 
     if (history == null) {
@@ -130,12 +138,12 @@ export function handleRedeemVDODO(event: RedeemVDODO): void {
     }
 
     let superiorUserInfo = fetchUserInfo(Address.fromString(user.superior.toHexString()));
-    let superior = createUser(Address.fromString(user.superior.toHexString()),event)
-    let superiorCreditChange = convertTokenToDecimal(superiorUserInfo.value3,dodo.decimals).minus(superior.credit);
+    let superior = createUser(Address.fromString(user.superior.toHexString()), event)
+    let superiorCreditChange = convertTokenToDecimal(superiorUserInfo.value3, dodo.decimals).minus(superior.credit);
 
     superior.stakingPower = superiorUserInfo.value0;
     superior.superiorSP = superiorUserInfo.value1;
-    superior.credit = convertTokenToDecimal(superiorUserInfo.value3,dodo.decimals);
+    superior.credit = convertTokenToDecimal(superiorUserInfo.value3, dodo.decimals);
     superior.superior = superiorUserInfo.value2;
     superior.spFromInvited = superior.spFromInvited.plus(superiorSpChange);
     superior.creditFromInvited = superior.creditFromInvited.plus(superiorCreditChange);
@@ -151,8 +159,8 @@ export function handleRedeemVDODO(event: RedeemVDODO): void {
     user.creditOfSuperior = user.creditOfSuperior.plus(superiorCreditChange);
     vdodo.dodoBalance = convertTokenToDecimal(fetchTokenBalance(Address.fromString(DODO_ADDRESS), dataSource.address()), dodo.decimals);
     vdodo.totalStakingPower = fetchTotalSp();
-    vdodo.feeAmount = vdodo.feeAmount.plus(convertTokenToDecimal(event.params.feeDODO,dodo.decimals));
-    vdodo.burnAmount = vdodo.feeAmount.plus(convertTokenToDecimal(event.params.burnDODO,dodo.decimals));
+    vdodo.feeAmount = vdodo.feeAmount.plus(convertTokenToDecimal(event.params.feeDODO, dodo.decimals));
+    vdodo.burnAmount = vdodo.feeAmount.plus(convertTokenToDecimal(event.params.burnDODO, dodo.decimals));
 
     superior.save();
     vdodo.save();
@@ -182,13 +190,59 @@ export function handleChangePerReward(event: ChangePerReward): void {
 }
 
 export function handleTransfer(event: Transfer): void {
-    let fromUser = createUser(event.params.from,event);
-    let toUser = createUser(event.params.to,event);
+    let vdodo = vDODO.load(dataSource.address().toHexString());
+    let DODO_ADDRESS = dataSource.network() == "mainnet" ? DODO_ADDRESS_MAINNET : DODO_ADDRESS_KOVAN;
+    let dodo = DODO.load(DODO_ADDRESS);
 
-    fromUser.stakingPower = fromUser.stakingPower.minus(event.params.amount);
-    toUser.stakingPower = toUser.stakingPower.plus(event.params.amount);
+    let fromUser = createUser(event.params.from, event);
+    let toUser = createUser(event.params.to, event);
+    let fromUserInfo = fetchUserInfo(event.params.from);
+    let toUserInfo = fetchUserInfo(event.params.to);
+    let spChangeFrom = fromUserInfo.value0.minus(fromUser.stakingPower);
+    let spChangeTo = toUserInfo.value0.minus(toUser.stakingPower);
+
+    fromUser.stakingPower = fromUserInfo.value0;
+    fromUser.superiorSP = fromUserInfo.value1;
+    fromUser.credit = convertTokenToDecimal(fromUserInfo.value3, dodo.decimals);
+
+    toUser.stakingPower = toUserInfo.value0;
+    toUser.superiorSP = toUserInfo.value1;
+    toUser.credit = convertTokenToDecimal(toUserInfo.value3, dodo.decimals);
+
+    let fromUserSuperior = createUser(Address.fromString(fromUser.superior.toHexString()), event);
+    let toUserSuperior = createUser(Address.fromString(toUser.superior.toHexString()), event);
+    let fromUserSuperiorInfo = fetchUserInfo(Address.fromString(fromUser.superior.toHexString()));
+    let toUserSuperiorInfo = fetchUserInfo(Address.fromString(toUser.superior.toHexString()));
+    let spChangeFromUserSuperior = fromUserSuperiorInfo.value0.minus(fromUserSuperior.stakingPower);
+    let spChangeToUserSuperior = toUserSuperiorInfo.value0.minus(toUserSuperior.stakingPower);
+    let creditChangeFromUserSuperior = convertTokenToDecimal(fromUserSuperiorInfo.value3, dodo.decimals).minus(fromUserSuperior.credit);
+    let creditChangeToUserSuperior = convertTokenToDecimal(toUserSuperiorInfo.value3, dodo.decimals).minus(toUserSuperior.credit);
+
+    fromUserSuperior.stakingPower = fromUserSuperiorInfo.value0;
+    fromUserSuperior.spFromInvited = fromUserSuperior.spFromInvited.plus(spChangeToUserSuperior);
+    fromUserSuperior.creditFromInvited = fromUserSuperior.creditFromInvited.plus(creditChangeToUserSuperior);
+
+    toUserSuperior.stakingPower = toUserSuperiorInfo.value0;
+    toUserSuperior.spFromInvited = toUserSuperior.spFromInvited.plus(spChangeFromUserSuperior);
+    toUserSuperior.creditFromInvited = toUserSuperior.creditFromInvited.plus(creditChangeFromUserSuperior);
+
+    fromUser.creditOfSuperior = fromUser.creditOfSuperior.plus(creditChangeFromUserSuperior);
+    toUser.creditOfSuperior = toUser.creditOfSuperior.plus(creditChangeToUserSuperior);
 
     fromUser.save();
     toUser.save();
+    fromUserSuperior.save();
+    toUserSuperior.save();
+
+    let transferHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
+    let transferHistory = TransferHistory.load(transferHistoryID);
+    if (transferHistory == null) {
+        transferHistory = new TransferHistory(transferHistoryID);
+        transferHistory.from = event.params.from;
+        transferHistory.to = event.params.to;
+        transferHistory.amount = convertTokenToDecimal(event.params.amount, vdodo.decimals);
+    }
+
+    transferHistory.save();
 }
 
