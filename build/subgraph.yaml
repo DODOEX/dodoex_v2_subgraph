@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: vDODOToken
-    network: mainnet
+    network: kovan
     source:
-      address: "0xc4436fbae6eba5d95bf7d53ae515f8a707bd402a"
+      address: "0xf7119bf8be41dd9080bd0a9ab04788b5eca140d5"
       abi: vDODOToken
-      startBlock: 11848651
+      startBlock: 23461928
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

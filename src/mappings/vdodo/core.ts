@@ -219,12 +219,14 @@ export function handleTransfer(event: Transfer): void {
     let creditChangeToUserSuperior = convertTokenToDecimal(toUserSuperiorInfo.value3, dodo.decimals).minus(toUserSuperior.credit);
 
     fromUserSuperior.stakingPower = fromUserSuperiorInfo.value0;
+    fromUserSuperior.credit = convertTokenToDecimal(fromUserSuperiorInfo.value3, dodo.decimals);
     fromUserSuperior.spFromInvited = fromUserSuperior.spFromInvited.plus(spChangeToUserSuperior);
-    fromUserSuperior.creditFromInvited = fromUserSuperior.creditFromInvited.plus(creditChangeToUserSuperior);
+    fromUserSuperior.creditFromInvited = fromUserSuperior.creditFromInvited.plus(creditChangeFromUserSuperior);
 
     toUserSuperior.stakingPower = toUserSuperiorInfo.value0;
+    toUserSuperior.credit = convertTokenToDecimal(toUserSuperiorInfo.value3, dodo.decimals);
     toUserSuperior.spFromInvited = toUserSuperior.spFromInvited.plus(spChangeFromUserSuperior);
-    toUserSuperior.creditFromInvited = toUserSuperior.creditFromInvited.plus(creditChangeFromUserSuperior);
+    toUserSuperior.creditFromInvited = toUserSuperior.creditFromInvited.plus(creditChangeToUserSuperior);
 
     fromUser.creditOfSuperior = fromUser.creditOfSuperior.plus(creditChangeFromUserSuperior);
     toUser.creditOfSuperior = toUser.creditOfSuperior.plus(creditChangeToUserSuperior);
