@@ -39,4 +39,5 @@ dataSources:
           handler: handlePreDeposit
         - event: ChangePerReward(uint256)
           handler: handleChangePerReward
-
+        - event: DonateDODO(address,uint256)
+          handler: handleDonateDODO

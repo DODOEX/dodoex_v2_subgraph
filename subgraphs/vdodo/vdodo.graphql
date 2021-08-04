@@ -128,3 +128,16 @@ type TransferHistory @entity {
     "vDODO amount"
     amount: BigDecimal!
 }
+
+type DonateHistory @entity {
+    "transaction hash - log index"
+    id: ID!
+    "donors"
+    donor: Bytes!
+    "dodoAmount"
+    dodoAmount: BigDecimal!
+    "block"
+    blockNumber: BigInt!
+    "timestamp"
+    timestamp: BigInt!
+}

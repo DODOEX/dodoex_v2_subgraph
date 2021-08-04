@@ -6,7 +6,8 @@ import {
     DODO,
     vDODO,
     UserOperationHistory,
-    TransferHistory
+    TransferHistory,
+    DonateHistory
 } from "../../types/vdodo/schema"
 import {
     ZERO_BD,
@@ -17,7 +18,14 @@ import {
     initTokenInfo,
     fetchTokenBalance, ZERO_BI, fetchTotalSp
 } from "./helpers"
-import {MintVDODO, RedeemVDODO, Transfer, PreDeposit, ChangePerReward} from "../../types/vdodo/vDODOToken/vDODOToken"
+import {
+    MintVDODO,
+    RedeemVDODO,
+    Transfer,
+    PreDeposit,
+    ChangePerReward,
+    DonateDODO
+} from "../../types/vdodo/vDODOToken/vDODOToken"
 import {
     DODO_ADDRESS_KOVAN,
     DODO_ADDRESS_MAINNET
@@ -248,3 +256,22 @@ export function handleTransfer(event: Transfer): void {
     transferHistory.save();
 }
 
+export function handleDonateDODO(event: DonateDODO): void {
+    initTokenInfo();
+    let vdodo = vDODO.load(dataSource.address().toHexString());
+    let DODO_ADDRESS = dataSource.network() == "mainnet" ? DODO_ADDRESS_MAINNET : DODO_ADDRESS_KOVAN;
+    let dodo = DODO.load(DODO_ADDRESS);
+
+    let donateHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
+    let donateHistory = DonateHistory.load(donateHistoryID);
+
+    if (donateHistory == null) {
+        donateHistory = new DonateHistory(donateHistoryID);
+        donateHistory.donor = event.params.user;
+        donateHistory.dodoAmount = convertTokenToDecimal(event.params.donateDODO,dodo.decimals);
+        donateHistory.blockNumber = event.block.number;
+        donateHistory.timestamp = event.block.timestamp;
+        donateHistory.save();
+    }
+
+}
