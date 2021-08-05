@@ -26,16 +26,16 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 **Endpoints**
  - dodoex 
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2
-    - bsc : https://pq.hg.network/subgraphs/name/dodoex-v2-bsc/bsc
-    - heco : https://q.hg.network/subgraphs/name/dodoex/heco
+    - bsc : https://n9.hg.network/subgraphs/name/dodoex-v2-bsc-hg/bsc
+    - heco : https://n10.hg.network/subgraphs/name/dodoex-v2-heco-hg/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-polygon
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-arbitrum
     - kovan : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-kovan
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-rinkeby
  - token
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
-    - bsc : https://pq.hg.network/subgraphs/name/dodoex-token/bsc
-    - heco : https://q.hg.network/subgraphs/name/dodoextoken/heco
+    - bsc : https://n14.hg.network/subgraphs/name/dodoex-token-bsc/bsc
+    - heco : https://n10.hg.network/subgraphs/name/dodoex-token-heco/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-polygon
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-arbitrum
     - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
@@ -48,7 +48,14 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodo-nft-rinkeby
  - mine
+    - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3
+    - bsc : https://n9.hg.network/subgraphs/name/dodoex-mine-v3-bsc/bsc
+    - heco : https://n10.hg.network/subgraphs/name/dodoex-mine-v3-heco/heco
+    - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-polygon
+    - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-arbitrum
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodomine-rinkeby
+
+    
 
 ## 2、 Graphql Examples
  - to get user info

@@ -2,7 +2,7 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: ./dodomine.graphql
+  file: ./mine.graphql
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3Proxy
@@ -15,7 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodomine/mineProxy.ts
+      file: ../../src/mappings/mine/mineProxy.ts
       entities:
         - MinePool
       abis:
@@ -43,7 +43,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodomine/registry.ts
+      file: ../../src/mappings/mine/registry.ts
       entities:
         - MinePool
       abis:
@@ -72,7 +72,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodomine/mine.ts
+      file: ../../src/mappings/mine/mine.ts
       entities:
         - MinePool
       abis:
