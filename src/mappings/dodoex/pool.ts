@@ -58,6 +58,12 @@ export function handleDODOSwap(event: DODOSwap): void {
     let dealedToAmount = convertTokenToDecimal(event.params.toAmount, toToken.decimals);
     let pmmState = getPMMState(event.address);
 
+    //更新时间戳
+    fromToken.updatedAt = event.block.timestamp;
+    toToken.updatedAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+    pair.updatedAt = event.block.timestamp;
+
     let untrackedBaseVolume = ZERO_BD;
     let untrackedQuoteVolume = ZERO_BD;
 
@@ -150,6 +156,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.volumeUSD = volumeUSD;
+        swap.updatedAt = event.block.timestamp;
         swap.save();
     }
 
@@ -172,6 +179,7 @@ export function handleDODOSwap(event: DODOSwap): void {
         orderHistory.logIndex = event.logIndex;
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.volumeUSD = volumeUSD;
+        orderHistory.updatedAt = event.block.timestamp;
         orderHistory.save();
 
         fromToken.txCount = fromToken.txCount.plus(ONE_BI);
@@ -192,6 +200,7 @@ export function handleDODOSwap(event: DODOSwap): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.feeUSD = dodoZoo.feeUSD.plus(feeUSD);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     //transaction
@@ -284,6 +293,16 @@ export function handleBuyShares(event: BuyShares): void {
         liquidityHistory.quoteAmountChange = quoteAmountChange;
     }
 
+    //更新时间戳
+    liquidityPosition.updatedAt = event.block.timestamp;
+    liquidityHistory.updatedAt = event.block.timestamp;
+    fromUser.updatedAt = event.block.timestamp;
+    toUser.updatedAt = event.block.timestamp;
+    baseToken.updatedAt = event.block.timestamp;
+    quoteToken.updatedAt = event.block.timestamp;
+    pair.updatedAt = event.block.timestamp;
+    lpToken.updatedAt = event.block.timestamp;
+
     liquidityPosition.save();
     liquidityHistory.save();
     pair.save();
@@ -296,6 +315,7 @@ export function handleBuyShares(event: BuyShares): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     let transaction = addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_ADD);
@@ -372,6 +392,16 @@ export function handleSellShares(event: SellShares): void {
         liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(lpToken.totalSupply, lpToken.decimals);
     }
 
+    //更新时间戳
+    liquidityPosition.updatedAt = event.block.timestamp;
+    liquidityHistory.updatedAt = event.block.timestamp;
+    fromUser.updatedAt = event.block.timestamp;
+    toUser.updatedAt = event.block.timestamp;
+    baseToken.updatedAt = event.block.timestamp;
+    quoteToken.updatedAt = event.block.timestamp;
+    pair.updatedAt = event.block.timestamp;
+    lpToken.updatedAt = event.block.timestamp;
+
     liquidityPosition.save();
     liquidityHistory.save();
     pair.save();
@@ -385,6 +415,7 @@ export function handleSellShares(event: SellShares): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     let transaction = addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
@@ -412,6 +443,7 @@ export function handleLpFeeRateChange(event: LpFeeRateChange): void {
         pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
         pair.i = pmmState.i;
         pair.k = pmmState.K;
+        pair.updatedAt = event.block.timestamp;
         pair.save();
     }
 
@@ -441,6 +473,7 @@ export function handleTransfer(event: Transfer): void {
             position.liquidityTokenInMining = ZERO_BD;
         }
         position.liquidityTokenBalance = position.liquidityTokenBalance.plus(dealedAmount);
+        position.updatedAt = event.block.timestamp;
         position.save();
     }
 
@@ -457,6 +490,7 @@ export function handleTransfer(event: Transfer): void {
             position.liquidityTokenInMining = ZERO_BD;
         }
         position.liquidityTokenBalance = position.liquidityTokenBalance.minus(dealedAmount);
+        position.updatedAt = event.block.timestamp;
         position.save();
     }
 

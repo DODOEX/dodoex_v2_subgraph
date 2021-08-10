@@ -225,6 +225,7 @@ export function getDODOZoo(): DodoZoo {
         dodoZoo.feeUSD = ZERO_BD;
         dodoZoo.maintainerFeeUSD = ZERO_BD;
         dodoZoo.DIP3MaintainerFeeUSD = ZERO_BD;
+        dodoZoo.updatedAt = ZERO_BI;
         dodoZoo.save();
     }
     return dodoZoo as DodoZoo;
@@ -237,6 +238,7 @@ export function createUser(address: Address, event: ethereum.Event): User {
         user.txCount = ZERO_BI
         user.tradingRewardRecieved = ZERO_BD
         user.timestamp = event.block.timestamp
+        user.updatedAt = event.block.timestamp;
         user.save()
     }
     return user as User;
@@ -281,7 +283,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         if(address.toHexString() == STABLE_ONE_ADDRESS){
             token.usdPrice = ONE_BD;
         }
-
+        token.updatedAt = event.block.timestamp;
         token.save();
 
         let dodoZoo = getDODOZoo();
@@ -327,6 +329,7 @@ export function createTokenByCall(address: Address, call: ethereum.Call): Token 
             token.tradeVolume = ZERO_BD;
             token.totalLiquidityOnDODO = ZERO_BD;
         }
+        token.updatedAt = call.block.timestamp;
         token.priceUpdateTimestamp = ZERO_BI;
         token.usdPrice = ZERO_BD;
         token.txCount = ZERO_BI;
@@ -396,9 +399,9 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
-
     }
 
+    pair.updatedAt = event.block.timestamp;
     pair.txCount = pair.txCount.plus(ONE_BI);
     pair.volumeBaseToken = pair.volumeBaseToken.plus(dealedFromAmount);
     pair.volumeQuoteToken = pair.volumeQuoteToken.plus(dealedToAmount);
@@ -472,6 +475,7 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair, ev
         fromTraderPair.pair = pair.id;
         fromTraderPair.trader = createUser(from, event).id;
         fromTraderPair.lastTxTime = ZERO_BI;
+        fromTraderPair.updatedAt = event.block.timestamp;
         fromTraderPair.save();
 
         pair.traderCount = pair.traderCount.plus(ONE_BI);
@@ -483,9 +487,11 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair, ev
         toTraderPair.pair = pair.id;
         toTraderPair.trader = createUser(to, event).id;
         toTraderPair.lastTxTime = ZERO_BI;
+        toTraderPair.updatedAt = event.block.timestamp;
         toTraderPair.save();
         pair.traderCount = pair.traderCount.plus(ONE_BI);
     }
+    pair.updatedAt = event.block.timestamp;
     pair.save();
 }
 
@@ -507,6 +513,7 @@ export function updateTokenTraderCount(tokenAddress: Address, userAddress: Addre
 
     }
     tokenTrader.lastTxTime = event.block.timestamp;
+    tokenTrader.updatedAt = event.block.timestamp;
     tokenTrader.save();
 
 }
@@ -520,6 +527,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     pairHourData.feeBase = pairHourData.feeBase.plus(feeBase);
     pairHourData.feeQuote = pairHourData.feeQuote.plus(feeQuote);
     pairHourData.volumeUSD = pairHourData.volumeUSD.plus(volumeUSD);
+    pairHourData.updatedAt = event.block.timestamp;
 
     let pairDayData = updatePairDayData(event);
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
@@ -529,6 +537,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     pairDayData.feeBase = pairDayData.feeBase.plus(feeBase);
     pairDayData.feeQuote = pairDayData.feeQuote.plus(feeQuote);
     pairDayData.volumeUSD = pairDayData.volumeUSD.plus(volumeUSD);
+    pairDayData.updatedAt = event.block.timestamp;
 
     let baseDayData = updateTokenDayData(baseToken, event);
     baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedBaseVolume);
@@ -536,6 +545,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     baseDayData.fee = baseDayData.fee.plus(feeBase);
     baseDayData.txns = baseDayData.txns.plus(ONE_BI);
     baseDayData.volumeUSD = baseDayData.volumeUSD.plus(volumeUSD);
+    baseDayData.updatedAt = event.block.timestamp;
 
     let quoteDayData = updateTokenDayData(quoteToken, event);
     quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
@@ -543,6 +553,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     quoteDayData.fee = quoteDayData.fee.plus(feeQuote);
     quoteDayData.txns = quoteDayData.txns.plus(ONE_BI);
     quoteDayData.volumeUSD = quoteDayData.volumeUSD.plus(volumeUSD);
+    quoteDayData.updatedAt = event.block.timestamp;
 
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
     if (fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))) {
@@ -554,6 +565,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
         quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
     }
     fromTraderPair.lastTxTime = event.block.timestamp;
+    fromTraderPair.updatedAt = event.block.timestamp;
     fromTraderPair.save();
 
     let toTraderPair = PairTrader.load(to.toHexString().concat("-").concat(pair.id));
@@ -566,6 +578,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
         quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
     }
     toTraderPair.lastTxTime = event.block.timestamp;
+    toTraderPair.updatedAt = event.block.timestamp;
     toTraderPair.save();
 
     pairHourData.save();
@@ -583,6 +596,7 @@ export function createPool(pid: BigInt): Pool {
         let poolInfo = dodoMineContract.poolInfos(pid)
         pool.lpToken = poolInfo.value0.toHexString();
         pool.staked = ZERO_BD;
+        pool.updatedAt = ZERO_BI;
         pool.save();
     }
 
@@ -609,5 +623,6 @@ export function updateUserDayDataAndDodoDayData(event: ethereum.Event, type: str
     if (type === TRANSACTION_TYPE_CP_CLAIM) {
         userDayData.tradeCount = userDayData.claimCount.plus(ONE_BI)
     }
+    userDayData.updatedAt = event.block.timestamp;
     userDayData.save();
 }

@@ -47,6 +47,11 @@ export function handleIncentive(event: Incentive): void {
     incentiveRewardHistory.totalUser = tradingIncentive.totalUser;
     user.tradingRewardRecieved = user.tradingRewardRecieved.plus(amount);
 
+    //更新时间戳
+    tradingIncentive.updatedAt = event.block.timestamp;
+    incentiveRewardHistory.updatedAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+
     tradingIncentive.save();
     incentiveRewardHistory.save();
     user.save();

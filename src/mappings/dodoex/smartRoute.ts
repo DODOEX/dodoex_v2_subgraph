@@ -27,6 +27,11 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.returnAmount, toToken.decimals);
 
+    //更新时间戳
+    user.updatedAt = event.block.timestamp;
+    fromToken.updatedAt = event.block.timestamp;
+    toToken.updatedAt = event.block.timestamp;
+
     let trim = false;
     let volumeUSD = calculateUsdVolume(fromToken as Token, toToken as Token, dealedFromAmount, dealedToAmount, event.block.timestamp);
     if (volumeUSD.equals(ZERO_BD)) {
@@ -96,6 +101,7 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
         }
 
     }
+    orderHistory.updatedAt = event.block.timestamp;
     orderHistory.save();
 
     //更新token统计信息

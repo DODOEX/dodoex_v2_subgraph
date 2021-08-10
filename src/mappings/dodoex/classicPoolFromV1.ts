@@ -240,6 +240,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
             pair.mtFeeBase = ZERO_BD;
             pair.mtFeeQuote = ZERO_BD;
             pair.mtFeeUSD = ZERO_BD;
+            pair.updatedAt = event.block.timestamp;
 
             baseToken.save();
             quoteToken.save();
@@ -317,6 +318,7 @@ export function handleDODOBirth(event: DODOBirth): void {
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
+        pair.updatedAt = event.block.timestamp;
 
         baseToken.save();
         quoteToken.save();
@@ -412,6 +414,17 @@ export function handleDeposit(event: Deposit): void {
         liquidityHistory.quoteAmountChange = quoteAmountChange;
     }
 
+    //更新时间戳
+    baseToken.updatedAt = event.block.timestamp;
+    quoteToken.updatedAt = event.block.timestamp;
+    liquidityPosition.updatedAt = event.block.timestamp;
+    liquidityHistory.updatedAt = event.block.timestamp;
+    pair.updatedAt = event.block.timestamp;
+    fromUser.updatedAt = event.block.timestamp;
+    toUser.updatedAt = event.block.timestamp;
+    lpToken.updatedAt = event.block.timestamp;
+
+    //save
     liquidityPosition.save();
     liquidityHistory.save();
     pair.save();
@@ -424,6 +437,7 @@ export function handleDeposit(event: Deposit): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     //transaction
@@ -510,6 +524,17 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityHistory.quoteAmountChange = quoteAmountChange;
     }
 
+    //更新时间戳
+    baseToken.updatedAt = event.block.timestamp;
+    quoteToken.updatedAt = event.block.timestamp;
+    liquidityPosition.updatedAt = event.block.timestamp;
+    liquidityHistory.updatedAt = event.block.timestamp;
+    pair.updatedAt = event.block.timestamp;
+    fromUser.updatedAt = event.block.timestamp;
+    toUser.updatedAt = event.block.timestamp;
+    lpToken.updatedAt = event.block.timestamp;
+
+    //save
     liquidityPosition.save();
     liquidityHistory.save();
     pair.save();
@@ -522,6 +547,7 @@ export function handleWithdraw(event: Withdraw): void {
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     let transaction = addTransaction(event, event.params.payer.toHexString(), TRANSACTION_TYPE_LP_REMOVE);
@@ -606,11 +632,9 @@ export function handleSellBaseToken(event: SellBaseToken): void {
     }
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
-    pair.save();
 
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);
-    user.save();
 
     //4、增加swap条目
     let swap = Swap.load(swapID);
@@ -632,6 +656,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.volumeUSD = volumeUSD;
+        swap.updatedAt = event.block.timestamp;
         swap.save();
     }
 
@@ -654,6 +679,7 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         orderHistory.logIndex = event.logIndex;
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.volumeUSD = volumeUSD;
+        orderHistory.updatedAt = event.block.timestamp;
         orderHistory.save();
 
         fromToken.txCount = fromToken.txCount.plus(ONE_BI);
@@ -664,6 +690,16 @@ export function handleSellBaseToken(event: SellBaseToken): void {
         toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
         toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     }
+
+    //更新时间戳
+    pair.updatedAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+    fromToken.updatedAt = event.block.timestamp;
+    toToken.updatedAt = event.block.timestamp;
+
+    //持久化
+    pair.save();
+    user.save();
     fromToken.save();
     toToken.save();
 
@@ -769,7 +805,6 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     }
     pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
-    pair.save();
 
     //2、更新两个token的记录数据
 
@@ -779,7 +814,6 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
 
     //3、更新用户信息
     user.txCount = user.txCount.plus(ONE_BI);
-    user.save();
 
     //4、增加swap条目
     let swap = Swap.load(swapID);
@@ -801,6 +835,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         swap.baseVolume = baseVolume;
         swap.quoteVolume = quoteVolume;
         swap.volumeUSD = volumeUSD;
+        swap.updatedAt = event.block.timestamp;
         swap.save();
     }
 
@@ -823,6 +858,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         orderHistory.logIndex = event.logIndex;
         orderHistory.tradingReward = ZERO_BD;
         orderHistory.volumeUSD = volumeUSD;
+        orderHistory.updatedAt = event.block.timestamp;
         orderHistory.save();
 
         fromToken.txCount = fromToken.txCount.plus(ONE_BI);
@@ -833,6 +869,16 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
         toToken.tradeVolume = toToken.tradeVolume.plus(dealedFromAmount);
         toToken.volumeUSD = toToken.volumeUSD.plus(volumeUSD);
     }
+
+    //更新时间戳
+    pair.updatedAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+    fromToken.updatedAt = event.block.timestamp;
+    toToken.updatedAt = event.block.timestamp;
+
+    //持久化
+    pair.save();
+    user.save();
     fromToken.save();
     toToken.save();
 
@@ -843,6 +889,7 @@ export function handleBuyBaseToken(event: BuyBaseToken): void {
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
     dodoZoo.feeUSD = dodoZoo.feeUSD.plus(feeUSD);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     //更新报表数据
@@ -863,6 +910,7 @@ export function handleUpdateLiquidityProviderFeeRate(event: UpdateLiquidityProvi
         return;
     }
     pair.lpFeeRate = convertTokenToDecimal(event.params.newLiquidityProviderFeeRate, BI_18);
+    pair.updatedAt = event.block.timestamp;
     pair.save();
 }
 
@@ -875,6 +923,7 @@ export function handleDisableTrading(call: DisableTradingCall): void {
     if (pair != null) {
         pair.isTradeAllowed = false;
     }
+    pair.updatedAt = call.block.timestamp;
     pair.save();
 }
 
@@ -887,6 +936,7 @@ export function handleEnableTrading(call: EnableTradingCall): void {
     if (pair != null) {
         pair.isTradeAllowed = true;
     }
+    pair.updatedAt = call.block.timestamp;
     pair.save();
 }
 
@@ -899,6 +949,7 @@ export function handleDisableQuoteDeposit(call: DisableQuoteDepositCall): void {
     if (pair != null) {
         pair.isDepositQuoteAllowed = false;
     }
+    pair.updatedAt = call.block.timestamp;
     pair.save();
 }
 
@@ -911,6 +962,7 @@ export function handleEnableQuoteDeposit(call: EnableQuoteDepositCall): void {
     if (pair != null) {
         pair.isDepositQuoteAllowed = true;
     }
+    pair.updatedAt = call.block.timestamp;
     pair.save();
 }
 
@@ -923,6 +975,7 @@ export function handleDisableBaseDeposit(call: DisableBaseDepositCall): void {
     if (pair != null) {
         pair.isDepositBaseAllowed = false;
     }
+    pair.updatedAt = call.block.timestamp;
     pair.save();
 }
 
@@ -935,6 +988,7 @@ export function handleEnableBaseDeposit(call: EnableBaseDepositCall): void {
     if (pair != null) {
         pair.isDepositBaseAllowed = true;
     }
+    pair.updatedAt = call.block.timestamp;
     pair.save();
 }
 
@@ -945,6 +999,7 @@ export function handleClaimAssets(event: ClaimAssets): void {
         let quoteToken = Token.load(pair.quoteToken);
         pair.baseReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.baseToken), dataSource.address()), baseToken.decimals);
         pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.quoteToken), dataSource.address()), quoteToken.decimals);
+        pair.updatedAt = event.block.timestamp;
         pair.save();
     }
 }
@@ -976,6 +1031,7 @@ export function handleChargeMaintainerFee(event: ChargeMaintainerFee): void {
     }
     pair.maintainer = event.params.maintainer;
     pair.mtFeeUSD = pair.mtFeeUSD.plus(volumeUSD);
+    pair.updatedAt = event.block.timestamp;
     pair.save();
 
     let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
@@ -1015,6 +1071,7 @@ export function handleUpdateMaintainerFeeRate(event: UpdateMaintainerFeeRate): v
     let pair = Pair.load(event.address.toHexString());
     if (pair != null) {
         pair.mtFeeRate = event.params.newMaintainerFeeRate
+        pair.updatedAt = event.block.timestamp;
         pair.save();
     }
 }

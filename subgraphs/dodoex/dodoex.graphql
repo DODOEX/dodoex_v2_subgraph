@@ -16,7 +16,9 @@ type DodoZoo @entity {
     "maintainer fee usd"
     maintainerFeeUSD: BigDecimal!
     "DIP3 maintainer fee usd "
-    DIP3MaintainerFeeUSD:BigDecimal!
+    DIP3MaintainerFeeUSD: BigDecimal!
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type DodoDayData @entity {
@@ -34,6 +36,9 @@ type DodoDayData @entity {
     feeUSD: BigDecimal!
     "maintainer fee usd"
     maintainerFeeUSD: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type Transaction @entity {
@@ -53,6 +58,9 @@ type Transaction @entity {
     tokens: [Token!]
     "volumeUSD"
     volumeUSD: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type User @entity {
@@ -66,6 +74,8 @@ type User @entity {
     liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
     "timestamp"
     timestamp: BigInt!
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type UserDayData @entity {
@@ -85,6 +95,9 @@ type UserDayData @entity {
     cancelCount: BigInt!
     "cp claim count"
     claimCount: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type LiquidityPosition @entity {
@@ -102,6 +115,8 @@ type LiquidityPosition @entity {
     liquidityTokenInMining: BigDecimal!
     "last add time"
     lastTxTime: BigInt!
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type Token @entity {
@@ -142,6 +157,9 @@ type Token @entity {
     totalSupply: BigInt!
     "timestamp"
     timestamp: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type TokenTrader @entity{
@@ -153,6 +171,9 @@ type TokenTrader @entity{
     trader: User!
     "last trade time"
     lastTxTime: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type LpToken @entity {
@@ -169,6 +190,9 @@ type LpToken @entity {
     decimals: BigInt!
     "total supply"
     totalSupply: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type OrderHistory @entity {
@@ -204,6 +228,9 @@ type OrderHistory @entity {
 
     "trading incentive reward"
     tradingReward: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type LiquidityHistory @entity {
@@ -243,6 +270,9 @@ type LiquidityHistory @entity {
     baseTokenPrice: BigDecimal
     "quote token Price"
     quoteTokenPrice: BigDecimal
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type Pair @entity {
@@ -330,6 +360,9 @@ type Pair @entity {
     isDepositBaseAllowed: Boolean!
     "deposit quote allowed"
     isDepositQuoteAllowed: Boolean!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type PairTrader @entity{
@@ -341,6 +374,9 @@ type PairTrader @entity{
     trader: User!
     "last trade time"
     lastTxTime: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type Swap @entity {
@@ -380,6 +416,9 @@ type Swap @entity {
     quoteVolume: BigDecimal!
     "traded volume of USD"
     volumeUSD: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type MaintainerFeeTx @entity {
@@ -393,6 +432,9 @@ type MaintainerFeeTx @entity {
     amount:BigDecimal!
     "volume in usd"
     volumeUSD: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type MaintainerEarnings @entity {
@@ -406,6 +448,9 @@ type MaintainerEarnings @entity {
     amount:  BigDecimal!
     "amount of usd"
     amountUSD:  BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type FlashLoan @entity {
@@ -427,6 +472,9 @@ type FlashLoan @entity {
     quoteAmount: BigDecimal!
     "traded volume of USD"
     volumeUSD: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type PairDayData @entity {
@@ -479,6 +527,9 @@ type PairDayData @entity {
 
     "lp Fee Rate"
     lpFeeRate: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type PairHourData @entity {
@@ -531,6 +582,9 @@ type PairHourData @entity {
 
     "lp Fee Rate"
     lpFeeRate: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type TokenDayData @entity {
@@ -568,6 +622,9 @@ type TokenDayData @entity {
     maintainerFee: BigDecimal!
     "maintainer fee in usd"
     maintainerFeeUSD: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type CrowdPooling @entity {
@@ -616,6 +673,9 @@ type CrowdPooling @entity {
     poolQuoteCap: BigDecimal!
     "investors count = creators"
     investorsCount: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type BidPosition @entity {
@@ -633,6 +693,9 @@ type BidPosition @entity {
     lastTxTime: BigInt!
     "claimed"
     claimed: Boolean!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type BidHistory @entity {
@@ -656,6 +719,9 @@ type BidHistory @entity {
     share: BigDecimal!
     "fee"
     fee: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type CrowdPoolingDayData @entity{
@@ -677,6 +743,9 @@ type CrowdPoolingDayData @entity{
     poolQuote: BigDecimal!
     "investors count"
     investors: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type CrowdPoolingHourData @entity{
@@ -698,6 +767,9 @@ type CrowdPoolingHourData @entity{
     poolQuote: BigDecimal!
     "investors count"
     investors: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type TradingIncentive @entity{
@@ -707,6 +779,9 @@ type TradingIncentive @entity{
     totalAmount: BigDecimal!
     "total user"
     totalUser: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type IncentiveRewardHistory @entity{
@@ -725,6 +800,9 @@ type IncentiveRewardHistory @entity{
     totalAmount: BigDecimal!
     "total user"
     totalUser: BigInt!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type Pool @entity{
@@ -734,6 +812,9 @@ type Pool @entity{
     lpToken: String!
     "staked balance"
     staked: BigDecimal!
+
+    "updatedAt"
+    updatedAt: BigInt
 }
 
 type MiningPool @entity{
@@ -741,4 +822,7 @@ type MiningPool @entity{
     id: ID!
     "lp token"
     lpToken: LpToken!
+
+    "updatedAt"
+    updatedAt: BigInt
 }

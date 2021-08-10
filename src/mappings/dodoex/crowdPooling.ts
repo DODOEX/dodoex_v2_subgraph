@@ -5,7 +5,16 @@ import {
     Pair
 } from "../../types/dodoex/schema"
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import {ONE_BI, ZERO_BD, ZERO_BI, convertTokenToDecimal, createToken, createUser, getDODOZoo,updateUserDayDataAndDodoDayData} from './helpers'
+import {
+    ONE_BI,
+    ZERO_BD,
+    ZERO_BI,
+    convertTokenToDecimal,
+    createToken,
+    createUser,
+    getDODOZoo,
+    updateUserDayDataAndDodoDayData
+} from './helpers'
 import {Bid, Cancel, Settle, Claim, CP} from "../../types/dodoex/templates/CP/CP"
 import {updateCrowdPoolingDayData, updateCrowdPoolingHourData} from "./dayUpdates"
 import {addTransaction} from "./transaction";
@@ -62,7 +71,7 @@ export function handleBid(event: Bid): void {
     }
     bidHistory.quote = dealedAmount;
     bidHistory.share = event.params.amount.minus(event.params.fee).toBigDecimal();
-    bidHistory.save();
+
 
     //更新小时统计数据
     let cpHourData = updateCrowdPoolingHourData(cp as CrowdPooling, event);
@@ -73,7 +82,6 @@ export function handleBid(event: Bid): void {
     if (bidPosition.lastTxTime.lt(BigInt.fromI32(cpHourData.hour))) {
         cpHourData.investors = cpHourData.investors.plus(ONE_BI);
     }
-    cpHourData.save();
 
     //更新日统计数据
     let cpDayData = updateCrowdPoolingDayData(cp as CrowdPooling, event);
@@ -84,19 +92,32 @@ export function handleBid(event: Bid): void {
     if (bidPosition.lastTxTime.lt(BigInt.fromI32(cpDayData.date))) {
         cpDayData.investors = cpDayData.investors.plus(ONE_BI);
     }
-
     bidPosition.lastTxTime = event.block.timestamp;
+
+    cp.updatedAt = event.block.timestamp;
+    toUser.updatedAt = event.block.timestamp;
+    fromUser.updatedAt = event.block.timestamp;
+    bidPosition.updatedAt = event.block.timestamp;
+    bidHistory.updatedAt = event.block.timestamp;
+    cpDayData.updatedAt = event.block.timestamp;
+    cpHourData.updatedAt = event.block.timestamp;
+
+    fromUser.save();
+    toUser.save();
     bidPosition.save();
+    bidHistory.save();
+    cpHourData.save();
     cpDayData.save();
     cp.save();
 
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP_BID);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_CP_BID);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_CP_BID);
 }
 
 export function handleCancel(event: Cancel): void {
@@ -120,7 +141,6 @@ export function handleCancel(event: Cancel): void {
     }
     bidPosition.investedQuote = bidPosition.investedQuote.minus(dealedAmount);
     bidPosition.shares = bidPosition.shares.minus(event.params.amount.toBigDecimal());
-    bidPosition.save();
 
     //交易记录
     let bidHistoryID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
@@ -139,30 +159,39 @@ export function handleCancel(event: Cancel): void {
     }
     bidHistory.quote = dealedAmount;
     bidHistory.share = event.params.amount.toBigDecimal();
-    bidHistory.save();
 
     //更新小时统计数据
     let cpHourData = updateCrowdPoolingHourData(cp as CrowdPooling, event);
     cpHourData.investedQuote = cpHourData.investedQuote.minus(dealedAmount);
     cpHourData.poolQuote = cp.poolQuote;
     cpHourData.canceledQuote = cpHourData.canceledQuote.plus(dealedAmount);
-    cpHourData.save();
 
     //更新日统计数据
     let cpDayData = updateCrowdPoolingDayData(cp as CrowdPooling, event);
     cpDayData.investedQuote = cpDayData.investedQuote.minus(dealedAmount);
     cpDayData.poolQuote = cp.poolQuote;
     cpDayData.canceledQuote = cpDayData.canceledQuote.plus(dealedAmount);
+
+    cp.updatedAt = event.block.timestamp;
+    bidPosition.updatedAt = event.block.timestamp;
+    bidHistory.updatedAt = event.block.timestamp;
+    cpDayData.updatedAt = event.block.timestamp;
+    cpHourData.updatedAt = event.block.timestamp;
+
+    cpHourData.save();
     cpDayData.save();
     cp.save();
+    bidPosition.save();
+    bidHistory.save();
 
     //更新DODOZoo
     let dodoZoo = getDODOZoo();
     dodoZoo.txCount = dodoZoo.txCount.plus(ONE_BI);
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     addTransaction(event, event.params.to.toHexString(), TRANSACTION_TYPE_CP_CANCEL);
-    updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_CP_CANCEL);
+    updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_CP_CANCEL);
 }
 
 export function handleSettle(event: Settle): void {
@@ -178,7 +207,7 @@ export function handleSettle(event: Settle): void {
         cp.dvm = pair.id;
         pair.save();
     }
-
+    cp.updatedAt = event.block.timestamp;
     cp.settled = true;
     cp.liquidator = event.transaction.from;
 
@@ -192,8 +221,9 @@ export function handleClaim(event: Claim): void {
     let bidPosition = BidPosition.load(bidPositionID);
     if (bidPosition !== null) {
         bidPosition.claimed = true;
+        bidPosition.updatedAt = event.block.timestamp;
         bidPosition.save();
         addTransaction(event, event.params.user.toHexString(), TRANSACTION_TYPE_CP_CLAIM);
-        updateUserDayDataAndDodoDayData(event,TRANSACTION_TYPE_CP_CLAIM);
+        updateUserDayDataAndDodoDayData(event, TRANSACTION_TYPE_CP_CLAIM);
     }
 }

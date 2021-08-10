@@ -99,11 +99,13 @@ export function handleNewDVM(event: NewDVM): void {
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
-
+        
+        pair.updatedAt = event.block.timestamp;
         pair.save()
 
         let dodoZoo = getDODOZoo();
         dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.updatedAt = event.block.timestamp;
         dodoZoo.save()
     }
 
@@ -170,9 +172,11 @@ export function handleNewDPP(event: NewDPP): void {
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
         pair.save();
+        pair.updatedAt = event.block.timestamp;
 
         let dodoZoo = getDODOZoo();
         dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.updatedAt = event.block.timestamp;
         dodoZoo.save()
     }
 
@@ -240,11 +244,13 @@ export function handleNewDSP(event: NewDSP): void {
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
+        pair.updatedAt = event.block.timestamp;
 
         pair.save()
 
         let dodoZoo = getDODOZoo();
         dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.updatedAt = event.block.timestamp;
         dodoZoo.save()
     }
 
@@ -284,13 +290,15 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.settled = false;
         crowdPooling.dvm = ADDRESS_ZERO;
         crowdPooling.liquidator = Address.fromString(ADDRESS_ZERO);
-
+        crowdPooling.updatedAt = event.block.timestamp;
+        
         let dodoZoo = getDODOZoo();
         dodoZoo.crowdpoolingCount = dodoZoo.crowdpoolingCount.plus(ONE_BI);
 
         crowdPooling.serialNumber = dodoZoo.crowdpoolingCount;
 
         crowdPooling.save();
+        dodoZoo.updatedAt = event.block.timestamp;
         dodoZoo.save();
     }
 
@@ -361,10 +369,12 @@ export function handleNewRegistry(event: NewRegistry): void {
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
+        pair.updatedAt = event.block.timestamp;
         pair.save()
 
         let dodoZoo = getDODOZoo();
         dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        dodoZoo.updatedAt = event.block.timestamp;
         dodoZoo.save()
     }
 

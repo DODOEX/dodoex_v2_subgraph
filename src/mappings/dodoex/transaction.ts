@@ -21,6 +21,7 @@ export function addTransaction(event: ethereum.Event, sender: String, type: Stri
         transaction.sender = transaction.sender.concat("-").concat(sender as string);
         transaction.type = transaction.type.concat("-").concat(type as string);
     }
+    transaction.updatedAt = event.block.timestamp;
     transaction.save();
     return transaction as Transaction;
 }

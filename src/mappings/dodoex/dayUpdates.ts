@@ -78,6 +78,7 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
     }
     pairDayData.lpFeeRate = pair.lpFeeRate;
     pairDayData.txns = pairDayData.txns.plus(ONE_BI);
+    pairDayData.updatedAt = event.block.timestamp;
     pairDayData.save();
     return pairDayData as PairDayData;
 }
@@ -136,6 +137,7 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
     }
     pairHourData.txns = pairHourData.txns.plus(ONE_BI);
     pairHourData.lpFeeRate = pair.lpFeeRate;
+    pairHourData.updatedAt = event.block.timestamp;
     pairHourData.save();
     return pairHourData as PairHourData;
 }
@@ -166,6 +168,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
     tokenDayData.usdPrice = token.usdPrice
     tokenDayData.totalLiquidityToken = token.totalLiquidityOnDODO;
     tokenDayData.txns = tokenDayData.txns.plus(ONE_BI);
+    tokenDayData.updatedAt = event.block.timestamp;
     tokenDayData.save();
 
     return tokenDayData as TokenDayData;
@@ -199,6 +202,7 @@ export function trimTokenData(token: Token, volume: BigDecimal, bridge: BigDecim
             tokenDayData.txns = tokenDayData.txns.minus(ONE_BI);
         }
     }
+    tokenDayData.updatedAt = event.block.timestamp;
     tokenDayData.save();
 
     token.tradeVolume = token.tradeVolume.minus(volume);
@@ -226,6 +230,7 @@ export function updateCrowdPoolingDayData(cp: CrowdPooling, event: ethereum.Even
         cpDayData.crowdPooling = cp.id;
         cpDayData.poolQuote = cp.poolQuote;
         cpDayData.investors = ZERO_BI;
+        cpDayData.updatedAt = event.block.timestamp;
         cpDayData.save();
     }
     return cpDayData as CrowdPoolingDayData;
@@ -250,6 +255,7 @@ export function updateCrowdPoolingHourData(cp: CrowdPooling, event: ethereum.Eve
         cpHourData.crowdPooling = cp.id;
         cpHourData.poolQuote = cp.poolQuote;
         cpHourData.investors = ZERO_BI;
+        cpHourData.updatedAt = event.block.timestamp;
         cpHourData.save();
     }
     return cpHourData as CrowdPoolingHourData;
@@ -272,6 +278,7 @@ export function getDodoDayData(event: ethereum.Event): DodoDayData {
         dodoDayData.volumeUSD = ZERO_BD;
         dodoDayData.feeUSD = ZERO_BD;
         dodoDayData.maintainerFeeUSD = ZERO_BD;
+        dodoDayData.updatedAt = event.block.timestamp;
         dodoDayData.save();
     }
 
@@ -281,6 +288,7 @@ export function getDodoDayData(event: ethereum.Event): DodoDayData {
 export function increaseTxCount(event: ethereum.Event): DodoDayData {
     let dodoDayData = getDodoDayData(event);
     dodoDayData.txCount = dodoDayData.txCount.plus(ONE_BI);
+    dodoDayData.updatedAt = event.block.timestamp;
     dodoDayData.save();
     return dodoDayData as DodoDayData;
 }
@@ -289,6 +297,7 @@ export function increaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecima
     let dodoDayData = getDodoDayData(event);
     dodoDayData.volumeUSD = dodoDayData.volumeUSD.plus(volumeUSD);
     dodoDayData.feeUSD = dodoDayData.feeUSD.plus(feeUSD);
+    dodoDayData.updatedAt = event.block.timestamp;
     dodoDayData.save();
     return dodoDayData as DodoDayData;
 }
@@ -297,6 +306,7 @@ export function decreaseVolumeAndFee(event: ethereum.Event, volumeUSD: BigDecima
     let dodoDayData = getDodoDayData(event);
     dodoDayData.volumeUSD = dodoDayData.volumeUSD.minus(volumeUSD);
     dodoDayData.feeUSD = dodoDayData.feeUSD.minus(feeUSD);
+    dodoDayData.updatedAt = event.block.timestamp;
     dodoDayData.save();
     return dodoDayData as DodoDayData;
 }
@@ -305,12 +315,14 @@ export function increaseMaintainerFee(event: ethereum.Event, volumeUSD: BigDecim
     let dodoDayData = getDodoDayData(event);
 
     dodoDayData.maintainerFeeUSD = dodoDayData.maintainerFeeUSD.plus(volumeUSD);
+    dodoDayData.updatedAt = event.block.timestamp;
     dodoDayData.save();
     let dodoZoo = getDODOZoo();
     dodoZoo.maintainerFeeUSD = dodoZoo.maintainerFeeUSD.plus(volumeUSD);
     if (event.block.timestamp.ge(BigInt.fromI32(DIP3_TIMESTAMP))) {
         dodoZoo.DIP3MaintainerFeeUSD = dodoZoo.DIP3MaintainerFeeUSD.plus(volumeUSD);
     }
+    dodoZoo.updatedAt = event.block.timestamp;
     dodoZoo.save();
 
     return dodoDayData as DodoDayData;
@@ -336,6 +348,7 @@ export function updateUserDayData(event: ethereum.Event): UserDayData {
         userDayData.cancelCount = ZERO_BI;
         userDayData.claimCount = ZERO_BI;
     }
+    userDayData.updatedAt = event.block.timestamp;
     userDayData.save();
     return userDayData as UserDayData;
 }

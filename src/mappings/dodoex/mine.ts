@@ -1,5 +1,5 @@
 import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
-import { ZERO_BD, convertTokenToDecimal, createPool} from "./helpers"
+import {ZERO_BD, convertTokenToDecimal, createPool} from "./helpers"
 import {Deposit, Withdraw, Claim} from "../../types/dodoex/DODOMine/DODOMine"
 import {LiquidityPosition, LpToken} from "../../types/dodoex/schema"
 
@@ -7,9 +7,11 @@ export function handleDeposit(event: Deposit): void {
 
     let pool = createPool(event.params.pid);
     let lpToken = LpToken.load(pool.lpToken);
-    if(lpToken == null){return}
+    if (lpToken == null) {
+        return
+    }
 
-    let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
+    let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 
     let liquidityPositionID = event.params.user.toHexString().concat("-").concat(lpToken.id);
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
@@ -23,8 +25,9 @@ export function handleDeposit(event: Deposit): void {
         liquidityPosition.liquidityTokenInMining = ZERO_BD;
     }
     liquidityPosition.liquidityTokenInMining = liquidityPosition.liquidityTokenInMining.plus(dealedAmount);
+    liquidityPosition.updatedAt = event.block.timestamp;
     liquidityPosition.save();
-
+    pool.updatedAt = event.block.timestamp;
     pool.staked = pool.staked.plus(dealedAmount);
     pool.save();
 }
@@ -33,9 +36,11 @@ export function handleWithdraw(event: Withdraw): void {
 
     let pool = createPool(event.params.pid);
     let lpToken = LpToken.load(pool.lpToken);
-    if(lpToken == null){return}
+    if (lpToken == null) {
+        return
+    }
 
-    let dealedAmount = convertTokenToDecimal(event.params.amount,lpToken.decimals);
+    let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 
     let liquidityPositionID = event.params.user.toHexString().concat("-").concat(lpToken.id);
     let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
@@ -49,9 +54,11 @@ export function handleWithdraw(event: Withdraw): void {
         liquidityPosition.liquidityTokenInMining = ZERO_BD;
     }
     liquidityPosition.liquidityTokenInMining = liquidityPosition.liquidityTokenInMining.minus(dealedAmount);
+    liquidityPosition.updatedAt = event.block.timestamp;
     liquidityPosition.save();
 
     pool.staked = pool.staked.minus(dealedAmount);
+    pool.updatedAt = event.block.timestamp;
     pool.save();
 }
 
