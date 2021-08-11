@@ -5,11 +5,10 @@ import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
 import {DODONFTBurn, DODONFTMint} from "../../types/nft/DODONFT/DODONFT";
 
 export function handleTransferSingle(event: TransferSingle): void {
-    let fromUser = createUser(event.params.from);
-    let toUser = createUser(event.params.to);
-    let nft = createAndGetNFT(event.address);
+    let fromUser = createUser(event.params.from,event);
+    let toUser = createUser(event.params.to,event);
+    let nft = createAndGetNFT(event.address,event);
     nft.type = "1155";
-    nft.save();
 
     let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
     let toUserNftId = event.params.to.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
@@ -21,26 +20,35 @@ export function handleTransferSingle(event: TransferSingle): void {
         fromUserNft.owner = fromUser.id;
         fromUserNft.amount = ZERO_BI;
         fromUserNft.nft = nft.id;
+        fromUserNft.createdAt = event.block.timestamp;
     }
     fromUserNft.tokenID = event.params.id;
     fromUserNft.amount = fromUserNft.amount.minus(event.params.value);
-    fromUserNft.save();
 
     if (toUserNft == null) {
         toUserNft = new UserNft(toUserNftId)
         toUserNft.owner = toUser.id;
         toUserNft.amount = ZERO_BI;
         toUserNft.nft = nft.id;
+        toUserNft.createdAt = event.block.timestamp;
     }
     toUserNft.tokenID = event.params.id;
     toUserNft.amount = toUserNft.amount.plus(event.params.value);
+
+    //更新时间戳
+    nft.updatedAt = event.block.timestamp;
+    fromUserNft.updatedAt = event.block.timestamp;
+    toUserNft.updatedAt = event.block.timestamp;
+
+    nft.save();
+    fromUserNft.save();
     toUserNft.save();
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-    let fromUser = createUser(event.params.from);
-    let toUser = createUser(event.params.to);
-    let nft = createAndGetNFT(event.address);
+    let fromUser = createUser(event.params.from,event);
+    let toUser = createUser(event.params.to,event);
+    let nft = createAndGetNFT(event.address,event);
     nft.type = "1155";
     nft.save();
 
@@ -60,19 +68,26 @@ export function handleTransferBatch(event: TransferBatch): void {
             fromUserNft.owner = fromUser.id;
             fromUserNft.amount = ZERO_BI;
             fromUserNft.nft = nft.id;
+            fromUserNft.createdAt = event.block.timestamp;
         }
         fromUserNft.tokenID = tokenId;
         fromUserNft.amount = fromUserNft.amount.minus(amount);
-        fromUserNft.save();
 
         if (toUserNft == null) {
             toUserNft = new UserNft(toUserNftId)
             toUserNft.owner = toUser.id;
             toUserNft.amount = ZERO_BI;
             toUserNft.nft = nft.id;
+            toUserNft.createdAt = event.block.timestamp;
         }
         toUserNft.tokenID = tokenId;
         toUserNft.amount = toUserNft.amount.plus(amount);
+
+        //更新时间戳
+        fromUserNft.updatedAt = event.block.timestamp;
+        toUserNft.updatedAt = event.block.timestamp;
+
+        fromUserNft.save();
         toUserNft.save();
     }
 }

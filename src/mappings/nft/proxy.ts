@@ -12,6 +12,8 @@ export function handleCreateNFTCollateralVault(event: CreateNFTCollateralVault):
         vault.name = event.params.name;
         vault.baseURI = event.params.baseURI;
         vault.owner = event.params.creator;
+        vault.createdAt = event.block.timestamp;
+        vault.updatedAt = event.block.timestamp;
         vault.save();
     }
     NFTCollateralVaultTemplate.create(event.params.vault)
@@ -20,9 +22,11 @@ export function handleCreateNFTCollateralVault(event: CreateNFTCollateralVault):
 export function handleCreateFragment(event: CreateFragment): void {
     let vault = NftCollateralVault.load(event.params.vault.toHexString());
     if (vault == null) return;
-    let fragment = createAndGetFragment(event.params.fragment);
+    let fragment = createAndGetFragment(event.params.fragment,event);
     fragment.vault = event.params.vault.toHexString();
     fragment.dvm = event.params.dvm.toHexString();
+    fragment.createdAt = event.block.timestamp;
+    fragment.updatedAt = event.block.timestamp;
     fragment.save();
     FragmentTemplate.create(event.params.fragment);
 }

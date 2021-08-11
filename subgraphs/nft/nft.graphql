@@ -11,6 +11,10 @@ type NftCollateralVault @entity {
     vaultNfts:[VaultNft!]
     "owner"
     owner: Bytes!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
 }
 
 type Nft @entity{
@@ -22,6 +26,10 @@ type Nft @entity{
     creator: String
     "baseUrl"
     baseUrl: String
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
 }
 
 type VaultNft @entity{
@@ -37,6 +45,10 @@ type VaultNft @entity{
     tokenID:  BigInt!
     "token amount"
     amount: BigInt!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
 }
 
 type Fragment @entity{
@@ -66,11 +78,19 @@ type Fragment @entity{
     vaultPreOwner: String!
     "buyoutTimestamp"
     buyoutTimestamp: BigInt!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
 }
 
 type User @entity{
     "user address"
     id: ID!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
 }
 
 type UserNft @entity{
@@ -84,5 +104,9 @@ type UserNft @entity{
     tokenID:  BigInt!
     "token amount"
     amount: BigInt!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
 }
 

@@ -37,35 +37,6 @@ dataSources:
           handler: handleCreateNFTCollateralVault
         - event: CreateFragment(address,address,address,address)
           handler: handleCreateFragment
-  - kind: ethereum/contract
-    name: NFTTokenFactory
-    network: mainnet
-    source:
-      abi: NFTTokenFactory
-      address: '0xdebb45acfff3b5e610c1edf45dfaaea0030eadaf'
-      startBlock: 24276157
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/nft/tokenFactory.ts
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: NFTTokenFactory
-          file: ../../abis/NFTTokenFactory.json
-        - name: InitializableERC721
-          file: ../../abis/InitializableERC721.json
-        - name: InitializableERC1155
-          file: ../../abis/InitializableERC1155.json
-      eventHandlers:
-        - event: NewERC721(address,address)
-          handler: handleNewERC721
-        - event: NewERC1155(address,address)
-          handler: handleNewERC1155
 templates:
   - kind: ethereum/contract
     name: NFTCollateralVault

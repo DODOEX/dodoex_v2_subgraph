@@ -16,13 +16,16 @@ export function handleAddNftToken(event: AddNftToken): void {
         vaultNft.vault = event.address.toHexString();
         vaultNft.tokenID = event.params.tokenId;
         vaultNft.amount = event.params.amount;
+        vaultNft.createdAt = event.block.timestamp;
     } else {
         vaultNft.amount = vaultNft.amount.plus(event.params.amount);
     }
+    vaultNft.updatedAt = event.block.timestamp;
     vaultNft.save();
 
     let vault = NftCollateralVault.load(event.address.toHexString());
     vault.vaultNfts.push(vaultNftID)
+    vault.updatedAt = event.block.timestamp;
     vault.save();
 
 }
@@ -33,6 +36,7 @@ export function handleRemoveNftToken(event: RemoveNftToken): void {
     let vaultNft = VaultNft.load(vaultNftID);
     if (vaultNft != null) {
         vaultNft.amount = vaultNft.amount.minus(event.params.amount);
+        vaultNft.updatedAt = event.block.timestamp;
     }
     vaultNft.save();
 }
@@ -40,5 +44,6 @@ export function handleRemoveNftToken(event: RemoveNftToken): void {
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
     let vault = NftCollateralVault.load(event.address.toHexString());
     vault.owner=event.params.newOwner;
+    vault.updatedAt = event.block.timestamp;
     vault.save()
 }
