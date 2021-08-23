@@ -43,10 +43,10 @@ function priceCore(time: BigInt): void {
     if (stableOnePair != null && stableOnePair.baseReserve.plus(stableOnePair.quoteReserve).gt(ZERO_BD)) {
 
         let lastTradePrice = stableOnePair.lastTradePrice;
-        let baseWeight = stableOnePair.baseReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
-        let quoteWeight = stableOnePair.quoteReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
-        let baseUsdPrice = lastTradePrice.minus(ONE_BD).times(ONE_BD.minus(baseWeight)).plus(ONE_BD);
-        let quoteUsdPrice = lastTradePrice.minus(ONE_BD).times(ONE_BD.minus(quoteWeight)).plus(ONE_BD);
+        // let baseWeight = stableOnePair.baseReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
+        // let quoteWeight = stableOnePair.quoteReserve.div(stableOnePair.baseReserve.plus(stableOnePair.quoteReserve));
+        let baseUsdPrice = lastTradePrice.div(lastTradePrice.plus(ONE_BD)).times(ONE_BD.plus(ONE_BD));
+        let quoteUsdPrice = ONE_BD.div(lastTradePrice.plus(ONE_BD)).times(ONE_BD.plus(ONE_BD));
 
         let baseToken = Token.load(stableOnePair.baseToken);
         let quoteToken = Token.load(stableOnePair.quoteToken);
@@ -106,8 +106,8 @@ function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
         baseToken.priceUpdateTimestamp = time;
         baseToken.save();
 
-        if(pair.id !="0x75c23271661d9d143dcb617222bc4bec783eff34"){
-            log.warning("token :{},price: {},time: {}",[baseToken.id,price.toString(),time.toString()]);
+        if (pair.id != "0x75c23271661d9d143dcb617222bc4bec783eff34") {
+            log.warning("token :{},price: {},time: {}", [baseToken.id, price.toString(), time.toString()]);
         }
     }
 

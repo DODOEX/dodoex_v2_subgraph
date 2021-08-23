@@ -280,7 +280,7 @@ export function createToken(address: Address, event: ethereum.Event): Token {
         token.volumeUSD = ZERO_BD;
         token.traderCount = ZERO_BI;
 
-        if(address.toHexString() == STABLE_ONE_ADDRESS){
+        if (address.toHexString() == STABLE_ONE_ADDRESS) {
             token.usdPrice = ONE_BD;
         }
         token.updatedAt = event.block.timestamp;
@@ -414,7 +414,8 @@ export function updateVirtualPairVolume(event: OrderHistoryV2, dealedFromAmount:
     }
     pair.save();
 
-    // updateStatistics(event,pair  as Pair,pair.volumeBaseToken,pair.volumeQuoteToken,ZERO_BD,ZERO_BD,ZERO_BD,ZERO_BD,baseToken,quoteToken,event.params.sender,volumeUSD);
+    updatePairTraderCount(event.transaction.from, event.params.sender, pair as Pair, event);
+    updateStatistics(event, pair as Pair, pair.volumeBaseToken, pair.volumeQuoteToken, ZERO_BD, ZERO_BD, ZERO_BD, ZERO_BD, baseToken, quoteToken, event.params.sender, volumeUSD);
 
     return pair as Pair;
 }
@@ -477,7 +478,6 @@ export function updatePairTraderCount(from: Address, to: Address, pair: Pair, ev
         fromTraderPair.lastTxTime = ZERO_BI;
         fromTraderPair.updatedAt = event.block.timestamp;
         fromTraderPair.save();
-
         pair.traderCount = pair.traderCount.plus(ONE_BI);
     }
 
@@ -519,7 +519,7 @@ export function updateTokenTraderCount(tokenAddress: Address, userAddress: Addre
 }
 
 export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: BigDecimal, quoteVolume: BigDecimal, feeBase: BigDecimal, feeQuote: BigDecimal, untrackedBaseVolume: BigDecimal, untrackedQuoteVolume: BigDecimal, baseToken: Token, quoteToken: Token, to: Address, volumeUSD: BigDecimal): void {
-    let pairHourData = updatePairHourData(event);
+    let pairHourData = updatePairHourData(event, pair);
     pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
     pairHourData.volumeBase = pairHourData.volumeBase.plus(baseVolume);
@@ -529,7 +529,7 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     pairHourData.volumeUSD = pairHourData.volumeUSD.plus(volumeUSD);
     pairHourData.updatedAt = event.block.timestamp;
 
-    let pairDayData = updatePairDayData(event);
+    let pairDayData = updatePairDayData(event, pair);
     pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
     pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
     pairDayData.volumeBase = pairDayData.volumeBase.plus(baseVolume);
@@ -556,27 +556,19 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     quoteDayData.updatedAt = event.block.timestamp;
 
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
-    if (fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))) {
-        pairHourData.traders = pairHourData.traders.plus(ONE_BI);
-    }
-    if (fromTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))) {
-        pairDayData.traders = pairDayData.traders.plus(ONE_BI);
-        baseDayData.traders = baseDayData.traders.plus(ONE_BI);
-        quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
-    }
+    pairHourData.traders = pairHourData.traders.plus(ONE_BI);
+    pairDayData.traders = pairDayData.traders.plus(ONE_BI);
+    baseDayData.traders = baseDayData.traders.plus(ONE_BI);
+    quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
     fromTraderPair.lastTxTime = event.block.timestamp;
     fromTraderPair.updatedAt = event.block.timestamp;
     fromTraderPair.save();
 
     let toTraderPair = PairTrader.load(to.toHexString().concat("-").concat(pair.id));
-    if (toTraderPair.lastTxTime.lt(BigInt.fromI32(pairHourData.hour))) {
-        pairHourData.traders = pairHourData.traders.plus(ONE_BI);
-    }
-    if (toTraderPair.lastTxTime.lt(BigInt.fromI32(pairDayData.date))) {
-        pairDayData.traders = pairDayData.traders.plus(ONE_BI);
-        baseDayData.traders = baseDayData.traders.plus(ONE_BI);
-        quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
-    }
+    pairHourData.traders = pairHourData.traders.plus(ONE_BI);
+    pairDayData.traders = pairDayData.traders.plus(ONE_BI);
+    baseDayData.traders = baseDayData.traders.plus(ONE_BI);
+    quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
     toTraderPair.lastTxTime = event.block.timestamp;
     toTraderPair.updatedAt = event.block.timestamp;
     toTraderPair.save();

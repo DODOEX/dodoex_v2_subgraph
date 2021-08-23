@@ -23,14 +23,12 @@ import {
     DIP3_TIMESTAMP
 } from "../constant"
 
-export function updatePairDayData(event: ethereum.Event): PairDayData {
+export function updatePairDayData(event: ethereum.Event,pair: Pair): PairDayData {
     let timestamp = event.block.timestamp.toI32();
     let dayID = timestamp / 86400;
     let dayStartTimestamp = dayID * 86400;
 
     let dayPairID = event.address.toHexString().concat("-").concat(BigInt.fromI32(dayID).toString())
-
-    let pair = Pair.load(event.address.toHexString());
 
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
@@ -83,14 +81,14 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
     return pairDayData as PairDayData;
 }
 
-export function updatePairHourData(event: ethereum.Event): PairHourData {
+export function updatePairHourData(event: ethereum.Event,pair: Pair): PairHourData {
+    log.warning("{},{},{}****",[pair.id,event.transaction.hash.toHexString(),pair.baseReserve.toString()])
     let timestamp = event.block.timestamp.toI32();
     let hourID = timestamp / 3600;
     let hourStartTimestamp = hourID * 3600;
 
     let hourPairID = event.address.toHexString().concat("-").concat(BigInt.fromI32(hourID).toString())
 
-    let pair = Pair.load(event.address.toHexString());
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
 
