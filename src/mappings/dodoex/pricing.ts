@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 import {log, BigInt, BigDecimal, store} from '@graphprotocol/graph-ts'
 import {Pair, Token} from '../../types/dodoex/schema'
+import {createToken} from './helpers'
 import {
     ZERO_BI,
     ZERO_BD,
@@ -86,7 +87,7 @@ function priceCore(time: BigInt): void {
             stableCoinTwo.save();
         }
     }
-    if (baseCoin != null) {
+    if (baseCoin != null && wrappedBaseCoin != null) {
         baseCoin.usdPrice = wrappedBaseCoin.usdPrice;
         baseCoin.priceUpdateTimestamp = time;
         baseCoin.save();
