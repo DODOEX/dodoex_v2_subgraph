@@ -6,10 +6,11 @@ import {increaseTxCount} from './dayUpdates'
 import {ZERO_BD} from "./helpers"
 
 export function addTransaction(event: ethereum.Event, sender: String, type: String): Transaction {
-    let transaction = Transaction.load(event.transaction.hash.toHexString());
+    let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
+    let transaction = Transaction.load(id);
     if (transaction == null) {
         increaseTxCount(event);
-        transaction = new Transaction(event.transaction.hash.toHexString());
+        transaction = new Transaction(id);
         transaction.from = event.transaction.from.toHexString();
         transaction.to = event.transaction.to.toHexString();
         transaction.sender = sender as string;

@@ -5,41 +5,12 @@ schema:
   file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ERC20Factory
-    network: arbitrum-one
-    source:
-      address: '0x141b4497a298340E8B451ac4eeE947B00aDbe07A'
-      abi: ERC20Factory
-      startBlock: 1
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/token/factory.ts
-      entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
-      abis:
-        - name: ERC20Factory
-          file: ../../abis/ERC20Factory.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: NewERC20(address,address,bool)
-          handler: handleNewERC20
-  - kind: ethereum/contract
     name: ERC20V2Factory
     network: arbitrum-one
     source:
-      address: '0xE3c91fDCe30DD5Aa95138D6c4d63f43a26e9066e'
+      address: '0x750B153E6a69DCA16eb12D5aEdDFD80ca3f10d1C'
       abi: ERC20V2Factory
-      startBlock: 1
+      startBlock: 226000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

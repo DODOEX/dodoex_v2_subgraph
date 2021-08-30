@@ -237,7 +237,9 @@ export function handleTransfer(event: Transfer): void {
     toUserSuperior.creditFromInvited = toUserSuperior.creditFromInvited.plus(creditChangeToUserSuperior);
 
     fromUser.creditOfSuperior = fromUser.creditOfSuperior.plus(creditChangeFromUserSuperior);
+    fromUser.redeemRecieveAmount = fromUser.redeemRecieveAmount.plus(convertTokenToDecimal(event.params.amount,vdodo.decimals).times(BigDecimal.fromString("100")))
     toUser.creditOfSuperior = toUser.creditOfSuperior.plus(creditChangeToUserSuperior);
+    toUser.mintAmount = toUser.mintAmount.plus(convertTokenToDecimal(event.params.amount,vdodo.decimals).times(BigDecimal.fromString("100")))
 
     fromUser.save();
     toUser.save();

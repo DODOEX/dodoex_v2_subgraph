@@ -8,9 +8,9 @@ dataSources:
     name: DODOMineV3Proxy
     network: arbitrum-one
     source:
-      address: '0x579D25c519de3235aeD83A277E67c6420d9Fd1bE'
+      address: '0x9A74B169798bE874EF1C23b4092e5689969eF45E'
       abi: DODOMineV3Proxy
-      startBlock: 1
+      startBlock: 226000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -36,7 +36,7 @@ dataSources:
     name: DODOMineV3Registry
     network: arbitrum-one
     source:
-      address: '0xf6585FE94f2147682723FCdFFb973757BCdB608F'
+      address: '0x2B40bC6c9C12c18787436aa1E2B761f684F42999'
       abi: DODOMineV3Registry
       startBlock: 1
     mapping:
