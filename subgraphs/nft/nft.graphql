@@ -18,14 +18,14 @@ type NftCollateralVault @entity {
 }
 
 type Nft @entity{
-    "nft address"
+    "nft address - token id"
     id: ID!
     "type(721、1155)"
     type: String
-    "creator"
-    creator: String
-    "baseUrl"
-    baseUrl: String
+    "nft contract address"
+    address: Bytes!
+    "token uri"
+    uri: String
     "createdAt"
     createdAt: BigInt!
     "updatedAt"

@@ -20,18 +20,57 @@ function fetchNFTName(address: Address): String {
     return name;
 }
 
-export function createAndGetNFT(address: Address,event: ethereum.Event): Nft {
-    let nft = Nft.load(address.toHexString());
+export function createAndGetNFT(address: Address, tokenId: BigInt, event: ethereum.Event): Nft {
+    let key = address.toHexString().concat("-").concat(tokenId.toString())
+    let nft = Nft.load(key);
     if (nft == null) {
         nft = new Nft(address.toHexString());
+        nft.address = address;
         nft.createdAt = event.block.timestamp;
         nft.updatedAt = event.block.timestamp;
+
+        let nft721 = DODONFT.bind(address);
+        let uri721 = nft721.try_tokenURI(tokenId);
+        if (!uri721.reverted) {
+            nft.type = "721"
+            nft.uri = uri721.value;
+        }
+
+        let nft1155 = DODONFT.bind(address);
+        let uri1155 = nft1155.try_tokenURI(tokenId);
+        if (!uri1155.reverted) {
+            nft.type = "1155"
+            nft.uri = uri1155.value;
+        }
+
         nft.save()
     }
     return nft as Nft;
 }
 
-export function createAndGetFragment(address: Address,event: ethereum.Event): Fragment {
+export function updateNft(address: Address, tokenId: BigInt, event: ethereum.Event): void {
+    let nft = createAndGetNFT(address, tokenId, event);
+
+    let nft721 = DODONFT.bind(address);
+    let uri721 = nft721.try_tokenURI(tokenId);
+    if (!uri721.reverted) {
+        nft.type = "721"
+        nft.uri = uri721.value;
+    }
+
+    let nft1155 = DODONFT.bind(address);
+    let uri1155 = nft1155.try_tokenURI(tokenId);
+    if (!uri1155.reverted) {
+        nft.type = "1155"
+        nft.uri = uri1155.value;
+    }
+
+    nft.updatedAt = event.block.timestamp;
+    nft.save();
+
+}
+
+export function createAndGetFragment(address: Address, event: ethereum.Event): Fragment {
     let fragmentContract = FragmentContract.bind(address);
     let fragment = Fragment.load(address.toHexString());
     if (fragment == null) {
@@ -52,7 +91,7 @@ export function createAndGetFragment(address: Address,event: ethereum.Event): Fr
     return fragment as Fragment;
 }
 
-export function createUser(address: Address,event: ethereum.Event): User {
+export function createUser(address: Address, event: ethereum.Event): User {
     let user = User.load(address.toHexString());
     if (user == null) {
         user = new User(address.toHexString());

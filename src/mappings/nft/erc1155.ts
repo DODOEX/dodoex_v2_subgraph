@@ -1,13 +1,13 @@
 import {Nft, Fragment, User, UserNft} from "../../types/nft/schema";
-import {Address,BigInt} from "@graphprotocol/graph-ts";
+import {Address, BigInt} from "@graphprotocol/graph-ts";
 import {TransferBatch, TransferSingle} from "../../types/nft/DODONFT1155/DODONFT1155"
 import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
 import {DODONFTBurn, DODONFTMint} from "../../types/nft/DODONFT/DODONFT";
 
 export function handleTransferSingle(event: TransferSingle): void {
-    let fromUser = createUser(event.params.from,event);
-    let toUser = createUser(event.params.to,event);
-    let nft = createAndGetNFT(event.address,event);
+    let fromUser = createUser(event.params.from, event);
+    let toUser = createUser(event.params.to, event);
+    let nft = createAndGetNFT(event.address, event.params.id, event);
     nft.type = "1155";
 
     let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
@@ -46,17 +46,16 @@ export function handleTransferSingle(event: TransferSingle): void {
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-    let fromUser = createUser(event.params.from,event);
-    let toUser = createUser(event.params.to,event);
-    let nft = createAndGetNFT(event.address,event);
-    nft.type = "1155";
-    nft.save();
+    let fromUser = createUser(event.params.from, event);
+    let toUser = createUser(event.params.to, event);
 
     let ids = event.params.ids;
     let values = event.params.values;
 
     for (let i = 0; i < ids.length; i++) {
         let tokenId: BigInt = ids[i];
+        let nft = createAndGetNFT(event.address, tokenId, event);
+        nft.type = "1155";
         let amount: BigInt = values[i];
         let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(tokenId.toString());
         let toUserNftId = event.params.to.toHexString().concat("-").concat(event.address.toHexString()).concat(tokenId.toString());
@@ -87,6 +86,7 @@ export function handleTransferBatch(event: TransferBatch): void {
         fromUserNft.updatedAt = event.block.timestamp;
         toUserNft.updatedAt = event.block.timestamp;
 
+        nft.save();
         fromUserNft.save();
         toUserNft.save();
     }

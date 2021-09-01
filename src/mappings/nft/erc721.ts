@@ -7,7 +7,7 @@ import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
 export function handleTransfer(event: Transfer): void {
     let fromUser = createUser(event.params.from,event);
     let toUser = createUser(event.params.to,event);
-    let nft = createAndGetNFT(event.address,event);
+    let nft = createAndGetNFT(event.address,event.params.tokenId,event);
     nft.type = "721";
 
     let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.tokenId.toString());
