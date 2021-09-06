@@ -24,7 +24,7 @@ export function createAndGetNFT(address: Address, tokenId: BigInt, event: ethere
     let key = address.toHexString().concat("-").concat(tokenId.toString())
     let nft = Nft.load(key);
     if (nft == null) {
-        nft = new Nft(address.toHexString());
+        nft = new Nft(key);
         nft.address = address;
         nft.createdAt = event.block.timestamp;
         nft.updatedAt = event.block.timestamp;
@@ -36,8 +36,8 @@ export function createAndGetNFT(address: Address, tokenId: BigInt, event: ethere
             nft.uri = uri721.value;
         }
 
-        let nft1155 = DODONFT.bind(address);
-        let uri1155 = nft1155.try_tokenURI(tokenId);
+        let nft1155 = DODONFT1155.bind(address);
+        let uri1155 = nft1155.try_uri(tokenId);
         if (!uri1155.reverted) {
             nft.type = "1155"
             nft.uri = uri1155.value;

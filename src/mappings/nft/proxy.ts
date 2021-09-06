@@ -1,4 +1,4 @@
-import {VaultNft, NftCollateralVault, Fragment} from "../../types/nft/schema"
+import { NftCollateralVault} from "../../types/nft/schema"
 import {CreateNFTCollateralVault, CreateFragment} from "../../types/nft/DODONFTProxy/DODONFTProxy"
 import {createAndGetFragment} from "./helpers"
 import {NFTCollateralVault as NFTCollateralVaultTemplate,Fragment as FragmentTemplate} from "../../types/nft/templates"

@@ -2,32 +2,26 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: nft.graphql
+  file: vdodo.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODONFTProxy
+    name: vDODOToken
     network: rinkeby
     source:
-      address: "0x0CF019E13C6527BD34eC6c8323F11aB5DF6f0922"
-      abi: DODONFTProxy
-      startBlock: 8733899
+      address: "0x8751f874eCd2874f2a5ced95A08364C203e4146A"
+      abi: vDODOToken
+      startBlock: 8733542
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTProxy/DODONFTProxy.wasm
+      file: vDODOToken/vDODOToken.wasm
       entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
+        - User
+        - StakeHistory
       abis:
-        - name: DODONFTProxy
-          file: ../abis/DODONFTProxy.json
-        - name: DODONFTProxy
-          file: ../abis/DODONFTProxy.json
-        - name: Fragment
-          file: ../abis/Fragment.json
+        - name: vDODOToken
+          file: ../abis/vDODOToken.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -35,118 +29,15 @@ dataSources:
         - name: ERC20NameBytes
           file: ../abis/ERC20NameBytes.json
       eventHandlers:
-        - event: CreateNFTCollateralVault(address,address,string,string)
-          handler: handleCreateNFTCollateralVault
-        - event: CreateFragment(address,address,address)
-          handler: handleCreateFragment
-  - kind: ethereum/contract
-    name: DODONFT
-    network: rinkeby
-    source:
-      abi: DODONFT
-      address: "0x3Bc20358B31aD498d5a245B36bC993DDBE9A4405"
-      startBlock: 8733899
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFT/DODONFT.wasm
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: DODONFT
-          file: ../abis/DODONFT.json
-      eventHandlers:
-        - event: DODONFTMint(address,uint256)
-          handler: handleDODONFTMint
-        - event: DODONFTBurn(uint256)
-          handler: handleDODONFTBurn
-        - event: Transfer(indexed address,indexed address,indexed uint256)
+        - event: MintVDODO(address,address,uint256)
+          handler: handleMintVDODO
+        - event: RedeemVDODO(address,uint256,uint256,uint256)
+          handler: handleRedeemVDODO
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-  - kind: ethereum/contract
-    name: DODONFT1155
-    network: rinkeby
-    source:
-      abi: DODONFT1155
-      address: "0xc498F36eF82Aa5dBE0ecF6DD56DD55398E80E13D"
-      startBlock: 8733899
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFT1155/DODONFT1155.wasm
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: DODONFT
-          file: ../abis/DODONFT.json
-        - name: DODONFT1155
-          file: ../abis/DODONFT1155.json
-      eventHandlers:
-        - event: DODONFTMint(address,uint256,uint256)
-          handler: handleDODONFTMint
-        - event: DODONFTBurn(address,uint256,uint256)
-          handler: handleDODONFTBurn
-        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-          handler: handleTransferBatch
-        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleTransferSingle
-templates:
-  - kind: ethereum/contract
-    name: NFTCollateralVault
-    network: rinkeby
-    source:
-      abi: NFTCollateralVault
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates/NFTCollateralVault/NFTCollateralVault.wasm
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: NFTCollateralVault
-          file: ../abis/NFTCollateralVault.json
-        - name: InitializableERC721
-          file: ../abis/InitializableERC721.json
-        - name: InitializableERC1155
-          file: ../abis/InitializableERC1155.json
-      eventHandlers:
-        - event: AddNftToken(address,uint256,uint256)
-          handler: handleAddNftToken
-        - event: RemoveNftToken(address,uint256,uint256)
-          handler: handleRemoveNftToken
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-  - kind: ethereum/contract
-    name: Fragment
-    network: rinkeby
-    source:
-      abi: Fragment
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates/Fragment/Fragment.wasm
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: Fragment
-          file: ../abis/Fragment.json
-      eventHandlers:
-        - event: Buyout(address)
-          handler: handleBuyout
-        - event: Redeem(address,uint256,uint256)
-          handler: handleRedeem
+        - event: PreDeposit(uint256)
+          handler: handlePreDeposit
+        - event: ChangePerReward(uint256)
+          handler: handleChangePerReward
+        - event: DonateDODO(address,uint256)
+          handler: handleDonateDODO

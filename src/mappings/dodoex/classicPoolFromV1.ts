@@ -1,4 +1,4 @@
-import {log, BigInt, BigDecimal, Address, ethereum, dataSource} from '@graphprotocol/graph-ts'
+import {log, BigInt, BigDecimal, Address, ethereum, dataSource, store} from '@graphprotocol/graph-ts'
 import {
     LiquidityHistory,
     LiquidityPosition,
@@ -29,7 +29,7 @@ import {
     updateUserDayDataAndDodoDayData,
     updateTokenTraderCount
 } from './helpers'
-import {DODOBirth, AddDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
+import {DODOBirth, AddDODOCall, RemoveDODOCall} from '../../types/dodoex/DODOZoo/DODOZoo'
 import {
     Deposit,
     Withdraw,
@@ -1073,5 +1073,12 @@ export function handleUpdateMaintainerFeeRate(event: UpdateMaintainerFeeRate): v
         pair.mtFeeRate = event.params.newMaintainerFeeRate
         pair.updatedAt = event.block.timestamp;
         pair.save();
+    }
+}
+
+export function handleRemoveDODO(call: RemoveDODOCall): void {
+    let pair = Pair.load(call.inputs.dodo.toHexString());
+    if (pair != null) {
+        store.remove("Pair", call.inputs.dodo.toHexString());
     }
 }

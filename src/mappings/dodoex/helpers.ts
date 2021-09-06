@@ -225,6 +225,7 @@ export function getDODOZoo(): DodoZoo {
         dodoZoo.feeUSD = ZERO_BD;
         dodoZoo.maintainerFeeUSD = ZERO_BD;
         dodoZoo.DIP3MaintainerFeeUSD = ZERO_BD;
+        dodoZoo.uniqueUsersCount = ZERO_BI;
         dodoZoo.updatedAt = ZERO_BI;
         dodoZoo.save();
     }
@@ -233,13 +234,17 @@ export function getDODOZoo(): DodoZoo {
 
 export function createUser(address: Address, event: ethereum.Event): User {
     let user = User.load(address.toHexString())
+    let dodoZoo = getDODOZoo();
     if (user === null) {
         user = new User(address.toHexString())
         user.txCount = ZERO_BI
         user.tradingRewardRecieved = ZERO_BD
         user.timestamp = event.block.timestamp
         user.updatedAt = event.block.timestamp;
-        user.save()
+        user.save();
+
+        dodoZoo.uniqueUsersCount = dodoZoo.uniqueUsersCount.plus(ONE_BI);
+        dodoZoo.save();
     }
     return user as User;
 }

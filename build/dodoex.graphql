@@ -9,6 +9,8 @@ type DodoZoo @entity {
     crowdpoolingCount: BigInt!
     "transactions count"
     txCount: BigInt!
+    "unique users"
+    uniqueUsersCount: BigInt!
     "volume usd"
     volumeUSD: BigDecimal!
     "fee usd"
@@ -36,7 +38,6 @@ type DodoDayData @entity {
     feeUSD: BigDecimal!
     "maintainer fee usd"
     maintainerFeeUSD: BigDecimal!
-
     "updatedAt"
     updatedAt: BigInt
 }

@@ -228,6 +228,9 @@ dataSources:
           file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
           file: ../../abis/ERC20NameBytes.json
+      callHandlers:
+        - function: removeDODO(address)
+          handler: handleRemoveDODO
       eventHandlers:
         - event: DODOBirth(address,address,address)
           handler: handleDODOBirth
