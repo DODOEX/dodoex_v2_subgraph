@@ -243,6 +243,7 @@ export function createUser(address: Address, event: ethereum.Event): User {
     if (user === null) {
         user = new User(address.toHexString())
         user.timestamp = event.block.timestamp
+        user.updatedAt = event.block.timestamp;
         user.save()
     }
     return user as User;
@@ -254,6 +255,7 @@ export function getDODOToken(): DodoToken {
     if (dodoToken == null) {
         dodoToken = new DodoToken(id);
         dodoToken.tokens = ZERO_BI;
+        dodoToken.updatedAt = ZERO_BI;
         dodoToken.save()
     }
     return dodoToken as DodoToken;

@@ -3,6 +3,8 @@ type DodoToken @entity {
     id:ID!
     "tokens count"
     tokens: BigInt!
+    "updatedAt"
+    updatedAt:BigInt!
 }
 
 type User @entity {
@@ -12,12 +14,13 @@ type User @entity {
     tokens: [Token!]
     "timestamp"
     timestamp: BigInt!
+    "updatedAt"
+    updatedAt:BigInt!
 }
 
 type Token @entity {
     "token address"
     id: ID!
-
     "token symbol"
     symbol: String!
     "token name"
@@ -34,6 +37,8 @@ type Token @entity {
     type: BigInt!
     "holder count"
     holderCount: BigInt!
+    "updatedAt"
+    updatedAt:BigInt!
 }
 
 type UserTokenBlance @entity{
@@ -41,6 +46,8 @@ type UserTokenBlance @entity{
     id: ID!
     "balance"
     balance: BigDecimal!
+    "updatedAt"
+    updatedAt:BigInt!
 }
 
 type TransferHistory @entity{
@@ -52,4 +59,6 @@ type TransferHistory @entity{
     to: User!
     "amount"
     amount: BigDecimal!
+    "updatedAt"
+    updatedAt:BigInt!
 }

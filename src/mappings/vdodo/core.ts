@@ -95,10 +95,15 @@ export function handleMintVDODO(event: MintVDODO): void {
     vdodo.dodoBalance = convertTokenToDecimal(fetchTokenBalance(Address.fromString(DODO_ADDRESS), dataSource.address()), dodo.decimals);
     vdodo.totalStakingPower = fetchTotalSp();
 
+    vdodo.updatedAt = event.block.timestamp;
+    superior.updatedAt = event.block.timestamp;
+    operation.updatedAt = event.block.timestamp;
+    history.updatedAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+
     superior.save();
     vdodo.save();
     operation.save();
-    history.save();
     history.save();
     user.save();
 }
@@ -170,10 +175,15 @@ export function handleRedeemVDODO(event: RedeemVDODO): void {
     vdodo.feeAmount = vdodo.feeAmount.plus(convertTokenToDecimal(event.params.feeDODO, dodo.decimals));
     vdodo.burnAmount = vdodo.feeAmount.plus(convertTokenToDecimal(event.params.burnDODO, dodo.decimals));
 
+    vdodo.updatedAt = event.block.timestamp;
+    superior.updatedAt = event.block.timestamp;
+    operation.updatedAt = event.block.timestamp;
+    history.updatedAt = event.block.timestamp;
+    user.updatedAt = event.block.timestamp;
+
     superior.save();
     vdodo.save();
     operation.save();
-    history.save();
     history.save();
     user.save();
 }
@@ -184,6 +194,7 @@ export function handlePreDeposit(event: PreDeposit): void {
     let DODO_ADDRESS = dataSource.network() == "mainnet" ? DODO_ADDRESS_MAINNET : DODO_ADDRESS_KOVAN;
     let dodo = DODO.load(DODO_ADDRESS);
     vdodo.totalBlockReward = vdodo.totalBlockReward.plus(convertTokenToDecimal(event.params.dodoAmount, dodo.decimals));
+    vdodo.updatedAt = event.block.timestamp;
     vdodo.save();
 }
 
@@ -194,6 +205,7 @@ export function handleChangePerReward(event: ChangePerReward): void {
     let dodo = DODO.load(DODO_ADDRESS);
 
     vdodo.dodoPerBlock = convertTokenToDecimal(event.params.dodoPerBlock, dodo.decimals);
+    vdodo.updatedAt = event.block.timestamp;
     vdodo.save();
 }
 
@@ -237,9 +249,14 @@ export function handleTransfer(event: Transfer): void {
     toUserSuperior.creditFromInvited = toUserSuperior.creditFromInvited.plus(creditChangeToUserSuperior);
 
     fromUser.creditOfSuperior = fromUser.creditOfSuperior.plus(creditChangeFromUserSuperior);
-    fromUser.redeemRecieveAmount = fromUser.redeemRecieveAmount.plus(convertTokenToDecimal(event.params.amount,vdodo.decimals).times(BigDecimal.fromString("100")))
+    fromUser.redeemRecieveAmount = fromUser.redeemRecieveAmount.plus(convertTokenToDecimal(event.params.amount, vdodo.decimals).times(BigDecimal.fromString("100")))
     toUser.creditOfSuperior = toUser.creditOfSuperior.plus(creditChangeToUserSuperior);
-    toUser.mintAmount = toUser.mintAmount.plus(convertTokenToDecimal(event.params.amount,vdodo.decimals).times(BigDecimal.fromString("100")))
+    toUser.mintAmount = toUser.mintAmount.plus(convertTokenToDecimal(event.params.amount, vdodo.decimals).times(BigDecimal.fromString("100")))
+
+    fromUser.updatedAt = event.block.timestamp;
+    toUser.updatedAt = event.block.timestamp;
+    fromUserSuperior.updatedAt = event.block.timestamp;
+    toUserSuperior.updatedAt = event.block.timestamp;
 
     fromUser.save();
     toUser.save();
@@ -255,6 +272,7 @@ export function handleTransfer(event: Transfer): void {
         transferHistory.amount = convertTokenToDecimal(event.params.amount, vdodo.decimals);
     }
 
+    transferHistory.updatedAt = event.block.timestamp;
     transferHistory.save();
 }
 
@@ -270,9 +288,10 @@ export function handleDonateDODO(event: DonateDODO): void {
     if (donateHistory == null) {
         donateHistory = new DonateHistory(donateHistoryID);
         donateHistory.donor = event.params.user;
-        donateHistory.dodoAmount = convertTokenToDecimal(event.params.donateDODO,dodo.decimals);
+        donateHistory.dodoAmount = convertTokenToDecimal(event.params.donateDODO, dodo.decimals);
         donateHistory.blockNumber = event.block.number;
         donateHistory.timestamp = event.block.timestamp;
+        donateHistory.updatedAt=event.block.timestamp;
         donateHistory.save();
     }
 

@@ -30,7 +30,9 @@ export function handleNewERC20(event: NewERC20): void {
         token.timestamp = event.block.timestamp;
         token.type = event.params.erc20Type;
         token.holderCount = ZERO_BI;
+        token.updatedAt = event.block.timestamp;
         dodoToken.tokens = dodoToken.tokens.plus(ONE_BI);
+        dodoToken.updatedAt = event.block.timestamp;
     }
 
     token.save();

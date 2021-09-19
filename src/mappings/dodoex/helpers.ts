@@ -562,7 +562,6 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
 
     let fromTraderPair = PairTrader.load(event.transaction.from.toHexString().concat("-").concat(pair.id));
     pairHourData.traders = pairHourData.traders.plus(ONE_BI);
-    pairDayData.traders = pairDayData.traders.plus(ONE_BI);
     baseDayData.traders = baseDayData.traders.plus(ONE_BI);
     quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
     fromTraderPair.lastTxTime = event.block.timestamp;
@@ -571,12 +570,13 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
 
     let toTraderPair = PairTrader.load(to.toHexString().concat("-").concat(pair.id));
     pairHourData.traders = pairHourData.traders.plus(ONE_BI);
-    pairDayData.traders = pairDayData.traders.plus(ONE_BI);
     baseDayData.traders = baseDayData.traders.plus(ONE_BI);
     quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
     toTraderPair.lastTxTime = event.block.timestamp;
     toTraderPair.updatedAt = event.block.timestamp;
     toTraderPair.save();
+
+    pairDayData.traders = pairDayData.traders.plus(ONE_BI);
 
     pairHourData.save();
     pairDayData.save();

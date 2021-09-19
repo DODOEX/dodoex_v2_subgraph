@@ -1,10 +1,10 @@
-import {VaultNft, NftCollateralVault, Nft} from "../../types/nft/schema";
+import {VaultNft, NftCollateralVault, Nft} from "../../../types/nft/schema";
 import {
     AddNftToken,
     RemoveNftToken,
     OwnershipTransferred
-} from "../../types/nft/templates/NFTCollateralVault/NFTCollateralVault"
-import {createAndGetNFT} from "./helpers"
+} from "../../../types/nft/templates/NFTCollateralVault/NFTCollateralVault"
+import {createAndGetNFT} from "../helpers"
 
 export function handleAddNftToken(event: AddNftToken): void {
 

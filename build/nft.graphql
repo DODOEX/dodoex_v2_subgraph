@@ -110,3 +110,144 @@ type UserNft @entity{
     updatedAt: BigInt!
 }
 
+#NFT-POOl
+type NftPool @entity {
+    "id"
+    id:ID!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type Filter @entity {
+    "filter contract address"
+    id: ID!
+    "filter admin address"
+    admin: FilterAdmin!
+    "key: 1 => FilterERC721V1, 2 => FilterERC1155V1"
+    key: BigInt!
+    "collection address"
+    collection: Bytes!
+    "name"
+    name: String
+    "startId"
+    startId: BigInt!
+    "endId"
+    endId: BigInt!
+    "minAmount"
+    minAmount: BigInt!
+    "maxAmount"
+    maxAmount: BigInt!
+    #todo priceRules
+    "spreadIds"
+    spreadIds:[BigInt!]
+    "nfts"
+    nfts:[FilterNft!]! @derivedFrom(field: "filter")
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type FilterNft @entity {
+    "filter-nft address"
+    id: ID!
+    "filter"
+    filter: Filter!
+    "nft"
+    nft:Nft!
+    "amount"
+    amount: BigInt!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type FilterAdmin @entity {
+    "admin address"
+    id: ID!
+    "owner"
+    owner: Bytes
+    "initSupply"
+    initSupply: BigInt
+    "name"
+    name: String
+    "symbol"
+    symbol: String
+    "feeRate"
+    feeRate: BigInt
+    "controller"
+    controller:Bytes
+    "maintainer"
+    maintainer: Bytes
+    "filter"
+    filters: [Filter!]
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type Controller @entity {
+    "controller address"
+    id: ID!
+}
+
+type PoolTradeHistory @entity {
+    "id(txid-event index)"
+    id: ID!
+    "transaction hash"
+    hash: String!
+    "direction: (in,out)"
+    direction:String!
+    "mode: (random、target)"
+    mode: String!
+    "filter"
+    filter: Filter!
+    "from"
+    from: Bytes!
+    "to"
+    to: Bytes!
+    "amount"
+    amount:BigDecimal!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type TradeHistoryTransferDetail @entity {
+    "transaction id - logindex"
+    id: ID!
+    "hash"
+    hash: String!
+    "token id"
+    tokenId: BigInt!
+    "amount"
+    amount: BigInt!
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+# aggregate fragments
+type AggregateFragment @entity {
+    "id = address"
+    id: ID!
+    "type: Pool,Buyout"
+    type: String!
+    "timestamp"
+    timestamp:BigInt!
+    "FilterAdmin"
+    filterAdmin:FilterAdmin
+    "Fragment"
+    fragment:Fragment
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+

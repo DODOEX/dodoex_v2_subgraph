@@ -62,7 +62,7 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
             trimTokenData(createToken(Address.fromString(orderHistoryAbove.toToken), event), orderHistoryAbove.amountOut, orderHistoryAbove.toToken === toToken.id ? ZERO_BD : orderHistoryAbove.amountOut, orderHistoryAbove.volumeUSD, event);
             decreaseVolumeAndFee(event,orderHistoryAbove.volumeUSD,ZERO_BD);
 
-            store.remove("OrderHistory", event.transaction.hash.toHexString().concat("-").concat(i.toString()));
+            store.remove("OrderHistory", orderHistoryAboveID);
             trim = true;
         }
     }

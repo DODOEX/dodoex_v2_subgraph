@@ -25,6 +25,8 @@ type User @entity {
     redeemBurnAmount: BigDecimal!
     "timestamp"
     timestamp: BigInt!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type UserOperationHistory @entity{
@@ -42,6 +44,8 @@ type UserOperationHistory @entity{
 	superiorSpChange: BigInt!
 	"superior credit change"
 	superiorCreditChange: BigDecimal!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type MintHistory @entity {
@@ -53,6 +57,8 @@ type MintHistory @entity {
     amount: BigDecimal!
     "timestamp"
     timestamp: BigInt!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type RedeemHistory @entity {
@@ -68,6 +74,8 @@ type RedeemHistory @entity {
     fee: BigDecimal!
     "timestamp"
     timestamp: BigInt!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type DODO @entity {
@@ -81,6 +89,8 @@ type DODO @entity {
     decimals: BigInt!
     "totalsuppy"
     totalSupply: BigInt!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type vDODO @entity {
@@ -116,6 +126,8 @@ type vDODO @entity {
 	totalDonate: BigDecimal!
     "total staking power"
     totalStakingPower: BigInt!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type TransferHistory @entity {
@@ -127,6 +139,8 @@ type TransferHistory @entity {
     to: Bytes!
     "vDODO amount"
     amount: BigDecimal!
+    "timestamp"
+    updatedAt: BigInt!
 }
 
 type DonateHistory @entity {
@@ -140,4 +154,6 @@ type DonateHistory @entity {
     blockNumber: BigInt!
     "timestamp"
     timestamp: BigInt!
+    "timestamp"
+    updatedAt: BigInt!
 }

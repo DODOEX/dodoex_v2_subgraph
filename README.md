@@ -26,7 +26,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
 **Endpoints**
  - dodoex 
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2
-    - bsc : https://n9.hg.network/subgraphs/name/dodoex-v2-bsc-hg/bsc
+    - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-bsc
     - heco : https://n10.hg.network/subgraphs/name/dodoex-v2-heco-hg/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-polygon
     - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-v2-okchain
@@ -51,7 +51,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodo-nft-rinkeby
  - mine
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3
-    - bsc : https://n9.hg.network/subgraphs/name/dodoex-mine-v3-bsc/bsc
+    - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-bsc
     - heco : https://n10.hg.network/subgraphs/name/dodoex-mine-v3-heco/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-polygon
     - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-mine-v3-okchain

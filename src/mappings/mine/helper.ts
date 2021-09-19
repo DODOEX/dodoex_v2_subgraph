@@ -1,4 +1,4 @@
-import {ERC20MineV3, ERC20MineV3__rewardTokenInfosResult} from "../../types/dodomine/DODOMineV3Proxy/ERC20MineV3"
+import {ERC20MineV3, ERC20MineV3__rewardTokenInfosResult} from "../../types/mine/DODOMineV3Proxy/ERC20MineV3"
 import {Address, BigInt} from "@graphprotocol/graph-ts"
 
 export function getRewardNum(address: Address): BigInt {

@@ -13,6 +13,8 @@ type MinePool @entity {
     isLpToken: Boolean
     "reward details"
     rewardDetail:[RewardDetail!]! @derivedFrom(field: "minePool")
+    "updatedAt"
+    updatedAt:BigInt!
 }
 
 type RewardDetail @entity{
@@ -28,6 +30,8 @@ type RewardDetail @entity{
     startBlock: BigInt!
     "end block"
     endBlock: BigInt!
+    "updatedAt"
+    updatedAt:BigInt!
 }
 
 type UserStake @entity{
@@ -39,4 +43,6 @@ type UserStake @entity{
     pool:Bytes!
     "balance"
     balance:BigInt!
+    "updatedAt"
+    updatedAt:BigInt!
 }

@@ -1,9 +1,9 @@
-import {MinePool, RewardDetail} from "../../types/dodomine/schema"
-import {CreateMineV3} from "../../types/dodomine/DODOMineV3Proxy/DODOMineV3Proxy"
-import {ERC20MineV3 as ERC20MineV3Template} from "../../types/dodomine/templates"
+import {MinePool, RewardDetail} from "../../types/mine/schema"
+import {CreateMineV3} from "../../types/mine/DODOMineV3Proxy/DODOMineV3Proxy"
+import {ERC20MineV3 as ERC20MineV3Template} from "../../types/mine/templates"
 
 import {getRewardNum, rewardTokenInfos, getToken} from "./helper"
-import {BigInt,log} from "@graphprotocol/graph-ts";
+import {BigInt, log} from "@graphprotocol/graph-ts";
 
 export function handleCreateMineV3(event: CreateMineV3): void {
     let minePool = MinePool.load(event.params.mineV3.toHexString());
@@ -31,14 +31,16 @@ export function handleCreateMineV3(event: CreateMineV3): void {
         rewardDetail.startBlock = rewardData.value1;
         rewardDetail.endBlock = rewardData.value2;
         rewardDetail.rewardPerBlock = rewardData.value4;
+        rewardDetail.updatedAt = event.block.timestamp;
         rewardDetail.save();
     }
 
+    minePool.updatedAt = event.block.timestamp;
     minePool.save();
 
     //will get "fatalError":{"message":"type mismatch with parameters: expected 1 types, found 0"
-    log.debug("mineV3 address: {}",[event.params.mineV3.toHexString()]);
-    log.info("mineV3 address: {}",[event.params.mineV3.toHexString()]);
+    log.debug("mineV3 address: {}", [event.params.mineV3.toHexString()]);
+    log.info("mineV3 address: {}", [event.params.mineV3.toHexString()]);
     if (event.params.mineV3 != null) {
         ERC20MineV3Template.create(event.params.mineV3);
     }

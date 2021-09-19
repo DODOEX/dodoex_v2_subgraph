@@ -1,4 +1,4 @@
-//bsc
+//mainnet
 export const TYPE_VIRTUAL_POOL = "VIRTUAL";
 export const TYPE_DVM_POOL = "DVM";
 export const TYPE_DPP_POOL = "DPP";
@@ -6,17 +6,17 @@ export const TYPE_DSP_POOL = "DSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
-export const DODOV2Proxy02="0xd56281ef996b6b29874c77d2e1464216e8043127";
+export const DODOV2Proxy02 = "0x45894c062e6f4e58b257e0826675355305dfef0d";
 export const DIP3_TIMESTAMP = 1624442400;
 
-export const DODOZooID = "dodoex-v2-heco";
-export const CHAIN_BASE_COIN_SYMBOL = "HT";
-export const CHAIN_BASE_COIN_NAME = "ht";
+export const DODOZooID = "dodoex-v2-arbitrum";
+export const CHAIN_BASE_COIN_SYMBOL = "MATIC";
+export const CHAIN_BASE_COIN_NAME = "MATIC";
 
-export const SMART_ROUTE_ADDRESSES: string[]= ["0xac7cc7d2374492de2d1ce21e2feca26eb0d113e7"];
-export const DVM_FACTORY_ADDRESS = "0xd8c77cf0f01222b07b8343a681c46efa3faea985";
-export const DPP_FACTORY_ADDRESS = "0xf5420a3b91c457d336589217d45ccb8f7250eaed";
-export const CLASSIC_FACTORY_ADDRESS = "0x99bc90b42af3635977ed89e0e7eb6a562da22bd2";//dodo zoo
+export const SMART_ROUTE_ADDRESSES: string[] = ["0x45894c062e6f4e58b257e0826675355305dfef0d"];
+export const DVM_FACTORY_ADDRESS = "0xbab9f4ff4a19a0e8eebc56b06750253228ffac6e";
+export const DPP_FACTORY_ADDRESS = "0xe55154d09265b18ac7cdac6e646672a5460389a1";
+export const CLASSIC_FACTORY_ADDRESS = "0x357c5e9cfa8b834edcef7c7aabd8f9db09119d11";//dodo zoo
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
@@ -31,15 +31,14 @@ export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM"
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = '0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f';
+export const WRAPPED_BASE_COIN = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1';
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = '0xa71edc38d189767582c38a3145b5873052c3e47a';//usdt
-export const STABLE_TWO_ADDRESS = '0x0298c2b32eae4da002a15f36fdf7615bea3da047';//husd
+export const STABLE_ONE_ADDRESS = '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9';//usdt
+export const STABLE_TWO_ADDRESS = '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8';//usdc
 //stable coins pairs
-export const STABLE_COIN_PAIR_ONE = '0x1053152a60abec125f96f13a980ef469048f978f';//[USDT_BUSD_PAIR]
+export const STABLE_COIN_PAIR_ONE = '0xe4b2dfc82977dd2dce7e8d37895a6a8f50cbb4fb';//[USDT_USDC_PAIR]
 //base currency pair
-export const BASE_COIN_PAIR = '0x294c1e26eb5c26fb78eff91b9d662d3ed3b63425';//[WBNB_USDC_PAIR]
-
+export const BASE_COIN_PAIR = '0xfe176a2b1e1f67250d2903b8d25f56c0dabcd6b2';//[WETH_USDC_PAIR]
 
 
 

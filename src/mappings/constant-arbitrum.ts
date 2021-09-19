@@ -31,14 +31,14 @@ export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM"
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270';
+export const WRAPPED_BASE_COIN = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1';
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f';//usdt
-export const STABLE_TWO_ADDRESS = '0x2791bca1f2de4661ed88a30c99a7a9449aa84174';//usdc
+export const STABLE_ONE_ADDRESS = '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9';//usdt
+export const STABLE_TWO_ADDRESS = '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8';//usdc
 //stable coins pairs
-export const STABLE_COIN_PAIR_ONE = '0xc9f93163c99695c6526b799ebca2207fdf7d61ad';//[USDT_USDC_PAIR]
+export const STABLE_COIN_PAIR_ONE = '0xe4b2dfc82977dd2dce7e8d37895a6a8f50cbb4fb';//[USDT_USDC_PAIR]
 //base currency pair
-export const BASE_COIN_PAIR = '0x75c23271661d9d143dcb617222bc4bec783eff34';//[WETH_USDC_PAIR]
+export const BASE_COIN_PAIR = '0xfe176a2b1e1f67250d2903b8d25f56c0dabcd6b2';//[WETH_USDC_PAIR]
 
 
 

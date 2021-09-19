@@ -8,14 +8,14 @@ dataSources:
     name: DODONFTProxy
     network: rinkeby
     source:
-      address: '0x0CF019E13C6527BD34eC6c8323F11aB5DF6f0922'
+      address: '0xbf243c5626a0766031d57269c01f6efd57b603fc'
       abi: DODONFTProxy
-      startBlock: 8733899
+      startBlock: 9302428
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/nft/proxy.ts
+      file: ../../src/mappings/nft/buyout/proxy.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -48,13 +48,13 @@ dataSources:
     network: rinkeby
     source:
       abi: DODONFT
-      address: '0x3Bc20358B31aD498d5a245B36bC993DDBE9A4405'
-      startBlock: 8733899
+      address: '0x78b7aff2e5fa95b1e7e16679645fb65a850ed6ab'
+      startBlock: 9302471
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/nft/erc721.ts
+      file: ../../src/mappings/nft/buyout/erc721.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -78,12 +78,12 @@ dataSources:
     source:
       abi: DODONFT1155
       address: '0xc498F36eF82Aa5dBE0ecF6DD56DD55398E80E13D'
-      startBlock: 8733899
+      startBlock: 9302473
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/nft/erc1155.ts
+      file: ../../src/mappings/nft/buyout/erc1155.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -103,6 +103,44 @@ dataSources:
           handler: handleTransferBatch
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
+  - kind: ethereum/contract
+    name: DODONFTPoolProxy
+    network: rinkeby
+    source:
+      abi: DODONFTPoolProxy
+      address: '0x38c109af4f3454172ba4eecf5676aa213b589e75'
+      startBlock: 9302029
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/nft/pool/poolProxy.ts
+      entities:
+        - FilterAdmin
+      abis:
+        - name: DODONFTPoolProxy
+          file: ../../abis/DODONFTPoolProxy.json
+        - name: FilterAdmin
+          file: ../../abis/FilterAdmin.json
+        - name: FilterERC1155V1
+          file: ../../abis/FilterERC1155V1.json
+        - name: FilterERC721V1
+          file: ../../abis/FilterERC721V1.json
+      eventHandlers:
+        - event: CreateLiteNFTPool(address,address)
+          handler: handleCreateLiteNFTPool
+        - event: CreateNFTPool(address,address,address)
+          handler: handleCreateNFTPool
+        - event: CreateFilterV1(address,address,address,uint256)
+          handler: handleCreateFilterV1
+        - event: Erc721toErc20(address,uint256,address,uint256)
+          handler: handleErc721toErc20
+        - event: ChangeMaintainer(address)
+          handler: handleChangeMaintainer
+        - event: ChangeContoller(address)
+          handler: handleChangeContoller
+        - event: ChangeFilterAdminTemplate(address)
+          handler: handleChangeFilterAdminTemplate
 templates:
   - kind: ethereum/contract
     name: NFTCollateralVault
@@ -113,7 +151,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/nft/vault.ts
+      file: ../../src/mappings/nft/buyout/vault.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -146,7 +184,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/nft/fragment.ts
+      file: ../../src/mappings/nft/buyout/fragment.ts
       entities:
         - NftCollateralVault
         - Nft
@@ -164,3 +202,89 @@ templates:
           handler: handleBuyout
         - event: Redeem(address,uint256,uint256)
           handler: handleRedeem
+  - kind: ethereum/contract
+    name: FilterAdmin
+    network: rinkeby
+    source:
+      abi: FilterAdmin
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/nft/pool/filterAdmin.ts
+      entities:
+        - FilterAdmin
+      abis:
+        - name: FilterAdmin
+          file: ../../abis/FilterAdmin.json
+      eventHandlers:
+        - event: FilterAdminInit(address,uint256)
+          handler: handleFilterAdminInit
+  - kind: ethereum/contract
+    name: FilterERC721V1
+    network: rinkeby
+    source:
+      abi: FilterERC721V1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/nft/pool/filterERC721V1.ts
+      entities:
+        - FilterAdmin
+      abis:
+        - name: FilterAdmin
+          file: ../../abis/FilterAdmin.json
+        - name: FilterERC721V1
+          file: ../../abis/FilterERC721V1.json
+      eventHandlers:
+        - event: NftIn(uint256)
+          handler: handleNftIn
+        - event: NftInOrder(address,uint256)
+          handler: handleNftInOrder
+        - event: TargetOut(uint256)
+          handler: handleTargetOut
+        - event: TargetOutOrder(address,uint256)
+          handler: handleTargetOutOrder
+        - event: RandomOut(uint256)
+          handler: handleRandomOut
+        - event: RandomOutOrder(address,uint256)
+          handler: handleRandomOutOrder
+        - event: EmergencyWithdraw(address,uint256,address)
+          handler: handleEmergencyWithdraw
+        - event: ChangeFilterName(string)
+          handler: handleChangeFilterName
+  - kind: ethereum/contract
+    name: FilterERC1155V1
+    network: rinkeby
+    source:
+      abi: FilterERC1155V1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/nft/pool/filterERC721V1.ts
+      entities:
+        - FilterAdmin
+      abis:
+        - name: FilterAdmin
+          file: ../../abis/FilterAdmin.json
+        - name: FilterERC1155V1
+          file: ../../abis/FilterERC1155V1.json
+      eventHandlers:
+        - event: NftIn(uint256,uint256)
+          handler: handleNftIn
+        - event: NftInOrder(address,uint256)
+          handler: handleNftInOrder
+        - event: TargetOut(uint256,uint256)
+          handler: handleTargetOut
+        - event: TargetOutOrder(address,uint256)
+          handler: handleTargetOutOrder
+        - event: RandomOut(uint256,uint256)
+          handler: handleRandomOut
+        - event: RandomOutOrder(address,uint256)
+          handler: handleRandomOutOrder
+        - event: EmergencyWithdraw(address,uint256,uint256,address)
+          handler: handleEmergencyWithdraw
+        - event: ChangeFilterName(string)
+          handler: handleChangeFilterName

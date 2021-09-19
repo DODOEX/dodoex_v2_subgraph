@@ -1,6 +1,6 @@
 import {Address, BigInt} from "@graphprotocol/graph-ts"
-import {Deposit, Withdraw, NewRewardToken} from "../../types/dodomine/templates/ERC20MineV3/ERC20MineV3"
-import {UserStake} from "../../types/dodomine/schema"
+import {Deposit, Withdraw, NewRewardToken} from "../../types/mine/templates/ERC20MineV3/ERC20MineV3"
+import {UserStake} from "../../types/mine/schema"
 
 export function handleDeposit(event: Deposit): void {
     let id = event.params.user.toHexString().concat("-").concat(event.address.toHexString());
@@ -12,6 +12,7 @@ export function handleDeposit(event: Deposit): void {
         userStake.balance = BigInt.fromI32(0);
     }
     userStake.balance = userStake.balance.plus(event.params.amount);
+    userStake.updatedAt = event.block.timestamp;
     userStake.save();
 }
 
@@ -25,6 +26,7 @@ export function handleWithdraw(event: Withdraw): void {
         userStake.balance = BigInt.fromI32(0);
     }
     userStake.balance = userStake.balance.minus(event.params.amount);
+    userStake.updatedAt = event.block.timestamp;
     userStake.save();
 }
 

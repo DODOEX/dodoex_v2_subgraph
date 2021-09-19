@@ -3,12 +3,20 @@ import {DODONFT1155} from "../../types/nft/DODONFT1155/DODONFT1155"
 import {Nft, Fragment, User} from "../../types/nft/schema";
 import {Address, BigDecimal, BigInt, ethereum} from "@graphprotocol/graph-ts";
 import {Fragment as FragmentContract} from "../../types/nft/templates/Fragment/Fragment"
+import {exponentToBigDecimal} from "../dodoex/helpers";
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
 export let ZERO_BD = BigDecimal.fromString('0')
 export let ONE_BD = BigDecimal.fromString('1')
 export let BI_18 = BigInt.fromI32(18)
+
+export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
+    if (exchangeDecimals == ZERO_BI) {
+        return tokenAmount.toBigDecimal()
+    }
+    return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals))
+}
 
 function fetchNFTName(address: Address): String {
     let name = null;

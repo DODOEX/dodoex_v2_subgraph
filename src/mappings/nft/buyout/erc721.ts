@@ -1,8 +1,8 @@
-import {Nft, Fragment, User, UserNft} from "../../types/nft/schema";
+import {Nft, Fragment, User, UserNft} from "../../../types/nft/schema";
 import {Address} from "@graphprotocol/graph-ts";
-import {Transfer} from "../../types/nft/DODONFT/DODONFT"
-import {DODONFTMint, DODONFTBurn,DODONFT} from "../../types/nft/DODONFT/DODONFT"
-import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
+import {Transfer} from "../../../types/nft/DODONFT/DODONFT"
+import {DODONFTMint, DODONFTBurn,DODONFT} from "../../../types/nft/DODONFT/DODONFT"
+import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "../helpers";
 
 export function handleTransfer(event: Transfer): void {
     let fromUser = createUser(event.params.from,event);
