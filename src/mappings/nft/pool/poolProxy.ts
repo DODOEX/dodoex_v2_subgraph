@@ -34,6 +34,7 @@ function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address
     filterAdmin.initSupply = helper.getInitSupply(newFilterAdmin);
     filterAdmin.maintainer = helper.getMaintainer(newFilterAdmin);
     filterAdmin.controller = helper.getController(newFilterAdmin);
+    filterAdmin.decimals = BI_18;
     filterAdmin.createdAt = event.block.timestamp;
     filterAdmin.updatedAt = event.block.timestamp;
     filterAdmin.save();
@@ -148,7 +149,6 @@ export function handleErc721TargetOut(event: Erc721TargetOut): void {
     poolTradeHistory.updatedAt = event.block.timestamp;
 
     poolTradeHistory.save();
-
 }
 
 export function handleErc721RandomOut(event: Erc721RandomOut): void {
