@@ -34,6 +34,7 @@ export function handleCreateFragment(event: CreateFragment): void {
 
     let aggregateFragment = AggregateFragment.load(event.params.fragment.toHexString());
     if (aggregateFragment == null) {
+        aggregateFragment = new AggregateFragment(event.params.fragment.toHexString())
         aggregateFragment.filterAdmin = fragment.id;
         aggregateFragment.timestamp = event.block.timestamp;
         aggregateFragment.createdAt = event.block.timestamp;

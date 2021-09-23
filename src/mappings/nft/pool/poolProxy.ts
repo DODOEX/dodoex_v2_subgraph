@@ -40,6 +40,7 @@ function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address
 
     let aggregateFragment = AggregateFragment.load(newFilterAdmin.toHexString());
     if (aggregateFragment == null) {
+        aggregateFragment = new AggregateFragment(newFilterAdmin.toHexString())
         aggregateFragment.filterAdmin = filterAdmin.id;
         aggregateFragment.timestamp = event.block.timestamp;
         aggregateFragment.createdAt = event.block.timestamp;

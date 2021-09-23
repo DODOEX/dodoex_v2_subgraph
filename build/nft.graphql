@@ -183,7 +183,7 @@ type FilterAdmin @entity {
     "maintainer"
     maintainer: Bytes
     "filter"
-    filters: [Filter!]
+    filters: [Filter!]!@derivedFrom(field: "admin")
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
