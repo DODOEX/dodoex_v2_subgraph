@@ -45,6 +45,7 @@ function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address
         aggregateFragment.createdAt = event.block.timestamp;
         aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.type = "POOL"
+        aggregateFragment.creator = event.transaction.from;
         aggregateFragment.save();
     }
 

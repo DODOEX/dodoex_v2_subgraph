@@ -38,6 +38,7 @@ export function handleCreateFragment(event: CreateFragment): void {
         aggregateFragment.timestamp = event.block.timestamp;
         aggregateFragment.createdAt = event.block.timestamp;
         aggregateFragment.updatedAt = event.block.timestamp;
+        aggregateFragment.creator = event.transaction.from;
         aggregateFragment.type = "BUYOUT"
         aggregateFragment.save();
     }

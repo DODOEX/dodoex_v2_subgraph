@@ -239,6 +239,8 @@ type AggregateFragment @entity {
     id: ID!
     "type: Pool,Buyout"
     type: String!
+    "creator"
+    creator: Bytes!
     "timestamp"
     timestamp:BigInt!
     "FilterAdmin"
