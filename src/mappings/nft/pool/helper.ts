@@ -76,6 +76,11 @@ export function getMinNFTAmount(filterAddress: Address): BigInt {
     return FilterERC721V1.bind(filterAddress)._MIN_NFT_AMOUNT_();
 }
 
+export function getFilterName(filterAddress: Address):string{
+    return FilterERC721V1.bind(filterAddress)._FILTER_NAME_();
+
+}
+
 /**
  * globe
  * */

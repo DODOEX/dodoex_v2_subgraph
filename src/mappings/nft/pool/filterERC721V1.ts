@@ -22,6 +22,8 @@ export function handleNftIn(event: NftIn): void {
         filterNft.nft = nft.id;
         filterNft.filter = filter.id;
         filterNft.amount = ONE_BI;
+        filterNft.createdAt = event.block.timestamp;
+        filterNft.updatedAt = event.block.timestamp;
         filter.createdAt = event.block.timestamp;
         filter.updatedAt = event.block.timestamp;
         filterNft.save();
@@ -30,6 +32,7 @@ export function handleNftIn(event: NftIn): void {
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
     if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
         tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
         tradeHistoryTransferDetail.tokenId = event.params.tokenId;
         tradeHistoryTransferDetail.amount = ONE_BI;
@@ -37,7 +40,7 @@ export function handleNftIn(event: NftIn): void {
         tradeHistoryTransferDetail.updatedAt = event.block.timestamp;
         tradeHistoryTransferDetail.save();
     }
-
+    filter.save();
 }
 
 export function handleTargetOut(event: TargetOut): void {
@@ -50,6 +53,18 @@ export function handleTargetOut(event: TargetOut): void {
         filterNft.createdAt = event.block.timestamp;
         filterNft.updatedAt = event.block.timestamp;
         filterNft.save();
+    }
+
+    let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
+    let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
+    if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
+        tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
+        tradeHistoryTransferDetail.tokenId = event.params.tokenId;
+        tradeHistoryTransferDetail.amount = ONE_BI;
+        tradeHistoryTransferDetail.createdAt = event.block.timestamp;
+        tradeHistoryTransferDetail.updatedAt = event.block.timestamp;
+        tradeHistoryTransferDetail.save();
     }
 
 }
@@ -69,6 +84,7 @@ export function handleRandomOut(event: RandomOut): void {
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
     if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
         tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
         tradeHistoryTransferDetail.tokenId = event.params.tokenId;
         tradeHistoryTransferDetail.amount = ONE_BI;
@@ -93,6 +109,7 @@ export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
     if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
         tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
         tradeHistoryTransferDetail.tokenId = event.params.tokenId;
         tradeHistoryTransferDetail.amount = ONE_BI;
@@ -127,8 +144,8 @@ export function handleTargetOutOrder(event: TargetOutOrder): void {
         poolTradeHistory.createdAt = event.block.timestamp;
     }
     poolTradeHistory.hash = event.transaction.hash.toHexString();
-    poolTradeHistory.direction = "OUT"
-    poolTradeHistory.mode = "TARGET"
+    poolTradeHistory.direction = "OUT";
+    poolTradeHistory.mode = "TARGET";
     poolTradeHistory.filter = event.address.toHexString();
     poolTradeHistory.from = event.transaction.from;
     poolTradeHistory.to = event.params.user;
@@ -145,8 +162,8 @@ export function handleRandomOutOrder(event: RandomOutOrder): void {
         poolTradeHistory.createdAt = event.block.timestamp;
     }
     poolTradeHistory.hash = event.transaction.hash.toHexString();
-    poolTradeHistory.direction = "OUT"
-    poolTradeHistory.mode = "RANDOM"
+    poolTradeHistory.direction = "OUT";
+    poolTradeHistory.mode = "RANDOM";
     poolTradeHistory.filter = event.address.toHexString();
     poolTradeHistory.from = event.transaction.from;
     poolTradeHistory.to = event.params.user;

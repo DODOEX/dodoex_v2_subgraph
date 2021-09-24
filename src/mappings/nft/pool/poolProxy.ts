@@ -20,10 +20,10 @@ import {
     FilterNft,
     AggregateFragment
 } from "../../../types/nft/schema"
-import {FilterAdmin as FilterAdminTemplates} from "../../../types/nft/templates"
+import {FilterAdmin as FilterAdminTemplates,FilterERC1155V1 as FilterERC1155V1Templates,FilterERC721V1 as FilterERC721V1Templates} from "../../../types/nft/templates"
 import * as helper from "./helper"
 import {Address, BigInt, ethereum} from "@graphprotocol/graph-ts"
-import {convertTokenToDecimal, BI_18} from "../helpers"
+import {convertTokenToDecimal, BI_18, ONE_BI} from "../helpers"
 
 function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address, event: ethereum.Event): FilterAdmin {
     let filterAdmin = new FilterAdmin(newFilterAdmin.toHexString());
@@ -63,10 +63,17 @@ function createNewFilter(filterAddress: Address, key: BigInt, admin: Address, co
     filter.endId = helper.getIdEnd(filterAddress);
     filter.minAmount = helper.getMinNFTAmount(filterAddress);
     filter.maxAmount = helper.getMaxNFTAmount(filterAddress);
+    filter.name = helper.getFilterName(filterAddress);
     filter.spreadIds = [];
     filter.createdAt = event.block.timestamp;
     filter.updatedAt = event.block.timestamp;
     filter.save();
+    if(key.equals(ONE_BI)){
+        FilterERC721V1Templates.create(filterAddress)
+    }
+    if(key.equals(ONE_BI.plus(ONE_BI))){
+        FilterERC1155V1Templates.create(filterAddress)
+    }
     return filter;
 }
 

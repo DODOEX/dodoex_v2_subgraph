@@ -19,7 +19,7 @@ export function handleCreateNFTCollateralVault(event: CreateNFTCollateralVault):
         vault.updatedAt = event.block.timestamp;
         vault.save();
     }
-    NFTCollateralVaultTemplate.create(event.params.vault)
+    NFTCollateralVaultTemplate.create(event.params.vault);
 }
 
 export function handleCreateFragment(event: CreateFragment): void {
@@ -35,7 +35,7 @@ export function handleCreateFragment(event: CreateFragment): void {
     let aggregateFragment = AggregateFragment.load(event.params.fragment.toHexString());
     if (aggregateFragment == null) {
         aggregateFragment = new AggregateFragment(event.params.fragment.toHexString())
-        aggregateFragment.filterAdmin = fragment.id;
+        aggregateFragment.fragment = fragment.id;
         aggregateFragment.timestamp = event.block.timestamp;
         aggregateFragment.createdAt = event.block.timestamp;
         aggregateFragment.updatedAt = event.block.timestamp;

@@ -233,6 +233,10 @@ templates:
       entities:
         - FilterAdmin
       abis:
+        - name: DODONFT
+          file: ../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../abis/DODONFT1155.json
         - name: FilterAdmin
           file: ../abis/FilterAdmin.json
         - name: FilterERC721V1
@@ -267,6 +271,10 @@ templates:
       entities:
         - FilterAdmin
       abis:
+        - name: DODONFT
+          file: ../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../abis/DODONFT1155.json
         - name: FilterAdmin
           file: ../abis/FilterAdmin.json
         - name: FilterERC1155V1

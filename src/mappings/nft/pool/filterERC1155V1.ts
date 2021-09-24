@@ -29,6 +29,7 @@ export function handleNftIn(event: NftIn): void {
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
     if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
         tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
         tradeHistoryTransferDetail.tokenId = event.params.tokenId;
         tradeHistoryTransferDetail.amount = ONE_BI;
@@ -54,6 +55,7 @@ export function handleTargetOut(event: TargetOut): void {
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
     if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
         tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
         tradeHistoryTransferDetail.tokenId = event.params.tokenId;
         tradeHistoryTransferDetail.amount = ONE_BI;
@@ -79,6 +81,7 @@ export function handleRandomOut(event: RandomOut): void {
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);
     if (tradeHistoryTransferDetail == null) {
+        tradeHistoryTransferDetail = new TradeHistoryTransferDetail(tradeHistoryTransferDetailId);
         tradeHistoryTransferDetail.hash = event.transaction.hash.toHexString();
         tradeHistoryTransferDetail.tokenId = event.params.tokenId;
         tradeHistoryTransferDetail.amount = ONE_BI;
