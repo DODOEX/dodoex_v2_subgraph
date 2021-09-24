@@ -220,6 +220,8 @@ templates:
       eventHandlers:
         - event: FilterAdminInit(address,uint256)
           handler: handleFilterAdminInit
+        - event: ChangeFeeRate(uint256)
+          handler: handleChangeFeeRate
   - kind: ethereum/contract
     name: FilterERC721V1
     network: rinkeby

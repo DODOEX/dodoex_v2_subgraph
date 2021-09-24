@@ -91,6 +91,7 @@ export function handleCreateLiteNFTPool(event: CreateLiteNFTPool): void {
 
 export function handleCreateNFTPool(event: CreateNFTPool): void {
     createNewFilterAdmin(event.params.newFilterAdmin, event.params.filterAdminOwner, event);
+    FilterAdminTemplates.create(event.params.newFilterAdmin);
 }
 
 export function handleCreateFilterV1(event: CreateFilterV1): void {
