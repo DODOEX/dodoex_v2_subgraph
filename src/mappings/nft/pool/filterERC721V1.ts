@@ -6,7 +6,9 @@ import {
     EmergencyWithdraw,
     NftInOrder,
     TargetOutOrder,
-    RandomOutOrder
+    RandomOutOrder,
+    ChangeFilterName,
+    ChangeNFTAmountRange
 } from "../../../types/nft/templates/FilterERC721V1/FilterERC721V1"
 import {Nft, Filter, FilterNft, PoolTradeHistory, TradeHistoryTransferDetail} from "../../../types/nft/schema"
 import {BI_18, convertTokenToDecimal, createAndGetNFT, ONE_BI, ZERO_BI} from "../helpers"
@@ -170,4 +172,25 @@ export function handleRandomOutOrder(event: RandomOutOrder): void {
     poolTradeHistory.amount = convertTokenToDecimal(event.params.paidAmount, BI_18);
     poolTradeHistory.updatedAt = event.block.timestamp;
     poolTradeHistory.save();
+}
+
+export function handleChangeFilterName(event: ChangeFilterName): void {
+    let filter = Filter.load(event.address.toHexString());
+    if (filter != null) {
+        filter.name = event.params.newFilterName;
+        filter.createdAt = event.block.timestamp;
+        filter.updatedAt = event.block.timestamp;
+        filter.save();
+    }
+}
+
+export function handleChangeNFTAmountRange(event: ChangeNFTAmountRange):void{
+    let filter = Filter.load(event.address.toHexString());
+    if (filter != null) {
+        filter.minAmount = event.params.minNFTAmount;
+        filter.maxAmount = event.params.maxNFTAmount;
+        filter.createdAt = event.block.timestamp;
+        filter.updatedAt = event.block.timestamp;
+        filter.save();
+    }
 }

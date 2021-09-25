@@ -35,7 +35,7 @@ dataSources:
     name: DODONFTRegistry
     network: rinkeby
     source:
-      address: '0x69efeCA5070Cb22c1094cffEbacafC09c058c139'
+      address: '0x3DEf969E84FEAa9Dd2a29E1008D0426c8d89D5C5'
       abi: DODONFTRegistry
       startBlock: 8690815
     mapping:

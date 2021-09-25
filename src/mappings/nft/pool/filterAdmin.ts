@@ -1,5 +1,5 @@
 import {FilterAdmin} from "../../../types/nft/schema"
-import {ChangeFeeRate} from "../../../types/nft/DODONFTPoolProxy/FilterAdmin"
+import {ChangeFeeRate,OwnershipTransferred} from "../../../types/nft/DODONFTPoolProxy/FilterAdmin"
 
 export function handleChangeFeeRate(event: ChangeFeeRate): void {
     let filterAdmin = FilterAdmin.load(event.address.toHexString());
@@ -8,3 +8,13 @@ export function handleChangeFeeRate(event: ChangeFeeRate): void {
         filterAdmin.save();
     }
 }
+
+export function handleOwnershipTransferred(event: OwnershipTransferred): void{
+    let filterAdmin = FilterAdmin.load(event.address.toHexString());
+    if (filterAdmin != null) {
+        filterAdmin.owner = event.params.newOwner;
+        filterAdmin.save();
+    }
+}
+
+

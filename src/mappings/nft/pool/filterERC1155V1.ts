@@ -7,8 +7,10 @@ import {
     TargetOut,
     NftInOrder,
     RandomOutOrder,
-    TargetOutOrder
+    TargetOutOrder,
+    ChangeFilterName
 } from "../../../types/nft/templates/FilterERC1155V1/FilterERC1155V1";
+import {ChangeNFTAmountRange} from "../../../types/nft/templates/FilterERC721V1/FilterERC721V1";
 
 export function handleNftIn(event: NftIn): void {
     const filter = Filter.load(event.address.toHexString());
@@ -142,4 +144,25 @@ export function handleRandomOutOrder(event: RandomOutOrder): void {
     poolTradeHistory.amount = convertTokenToDecimal(event.params.paidAmount, BI_18);
     poolTradeHistory.updatedAt = event.block.timestamp;
     poolTradeHistory.save();
+}
+
+export function handleChangeFilterName(event: ChangeFilterName): void {
+    let filter = Filter.load(event.address.toHexString());
+    if (filter != null) {
+        filter.name = event.params.newFilterName;
+        filter.createdAt = event.block.timestamp;
+        filter.updatedAt = event.block.timestamp;
+        filter.save();
+    }
+}
+
+export function handleChangeNFTAmountRange(event: ChangeNFTAmountRange):void{
+    let filter = Filter.load(event.address.toHexString());
+    if (filter != null) {
+        filter.minAmount = event.params.minNFTAmount;
+        filter.maxAmount = event.params.maxNFTAmount;
+        filter.createdAt = event.block.timestamp;
+        filter.updatedAt = event.block.timestamp;
+        filter.save();
+    }
 }

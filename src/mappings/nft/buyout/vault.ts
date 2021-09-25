@@ -25,7 +25,7 @@ export function handleAddNftToken(event: AddNftToken): void {
     vaultNft.save();
 
     let vault = NftCollateralVault.load(event.address.toHexString());
-    vault.vaultNfts.push(vaultNftID)
+    // vault.vaultNfts.push(vaultNftID)
     vault.updatedAt = event.block.timestamp;
     vault.save();
 

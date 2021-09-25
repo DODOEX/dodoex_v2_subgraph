@@ -222,6 +222,8 @@ templates:
           handler: handleFilterAdminInit
         - event: ChangeFeeRate(uint256)
           handler: handleChangeFeeRate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
   - kind: ethereum/contract
     name: FilterERC721V1
     network: rinkeby
@@ -260,6 +262,8 @@ templates:
           handler: handleEmergencyWithdraw
         - event: ChangeFilterName(string)
           handler: handleChangeFilterName
+        - event: ChangeNFTAmountRange(uint256,uint256)
+          handler: handleChangeNFTAmountRange
   - kind: ethereum/contract
     name: FilterERC1155V1
     network: rinkeby
@@ -298,3 +302,5 @@ templates:
           handler: handleEmergencyWithdraw
         - event: ChangeFilterName(string)
           handler: handleChangeFilterName
+        - event: ChangeNFTAmountRange(uint256,uint256)
+          handler: handleChangeNFTAmountRange
