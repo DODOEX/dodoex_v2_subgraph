@@ -77,7 +77,7 @@ dataSources:
     network: rinkeby
     source:
       abi: DODONFT1155
-      address: "0xc498F36eF82Aa5dBE0ecF6DD56DD55398E80E13D"
+      address: "0x4c455532af01bc34a0ec60fdd63c68fe41068c63"
       startBlock: 9302473
     mapping:
       kind: ethereum/events
@@ -108,7 +108,7 @@ dataSources:
     network: rinkeby
     source:
       abi: DODONFTPoolProxy
-      address: "0x888B9d4C25664F8B1BF744e8F4397d1429314155"
+      address: "0xa3ee5A7b0A26134AAf55788c6db2CfC68f7846E4"
       startBlock: 9302029
     mapping:
       kind: ethereum/events
@@ -218,8 +218,6 @@ templates:
         - name: FilterAdmin
           file: ../abis/FilterAdmin.json
       eventHandlers:
-        - event: FilterAdminInit(address,uint256)
-          handler: handleFilterAdminInit
         - event: ChangeFeeRate(uint256)
           handler: handleChangeFeeRate
         - event: OwnershipTransferred(indexed address,indexed address)
@@ -273,7 +271,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/FilterERC721V1/FilterERC721V1.wasm
+      file: templates/FilterERC1155V1/FilterERC1155V1.wasm
       entities:
         - FilterAdmin
       abis:

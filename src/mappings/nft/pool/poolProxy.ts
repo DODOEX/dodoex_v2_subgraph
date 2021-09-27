@@ -4,10 +4,6 @@ import {
     CreateNFTPool,
     Erc721toErc20,
     Erc721In,
-    Erc721TargetOut,
-    Erc1155TargetOut,
-    Erc721RandomOut,
-    Erc1155RandomOut,
     ChangeMaintainer,
     ChangeContoller,
     ChangeFilterAdminTemplate
@@ -133,89 +129,6 @@ export function handleErc1155In(event: Erc721In): void {
     poolTradeHistory.from = event.transaction.from;
     poolTradeHistory.to = event.params.to;
     poolTradeHistory.amount = convertTokenToDecimal(event.params.received, BI_18);
-    poolTradeHistory.updatedAt = event.block.timestamp;
-
-    poolTradeHistory.save();
-
-}
-
-export function handleErc721TargetOut(event: Erc721TargetOut): void {
-    let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
-    let poolTradeHistory = PoolTradeHistory.load(id);
-    if (poolTradeHistory == null) {
-        poolTradeHistory = new PoolTradeHistory(id);
-        poolTradeHistory.createdAt = event.block.timestamp;
-
-    }
-    poolTradeHistory.hash = event.transaction.hash.toHexString();
-    poolTradeHistory.direction = "OUT"
-    poolTradeHistory.mode = "TARGET"
-    poolTradeHistory.filter = event.params.filter.toHexString();
-    poolTradeHistory.from = event.transaction.from;
-    poolTradeHistory.to = event.params.to;
-    poolTradeHistory.amount = convertTokenToDecimal(event.params.paid, BI_18);
-    poolTradeHistory.updatedAt = event.block.timestamp;
-
-    poolTradeHistory.save();
-}
-
-export function handleErc721RandomOut(event: Erc721RandomOut): void {
-    let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
-    let poolTradeHistory = PoolTradeHistory.load(id);
-    if (poolTradeHistory == null) {
-        poolTradeHistory = new PoolTradeHistory(id);
-        poolTradeHistory.createdAt = event.block.timestamp;
-
-    }
-    poolTradeHistory.hash = event.transaction.hash.toHexString();
-    poolTradeHistory.direction = "OUT"
-    poolTradeHistory.mode = "RANDOM"
-    poolTradeHistory.filter = event.params.filter.toHexString();
-    poolTradeHistory.from = event.transaction.from;
-    poolTradeHistory.to = event.params.to;
-    poolTradeHistory.amount = convertTokenToDecimal(event.params.paid, BI_18);
-    poolTradeHistory.updatedAt = event.block.timestamp;
-
-    poolTradeHistory.save();
-
-}
-
-export function handleErc1155TargetOut(event: Erc1155TargetOut): void {
-    let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
-    let poolTradeHistory = PoolTradeHistory.load(id);
-    if (poolTradeHistory == null) {
-        poolTradeHistory = new PoolTradeHistory(id);
-        poolTradeHistory.createdAt = event.block.timestamp;
-
-    }
-    poolTradeHistory.hash = event.transaction.hash.toHexString();
-    poolTradeHistory.direction = "OUT"
-    poolTradeHistory.mode = "TARGET"
-    poolTradeHistory.filter = event.params.filter.toHexString();
-    poolTradeHistory.from = event.transaction.from;
-    poolTradeHistory.to = event.params.to;
-    poolTradeHistory.amount = convertTokenToDecimal(event.params.paid, BI_18);
-    poolTradeHistory.updatedAt = event.block.timestamp;
-
-    poolTradeHistory.save();
-
-}
-
-export function handleErc1155RandomOut(event: Erc1155RandomOut): void {
-    let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
-    let poolTradeHistory = PoolTradeHistory.load(id);
-    if (poolTradeHistory == null) {
-        poolTradeHistory = new PoolTradeHistory(id);
-        poolTradeHistory.createdAt = event.block.timestamp;
-
-    }
-    poolTradeHistory.hash = event.transaction.hash.toHexString();
-    poolTradeHistory.direction = "OUT"
-    poolTradeHistory.mode = "RANDOM"
-    poolTradeHistory.filter = event.params.filter.toHexString();
-    poolTradeHistory.from = event.transaction.from;
-    poolTradeHistory.to = event.params.to;
-    poolTradeHistory.amount = convertTokenToDecimal(event.params.paid, BI_18);
     poolTradeHistory.updatedAt = event.block.timestamp;
 
     poolTradeHistory.save();

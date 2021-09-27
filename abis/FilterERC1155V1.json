@@ -387,6 +387,11 @@
         "internalType": "address",
         "name": "to",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxBurnAmount",
+        "type": "uint256"
       }
     ],
     "name": "ERC1155RandomOut",
@@ -416,6 +421,11 @@
         "internalType": "address",
         "name": "to",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxBurnAmount",
+        "type": "uint256"
       }
     ],
     "name": "ERC1155TargetOut",
@@ -1215,6 +1225,44 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "filterName",
+        "type": "string"
+      },
+      {
+        "internalType": "bool[]",
+        "name": "toggles",
+        "type": "bool[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "numParams",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "priceRules",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "spreadIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bool[]",
+        "name": "isRegistered",
+        "type": "bool[]"
+      }
+    ],
+    "name": "resetFilter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
