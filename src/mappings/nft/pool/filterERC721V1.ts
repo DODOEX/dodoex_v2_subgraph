@@ -1,4 +1,4 @@
-import {Address} from "@graphprotocol/graph-ts"
+import {Address, store} from "@graphprotocol/graph-ts"
 import {
     NftIn,
     TargetOut,
@@ -8,9 +8,17 @@ import {
     TargetOutOrder,
     RandomOutOrder,
     ChangeFilterName,
-    ChangeNFTAmountRange
+    ChangeNFTAmountRange,
+    ChangeTokenIdMap
 } from "../../../types/nft/templates/FilterERC721V1/FilterERC721V1"
-import {Nft, Filter, FilterNft, PoolTradeHistory, TradeHistoryTransferDetail} from "../../../types/nft/schema"
+import {
+    Nft,
+    Filter,
+    FilterNft,
+    PoolTradeHistory,
+    TradeHistoryTransferDetail,
+    FilterSpreadId
+} from "../../../types/nft/schema"
 import {BI_18, convertTokenToDecimal, createAndGetNFT, ONE_BI, ZERO_BI} from "../helpers"
 
 export function handleNftIn(event: NftIn): void {
@@ -184,11 +192,37 @@ export function handleChangeFilterName(event: ChangeFilterName): void {
     }
 }
 
-export function handleChangeNFTAmountRange(event: ChangeNFTAmountRange):void{
+export function handleChangeNFTAmountRange(event: ChangeNFTAmountRange): void {
     let filter = Filter.load(event.address.toHexString());
     if (filter != null) {
         filter.minAmount = event.params.minNFTAmount;
         filter.maxAmount = event.params.maxNFTAmount;
+        filter.createdAt = event.block.timestamp;
+        filter.updatedAt = event.block.timestamp;
+        filter.save();
+    }
+}
+
+export function handleChangeTokenIdMap(event: ChangeTokenIdMap): void {
+    let filter = Filter.load(event.address.toHexString());
+    let filterSpreadId = FilterSpreadId.load(event.address.toHexString().concat("-").concat(event.params.tokenIds.toString()));
+
+    if (filter != null) {
+
+        if (event.params.isRegistered == true) {
+            if (filterSpreadId == null) {
+                filterSpreadId = new FilterSpreadId(event.address.toHexString().concat("-").concat(event.params.tokenIds.toString()));
+                filterSpreadId.filter = event.address.toHexString();
+                filterSpreadId.tokenId = event.params.tokenIds;
+            }
+            filterSpreadId.createdAt = event.block.timestamp;
+            filterSpreadId.updatedAt = event.block.timestamp;
+            filterSpreadId.save();
+        } else {
+            if (filterSpreadId != null) {
+                store.remove("FilterSpreadId", event.address.toHexString().concat("-").concat(event.params.tokenIds.toString()))
+            }
+        }
         filter.createdAt = event.block.timestamp;
         filter.updatedAt = event.block.timestamp;
         filter.save();

@@ -60,7 +60,6 @@ function createNewFilter(filterAddress: Address, key: BigInt, admin: Address, co
     filter.minAmount = helper.getMinNFTAmount(filterAddress);
     filter.maxAmount = helper.getMaxNFTAmount(filterAddress);
     filter.name = helper.getFilterName(filterAddress);
-    filter.spreadIds = [];
     filter.createdAt = event.block.timestamp;
     filter.updatedAt = event.block.timestamp;
     filter.save();

@@ -262,6 +262,8 @@ templates:
           handler: handleChangeFilterName
         - event: ChangeNFTAmountRange(uint256,uint256)
           handler: handleChangeNFTAmountRange
+        - event: ChangeTokenIdMap(uint256,bool)
+          handler: handleChangeTokenIdMap
   - kind: ethereum/contract
     name: FilterERC1155V1
     network: rinkeby
@@ -302,3 +304,5 @@ templates:
           handler: handleChangeFilterName
         - event: ChangeNFTAmountRange(uint256,uint256)
           handler: handleChangeNFTAmountRange
+        - event: ChangeTokenIdMap(uint256,bool)
+          handler: handleChangeTokenIdMap

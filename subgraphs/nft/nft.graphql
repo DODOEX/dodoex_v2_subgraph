@@ -141,9 +141,22 @@ type Filter @entity {
     maxAmount: BigInt!
     #todo priceRules
     "spreadIds"
-    spreadIds:[BigInt!]
+    spreadIds:[FilterSpreadId!]!@derivedFrom(field: "filter")
     "nfts"
     nfts:[FilterNft!]!@derivedFrom(field: "filter")
+    "createdAt"
+    createdAt: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type FilterSpreadId @entity {
+    "filter-token id"
+    id:ID!
+    "filter"
+    filter:Filter!
+    "token id"
+    tokenId:BigInt!
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
