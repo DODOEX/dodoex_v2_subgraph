@@ -108,7 +108,7 @@ dataSources:
     network: rinkeby
     source:
       abi: DODONFTPoolProxy
-      address: '0xa3ee5A7b0A26134AAf55788c6db2CfC68f7846E4'
+      address: '0xb23150F62D3089BB3Fa181ee6185324cdECE1942'
       startBlock: 9302029
     mapping:
       kind: ethereum/events
