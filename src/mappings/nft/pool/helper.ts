@@ -22,6 +22,11 @@ export function getInitSupply(filerAdminAddress: Address): BigInt {
     return initSupply
 }
 
+export function getTotalSupply(filerAdminAddress: Address): BigInt {
+    const totalSupply = FilterAdmin.bind(filerAdminAddress).totalSupply();
+    return totalSupply
+}
+
 export function getName(filerAdminAddress: Address): string {
     const name = FilterAdmin.bind(filerAdminAddress).name();
     return name;

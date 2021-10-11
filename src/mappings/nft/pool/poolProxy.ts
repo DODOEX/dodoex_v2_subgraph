@@ -28,6 +28,7 @@ function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address
     filterAdmin.symbol = helper.getSymbol(newFilterAdmin);
     filterAdmin.feeRate = helper.getFeeRate(newFilterAdmin);
     filterAdmin.initSupply = helper.getInitSupply(newFilterAdmin);
+    filterAdmin.totalSupply = helper.getTotalSupply(newFilterAdmin);
     filterAdmin.maintainer = helper.getMaintainer(newFilterAdmin);
     filterAdmin.controller = helper.getController(newFilterAdmin);
     filterAdmin.decimals = BI_18;

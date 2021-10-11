@@ -57,9 +57,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-mine-v3-okchain
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-arbitrum
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodomine-rinkeby
-
-    
-
+   
 ## 2、 Graphql Examples
  - to get user info
 ```

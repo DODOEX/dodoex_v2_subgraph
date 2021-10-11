@@ -185,6 +185,8 @@ type FilterAdmin @entity {
     owner: Bytes
     "initSupply"
     initSupply: BigInt
+    "totalSupply"
+    totalSupply:BigInt
     "name"
     name: String
     "symbol"
