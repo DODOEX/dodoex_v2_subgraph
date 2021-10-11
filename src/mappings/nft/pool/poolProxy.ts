@@ -76,7 +76,7 @@ function createNewFilter(filterAddress: Address, key: BigInt, admin: Address, co
 export function handleCreateLiteNFTPool(event: CreateLiteNFTPool): void {
     let filterAdmin = FilterAdmin.load(event.params.newFilterAdmin.toHexString());
     if (filterAdmin == null) {
-        filterAdmin = createNewFilterAdmin(event.params.newFilterAdmin, event.params.newFilterAdmin, event);
+        filterAdmin = createNewFilterAdmin(event.params.newFilterAdmin, event.params.filterAdminOwner, event);
         filterAdmin.createdAt = event.block.timestamp;
         filterAdmin.updatedAt = event.block.timestamp;
         filterAdmin.save();
