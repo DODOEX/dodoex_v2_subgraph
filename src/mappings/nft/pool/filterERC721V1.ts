@@ -9,7 +9,8 @@ import {
     RandomOutOrder,
     ChangeFilterName,
     ChangeNFTAmountRange,
-    ChangeTokenIdMap
+    ChangeTokenIdMap,
+    ChangeTokenIdRange
 } from "../../../types/nft/templates/FilterERC721V1/FilterERC721V1"
 import {
     Nft,
@@ -197,6 +198,17 @@ export function handleChangeNFTAmountRange(event: ChangeNFTAmountRange): void {
     if (filter != null) {
         filter.minAmount = event.params.minNFTAmount;
         filter.maxAmount = event.params.maxNFTAmount;
+        filter.createdAt = event.block.timestamp;
+        filter.updatedAt = event.block.timestamp;
+        filter.save();
+    }
+}
+
+export function handleChangeTokenIdRange(event: ChangeTokenIdRange): void {
+    let filter = Filter.load(event.address.toHexString());
+    if (filter != null) {
+        filter.startId = event.params.nftIdStart;
+        filter.endId = event.params.nftIdEnd;
         filter.createdAt = event.block.timestamp;
         filter.updatedAt = event.block.timestamp;
         filter.save();
