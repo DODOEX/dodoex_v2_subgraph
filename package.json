@@ -46,7 +46,9 @@
 
     "deploy:nft_kovan": "graph codegen subgraphs/nft/nft_kovan.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodo-nft subgraphs/nft/nft_kovan.yaml",
     "deploy:nft_rinkeby": "graph codegen subgraphs/nft/nft_rinkeby.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-rinkeby subgraphs/nft/nft_rinkeby.yaml",
-    "deploy:nft_rinkeby_test": "graph codegen subgraphs/nft/nft_rinkeby.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/nft_pool_test1 subgraphs/nft/nft_rinkeby.yaml",
+    "deploy:nft_bsc": "graph codegen subgraphs/nft/nft_bsc.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-bsc subgraphs/nft/nft_bsc.yaml",
+    "deploy:nft_mainnet": "graph codegen subgraphs/nft/nft_mainnet.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft subgraphs/nft/nft_mainnet.yaml",
+    "deploy:nft_rinkeby_test": "graph codegen subgraphs/nft/nft_rinkeby.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/nft_test_02 subgraphs/nft/nft_rinkeby.yaml",
 
     "deploy:dodomine_rinkeby": "graph codegen subgraphs/mine/mine_rinkeby.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodomine-rinkeby subgraphs/mine/mine_rinkeby.yaml",
     "deploy:dodomine_mainnet": "graph codegen subgraphs/mine/mine_mainnet.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3 subgraphs/mine/mine_mainnet.yaml",

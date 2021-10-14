@@ -37,8 +37,8 @@ export function handleNftIn(event: NftIn): void {
         filterNft.updatedAt = event.block.timestamp;
         filter.createdAt = event.block.timestamp;
         filter.updatedAt = event.block.timestamp;
-        filterNft.save();
     }
+    filterNft.save();
 
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
     let tradeHistoryTransferDetail = TradeHistoryTransferDetail.load(tradeHistoryTransferDetailId);

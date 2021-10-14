@@ -330,6 +330,39 @@ dataSources:
         - event: RemoveDPP(address)
           handler: handleRemoveDPP
   - kind: ethereum/contract
+    name: DPPFactory_21_10_13
+    network: bsc
+    source:
+      address: '0xd9cac3d964327e47399aebd8e1e6dcc4c251daae'
+      abi: DPPFactory
+      startBlock: 11677242
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DPPFactory
+          file: ../../abis/DPPFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewDPP(address,address,address,address)
+          handler: handleNewDPP
+        - event: RemoveDPP(address)
+          handler: handleRemoveDPP
+  - kind: ethereum/contract
     name: DSPFactory
     network: bsc
     source:
