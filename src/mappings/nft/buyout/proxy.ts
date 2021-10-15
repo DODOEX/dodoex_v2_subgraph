@@ -1,6 +1,6 @@
 import {AggregateFragment, NftCollateralVault} from "../../../types/nft/schema"
 import {CreateNFTCollateralVault, CreateFragment} from "../../../types/nft/DODONFTProxy/DODONFTProxy"
-import {createAndGetFragment} from "../helpers"
+import {createAndGetFragment, ZERO_BI} from "../helpers"
 import {
     NFTCollateralVault as NFTCollateralVaultTemplate,
     Fragment as FragmentTemplate
@@ -41,6 +41,7 @@ export function handleCreateFragment(event: CreateFragment): void {
         aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.creator = event.transaction.from;
         aggregateFragment.type = "BUYOUT"
+        aggregateFragment.nftCount = ZERO_BI;
         aggregateFragment.save();
     }
 

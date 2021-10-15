@@ -19,7 +19,7 @@ import {
 import {FilterAdmin as FilterAdminTemplates,FilterERC1155V1 as FilterERC1155V1Templates,FilterERC721V1 as FilterERC721V1Templates} from "../../../types/nft/templates"
 import * as helper from "./helper"
 import {Address, BigInt, ethereum} from "@graphprotocol/graph-ts"
-import {convertTokenToDecimal, BI_18, ONE_BI} from "../helpers"
+import {convertTokenToDecimal, BI_18, ONE_BI,ZERO_BI} from "../helpers"
 
 function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address, event: ethereum.Event): FilterAdmin {
     let filterAdmin = new FilterAdmin(newFilterAdmin.toHexString());
@@ -44,6 +44,7 @@ function createNewFilterAdmin(newFilterAdmin: Address, filterAdminOwner: Address
         aggregateFragment.createdAt = event.block.timestamp;
         aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.type = "POOL"
+        aggregateFragment.nftCount = ZERO_BI;
         aggregateFragment.creator = event.transaction.from;
         aggregateFragment.save();
     }

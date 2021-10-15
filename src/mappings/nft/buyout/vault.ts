@@ -1,4 +1,4 @@
-import {VaultNft, NftCollateralVault, Nft} from "../../../types/nft/schema";
+import {VaultNft, NftCollateralVault, Nft, AggregateFragment} from "../../../types/nft/schema";
 import {
     AddNftToken,
     RemoveNftToken,
@@ -32,6 +32,12 @@ export function handleAddNftToken(event: AddNftToken): void {
     let nft = createAndGetNFT(event.params.nftContract, event.params.tokenId, event);
     nft.save();
 
+    let aggregateFragment = AggregateFragment.load(event.address.toHexString());
+    if (aggregateFragment != null) {
+        aggregateFragment.nftCount = aggregateFragment.nftCount.plus(event.params.amount);
+        aggregateFragment.save();
+    }
+
 }
 
 export function handleRemoveNftToken(event: RemoveNftToken): void {
@@ -47,6 +53,12 @@ export function handleRemoveNftToken(event: RemoveNftToken): void {
     let nft = createAndGetNFT(event.params.nftContract, event.params.tokenId, event);
     nft.updatedAt = event.block.timestamp;
     nft.save();
+
+    let aggregateFragment = AggregateFragment.load(event.address.toHexString());
+    if (aggregateFragment != null) {
+        aggregateFragment.nftCount = aggregateFragment.nftCount.minus(event.params.amount);
+        aggregateFragment.save();
+    }
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {

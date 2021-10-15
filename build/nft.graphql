@@ -15,6 +15,8 @@ type NftCollateralVault @entity {
     createdAt: BigInt!
     "updatedAt"
     updatedAt: BigInt!
+    "fragment"
+    fragment: Fragment!@derivedFrom(field: "vault")
 }
 
 type Nft @entity{
@@ -264,6 +266,8 @@ type AggregateFragment @entity {
     filterAdmin:FilterAdmin
     "Fragment"
     fragment:Fragment
+    "nft count"
+    nftCount: BigInt!
     "createdAt"
     createdAt: BigInt!
     "updatedAt"

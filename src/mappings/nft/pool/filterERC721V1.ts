@@ -18,7 +18,7 @@ import {
     FilterNft,
     PoolTradeHistory,
     TradeHistoryTransferDetail,
-    FilterSpreadId
+    FilterSpreadId, AggregateFragment
 } from "../../../types/nft/schema"
 import {BI_18, convertTokenToDecimal, createAndGetNFT, ONE_BI, ZERO_BI} from "../helpers"
 
@@ -52,6 +52,13 @@ export function handleNftIn(event: NftIn): void {
         tradeHistoryTransferDetail.save();
     }
     filter.save();
+
+    let aggregateFragment = AggregateFragment.load(filter.admin);
+    if (aggregateFragment != null) {
+        aggregateFragment.nftCount = aggregateFragment.nftCount.plus(ONE_BI);
+        aggregateFragment.save();
+    }
+
 }
 
 export function handleTargetOut(event: TargetOut): void {
@@ -78,6 +85,12 @@ export function handleTargetOut(event: TargetOut): void {
         tradeHistoryTransferDetail.save();
     }
 
+    let aggregateFragment = AggregateFragment.load(filter.admin);
+    if (aggregateFragment != null) {
+        aggregateFragment.nftCount = aggregateFragment.nftCount.minus(ONE_BI);
+        aggregateFragment.save();
+    }
+
 }
 
 export function handleRandomOut(event: RandomOut): void {
@@ -102,6 +115,12 @@ export function handleRandomOut(event: RandomOut): void {
         tradeHistoryTransferDetail.createdAt = event.block.timestamp;
         tradeHistoryTransferDetail.updatedAt = event.block.timestamp;
         tradeHistoryTransferDetail.save();
+    }
+
+    let aggregateFragment = AggregateFragment.load(filter.admin);
+    if (aggregateFragment != null) {
+        aggregateFragment.nftCount = aggregateFragment.nftCount.minus(ONE_BI);
+        aggregateFragment.save();
     }
 }
 
