@@ -5,6 +5,7 @@ import {
     NFTCollateralVault as NFTCollateralVaultTemplate,
     Fragment as FragmentTemplate
 } from "../../../types/nft/templates"
+import {BigInt} from "@graphprotocol/graph-ts";
 
 export function handleCreateNFTCollateralVault(event: CreateNFTCollateralVault): void {
     let vault = NftCollateralVault.load(event.params.vault.toHexString());
@@ -15,6 +16,7 @@ export function handleCreateNFTCollateralVault(event: CreateNFTCollateralVault):
         vault.name = event.params.name;
         vault.baseURI = event.params.baseURI;
         vault.owner = event.params.creator;
+        vault.nftCount = ZERO_BI;
         vault.createdAt = event.block.timestamp;
         vault.updatedAt = event.block.timestamp;
         vault.save();
@@ -41,7 +43,7 @@ export function handleCreateFragment(event: CreateFragment): void {
         aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.creator = event.transaction.from;
         aggregateFragment.type = "BUYOUT"
-        aggregateFragment.nftCount = ZERO_BI;
+        aggregateFragment.nftCount = vault.nftCount;
         aggregateFragment.save();
     }
 

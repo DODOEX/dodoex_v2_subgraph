@@ -27,14 +27,16 @@ export function handleAddNftToken(event: AddNftToken): void {
     let vault = NftCollateralVault.load(event.address.toHexString());
     // vault.vaultNfts.push(vaultNftID)
     vault.updatedAt = event.block.timestamp;
+    vault.nftCount = event.params.amount.plus(vault.nftCount);
     vault.save();
 
     let nft = createAndGetNFT(event.params.nftContract, event.params.tokenId, event);
     nft.save();
 
-    let aggregateFragment = AggregateFragment.load(event.address.toHexString());
+    let aggregateFragment = AggregateFragment.load(vault.fragment);
     if (aggregateFragment != null) {
-        aggregateFragment.nftCount = aggregateFragment.nftCount.plus(event.params.amount);
+        aggregateFragment.nftCount = vault.nftCount;
+        aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.save();
     }
 
@@ -54,9 +56,15 @@ export function handleRemoveNftToken(event: RemoveNftToken): void {
     nft.updatedAt = event.block.timestamp;
     nft.save();
 
-    let aggregateFragment = AggregateFragment.load(event.address.toHexString());
+    let vault = NftCollateralVault.load(event.address.toHexString());
+    vault.nftCount = vault.nftCount.minus(event.params.amount);
+    vault.updatedAt = event.block.timestamp;
+    vault.save();
+
+    let aggregateFragment = AggregateFragment.load(vault.fragment);
     if (aggregateFragment != null) {
-        aggregateFragment.nftCount = aggregateFragment.nftCount.minus(event.params.amount);
+        aggregateFragment.nftCount = vault.nftCount;
+        aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.save();
     }
 }
