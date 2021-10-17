@@ -35,9 +35,9 @@ dataSources:
     name: DODONFTRegistry
     network: rinkeby
     source:
-      address: '0x3DEf969E84FEAa9Dd2a29E1008D0426c8d89D5C5'
+      address: '0xfa391c0ed6898e0c6186605d69e877f1317bb506'
       abi: DODONFTRegistry
-      startBlock: 8690815
+      startBlock: 9478854
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
