@@ -171,8 +171,8 @@ export function handleNewDPP(event: NewDPP): void {
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
-        pair.save();
         pair.updatedAt = event.block.timestamp;
+        pair.save();
 
         let dodoZoo = getDODOZoo();
         dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
