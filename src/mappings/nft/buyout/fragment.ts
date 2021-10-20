@@ -6,6 +6,10 @@ export function handleBuyout(event: Buyout): void {
     fragment.isBuyOut = true;
     fragment.updatedAt = event.block.timestamp;
     fragment.save();
+
+    let vault = NftCollateralVault.load(fragment.vault);
+    vault.owner = event.params.newOwner;
+    vault.save();
 }
 
 export function handleRedeem(event: Redeem): void {
