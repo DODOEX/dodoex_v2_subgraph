@@ -1,4 +1,4 @@
-import {VaultNft, NftCollateralVault, Nft, AggregateFragment} from "../../../types/nft/schema";
+import {VaultNft, NftCollateralVault, Fragment, AggregateFragment} from "../../../types/nft/schema";
 import {
     AddNftToken,
     RemoveNftToken,
@@ -34,7 +34,8 @@ export function handleAddNftToken(event: AddNftToken): void {
     nft.save();
 
     let aggregateFragment = AggregateFragment.load(vault.fragment);
-    if (aggregateFragment != null) {
+    let fragment = Fragment.load(vault.fragment)
+    if (fragment != null && fragment.isBuyOut !== true) {
         aggregateFragment.nftCount = vault.nftCount;
         aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.save();
@@ -62,7 +63,8 @@ export function handleRemoveNftToken(event: RemoveNftToken): void {
     vault.save();
 
     let aggregateFragment = AggregateFragment.load(vault.fragment);
-    if (aggregateFragment != null) {
+    let fragment = Fragment.load(vault.fragment)
+    if (fragment != null && fragment.isBuyOut !== true) {
         aggregateFragment.nftCount = vault.nftCount;
         aggregateFragment.updatedAt = event.block.timestamp;
         aggregateFragment.save();

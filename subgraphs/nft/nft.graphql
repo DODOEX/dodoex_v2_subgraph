@@ -18,7 +18,7 @@ type NftCollateralVault @entity {
     "updatedAt"
     updatedAt: BigInt!
     "fragment"
-    fragment: Fragment@derivedFrom(field: "vault")
+    fragment: Fragment
 }
 
 type Nft @entity{
@@ -59,7 +59,7 @@ type Fragment @entity{
     "address"
     id: ID!
     "vault"
-    vault: NftCollateralVault!
+    vault: NftCollateralVault
     "name"
     name: String!
     "symbol"
@@ -82,6 +82,8 @@ type Fragment @entity{
     vaultPreOwner: String!
     "buyoutTimestamp"
     buyoutTimestamp: BigInt!
+    "vault"
+    preVault: NftCollateralVault
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
