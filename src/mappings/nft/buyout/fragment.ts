@@ -8,6 +8,7 @@ export function handleBuyout(event: Buyout): void {
     fragment.preVault = fragment.vault;
     fragment.buyoutTimestamp = event.block.timestamp;
     fragment.updatedAt = event.block.timestamp;
+    fragment.save();
 
     let vault = NftCollateralVault.load(fragment.vault);
     if (vault !== null) {
@@ -16,8 +17,6 @@ export function handleBuyout(event: Buyout): void {
         vault.save();
     }
 
-    fragment.vault = null;
-    fragment.save();
 
     let aggregateFragment = AggregateFragment.load(event.address.toHexString());
     if (aggregateFragment !== null) {
