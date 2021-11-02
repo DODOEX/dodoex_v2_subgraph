@@ -5,6 +5,41 @@ schema:
   file: ./dodoex.graphql
 dataSources:
   - kind: ethereum/contract
+    name: DODONFTRegistry
+    network: mainnet
+    source:
+      address: '0xa7263eb38b9a61b72397c884b5f9bfb5c34a7840'
+      abi: DODONFTRegistry
+      startBlock: 13292438
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+        - name: DODO
+          file: ../../abis/DODO.json
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DODONFTRegistry
+          file: ../../abis/DODONFTRegistry.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewRegistry(address,address,address)
+          handler: handleNewRegistry
+        - event: RemoveRegistry(address)
+          handler: handleRemoveRegistry
+  - kind: ethereum/contract
     name: DODORouteProxy
     network: mainnet
     source:
