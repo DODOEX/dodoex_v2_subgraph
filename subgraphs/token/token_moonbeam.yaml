@@ -2,20 +2,20 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: token.graphql
+  file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
     name: ERC20Factory
     network: mbase
     source:
-      address: "0x16cc37d06fe5061cd0023fb8d142abaabb396a2b"
+      address: '0x16cc37d06fe5061cd0023fb8d142abaabb396a2b'
       abi: ERC20Factory
       startBlock: 545211
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ERC20Factory/ERC20Factory.wasm
+      file: ../../src/mappings/token/factory.ts
       entities:
         - User
         - Token
@@ -23,13 +23,13 @@ dataSources:
         - TransferHistories
       abis:
         - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
+          file: ../../abis/ERC20Factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: NewERC20(address,address,bool)
           handler: handleNewERC20
@@ -37,14 +37,14 @@ dataSources:
     name: ERC20V2Factory
     network: mbase
     source:
-      address: "0xaeb5cf31b97dce6134e416129845e01106ffb177"
+      address: '0xaeb5cf31b97dce6134e416129845e01106ffb177'
       abi: ERC20V2Factory
       startBlock: 545211
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ERC20V2Factory/ERC20V2Factory.wasm
+      file: ../../src/mappings/token/factoryv2.ts
       entities:
         - User
         - Token
@@ -52,15 +52,15 @@ dataSources:
         - TransferHistories
       abis:
         - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
+          file: ../../abis/ERC20Factory.json
         - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
+          file: ../../abis/ERC20V2Factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: NewERC20(address,address,uint256)
           handler: handleNewERC20
@@ -74,7 +74,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/MintableERC20/MintableERC20.wasm
+      file: ../../src/mappings/token/mintableERC20.ts
       entities:
         - User
         - Token
@@ -82,7 +82,7 @@ templates:
         - TransferHistories
       abis:
         - name: MintableERC20
-          file: ../abis/MintableERC20.json
+          file: ../../abis/MintableERC20.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -90,3 +90,4 @@ templates:
           handler: handleMint
         - event: Burn(indexed address,uint256)
           handler: handleBurn
+
