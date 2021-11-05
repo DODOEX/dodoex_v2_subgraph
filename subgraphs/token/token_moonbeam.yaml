@@ -5,35 +5,6 @@ schema:
   file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ERC20Factory
-    network: mbase
-    source:
-      address: '0x16cc37d06fe5061cd0023fb8d142abaabb396a2b'
-      abi: ERC20Factory
-      startBlock: 545211
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/token/factory.ts
-      entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
-      abis:
-        - name: ERC20Factory
-          file: ../../abis/ERC20Factory.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: NewERC20(address,address,bool)
-          handler: handleNewERC20
-  - kind: ethereum/contract
     name: ERC20V2Factory
     network: mbase
     source:
