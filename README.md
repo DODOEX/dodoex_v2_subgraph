@@ -33,7 +33,8 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-arbitrum
     - kovan : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-kovan
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-rinkeby
- - token
+    - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-moonriver
+  - token
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
     - bsc : https://n14.hg.network/subgraphs/name/dodoex-token-bsc/bsc
     - heco : https://n10.hg.network/subgraphs/name/dodoex-token-heco/heco
@@ -42,6 +43,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-arbitrum
     - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-rinkeby
+    - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-moonriver
 - vdodo
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
@@ -57,6 +59,7 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-mine-v3-okchain
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-arbitrum
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodomine-rinkeby
+    - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-moonriver
    
 ## 2、 Graphql Examples
  - to get user info
