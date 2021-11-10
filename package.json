@@ -66,7 +66,9 @@
     "deploy:dodomine_bsc_hq": "graph codegen subgraphs/mine/mine_bsc.yaml --output-dir ./src/types/mine/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-mine-v3-bsc/bsc subgraphs/mine/mine_bsc.yaml --access-token",
     "deploy:dodomine_heco": "graph codegen subgraphs/mine/mine_heco.yaml --output-dir ./src/types/mine/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-mine-v3-heco/heco subgraphs/mine/mine_heco.yaml --access-token ",
     "deploy:dodomine_okchain": "graph codegen subgraphs/mine/mine_okchain.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://ipfs.kkt.one --node https://graph.kkt.one/node/ dodoex/dodoex-mine-v3-okchain subgraphs/mine/mine_okchain.yaml",
-    "deploy:dodomine_moonriver": "graph codegen subgraphs/mine/mine_moonriver.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3-moonriver subgraphs/mine/mine_moonriver.yaml"
+    "deploy:dodomine_moonriver": "graph codegen subgraphs/mine/mine_moonriver.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3-moonriver subgraphs/mine/mine_moonriver.yaml",
+
+    "deploy:avatar_rinkeby": "graph codegen subgraphs/avatar/avatar_rinkeby.yaml --output-dir ./src/types/avatar/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-avatar-rinkeby subgraphs/avatar/avatar_rinkeby.yaml"
   },
   "devDependencies": {
     "@graphprotocol/graph-ts": "^0.19.0",

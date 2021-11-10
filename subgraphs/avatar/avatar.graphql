@@ -1,0 +1,132 @@
+type DodoAvatar @entity {
+    "id:DodoAvatar"
+    id: ID!
+    "components count"
+    componentsCount: BigInt!
+    "components holders count"
+    componentsHoldersCount: BigInt!
+    "Avatars count"
+    avatarsCount: BigInt!
+    "Avatars holders count"
+    avatarsHoldersCount: BigInt!
+}
+
+#Component
+"Component"
+type Component @entity {
+    "token id"
+    id:ID!
+    "balance"
+    balance: BigInt!
+}
+
+"User Component Balance"
+type ComponentBalance @entity {
+    "id:user-tokenid"
+    id: ID!
+    "user"
+    user: Bytes!
+    "tokenid"
+    component:Component!
+    "amount"
+    amount: BigInt!
+}
+
+type ComponentMintHistory @entity {
+    "id:transactionhash - log index"
+    id: ID!
+    "tx hash"
+    hash:Bytes!
+    "user"
+    user: Bytes!
+    "token id"
+    component:Component!
+    "amount"
+    amount: BigInt!
+}
+
+type ComponentBurnHistory @entity {
+    "id:transactionhash - log index"
+    id: ID!
+    "tx hash"
+    hash:Bytes!
+    "user"
+    user: Bytes!
+    "token id"
+    component:Component!
+    "amount"
+    amount: BigInt!
+}
+
+type ComponentTransferHistory @entity {
+    "id:transactionhash - log index"
+    id: ID!
+    "tx hash"
+    hash:Bytes!
+    "from"
+    from: Bytes!
+    "to"
+    to: Bytes!
+    "token id"
+    tokenID:BigInt!
+    "amount"
+    amount: BigInt!
+}
+
+#Avatar
+"Avatar"
+type Avatar @entity {
+    "id: TokenID"
+    id:ID!
+    "balance"
+    balance: BigInt!
+    "compnent ID"
+    componentsID:BigInt!
+}
+
+"User Component Balance"
+type AvatarBalance @entity {
+    "id:user-tokenid"
+    id: ID!
+    "user"
+    user: Bytes!
+    "tokenid"
+    avatar:Avatar!
+    "amount"
+    amount: BigInt!
+}
+
+type AvatarMintHistory @entity {
+    "id:transactionhash - log index"
+    id: ID!
+    "tx hash"
+    hash:Bytes!
+    "user"
+    user: Bytes!
+    "avatar"
+    avatar:Avatar!
+}
+
+type AvatarDecomposeHistory @entity {
+    "id:transactionhash - log index"
+    id: ID!
+    "tx hash"
+    hash:Bytes!
+    "user"
+    user: Bytes!
+    "avatar"
+    avatar:Avatar!
+}
+
+type AvatarTransferHistory @entity {
+    "id:transactionhash - log index"
+    id: ID!
+    "tx hash"
+    hash:Bytes!
+    "from"
+    from: Bytes!
+    "to"
+    to: Bytes!
+    "token id"
+    tokenID:BigInt!
+}
