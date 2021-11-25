@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V2Factory
-    network: arbitrum-one
+    network: boba
     source:
       address: '0x313fcb27BD83607C33998AA60E409C79Fb2251fd'
       abi: ERC20V2Factory
-      startBlock: 226000
+      startBlock: 428
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -38,7 +38,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: arbitrum-one
+    network: boba
     source:
       abi: MintableERC20
     mapping:

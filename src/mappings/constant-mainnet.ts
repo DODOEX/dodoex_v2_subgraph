@@ -17,7 +17,7 @@ export const DODOV2Proxy02 = "0xa356867fdcea8e71aeaf87805808803806231fdc";
 
 export const DODOZooID = "dodoex-v2";
 export const CHAIN_BASE_COIN_SYMBOL = "ETH";
-export const CHAIN_BASE_COIN_NAME = "ethereum";
+export const CHAIN_BASE_COIN_NAME = "ether";
 
 export const SMART_ROUTE_ADDRESSES: string[] = ["0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e", "0x6ed3fd491f5b10384787b3fb162a72227fafbf63", "0x9a9942458754bdf65dcbcd0b6b4b842a7d4031ab", "0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5", "0xa2cb66ebb947d217f61510882096f6e95c1de97d", "0xa356867fdcea8e71aeaf87805808803806231fdc"];
 export const DVM_FACTORY_ADDRESS = "0x72d220ce168c4f361dd4dee5d826a01ad8598f6c";
