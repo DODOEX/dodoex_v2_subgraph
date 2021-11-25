@@ -303,7 +303,6 @@ export function handleNewCP(event: NewCP): void {
     }
 
     CPTemplate.create(event.params.cp);
-
 }
 
 export function handleNewRegistry(event: NewRegistry): void {

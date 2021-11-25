@@ -5,41 +5,12 @@ schema:
   file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ERC20Factory
-    network: bsc
-    source:
-      address: '0x5e84190a270333aCe5B9202a3F4ceBf11b81bB01'
-      abi: ERC20Factory
-      startBlock: 4201536
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/token/factory.ts
-      entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
-      abis:
-        - name: ERC20Factory
-          file: ../../abis/ERC20Factory.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: NewERC20(address,address,bool)
-          handler: handleNewERC20
-  - kind: ethereum/contract
     name: ERC20V2Factory
-    network: bsc
+    network: arbitrum-one
     source:
-      address: '0x652C09785c15db4adAce871eD8874b8968A19A4D'
+      address: '0x313fcb27BD83607C33998AA60E409C79Fb2251fd'
       abi: ERC20V2Factory
-      startBlock: 4201536
+      startBlock: 226000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -67,7 +38,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: bsc
+    network: arbitrum-one
     source:
       abi: MintableERC20
     mapping:
@@ -84,6 +55,8 @@ templates:
         - name: MintableERC20
           file: ../../abis/MintableERC20.json
       eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
         - event: Mint(indexed address,uint256)
           handler: handleMint
         - event: Burn(indexed address,uint256)

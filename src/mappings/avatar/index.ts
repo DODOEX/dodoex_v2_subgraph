@@ -22,10 +22,12 @@ export function handleSyntheticLog(event: SyntheticLog): void {
     let avatar = getAvatar(event.params.tokenId);
     avatar.componentsID = event.params.componentsId;
     avatar.balance = ONE_BI;
+    avatar.updatedAt = event.block.timestamp;
     avatar.save();
 
     let avatarBalance = getAvatarBalance(event.params.user, event.params.tokenId);
     avatarBalance.amount = ONE_BI;
+    avatarBalance.updatedAt = event.block.timestamp;
     avatarBalance.save();
 
     let avatarMintHistory = AvatarMintHistory.load(event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString()));
@@ -34,6 +36,8 @@ export function handleSyntheticLog(event: SyntheticLog): void {
         avatarMintHistory.hash = event.transaction.hash;
         avatarMintHistory.avatar = avatar.id;
         avatarMintHistory.user = event.params.user;
+        avatarMintHistory.timestamp = event.block.timestamp;
+        avatarMintHistory.updatedAt = event.block.timestamp;
         avatarMintHistory.save();
     }
 
@@ -42,10 +46,12 @@ export function handleSyntheticLog(event: SyntheticLog): void {
 export function handleDecomposeLog(event: DecomposeLog): void {
     let avatar = getAvatar(event.params.tokenId);
     avatar.balance = ZERO_BI;
+    avatar.updatedAt = event.block.timestamp;
     avatar.save();
 
     let avatarBalance = getAvatarBalance(event.params.user, event.params.tokenId);
     avatarBalance.amount = ZERO_BI;
+    avatarBalance.updatedAt = event.block.timestamp;
     avatarBalance.save();
 
     let avatarDecomposeHistory = AvatarDecomposeHistory.load(event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString()));
@@ -54,6 +60,8 @@ export function handleDecomposeLog(event: DecomposeLog): void {
         avatarDecomposeHistory.hash = event.transaction.hash;
         avatarDecomposeHistory.avatar = avatar.id;
         avatarDecomposeHistory.user = event.params.user;
+        avatarDecomposeHistory.timestamp = event.block.timestamp;
+        avatarDecomposeHistory.updatedAt = event.block.timestamp;
         avatarDecomposeHistory.save();
     }
 }
@@ -61,7 +69,7 @@ export function handleDecomposeLog(event: DecomposeLog): void {
 export function handleTransfer(event: Transfer): void {
     let avatar = getAvatar(event.params.tokenId);
 
-    // let fromBalance = AvatarBalance.load(event.params.from.toHexString().concat("-").concat(event.params.tokenId.toString()));
+    // let fromBalance = AvatarBalance.load(event.params.from.toString().concat("-").concat(event.params.tokenId.toString()));
     let fromBalance = getAvatarBalance(event.params.from, event.params.tokenId);
     let toBalance = getAvatarBalance(event.params.to, event.params.tokenId);
 
@@ -74,7 +82,9 @@ export function handleTransfer(event: Transfer): void {
     }
 
     fromBalance.amount = ZERO_BI;
+    fromBalance.updatedAt = event.block.timestamp;
     toBalance.amount = ONE_BI;
+    toBalance.updatedAt = event.block.timestamp;
 
     fromBalance.save();
     toBalance.save();
@@ -86,6 +96,8 @@ export function handleTransfer(event: Transfer): void {
         avatarTransferHistory.to = event.params.to;
         avatarTransferHistory.hash = event.transaction.hash;
         avatarTransferHistory.tokenID = event.params.tokenId;
+        avatarTransferHistory.timestamp = event.block.timestamp;
+        avatarTransferHistory.updatedAt = event.block.timestamp;
         avatarTransferHistory.save();
     }
 }
@@ -93,10 +105,12 @@ export function handleTransfer(event: Transfer): void {
 export function handleComponentMint(event: ComponentMint): void {
     let component = getComponent(event.params.tokenId);
     component.balance = component.balance.plus(event.params.amount);
+    component.updatedAt = event.block.timestamp;
     component.save();
 
     let componentBalance = getComponentBalance(event.params.creator, event.params.tokenId);
     componentBalance.amount = componentBalance.amount.plus(event.params.amount);
+    componentBalance.updatedAt = event.block.timestamp;
     componentBalance.save();
 
     let componentMintHistory = ComponentMintHistory.load(event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString()));
@@ -106,6 +120,8 @@ export function handleComponentMint(event: ComponentMint): void {
         componentMintHistory.hash = event.transaction.hash;
         componentMintHistory.amount = event.params.amount;
         componentMintHistory.user = event.params.creator;
+        componentMintHistory.timestamp = event.block.timestamp;
+        componentMintHistory.updatedAt = event.block.timestamp;
         componentMintHistory.save();
     }
 }
@@ -113,10 +129,12 @@ export function handleComponentMint(event: ComponentMint): void {
 export function handleComponentBurn(event: ComponentBurn): void {
     let component = getComponent(event.params.tokenId);
     component.balance = component.balance.minus(event.params.amount);
+    component.updatedAt = event.block.timestamp;
     component.save();
 
     let componentBalance = getComponentBalance(event.params.account, event.params.tokenId);
     componentBalance.amount = componentBalance.amount.minus(event.params.amount);
+    componentBalance.updatedAt = event.block.timestamp;
     componentBalance.save();
 
     let componentBurnHistory = ComponentBurnHistory.load(event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString()));
@@ -126,6 +144,8 @@ export function handleComponentBurn(event: ComponentBurn): void {
         componentBurnHistory.hash = event.transaction.hash;
         componentBurnHistory.amount = event.params.amount;
         componentBurnHistory.user = event.params.account;
+        componentBurnHistory.timestamp = event.block.timestamp;
+        componentBurnHistory.updatedAt = event.block.timestamp;
         componentBurnHistory.save();
     }
 
@@ -146,7 +166,9 @@ export function handleTransferSingle(event: TransferSingle): void {
     }
 
     fromBalance.amount = fromBalance.amount.minus(event.params.value);
+    fromBalance.updatedAt = event.block.timestamp;
     toBalance.amount = toBalance.amount.plus(event.params.value);
+    toBalance.updatedAt = event.block.timestamp;
     fromBalance.save();
     toBalance.save();
 
@@ -158,6 +180,8 @@ export function handleTransferSingle(event: TransferSingle): void {
         componentTransferHistory.amount = event.params.value;
         componentTransferHistory.hash = event.transaction.hash;
         componentTransferHistory.tokenID = event.params.id;
+        componentTransferHistory.timestamp = event.block.timestamp;
+        componentTransferHistory.updatedAt = event.block.timestamp;
         componentTransferHistory.save();
     }
 }
@@ -180,7 +204,9 @@ export function handleTransferBatch(event: TransferBatch): void {
         }
 
         fromBalance.amount = fromBalance.amount.minus(values[i]);
+        fromBalance.updatedAt = event.block.timestamp;
         toBalance.amount = toBalance.amount.plus(values[i]);
+        toBalance.updatedAt = event.block.timestamp;
         fromBalance.save();
         toBalance.save();
 
@@ -192,6 +218,8 @@ export function handleTransferBatch(event: TransferBatch): void {
             componentTransferHistory.amount = values[i];
             componentTransferHistory.hash = event.transaction.hash;
             componentTransferHistory.tokenID = ids[i];
+            componentTransferHistory.timestamp = event.block.timestamp;
+            componentTransferHistory.updatedAt = event.block.timestamp;
             componentTransferHistory.save();
         }
 
