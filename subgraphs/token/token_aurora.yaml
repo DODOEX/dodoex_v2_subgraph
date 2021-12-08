@@ -1,0 +1,64 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./token.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ERC20V2Factory
+    network: aurora
+    source:
+      address: '0xDfaf9584F5d229A9DBE5978523317820A8897C5A'
+      abi: ERC20V2Factory
+      startBlock: 51265155
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/token/factoryv2.ts
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: ERC20Factory
+          file: ../../abis/ERC20Factory.json
+        - name: ERC20V2Factory
+          file: ../../abis/ERC20V2Factory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewERC20(address,address,uint256)
+          handler: handleNewERC20
+templates:
+  - kind: ethereum/contract
+    name: MintableERC20
+    network: aurora
+    source:
+      abi: MintableERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/token/mintableERC20.ts
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: MintableERC20
+          file: ../../abis/MintableERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Mint(indexed address,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256)
+          handler: handleBurn
+

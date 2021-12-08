@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: boba
+    network: aurora
     source:
-      address: '0x69f52AC40185A2A005D49114F0B77b7bA856F0a0'
+      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
       abi: DODOV2Proxy02
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -33,11 +33,11 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory
-    network: boba
+    network: aurora
     source:
-      address: '0x2F2f9460500F27db68AAfBfa0472cEDDb168a5a6'
+      address: '0x5515363c0412AdD5c72d3E302fE1bD7dCBCF93Fe'
       abi: DVMFactory
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -66,11 +66,11 @@ dataSources:
           handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: boba
+    network: aurora
     source:
-      address: "0x3a60A76aCAe8feeC74D6B5b665d4DBaab2abC406"
+      address: "0x40672211D4310ad71daDc8cDE7Aa3Fb90d420855"
       abi: DPPFactory
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -97,11 +97,11 @@ dataSources:
           handler: handleNewDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: boba
+    network: aurora
     source:
-      address: '0xfF133A6D335b50bDAa6612D19E1352B049A8aE6a'
+      address: '0xbe9a66e49503e84ae59a4d0545365AABedf33b40'
       abi: DSPFactory
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -130,11 +130,11 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
-    network: boba
+    network: aurora
     source:
-      address: '0x96a75d73b3de29c009863fA6329D96b2181D3Dc4'
+      address: '0xc6962a577A3Be5311f9f9Ab9B8b6A69a25bBc817'
       abi: CrowdPoolingFactory
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -165,11 +165,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory
-    network: boba
+    network: aurora
     source:
-      address: '0xCFea63e3DE31De53D68780Dd65675F169439e470'
+      address: '0xa356867fDCEa8e71AEaF87805808803806231FdC'
       abi: UpCrowdPoolingFactory
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -200,11 +200,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: boba
+    network: aurora
     source:
       address: '0x69f52AC40185A2A005D49114F0B77b7bA856F0a0'
       abi: DODOZoo
-      startBlock: 100
+      startBlock: 51265155
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -234,7 +234,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: boba
+    network: aurora
     source:
       abi: DVM
     mapping:
@@ -272,7 +272,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: boba
+    network: aurora
     source:
       abi: DPP
     mapping:
@@ -311,7 +311,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: boba
+    network: aurora
     source:
       abi: DSP
     mapping:
@@ -351,7 +351,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: boba
+    network: aurora
     source:
       abi: CP
     mapping:
@@ -392,7 +392,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: boba
+    network: aurora
     source:
       abi: DODO
     mapping:
@@ -441,7 +441,7 @@ templates:
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: DODOLpToken
-    network: boba
+    network: aurora
     source:
       abi: DODOLpToken
     mapping:

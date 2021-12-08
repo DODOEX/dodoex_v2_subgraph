@@ -8,7 +8,7 @@ dataSources:
     name: DODOAvatarERC721
     network: rinkeby
     source:
-      address: "0xe7a8a1cfb95ff12c48ed7fa5769c6335e69cf45b"
+      address: "0x768689E02e63F5b8012f423CEB8F0249F5076F91"
       abi: DODOAvatarERC721
       startBlock: 9598391
     mapping:
@@ -47,7 +47,7 @@ dataSources:
     name: DODOAvatarERC1155
     network: rinkeby
     source:
-      address: "0x7d08721be77213b93ca48ffc38478083b691a4e1"
+      address: "0xb9dd438024C6d95F4bc901602A996063f9bB2459"
       abi: DODOAvatarERC1155
       startBlock: 9598391
     mapping:
