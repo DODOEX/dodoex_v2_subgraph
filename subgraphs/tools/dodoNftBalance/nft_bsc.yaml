@@ -1,0 +1,66 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./nft.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DODONFT
+    network: bsc
+    source:
+      abi: DODONFT
+      address: '0x5ed972c0a7f8d0c4dedf6a37848a297b67489888'
+      startBlock: 11987880
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../../src/mappings/tools/dodoNftBalance/erc721.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: DODONFT
+          file: ../../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: DODONFTMint(address,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(uint256)
+          handler: handleDODONFTBurn
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: DODONFT1155
+    network: bsc
+    source:
+      abi: DODONFT1155
+      address: '0xdc9224cbc4b1826bb74ff383ff1ce94de1f56119'
+      startBlock: 11987880
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../../src/mappings/tools/dodoNftBalance/erc1155.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: DODONFT
+          file: ../../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: DODONFTMint(address,uint256,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(address,uint256,uint256)
+          handler: handleDODONFTBurn
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
