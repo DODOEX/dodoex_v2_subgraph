@@ -8,9 +8,9 @@ dataSources:
     name: ERC20Factory
     network: avalanche
     source:
-      address: '0x313fcb27bd83607c33998aa60e409c79fb2251fd'
+      address: '0x141b4497a298340e8b451ac4eee947b00adbe07a'
       abi: ERC20Factory
-      startBlock: 1259141
+      startBlock: 8489040
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

@@ -1,9 +1,8 @@
-import {DODONFT} from "../../types/nft/DODONFT1155/DODONFT"
-import {DODONFT1155} from "../../types/nft/DODONFT1155/DODONFT1155"
-import {Nft, Fragment, User} from "../../types/nft/schema";
+import {DODONFT} from "../../../types/tools/DODONFT1155/DODONFT"
+import {DODONFT1155} from "../../../types/tools/DODONFT1155/DODONFT1155"
+import {Nft, Account} from "../../../types/tools/schema";
 import {Address, BigDecimal, BigInt, ethereum} from "@graphprotocol/graph-ts";
-import {Fragment as FragmentContract} from "../../types/nft/templates/Fragment/Fragment"
-import {exponentToBigDecimal} from "../dodoex/helpers";
+import {exponentToBigDecimal} from "../../dodoex/helpers";
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
@@ -78,34 +77,13 @@ export function updateNft(address: Address, tokenId: BigInt, event: ethereum.Eve
 
 }
 
-export function createAndGetFragment(address: Address, event: ethereum.Event): Fragment {
-    let fragmentContract = FragmentContract.bind(address);
-    let fragment = Fragment.load(address.toHexString());
-    if (fragment == null) {
-        fragment = new Fragment(address.toHexString());
-        fragment.isBuyOut = fragmentContract._IS_BUYOUT_();
-        fragment.buyoutTimestamp = fragmentContract._BUYOUT_TIMESTAMP_();
-        fragment.decimals = fragmentContract.decimals();
-        fragment.dvm = fragmentContract._DVM_().toHexString();
-        fragment.initialized = fragmentContract.initialized();
-        fragment.name = fragmentContract.name();
-        fragment.symbol = fragmentContract.symbol();
-        fragment.quote = fragmentContract._QUOTE_().toHexString();
-        fragment.totalSupply = fragmentContract.totalSupply();
-        fragment.vaultPreOwner = fragmentContract._VAULT_PRE_OWNER_().toHexString();
-        fragment.createdAt = event.block.timestamp;
-        fragment.updatedAt = event.block.timestamp;
+export function createAccount(address: Address, event: ethereum.Event): Account {
+    let account = Account.load(address.toHexString());
+    if (account == null) {
+        account = new Account(address.toHexString());
+        account.createdAt = event.block.timestamp;
+        account.updatedAt = event.block.timestamp;
+        account.save();
     }
-    return fragment as Fragment;
-}
-
-export function createUser(address: Address, event: ethereum.Event): User {
-    let user = User.load(address.toHexString());
-    if (user == null) {
-        user = new User(address.toHexString());
-        user.createdAt = event.block.timestamp;
-        user.updatedAt = event.block.timestamp;
-        user.save();
-    }
-    return user as User;
+    return account as Account;
 }

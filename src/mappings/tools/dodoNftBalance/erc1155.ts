@@ -1,53 +1,55 @@
-import {Nft, Fragment, User, UserNft} from "../../../types/nft/schema";
+import {Balance} from "../../../types/tools/schema";
 import {Address, BigInt} from "@graphprotocol/graph-ts";
 import {TransferBatch, TransferSingle} from "../../../types/nft/DODONFT1155/DODONFT1155"
-import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "../helpers";
+import {createAccount, ZERO_BI, ONE_BI, createAndGetNFT} from "./helpers";
 import {DODONFTBurn, DODONFTMint} from "../../../types/nft/DODONFT/DODONFT";
 
 export function handleTransferSingle(event: TransferSingle): void {
-    let fromUser = createUser(event.params.from, event);
-    let toUser = createUser(event.params.to, event);
+    let fromUser = createAccount(event.params.from, event);
+    let toUser = createAccount(event.params.to, event);
     let nft = createAndGetNFT(event.address, event.params.id, event);
     nft.type = "1155";
 
     let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
     let toUserNftId = event.params.to.toHexString().concat("-").concat(event.address.toHexString()).concat(event.params.id.toString());
-    let fromUserNft = UserNft.load(fromUserNftId);
-    let toUserNft = UserNft.load(toUserNftId);
+    let fromUserNftBalance = Balance.load(fromUserNftId);
+    let toUserNftBalance = Balance.load(toUserNftId);
 
-    if (fromUserNft == null) {
-        fromUserNft = new UserNft(fromUserNftId)
-        fromUserNft.owner = fromUser.id;
-        fromUserNft.amount = ZERO_BI;
-        fromUserNft.nft = nft.id;
-        fromUserNft.createdAt = event.block.timestamp;
+    if (fromUserNftBalance == null) {
+        fromUserNftBalance = new Balance(fromUserNftId)
+        fromUserNftBalance.account = fromUser.id;
+        fromUserNftBalance.value = ZERO_BI;
+        fromUserNftBalance.nft = nft.id;
+        fromUserNftBalance.createdAt = event.block.timestamp;
+        fromUserNftBalance.updatedAt = event.block.timestamp;
     }
-    fromUserNft.tokenID = event.params.id;
-    fromUserNft.amount = fromUserNft.amount.minus(event.params.value);
+    fromUserNftBalance.tokenID = event.params.id;
+    fromUserNftBalance.value = fromUserNftBalance.value.minus(event.params.value);
 
-    if (toUserNft == null) {
-        toUserNft = new UserNft(toUserNftId)
-        toUserNft.owner = toUser.id;
-        toUserNft.amount = ZERO_BI;
-        toUserNft.nft = nft.id;
-        toUserNft.createdAt = event.block.timestamp;
+    if (toUserNftBalance == null) {
+        toUserNftBalance = new Balance(toUserNftId)
+        toUserNftBalance.account = toUser.id;
+        toUserNftBalance.value = ZERO_BI;
+        toUserNftBalance.nft = nft.id;
+        toUserNftBalance.createdAt = event.block.timestamp;
+        toUserNftBalance.updatedAt = event.block.timestamp;
     }
-    toUserNft.tokenID = event.params.id;
-    toUserNft.amount = toUserNft.amount.plus(event.params.value);
+    toUserNftBalance.tokenID = event.params.id;
+    toUserNftBalance.value = toUserNftBalance.value.plus(event.params.value);
 
     //更新时间戳
     nft.updatedAt = event.block.timestamp;
-    fromUserNft.updatedAt = event.block.timestamp;
-    toUserNft.updatedAt = event.block.timestamp;
+    fromUserNftBalance.updatedAt = event.block.timestamp;
+    toUserNftBalance.updatedAt = event.block.timestamp;
 
     nft.save();
-    fromUserNft.save();
-    toUserNft.save();
+    fromUserNftBalance.save();
+    toUserNftBalance.save();
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-    let fromUser = createUser(event.params.from, event);
-    let toUser = createUser(event.params.to, event);
+    let fromUser = createAccount(event.params.from, event);
+    let toUser = createAccount(event.params.to, event);
 
     let ids = event.params.ids;
     let values = event.params.values;
@@ -59,36 +61,38 @@ export function handleTransferBatch(event: TransferBatch): void {
         let amount: BigInt = values[i];
         let fromUserNftId = event.params.from.toHexString().concat("-").concat(event.address.toHexString()).concat(tokenId.toString());
         let toUserNftId = event.params.to.toHexString().concat("-").concat(event.address.toHexString()).concat(tokenId.toString());
-        let fromUserNft = UserNft.load(fromUserNftId);
-        let toUserNft = UserNft.load(toUserNftId);
+        let fromUserNftBalance = Balance.load(fromUserNftId);
+        let toUserNftBalance = Balance.load(toUserNftId);
 
-        if (fromUserNft == null) {
-            fromUserNft = new UserNft(fromUserNftId)
-            fromUserNft.owner = fromUser.id;
-            fromUserNft.amount = ZERO_BI;
-            fromUserNft.nft = nft.id;
-            fromUserNft.createdAt = event.block.timestamp;
+        if (fromUserNftBalance == null) {
+            fromUserNftBalance = new Balance(fromUserNftId)
+            fromUserNftBalance.account = fromUser.id;
+            fromUserNftBalance.value = ZERO_BI;
+            fromUserNftBalance.nft = nft.id;
+            fromUserNftBalance.createdAt = event.block.timestamp;
+            fromUserNftBalance.updatedAt = event.block.timestamp;
         }
-        fromUserNft.tokenID = tokenId;
-        fromUserNft.amount = fromUserNft.amount.minus(amount);
+        fromUserNftBalance.tokenID = tokenId;
+        fromUserNftBalance.value = fromUserNftBalance.value.minus(amount);
 
-        if (toUserNft == null) {
-            toUserNft = new UserNft(toUserNftId)
-            toUserNft.owner = toUser.id;
-            toUserNft.amount = ZERO_BI;
-            toUserNft.nft = nft.id;
-            toUserNft.createdAt = event.block.timestamp;
+        if (toUserNftBalance == null) {
+            toUserNftBalance = new Balance(toUserNftId)
+            toUserNftBalance.account = toUser.id;
+            toUserNftBalance.value = ZERO_BI;
+            toUserNftBalance.nft = nft.id;
+            toUserNftBalance.createdAt = event.block.timestamp;
+            toUserNftBalance.updatedAt = event.block.timestamp;
         }
-        toUserNft.tokenID = tokenId;
-        toUserNft.amount = toUserNft.amount.plus(amount);
+        toUserNftBalance.tokenID = tokenId;
+        toUserNftBalance.value = toUserNftBalance.value.plus(amount);
 
         //更新时间戳
-        fromUserNft.updatedAt = event.block.timestamp;
-        toUserNft.updatedAt = event.block.timestamp;
+        fromUserNftBalance.updatedAt = event.block.timestamp;
+        toUserNftBalance.updatedAt = event.block.timestamp;
 
         nft.save();
-        fromUserNft.save();
-        toUserNft.save();
+        fromUserNftBalance.save();
+        toUserNftBalance.save();
     }
 }
 

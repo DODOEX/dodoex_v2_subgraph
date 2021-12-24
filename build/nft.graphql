@@ -1,26 +1,3 @@
-type NftCollateralVault @entity {
-    "vault address"
-    id: ID!
-    "creator"
-    creator: String!
-    "name"
-    name: String!
-    "baseURI"
-    baseURI: String!
-    "vault nfts"
-    vaultNfts:[VaultNft!]!@derivedFrom(field: "vault")
-    "nftCount"
-    nftCount: BigInt!
-    "owner"
-    owner: Bytes!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-    "fragment"
-    fragment: Fragment
-}
-
 type Nft @entity{
     "nft address - token id"
     id: ID!
@@ -36,245 +13,32 @@ type Nft @entity{
     updatedAt: BigInt!
 }
 
-type VaultNft @entity{
-    "vault address - nft address"
-    id: ID!
-    "vault"
-    vault: NftCollateralVault!
-    "nft address"
-    nftAddress: String!
-    "nft"
-    nft: Nft
-    "token id"
-    tokenID:  BigInt!
-    "token amount"
-    amount: BigInt!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type Fragment @entity{
-    "address"
-    id: ID!
-    "vault"
-    vault: NftCollateralVault
-    "name"
-    name: String!
-    "symbol"
-    symbol: String!
-    "decimals"
-    decimals: BigInt!
-    "total supply"
-    totalSupply: BigInt!
-    "is buyout"
-    isBuyOut: Boolean!
-    "dvm address"
-    dvm: String!
-    "feeDistributor address"
-    feeDistributor: String
-    "initialized"
-    initialized: Boolean!
-    "quote token address"
-    quote: String!
-    "vault pre owner"
-    vaultPreOwner: String!
-    "buyoutTimestamp"
-    buyoutTimestamp: BigInt!
-    "vault"
-    preVault: NftCollateralVault
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type User @entity{
+type Account @entity{
     "user address"
     id: ID!
+    "balances"
+    balances: [Balance!]! @derivedFrom(field:"account")
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
     updatedAt: BigInt!
 }
 
-type UserNft @entity{
-    "user address - nft address"
+type Balance @entity{
+    "user address - nft address - token id"
     id: ID!
     "vault"
-    owner: User!
+    account: Account!
     "nft"
-    nft: Nft
+    nft: Nft!
     "token id"
     tokenID:  BigInt!
-    "token amount"
-    amount: BigInt!
+    "token value"
+    value: BigInt!
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
     updatedAt: BigInt!
 }
 
-#NFT-POOl
-type NftPool @entity {
-    "id"
-    id:ID!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type Filter @entity {
-    "filter contract address"
-    id: ID!
-    "filter admin address"
-    admin: FilterAdmin!
-    "key: 1 => FilterERC721V1, 2 => FilterERC1155V1"
-    key: BigInt!
-    "collection address"
-    collection: Bytes!
-    "name"
-    name: String
-    "startId"
-    startId: BigInt!
-    "endId"
-    endId: BigInt!
-    "minAmount"
-    minAmount: BigInt!
-    "maxAmount"
-    maxAmount: BigInt!
-    #todo priceRules
-    "spreadIds"
-    spreadIds:[FilterSpreadId!]!@derivedFrom(field: "filter")
-    "nfts"
-    nfts:[FilterNft!]!@derivedFrom(field: "filter")
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type FilterSpreadId @entity {
-    "filter-token id"
-    id:ID!
-    "filter"
-    filter:Filter!
-    "token id"
-    tokenId:BigInt!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type FilterNft @entity {
-    "filter-nft address"
-    id: ID!
-    "filter"
-    filter: Filter!
-    "nft"
-    nft:Nft!
-    "amount"
-    amount: BigInt!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type FilterAdmin @entity {
-    "admin address"
-    id: ID!
-    "owner"
-    owner: Bytes
-    "initSupply"
-    initSupply: BigInt
-    "totalSupply"
-    totalSupply:BigInt
-    "name"
-    name: String
-    "symbol"
-    symbol: String
-    "decimals"
-    decimals: BigInt
-    "feeRate"
-    feeRate: BigInt
-    "controller"
-    controller:Bytes
-    "maintainer"
-    maintainer: Bytes
-    "filter"
-    filters: [Filter!]!@derivedFrom(field: "admin")
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type Controller @entity {
-    "controller address"
-    id: ID!
-}
-
-type PoolTradeHistory @entity {
-    "id(txid-event index)"
-    id: ID!
-    "transaction hash"
-    hash: String!
-    "direction: (in,out)"
-    direction:String!
-    "mode: (random、target)"
-    mode: String
-    "filter"
-    filter: Filter!
-    "from"
-    from: Bytes!
-    "to"
-    to: Bytes!
-    "amount"
-    amount:BigDecimal!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-type TradeHistoryTransferDetail @entity {
-    "transaction id - logindex"
-    id: ID!
-    "hash"
-    hash: String!
-    "token id"
-    tokenId: BigInt!
-    "amount"
-    amount: BigInt!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
-
-# aggregate fragments
-type AggregateFragment @entity {
-    "id = address"
-    id: ID!
-    "type: Pool,Buyout"
-    type: String!
-    "creator"
-    creator: Bytes!
-    "timestamp"
-    timestamp:BigInt!
-    "FilterAdmin"
-    filterAdmin:FilterAdmin
-    "Fragment"
-    fragment:Fragment
-    "nft count"
-    nftCount: BigInt!
-    "createdAt"
-    createdAt: BigInt!
-    "updatedAt"
-    updatedAt: BigInt!
-}
 

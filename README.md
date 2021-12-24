@@ -34,6 +34,8 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - kovan : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-kovan
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-rinkeby
     - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-moonriver
+    - aurora : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-aurora
+    - avax : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-avax
     - boba : https://graph.mainnet.boba.network:8000/subgraphs/name/dodoex/dodoex-v2-boba
   - token
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
@@ -45,6 +47,8 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-rinkeby
     - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-moonriver
+    - aurora : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-aurora
+    - avax : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-avax
     - boba : https://graph.mainnet.boba.network:8000/subgraphs/name/dodoex/dodoex-token-boba
 - vdodo
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
@@ -62,6 +66,8 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-arbitrum
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodomine-rinkeby
     - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-moonriver
+    - aurora : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-aurora
+    - avax : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-avax
     - boba : https://graph.mainnet.boba.network:8000/subgraphs/name/dodoex/dodoex-mine-v3-boba
    
 ## 2、 Graphql Examples
