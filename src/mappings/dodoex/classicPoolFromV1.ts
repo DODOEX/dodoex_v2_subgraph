@@ -10,6 +10,7 @@ import {
     MaintainerFeeTx,
     MaintainerEarnings
 } from '../../types/dodoex/schema'
+import {insertAllPairs4V1Aurora} from './classicalPoolAurora'
 import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from '../../types/dodoex/templates'
 import {
     ONE_BI,
@@ -263,6 +264,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
 
 export function handleDODOBirth(event: DODOBirth): void {
     insertAllPairs4V1Mainnet(event);
+    insertAllPairs4V1Aurora(event)
 
     let dodoZoo = getDODOZoo();
 
@@ -1080,5 +1082,77 @@ export function handleRemoveDODO(call: RemoveDODOCall): void {
     let pair = Pair.load(call.inputs.dodo.toHexString());
     if (pair != null) {
         store.remove("Pair", call.inputs.dodo.toHexString());
+    }
+}
+
+export function handleAddDODO(call: AddDODOCall): void {
+    let pair = Pair.load(call.inputs.dodo.toHexString());
+    let dodoZoo = getDODOZoo();
+    if (pair == null) {
+        //tokens
+        let dodo = DODO.bind(call.inputs.dodo);
+        let pair = new Pair(call.inputs.dodo.toHexString()) as Pair;
+
+        let baseToken = createTokenByCall(dodo._BASE_TOKEN_(), call);
+        let quoteToken = createTokenByCall(dodo._QUOTE_TOKEN_(), call);
+        pair.baseSymbol = baseToken.symbol;
+        pair.quoteSymbol = quoteToken.symbol;
+
+        let baseLpToken = createLpToken(dodo._BASE_CAPITAL_TOKEN_(), pair);
+        let quoteLpToken = createLpToken(dodo._QUOTE_CAPITAL_TOKEN_(), pair);
+
+        pair.baseLpToken = baseLpToken.id;
+        pair.quoteLpToken = quoteLpToken.id;
+        pair.baseToken = baseToken.id;
+        pair.quoteToken = quoteToken.id;
+        pair.type = TYPE_CLASSICAL_POOL;
+
+        pair.creator = Address.fromString(ADDRESS_ZERO);
+        pair.createdAtTimestamp = call.block.timestamp;
+        pair.createdAtBlockNumber = call.block.number;
+        pair.lastTradePrice = ZERO_BD;
+        pair.txCount = ZERO_BI;
+        pair.volumeBaseToken = ZERO_BD;
+        pair.volumeQuoteToken = ZERO_BD;
+        pair.liquidityProviderCount = ZERO_BI;
+        pair.untrackedBaseVolume = ZERO_BD;
+        pair.untrackedQuoteVolume = ZERO_BD;
+        pair.feeBase = ZERO_BD;
+        pair.feeQuote = ZERO_BD;
+        pair.traderCount = ZERO_BI;
+        pair.isTradeAllowed = true;
+        pair.isDepositBaseAllowed = true;
+        pair.isDepositQuoteAllowed = true;
+        pair.volumeUSD = ZERO_BD;
+        pair.feeUSD = ZERO_BD;
+
+        pair.i = ZERO_BI;
+        pair.k = ZERO_BI;
+        pair.baseReserve = ZERO_BD;
+        pair.quoteReserve = ZERO_BD;
+
+        pair.lpFeeRate = convertTokenToDecimal(dodo._LP_FEE_RATE_(), BI_18);
+
+        pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+        pair.maintainer = Address.fromString(ADDRESS_ZERO);
+        pair.mtFeeRate = ZERO_BI;
+        pair.mtFeeBase = ZERO_BD;
+        pair.mtFeeQuote = ZERO_BD;
+        pair.mtFeeUSD = ZERO_BD;
+        pair.updatedAt = call.block.timestamp;
+
+        baseToken.save();
+        quoteToken.save();
+        baseLpToken.save();
+        quoteLpToken.save();
+        pair.save();
+
+        dodoZoo.pairCount = dodoZoo.pairCount.plus(ONE_BI);
+        DODOTemplate.create(call.inputs.dodo);
+
+        DODOLpTokenTemplate.create(Address.fromString(baseLpToken.id));
+        DODOLpTokenTemplate.create(Address.fromString(quoteLpToken.id));
+
+        dodoZoo.save();
     }
 }

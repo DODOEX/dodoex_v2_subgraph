@@ -1,4 +1,4 @@
-import {BigInt, BigDecimal, ethereum, log, Address, store} from '@graphprotocol/graph-ts'
+import {BigInt, BigDecimal, ethereum, log, Address, store, dataSource} from '@graphprotocol/graph-ts'
 import {OrderHistory, Token, Pair, CrowdPooling} from "../../types/dodoex/schema"
 import {
     createToken,
@@ -32,7 +32,8 @@ import {
     TYPE_DSP_POOL,
     TYPE_CLASSICAL_POOL,
     SOURCE_SMART_ROUTE,
-    SOURCE_POOL_SWAP
+    SOURCE_POOL_SWAP,
+    CROWDPOOLING_FACTORY_V2
 } from "../constant"
 import {CP} from "../../types/dodoex/CrowdPoolingFactory/CP";
 import {ADDRESS_ZERO} from "../constant"
@@ -99,7 +100,7 @@ export function handleNewDVM(event: NewDVM): void {
         pair.mtFeeBase = ZERO_BD;
         pair.mtFeeQuote = ZERO_BD;
         pair.mtFeeUSD = ZERO_BD;
-        
+
         pair.updatedAt = event.block.timestamp;
         pair.save()
 
@@ -267,6 +268,10 @@ export function handleNewCP(event: NewCP): void {
     let crowdPooling = CrowdPooling.load(event.params.cp.toHexString());
     if (crowdPooling == null) {
         crowdPooling = new CrowdPooling(event.params.cp.toHexString());
+        crowdPooling.version = ONE_BI
+        if (CROWDPOOLING_FACTORY_V2.indexOf(dataSource.address().toHexString()) > -1) {
+            crowdPooling.version = ONE_BI.plus(ONE_BI)
+        }
         crowdPooling.creator = event.params.creator;
         crowdPooling.createTime = event.block.timestamp;
         crowdPooling.totalShares = ZERO_BD;
@@ -291,7 +296,7 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling.dvm = ADDRESS_ZERO;
         crowdPooling.liquidator = Address.fromString(ADDRESS_ZERO);
         crowdPooling.updatedAt = event.block.timestamp;
-        
+
         let dodoZoo = getDODOZoo();
         dodoZoo.crowdpoolingCount = dodoZoo.crowdpoolingCount.plus(ONE_BI);
 

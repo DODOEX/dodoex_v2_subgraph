@@ -6,17 +6,17 @@ export const TYPE_DSP_POOL = "DSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
-export const DODOV2Proxy02 = "0x2cd18557e14af72daa8090bcaa95b231ffc9ea26";
-export const DIP3_TIMESTAMP = 100;
+export const DIP3_TIMESTAMP = 1624442400;
 
-export const DODOZooID = "dodoex-v2-avax";
-export const CHAIN_BASE_COIN_SYMBOL = "AVAX";
-export const CHAIN_BASE_COIN_NAME = "avax";
+export const DODOZooID = "dodoex-v2-okchain";
+export const CHAIN_BASE_COIN_SYMBOL = "OKT";
+export const CHAIN_BASE_COIN_NAME = "OKT";
 
-export const SMART_ROUTE_ADDRESSES: string[] = ["0x2cd18557e14af72daa8090bcaa95b231ffc9ea26"];
-export const DVM_FACTORY_ADDRESS = "0xff133a6d335b50bdaa6612d19e1352b049a8ae6a";
-export const DPP_FACTORY_ADDRESS = "0xb7865a5cee051d35b09a48b624d7057d3362655a";
-export const CLASSIC_FACTORY_ADDRESS = "0x8ab2d334ce64b50be9ab04184f7ccba2a6bb6391";//dodo zoo
+export const SMART_ROUTE_ADDRESSES: string[] = ["0x6b4fa0bc61eddc928e0df9c7f01e407bfcd3e5ef"];
+export const DVM_FACTORY_ADDRESS = "0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5";
+export const DPP_FACTORY_ADDRESS = "0xbab9f4ff4a19a0e8eebc56b06750253228ffac6e";
+export const CLASSIC_FACTORY_ADDRESS = "0x357c5e9cfa8b834edcef7c7aabd8f9db09119d11";//dodo zoo
+export const CROWDPOOLING_FACTORY_V2: string[]=[];
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
@@ -31,12 +31,14 @@ export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM"
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7';
+export const WRAPPED_BASE_COIN = '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15';
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = '0xc7198437980c041c805a1edcba50c1ce5db95118';//usdt
-export const STABLE_TWO_ADDRESS = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664';//usdc
+export const STABLE_ONE_ADDRESS = '0x382bb369d343125bfb2117af9c149795c6c65c50';//usdt
+export const STABLE_TWO_ADDRESS = '0xc946daf81b08146b1c7a8da2a851ddf2b3eaaf85';//usdc
 //stable coins pairs
-export const STABLE_COIN_PAIR_ONE = '0xe4b2dfc82977dd2dce7e8d37895a6a8f50cbb4fb';//[USDT_USDC_PAIR] todo
+export const STABLE_COIN_PAIR_ONE = '0xc9f93163c99695c6526b799ebca2207fdf7d61ad';//[USDT_USDC_PAIR]
 //base currency pair
-export const BASE_COIN_PAIR = '0xfe176a2b1e1f67250d2903b8d25f56c0dabcd6b2';//[WETH_USDC_PAIR] todo
+export const BASE_COIN_PAIR = '0x75c23271661d9d143dcb617222bc4bec783eff34';//[WOKT_USDC_PAIR]
+
+
 

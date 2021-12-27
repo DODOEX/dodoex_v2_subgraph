@@ -22,7 +22,7 @@ import {
     TRANSACTION_TYPE_CP_BID,
     TRANSACTION_TYPE_CP_CLAIM,
     TRANSACTION_TYPE_CP_CANCEL,
-    TRANSACTION_TYPE_SWAP
+    TRANSACTION_TYPE_SWAP,
 } from "../constant";
 
 export function handleBid(event: Bid): void {

@@ -631,6 +631,8 @@ type TokenDayData @entity {
 type CrowdPooling @entity {
     "cp address"
     id: ID!
+    "version"
+    version: BigInt!
     "serial number"
     serialNumber: BigInt!
     "creator"
