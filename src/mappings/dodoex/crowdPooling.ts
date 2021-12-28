@@ -4,7 +4,7 @@ import {
     BidHistory,
     Pair
 } from "../../types/dodoex/schema"
-import {BigInt, BigDecimal, ethereum, log, Address} from '@graphprotocol/graph-ts'
+import {BigInt, Address} from '@graphprotocol/graph-ts'
 import {
     ONE_BI,
     ZERO_BD,
@@ -22,7 +22,6 @@ import {
     TRANSACTION_TYPE_CP_BID,
     TRANSACTION_TYPE_CP_CLAIM,
     TRANSACTION_TYPE_CP_CANCEL,
-    TRANSACTION_TYPE_SWAP,
 } from "../constant";
 
 export function handleBid(event: Bid): void {

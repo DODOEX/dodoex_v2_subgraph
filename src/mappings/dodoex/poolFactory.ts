@@ -9,21 +9,27 @@ import {
     ONE_BI,
     convertTokenToDecimal,
     getDODOZoo,
-    getQuoteTokenAddress
+    getQuoteTokenAddress,
+    fetchIsOvercapStop,
+    fetchCpPoolFeeRate,
+    fetchTokenCliffRate,
+    fetchTokenClaimDuration,
+    fetchTokenVestingDuration
 } from "./helpers"
 import {NewDPP, RemoveDPP} from "../../types/dodoex/DPPFactory/DPPFactory"
 import {NewDVM, RemoveDVM} from "../../types/dodoex/DVMFactory/DVMFactory"
 import {NewDSP, RemoveDSP} from "../../types/dodoex/DSPFactory/DSPFactory"
 import {NewRegistry, RemoveRegistry} from "../../types/dodoex/DODONFTRegistry/DODONFTRegistry"
-import {DVM, DVM__getPMMStateResultStateStruct} from "../../types/dodoex/DVMFactory/DVM"
-import {DPP, DPP__getPMMStateResultStateStruct} from "../../types/dodoex/DPPFactory/DPP"
-import {DSP, DSP__getPMMStateResultStateStruct} from "../../types/dodoex/DSPFactory/DSP"
+import {DVM} from "../../types/dodoex/DVMFactory/DVM"
+import {DPP} from "../../types/dodoex/DPPFactory/DPP"
+import {DSP} from "../../types/dodoex/DSPFactory/DSP"
 import {NewCP} from "../../types/dodoex/CrowdPoolingFactory/CrowdPoolingFactory"
 
 import {
     DVM as DVMTemplate,
     DPP as DPPTemplate,
     CP as CPTemplate,
+    CPV2 as CPV2Template,
     DSP as DSPTemplate
 } from "../../types/dodoex/templates"
 import {
@@ -270,7 +276,15 @@ export function handleNewCP(event: NewCP): void {
         crowdPooling = new CrowdPooling(event.params.cp.toHexString());
         crowdPooling.version = ONE_BI
         if (CROWDPOOLING_FACTORY_V2.indexOf(dataSource.address().toHexString()) > -1) {
-            crowdPooling.version = ONE_BI.plus(ONE_BI)
+            crowdPooling.version = ONE_BI.plus(ONE_BI);
+            crowdPooling.isOvercapStop = fetchIsOvercapStop(event.params.cp);
+            crowdPooling.feeRate = fetchCpPoolFeeRate(event.params.cp)
+            crowdPooling.tokenCliffRate = fetchTokenCliffRate(event.params.cp)
+            crowdPooling.tokenClaimDuration = fetchTokenClaimDuration(event.params.cp)
+            crowdPooling.tokenVestingDuration = fetchTokenVestingDuration(event.params.cp)
+            CPV2Template.create(event.params.cp);
+        } else {
+            CPTemplate.create(event.params.cp);
         }
         crowdPooling.creator = event.params.creator;
         crowdPooling.createTime = event.block.timestamp;
@@ -307,7 +321,6 @@ export function handleNewCP(event: NewCP): void {
         dodoZoo.save();
     }
 
-    CPTemplate.create(event.params.cp);
 }
 
 export function handleNewRegistry(event: NewRegistry): void {

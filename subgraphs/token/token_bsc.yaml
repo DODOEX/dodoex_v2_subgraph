@@ -34,7 +34,7 @@ dataSources:
         - event: NewERC20(address,address,bool)
           handler: handleNewERC20
   - kind: ethereum/contract
-    name: ERC20V2Factory
+    name: ERC20V2FactoryV2
     network: bsc
     source:
       address: '0x652C09785c15db4adAce871eD8874b8968A19A4D'

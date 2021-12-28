@@ -633,6 +633,16 @@ type CrowdPooling @entity {
     id: ID!
     "version"
     version: BigInt!
+    "is overcap stop"
+    isOvercapStop: Boolean
+    "pool feerate"
+    feeRate: BigInt
+    "token cliff rate"
+    tokenCliffRate: BigInt
+    "token claim duration"
+    tokenClaimDuration: BigInt
+    "token vesting duration"
+    tokenVestingDuration: BigInt
     "serial number"
     serialNumber: BigInt!
     "creator"

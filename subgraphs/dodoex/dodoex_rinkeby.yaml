@@ -350,6 +350,8 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
@@ -537,6 +539,45 @@ templates:
           handler: handleSettle
         - event: Claim(address,uint256,uint256)
           handler: handleClaim
+  - kind: ethereum/contract
+    name: CPV2
+    network: rinkeby
+    source:
+      abi: CPV2
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/crowdPooling.ts
+      entities:
+        - CrowdPooling
+        - Token
+      abis:
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
+        - name: DVMFactory
+          file: ../../abis/DVMFactory.json
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+      eventHandlers:
+        - event: Bid(address,uint256,uint256)
+          handler: handleBid
+        - event: Cancel(address,uint256)
+          handler: handleCancel
+        - event: Settle()
+          handler: handleSettle
   - kind: ethereum/contract
     name: DODO
     network: rinkeby

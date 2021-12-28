@@ -20,6 +20,7 @@ import {DVMFactory} from "../../types/dodoex/DVMFactory/DVMFactory"
 import {DPPFactory} from "../../types/dodoex/DPPFactory/DPPFactory"
 import {DODOZoo as DODOZooContract} from "../../types/dodoex/DODOZoo/DODOZoo"
 import {DODOMine} from "../../types/dodoex/DODOMine/DODOMine"
+import {CPV2} from "../../types/dodoex/templates/CPV2/CPV2"
 
 import {
     DODOZooID,
@@ -622,4 +623,29 @@ export function updateUserDayDataAndDodoDayData(event: ethereum.Event, type: str
     }
     userDayData.updatedAt = event.block.timestamp;
     userDayData.save();
+}
+
+export function fetchIsOvercapStop(address:Address): boolean{
+    const cpV2Contract = CPV2.bind(address);
+    return cpV2Contract._IS_OVERCAP_STOP();
+}
+
+export function fetchCpPoolFeeRate(address:Address): BigInt{
+    const cpV2Contract = CPV2.bind(address);
+    return cpV2Contract._POOL_FEE_RATE_();
+}
+
+export function fetchTokenCliffRate(address:Address): BigInt{
+    const cpV2Contract = CPV2.bind(address);
+    return cpV2Contract._TOKEN_CLIFF_RATE_();
+}
+
+export function fetchTokenClaimDuration(address:Address): BigInt{
+    const cpV2Contract = CPV2.bind(address);
+    return cpV2Contract._TOKEN_CLAIM_DURATION_();
+}
+
+export function fetchTokenVestingDuration(address:Address): BigInt{
+    const cpV2Contract = CPV2.bind(address);
+    return cpV2Contract._TOKEN_VESTING_DURATION_();
 }
