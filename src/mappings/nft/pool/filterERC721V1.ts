@@ -32,12 +32,12 @@ export function handleNftIn(event: NftIn): void {
         filterNft = new FilterNft(filterNftId);
         filterNft.nft = nft.id;
         filterNft.filter = filter.id;
-        filterNft.amount = ONE_BI;
         filterNft.createdAt = event.block.timestamp;
         filterNft.updatedAt = event.block.timestamp;
         filter.createdAt = event.block.timestamp;
         filter.updatedAt = event.block.timestamp;
     }
+    filterNft.amount = ONE_BI;
     filterNft.save();
 
     let tradeHistoryTransferDetailId = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
