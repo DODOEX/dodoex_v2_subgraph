@@ -39,4 +39,5 @@ export const STABLE_TWO_ADDRESS = '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8';/
 export const STABLE_COIN_PAIR_ONE = '0xe4b2dfc82977dd2dce7e8d37895a6a8f50cbb4fb';//[USDT_USDC_PAIR]
 //base currency pair
 export const BASE_COIN_PAIR = '0xfe176a2b1e1f67250d2903b8d25f56c0dabcd6b2';//[WETH_USDC_PAIR]
+export const CROWDPOOLING_FACTORY_V2: string[]=["0x9a8c0e8b27fff5d00402733ca67432b6d64faff4"];
 

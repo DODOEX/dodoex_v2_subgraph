@@ -32,6 +32,7 @@ export function handleNftIn(event: NftIn): void {
         filterNft = new FilterNft(filterNftId);
         filterNft.nft = nft.id;
         filterNft.filter = filter.id;
+        filterNft.tokenID = event.params.tokenId;
         filterNft.createdAt = event.block.timestamp;
         filterNft.updatedAt = event.block.timestamp;
         filter.createdAt = event.block.timestamp;
