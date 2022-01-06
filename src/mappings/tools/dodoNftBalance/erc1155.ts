@@ -16,7 +16,7 @@ export function handleTransferSingle(event: TransferSingle): void {
     let toUserNftBalance = Balance.load(toUserNftId);
 
     if (fromUserNftBalance == null) {
-        fromUserNftBalance = new Balance(fromUserNftId)
+        fromUserNftBalance = new Balance(fromUserNftId);
         fromUserNftBalance.account = fromUser.id;
         fromUserNftBalance.value = ZERO_BI;
         fromUserNftBalance.nft = nft.id;

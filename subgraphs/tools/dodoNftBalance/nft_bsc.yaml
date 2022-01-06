@@ -1,5 +1,8 @@
 specVersion: 0.0.2
 description: Dodoex.io
+graft:
+  base: QmVMtZSYXiFB68pPvijGBUzinVfWG7cGGnHg48eG3VV6TF
+  block: 14062660
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./nft.graphql
@@ -40,6 +43,66 @@ dataSources:
       abi: DODONFT1155
       address: '0xdc9224cbc4b1826bb74ff383ff1ce94de1f56119'
       startBlock: 11987880
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../../src/mappings/tools/dodoNftBalance/erc1155.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: DODONFT
+          file: ../../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: DODONFTMint(address,uint256,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(address,uint256,uint256)
+          handler: handleDODONFTBurn
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+  - kind: ethereum/contract
+    name: DODOAvatarERC721
+    network: bsc
+    source:
+      abi: DODONFT
+      address: '0x0d566FA989F601e3B5Ab50330A14c1dCAe7B5cB2'
+      startBlock: 14062660
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../../src/mappings/tools/dodoNftBalance/erc721.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: DODONFT
+          file: ../../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: DODONFTMint(address,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(uint256)
+          handler: handleDODONFTBurn
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: DODOAvatarERC1155
+    network: bsc
+    source:
+      abi: DODONFT1155
+      address: '0x88dd7c78db4a03e6f6a7781298f47fe25760fcd6'
+      startBlock: 14062660
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

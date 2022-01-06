@@ -632,7 +632,7 @@ type CrowdPooling @entity {
     "cp address"
     id: ID!
     "version"
-    version: BigInt!
+    version: BigInt
     "is overcap stop"
     isOvercapStop: Boolean
     "pool feerate"

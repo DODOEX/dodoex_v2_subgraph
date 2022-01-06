@@ -1,0 +1,86 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./avatar.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DODOAvatarERC721
+    network: rinkeby
+    source:
+      address: '0x768689E02e63F5b8012f423CEB8F0249F5076F91'
+      abi: DODOAvatarERC721
+      startBlock: 9598391
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/avatar/index.ts
+      entities:
+        - DodoAvatar
+        - Component
+        - ComponentBalance
+        - ComponentMintHistory
+      abis:
+        - name: DODOAvatarERC721
+          file: ../../abis/DODOAvatarERC721.json
+        - name: DODOAvatarERC1155
+          file: ../../abis/DODOAvatarERC1155.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: DODONFT
+          file: ../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: SyntheticLog(address,uint256,uint256)
+          handler: handleSyntheticLog
+        - event: DecomposeLog(address,uint256)
+          handler: handleDecomposeLog
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: DODOAvatarERC1155
+    network: rinkeby
+    source:
+      address: '0xb9dd438024C6d95F4bc901602A996063f9bB2459'
+      abi: DODOAvatarERC1155
+      startBlock: 9598391
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/avatar/index.ts
+      entities:
+        - DodoAvatar
+        - Component
+        - ComponentBalance
+        - ComponentMintHistory
+      abis:
+        - name: DODOAvatarERC721
+          file: ../../abis/DODOAvatarERC721.json
+        - name: DODOAvatarERC1155
+          file: ../../abis/DODOAvatarERC1155.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: DODONFT
+          file: ../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: ComponentMint(address,uint256,uint256)
+          handler: handleComponentMint
+        - event: ComponentBurn(address,uint256,uint256)
+          handler: handleComponentBurn
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch

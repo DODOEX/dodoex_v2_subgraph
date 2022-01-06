@@ -21,7 +21,10 @@ import {ChangeNFTAmountRange, ChangeTokenIdMap} from "../../../types/nft/templat
 import {ChangeTokenIdRange} from "../../../types/nft/templates/FilterERC721V1/FilterERC721V1";
 
 export function handleNftIn(event: NftIn): void {
+
     const filter = Filter.load(event.address.toHexString());
+    let aggregateFragment = AggregateFragment.load(filter.admin);
+
     const nft = createAndGetNFT(Address.fromString(filter.collection.toHexString()), event.params.tokenId, event);
 
     const filterNftId = filter.id.concat("-").concat(nft.id);
@@ -34,6 +37,17 @@ export function handleNftIn(event: NftIn): void {
         filterNft.createdAt = event.block.timestamp;
         filterNft.updatedAt = event.block.timestamp;
     }
+
+    if (filterNft.amount.equals(ZERO_BI)) {
+        filter.nftCount = filter.nftCount.plus(ONE_BI)
+        filter.save();
+
+        if (aggregateFragment != null) {
+            aggregateFragment.nftCount = aggregateFragment.nftCount.plus(ONE_BI);
+            aggregateFragment.save();
+        }
+    }
+
     filterNft.amount = filterNft.amount.plus(event.params.amount);
     filterNft.save();
 
@@ -47,12 +61,6 @@ export function handleNftIn(event: NftIn): void {
         tradeHistoryTransferDetail.createdAt = event.block.timestamp;
         tradeHistoryTransferDetail.updatedAt = event.block.timestamp;
         tradeHistoryTransferDetail.save();
-    }
-
-    let aggregateFragment = AggregateFragment.load(filter.admin);
-    if (aggregateFragment != null) {
-        aggregateFragment.nftCount = aggregateFragment.nftCount.plus(event.params.amount);
-        aggregateFragment.save();
     }
 
 }
@@ -81,10 +89,15 @@ export function handleTargetOut(event: TargetOut): void {
         tradeHistoryTransferDetail.save();
     }
 
-    let aggregateFragment = AggregateFragment.load(filter.admin);
-    if (aggregateFragment != null) {
-        aggregateFragment.nftCount = aggregateFragment.nftCount.minus(event.params.amount);
-        aggregateFragment.save();
+    if (filterNft.amount.equals(ZERO_BI)) {
+        let aggregateFragment = AggregateFragment.load(filter.admin);
+        if (aggregateFragment != null) {
+            aggregateFragment.nftCount = aggregateFragment.nftCount.minus(ONE_BI);
+            aggregateFragment.save();
+        }
+
+        filter.nftCount = filter.nftCount.minus(ONE_BI)
+        filter.save()
     }
 
 }
@@ -113,11 +126,17 @@ export function handleRandomOut(event: RandomOut): void {
         tradeHistoryTransferDetail.save();
     }
 
-    let aggregateFragment = AggregateFragment.load(filter.admin);
-    if (aggregateFragment != null) {
-        aggregateFragment.nftCount = aggregateFragment.nftCount.minus(event.params.amount);
-        aggregateFragment.save();
+    if (filterNft.amount.equals(ZERO_BI)) {
+        let aggregateFragment = AggregateFragment.load(filter.admin);
+        if (aggregateFragment != null) {
+            aggregateFragment.nftCount = aggregateFragment.nftCount.minus(ONE_BI);
+            aggregateFragment.save();
+        }
+
+        filter.nftCount = filter.nftCount.minus(ONE_BI)
+        filter.save()
     }
+
 }
 
 export function handleNftInOrder(event: NftInOrder): void {

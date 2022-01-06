@@ -51,6 +51,8 @@ export function handleNftIn(event: NftIn): void {
         tradeHistoryTransferDetail.updatedAt = event.block.timestamp;
         tradeHistoryTransferDetail.save();
     }
+
+    filter.nftCount = filter.nftCount.plus(ONE_BI)
     filter.save();
 
     let aggregateFragment = AggregateFragment.load(filter.admin);
@@ -91,6 +93,9 @@ export function handleTargetOut(event: TargetOut): void {
         aggregateFragment.save();
     }
 
+    filter.nftCount = filter.nftCount.minus(ONE_BI)
+    filter.save();
+
 }
 
 export function handleRandomOut(event: RandomOut): void {
@@ -122,6 +127,9 @@ export function handleRandomOut(event: RandomOut): void {
         aggregateFragment.nftCount = aggregateFragment.nftCount.minus(ONE_BI);
         aggregateFragment.save();
     }
+
+    filter.nftCount = filter.nftCount.minus(ONE_BI)
+    filter.save();
 }
 
 export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
@@ -147,6 +155,9 @@ export function handleEmergencyWithdraw(event: EmergencyWithdraw): void {
         tradeHistoryTransferDetail.updatedAt = event.block.timestamp;
         tradeHistoryTransferDetail.save();
     }
+
+    filter.nftCount = filter.nftCount.minus(ONE_BI)
+    filter.save();
 }
 
 export function handleNftInOrder(event: NftInOrder): void {

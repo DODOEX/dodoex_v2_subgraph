@@ -40,10 +40,10 @@ export function handleTransfer(event: Transfer): void {
     //更新时间戳
     nft.updatedAt = event.block.timestamp;
     fromUserNftBalance.updatedAt = event.block.timestamp;
-    fromUserNftBalance.updatedAt = event.block.timestamp;
+    toUserNftBalance.updatedAt = event.block.timestamp;
 
     nft.save();
-    toUserNftBalance.save();
+    fromUserNftBalance.save();
     toUserNftBalance.save();
 }
 

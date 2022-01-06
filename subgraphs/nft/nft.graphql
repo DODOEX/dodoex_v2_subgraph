@@ -150,6 +150,8 @@ type Filter @entity {
     spreadIds:[FilterSpreadId!]!@derivedFrom(field: "filter")
     "nfts"
     nfts:[FilterNft!]!@derivedFrom(field: "filter")
+    "nft count"
+    nftCount: BigInt
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
