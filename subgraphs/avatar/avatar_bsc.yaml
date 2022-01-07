@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOAvatarERC721
-    network: rinkeby
+    network: bsc
     source:
-      address: '0x768689E02e63F5b8012f423CEB8F0249F5076F91'
+      address: '0x0d566FA989F601e3B5Ab50330A14c1dCAe7B5cB2'
       abi: DODOAvatarERC721
-      startBlock: 9598391
+      startBlock: 14064025
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -45,11 +45,11 @@ dataSources:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DODOAvatarERC1155
-    network: rinkeby
+    network: bsc
     source:
-      address: '0xb9dd438024C6d95F4bc901602A996063f9bB2459'
+      address: '0x88DD7C78db4a03e6f6a7781298F47fe25760FCd6'
       abi: DODOAvatarERC1155
-      startBlock: 9598391
+      startBlock: 14062772
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

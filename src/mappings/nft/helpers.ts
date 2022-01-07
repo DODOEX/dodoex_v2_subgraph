@@ -31,7 +31,7 @@ function fetchNFTName(address: Address): String {
 export function createAndGetNFT(address: Address, tokenId: BigInt, event: ethereum.Event): Nft {
     let key = address.toHexString().concat("-").concat(tokenId.toString())
     let nft = Nft.load(key);
-    if (nft == null) {
+    if (nft == null || nft.uri === "") {
         nft = new Nft(key);
         nft.address = address;
         nft.createdAt = event.block.timestamp;

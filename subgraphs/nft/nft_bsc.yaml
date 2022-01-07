@@ -5,111 +5,12 @@ schema:
   file: ./nft.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODONFTProxy
-    network: bsc
-    source:
-      address: '0x0d224a4a6da3cfb360b9879965b1f78865798c71'
-      abi: DODONFTProxy
-      startBlock: 11210190
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/nft/buyout/proxy.ts
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: DODONFTProxy
-          file: ../../abis/DODONFTProxy.json
-        - name: DODONFTProxy
-          file: ../../abis/DODONFTProxy.json
-        - name: Fragment
-          file: ../../abis/Fragment.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-        - name: DODONFT
-          file: ../../abis/DODONFT.json
-        - name: DODONFT1155
-          file: ../../abis/DODONFT1155.json
-      eventHandlers:
-        - event: CreateNFTCollateralVault(address,address,string,string)
-          handler: handleCreateNFTCollateralVault
-        - event: CreateFragment(address,address,address)
-          handler: handleCreateFragment
-  - kind: ethereum/contract
-    name: DODONFT
-    network: bsc
-    source:
-      abi: DODONFT
-      address: '0x5ed972c0a7f8d0c4dedf6a37848a297b67489888'
-      startBlock: 9093253
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/nft/buyout/erc721.ts
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: DODONFT
-          file: ../../abis/DODONFT.json
-        - name: DODONFT1155
-          file: ../../abis/DODONFT1155.json
-      eventHandlers:
-        - event: DODONFTMint(address,uint256)
-          handler: handleDODONFTMint
-        - event: DODONFTBurn(uint256)
-          handler: handleDODONFTBurn
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-  - kind: ethereum/contract
-    name: DODONFT1155
-    network: bsc
-    source:
-      abi: DODONFT1155
-      address: '0xdc9224cbc4b1826bb74ff383ff1ce94de1f56119'
-      startBlock: 9093293
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/nft/buyout/erc1155.ts
-      entities:
-        - NftCollateralVault
-        - Nft
-        - VaultNft
-        - Fragment
-      abis:
-        - name: DODONFT
-          file: ../../abis/DODONFT.json
-        - name: DODONFT1155
-          file: ../../abis/DODONFT1155.json
-      eventHandlers:
-        - event: DODONFTMint(address,uint256,uint256)
-          handler: handleDODONFTMint
-        - event: DODONFTBurn(address,uint256,uint256)
-          handler: handleDODONFTBurn
-        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-          handler: handleTransferBatch
-        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleTransferSingle
-  - kind: ethereum/contract
     name: DODONFTPoolProxy
     network: bsc
     source:
       abi: DODONFTPoolProxy
       address: '0x509d3775f684fa4d19c9c99b961202e309b5b965'
-      startBlock: 11723448
+      startBlock: 14066470
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

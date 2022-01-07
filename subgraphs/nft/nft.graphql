@@ -179,7 +179,7 @@ type FilterNft @entity {
     "nft"
     nft:Nft!
     "token id"
-    tokenID: BigInt!
+    tokenID: BigInt
     "amount"
     amount: BigInt!
     "createdAt"
