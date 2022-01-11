@@ -256,7 +256,7 @@ dataSources:
     name: CrowdPoolingFactory
     network: rinkeby
     source:
-      address: '0xDD43520779dDCfbDe373174Ee36aEaD39771cD4f'
+      address: '0x79e15fc9b4154d90424b588533ab277d30d573f4'
       abi: CrowdPoolingFactory
       startBlock: 8732843
     mapping:
@@ -324,8 +324,8 @@ dataSources:
     name: CrowdPoolingFactoryV2
     network: rinkeby
     source:
-      address: '0x79e15fc9b4154d90424b588533ab277d30d573f4'
-      abi: CrowdPoolingFactory
+      address: '0xdd43520779ddcfbde373174ee36aead39771cd4f'
+      abi: CrowdPoolingFactoryV2
       startBlock: 9853339
     mapping:
       kind: ethereum/events
@@ -342,6 +342,8 @@ dataSources:
           file: ../../abis/DPP.json
         - name: CrowdPoolingFactory
           file: ../../abis/CrowdPoolingFactory.json
+        - name: CrowdPoolingFactoryV2
+          file: ../../abis/CrowdPoolingFactoryV2.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -355,6 +357,8 @@ dataSources:
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
+        - event: RemoveCP(address)
+          handler: handleRemoveCP
   - kind: ethereum/contract
     name: DODOZoo
     network: rinkeby

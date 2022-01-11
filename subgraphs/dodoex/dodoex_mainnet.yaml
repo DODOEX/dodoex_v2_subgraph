@@ -1,8 +1,5 @@
 specVersion: 0.0.2
 description: Dodoex.io
-graft:
-  base: QmdtgowUL33XP54tpoqJyGLxwKETnPgKMfjeLz4mdAcXMP
-  block: 13907266
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql

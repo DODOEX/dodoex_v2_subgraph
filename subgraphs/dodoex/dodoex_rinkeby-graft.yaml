@@ -5,12 +5,134 @@ schema:
   file: ./dodoex.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOV2Proxy02
-    network: avalanche
+    name: DODORouteProxy
+    network: rinkeby
     source:
-      address: '0x2cd18557e14af72daa8090bcaa95b231ffc9ea26'
+      address: '0xe2b538a781eB5a115a1359B8f363B9703Fd19dE6'
+      abi: DODORouteProxy
+      startBlock: 8733407
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODORouteProxy
+          file: ../../abis/DODORouteProxy.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODONFTRegistry
+    network: rinkeby
+    source:
+      address: '0xfa391c0ed6898e0c6186605d69e877f1317bb506'
+      abi: DODONFTRegistry
+      startBlock: 9478854
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+        - name: DODO
+          file: ../../abis/DODO.json
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DODONFTRegistry
+          file: ../../abis/DODONFTRegistry.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewRegistry(address,address,address)
+          handler: handleNewRegistry
+        - event: RemoveRegistry(address)
+          handler: handleRemoveRegistry
+  - kind: ethereum/contract
+    name: DODOMine
+    network: rinkeby
+    source:
+      address: '0x369b918d9d940bcef4f3960b6cb6123a1bb3d7e5'
+      abi: DODOMine
+      startBlock: 8690815
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/mine.ts
+      entities:
+        - User
+        - StakeHistory
+      abis:
+        - name: DODOMine
+          file: ../../abis/DODOMine.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: handleWithdraw
+        - event: Claim(indexed address,uint256)
+          handler: handleClaim
+  - kind: ethereum/contract
+    name: DODOIncentive
+    network: rinkeby
+    source:
+      address: '0x5cfcc14f7c8be8b138d9fdf7438391b0bfe0589f'
+      abi: DODOIncentive
+      startBlock: 8690815
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/incentive.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODO
+          file: ../../abis/DODO.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: DODOIncentive
+          file: ../../abis/DODOIncentive.json
+      eventHandlers:
+        - event: Incentive(address,uint256)
+          handler: handleIncentive
+  - kind: ethereum/contract
+    name: DODOV2Proxy02
+    network: rinkeby
+    source:
+      address: '0xba001e96af87bf9d8d0bda667067a9921fe6d294'
       abi: DODOV2Proxy02
-      startBlock: 8511297
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -33,11 +155,11 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory
-    network: avalanche
+    network: rinkeby
     source:
-      address: '0xff133a6d335b50bdaa6612d19e1352b049a8ae6a'
+      address: '0x17dddefa0c82e0c850a4adac2afe3f1fe977a242'
       abi: DVMFactory
-      startBlock: 8488454
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -66,11 +188,11 @@ dataSources:
           handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: avalanche
+    network: rinkeby
     source:
-      address: "0xb7865a5cee051d35b09a48b624d7057d3362655a"
+      address: '0x510b49803e356c750f3a93ba5508c0ffd9f71bdd'
       abi: DPPFactory
-      startBlock: 8488710
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -95,13 +217,15 @@ dataSources:
       eventHandlers:
         - event: NewDPP(address,address,address,address)
           handler: handleNewDPP
+        - event: RemoveDPP(address)
+          handler: handleRemoveDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: avalanche
+    network: rinkeby
     source:
-      address: '0x2b0d94eb7a63b8a2909de1cb3951ecf7ae76d2fe'
+      address: '0xa1ab675cB49BA0DC3F39fA4C20E216572A8dD3c8'
       abi: DSPFactory
-      startBlock: 8488786
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -130,11 +254,11 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
-    network: avalanche
+    network: rinkeby
     source:
-      address: '0x25b2f945fec30f34b05d416c7c0b5c6c51a3addc'
+      address: '0x79e15fc9b4154d90424b588533ab277d30d573f4'
       abi: CrowdPoolingFactory
-      startBlock: 8488952
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -148,10 +272,45 @@ dataSources:
           file: ../../abis/DVM.json
         - name: DPP
           file: ../../abis/DPP.json
-        - name: DODO
-          file: ../../abis/DODO.json
         - name: CrowdPoolingFactory
           file: ../../abis/CrowdPoolingFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
+      eventHandlers:
+        - event: NewCP(address,address,address,address)
+          handler: handleNewCP
+  - kind: ethereum/contract
+    name: UpCrowdPoolingFactory
+    network: rinkeby
+    source:
+      address: '0xb09E91505347234Cb722D67042290f50F1C13749'
+      abi: UpCrowdPoolingFactory
+      startBlock: 8732843
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: CrowdPoolingFactory
+          file: ../../abis/CrowdPoolingFactory.json
+        - name: UpCrowdPoolingFactory
+          file: ../../abis/UpCrowdPoolingFactory.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -165,11 +324,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: CrowdPoolingFactoryV2
-    network: avalanche
+    network: rinkeby
     source:
-      address: '0xc1ba6bd60c6790b751ec2d90288b6cbf87d4f032'
+      address: '0xdd43520779ddcfbde373174ee36aead39771cd4f'
       abi: CrowdPoolingFactoryV2
-      startBlock: 8488952
+      startBlock: 9853339
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -203,47 +362,12 @@ dataSources:
         - event: RemoveCP(address)
           handler: handleRemoveCP
   - kind: ethereum/contract
-    name: UpCrowdPoolingFactory
-    network: avalanche
-    source:
-      address: '0x55793c2c8a796cce00ef2d1a86cca2e0399bf285'
-      abi: UpCrowdPoolingFactory
-      startBlock: 8488867
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/poolFactory.ts
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: ../../abis/DVM.json
-        - name: DPP
-          file: ../../abis/DPP.json
-        - name: CrowdPoolingFactory
-          file: ../../abis/CrowdPoolingFactory.json
-        - name: UpCrowdPoolingFactory
-          file: ../../abis/UpCrowdPoolingFactory.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-        - name: CP
-          file: ../../abis/CP.json
-      eventHandlers:
-        - event: NewCP(address,address,address,address)
-          handler: handleNewCP
-  - kind: ethereum/contract
     name: DODOZoo
-    network: avalanche
+    network: rinkeby
     source:
-      address: '0x8ab2d334ce64b50be9ab04184f7ccba2a6bb6391'
+      address: '0x168442fec1e1e782c8770185dbb8328b91dc45c0'
       abi: DODOZoo
-      startBlock: 8512457
+      startBlock: 8732843
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -255,12 +379,10 @@ dataSources:
       abis:
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
-        - name: DVM
-          file: ../../abis/DVM.json
-        - name: DPP
-          file: ../../abis/DPP.json
         - name: DODO
           file: ../../abis/DODO.json
+        - name: DVM
+          file: ../../abis/DVM.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -273,7 +395,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: avalanche
+    network: rinkeby
     source:
       abi: DVM
     mapping:
@@ -288,10 +410,6 @@ templates:
       abis:
         - name: DVM
           file: ../../abis/DVM.json
-        - name: DPP
-          file: ../../abis/DPP.json
-        - name: DODO
-          file: ../../abis/DODO.json
         - name: DVMFactory
           file: ../../abis/DVMFactory.json
         - name: DPPFactory
@@ -300,6 +418,8 @@ templates:
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
+        - name: DPP
+          file: ../../abis/DPP.json
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -311,7 +431,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: avalanche
+    network: rinkeby
     source:
       abi: DPP
     mapping:
@@ -323,16 +443,14 @@ templates:
         - Pair
         - Token
       abis:
-        - name: DVM
-          file: ../../abis/DVM.json
-        - name: DPP
-          file: ../../abis/DPP.json
-        - name: DODO
-          file: ../../abis/DODO.json
         - name: DVMFactory
           file: ../../abis/DVMFactory.json
         - name: DPPFactory
           file: ../../abis/DPPFactory.json
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -350,7 +468,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: avalanche
+    network: rinkeby
     source:
       abi: DSP
     mapping:
@@ -390,7 +508,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: avalanche
+    network: rinkeby
     source:
       abi: CP
     mapping:
@@ -406,8 +524,6 @@ templates:
           file: ../../abis/DVM.json
         - name: DPP
           file: ../../abis/DPP.json
-        - name: DODO
-          file: ../../abis/DODO.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -430,76 +546,8 @@ templates:
         - event: Claim(address,uint256,uint256)
           handler: handleClaim
   - kind: ethereum/contract
-    name: DODO
-    network: avalanche
-    source:
-      abi: DODO
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/classicPoolFromV1.ts
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: ../../abis/DVM.json
-        - name: DPP
-          file: ../../abis/DPP.json
-        - name: DODO
-          file: ../../abis/DODO.json
-        - name: DVMFactory
-          file: ../../abis/DVMFactory.json
-        - name: DPPFactory
-          file: ../../abis/DPPFactory.json
-        - name: DODOZoo
-          file: ../../abis/DODOZoo.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
-          handler: handleWithdraw
-        - event: SellBaseToken(indexed address,uint256,uint256)
-          handler: handleSellBaseToken
-        - event: BuyBaseToken(indexed address,uint256,uint256)
-          handler: handleBuyBaseToken
-        - event: UpdateLiquidityProviderFeeRate(uint256,uint256)
-          handler: handleUpdateLiquidityProviderFeeRate
-        - event: ClaimAssets(indexed address,uint256,uint256)
-          handler: handleClaimAssets
-        - event: ChargeMaintainerFee(indexed address,bool,uint256)
-          handler: handleChargeMaintainerFee
-        - event: UpdateMaintainerFeeRate(uint256,uint256)
-          handler: handleUpdateMaintainerFeeRate
-  - kind: ethereum/contract
-    name: DODOLpToken
-    network: avalanche
-    source:
-      abi: DODOLpToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/lpToken.ts
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOLpToken
-          file: ../../abis/DODOLpToken.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-  - kind: ethereum/contract
     name: CPV2
-    network: avalanche
+    network: rinkeby
     source:
       abi: CPV2
     mapping:
@@ -536,3 +584,70 @@ templates:
           handler: handleCancel
         - event: Settle()
           handler: handleSettle
+  - kind: ethereum/contract
+    name: DODO
+    network: rinkeby
+    source:
+      abi: DODO
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/classicPoolFromV1.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVMFactory
+          file: ../../abis/DVMFactory.json
+        - name: DPPFactory
+          file: ../../abis/DPPFactory.json
+        - name: DODO
+          file: ../../abis/DODO.json
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed address,bool,uint256,uint256)
+          handler: handleWithdraw
+        - event: SellBaseToken(indexed address,uint256,uint256)
+          handler: handleSellBaseToken
+        - event: BuyBaseToken(indexed address,uint256,uint256)
+          handler: handleBuyBaseToken
+        - event: UpdateLiquidityProviderFeeRate(uint256,uint256)
+          handler: handleUpdateLiquidityProviderFeeRate
+        - event: ClaimAssets(indexed address,uint256,uint256)
+          handler: handleClaimAssets
+        - event: ChargeMaintainerFee(indexed address,bool,uint256)
+          handler: handleChargeMaintainerFee
+        - event: UpdateMaintainerFeeRate(uint256,uint256)
+          handler: handleUpdateMaintainerFeeRate
+  - kind: ethereum/contract
+    name: DODOLpToken
+    network: rinkeby
+    source:
+      abi: DODOLpToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/lpToken.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOLpToken
+          file: ../../abis/DODOLpToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+

@@ -1,8 +1,5 @@
 specVersion: 0.0.2
 description: Dodoex.io
-graft:
-  base: Qmdi3RAB7bcAvibDqYuwaueJ9YsJMv1fwBVKB2bVfpzu67
-  block: 14068498
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./nft.graphql

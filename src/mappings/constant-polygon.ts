@@ -17,6 +17,7 @@ export const SMART_ROUTE_ADDRESSES: string[] = ["0x45894c062e6f4e58b257e08266753
 export const DVM_FACTORY_ADDRESS = "0xbab9f4ff4a19a0e8eebc56b06750253228ffac6e";
 export const DPP_FACTORY_ADDRESS = "0xe55154d09265b18ac7cdac6e646672a5460389a1";
 export const CLASSIC_FACTORY_ADDRESS = "0x357c5e9cfa8b834edcef7c7aabd8f9db09119d11";//dodo zoo
+export const CROWDPOOLING_FACTORY_V2: string[]=["0x29e7085fda4a8492fbb16e840488b514149d51f6"];
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';

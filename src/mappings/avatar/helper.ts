@@ -15,10 +15,10 @@ export function getAvatar(tokenID: BigInt): Avatar {
 }
 
 export function getAvatarBalance(user: Address, tokenID: BigInt): AvatarBalance {
-    let avatarBalance = AvatarBalance.load(user.toString().concat("-").concat(tokenID.toString()));
+    let avatarBalance = AvatarBalance.load(user.toHexString().concat("-").concat(tokenID.toString()));
 
     if (avatarBalance == null) {
-        avatarBalance = new AvatarBalance(user.toString().concat("-").concat(tokenID.toString()));
+        avatarBalance = new AvatarBalance(user.toHexString().concat("-").concat(tokenID.toString()));
         avatarBalance.amount = ZERO_BI;
         avatarBalance.avatar = getAvatar(tokenID).id;
         avatarBalance.user = user;
@@ -42,10 +42,10 @@ export function getComponent(tokenID: BigInt): Component {
 }
 
 export function getComponentBalance(user: Address, tokenID: BigInt): ComponentBalance {
-    let componentBalance = ComponentBalance.load(user.toString().concat("-").concat(tokenID.toString()));
+    let componentBalance = ComponentBalance.load(user.toHexString().concat("-").concat(tokenID.toString()));
 
     if (componentBalance == null) {
-        componentBalance = new ComponentBalance(user.toString().concat("-").concat(tokenID.toString()));
+        componentBalance = new ComponentBalance(user.toHexString().concat("-").concat(tokenID.toString()));
         componentBalance.amount = ZERO_BI;
         componentBalance.component = getComponent(tokenID).id;
         componentBalance.user = user;

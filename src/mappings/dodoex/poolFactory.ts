@@ -24,6 +24,7 @@ import {DVM} from "../../types/dodoex/DVMFactory/DVM"
 import {DPP} from "../../types/dodoex/DPPFactory/DPP"
 import {DSP} from "../../types/dodoex/DSPFactory/DSP"
 import {NewCP} from "../../types/dodoex/CrowdPoolingFactory/CrowdPoolingFactory"
+import {RemoveCP} from "../../types/dodoex/CrowdPoolingFactoryV2/CrowdPoolingFactoryV2"
 
 import {
     DVM as DVMTemplate,
@@ -399,17 +400,21 @@ export function handleNewRegistry(event: NewRegistry): void {
 }
 
 export function handleRemoveDPP(event: RemoveDPP): void {
-    store.remove("Pair", event.params.dpp.toHexString())
+    store.remove("Pair", event.params.dpp.toHexString());
 }
 
 export function handleRemoveDVM(event: RemoveDVM): void {
-    store.remove("Pair", event.params.dvm.toHexString())
+    store.remove("Pair", event.params.dvm.toHexString());
 }
 
 export function handleRemoveDSP(event: RemoveDSP): void {
-    store.remove("Pair", event.params.DSP.toHexString())
+    store.remove("Pair", event.params.DSP.toHexString());
 }
 
 export function handleRemoveRegistry(event: RemoveRegistry): void {
-    store.remove("Pair", event.params.fragment.toHexString())
+    store.remove("Pair", event.params.fragment.toHexString());
+}
+
+export function handleRemoveCP(event: RemoveCP): void {
+    store.remove("CrowdPooling", event.params.cp.toHexString());
 }
