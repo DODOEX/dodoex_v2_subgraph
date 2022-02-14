@@ -86,7 +86,9 @@
     "deploy:avatar_rinkeby": "graph codegen subgraphs/avatar/avatar_rinkeby.yaml --output-dir ./src/types/avatar/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-avatar-rinkeby subgraphs/avatar/avatar_rinkeby.yaml",
     "deploy:avatar_bsc": "graph codegen subgraphs/avatar/avatar_bsc.yaml --output-dir ./src/types/avatar/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-avatar-bsc subgraphs/avatar/avatar_bsc.yaml",
 
-    "deploy:dodo_nft_balance_bsc": "graph codegen subgraphs/tools/dodoNftBalance/nft_bsc.yaml --output-dir ./src/types/tools/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-balance-bsc subgraphs/tools/dodoNftBalance/nft_bsc.yaml"
+    "deploy:dodo_nft_balance_bsc": "graph codegen subgraphs/tools/dodoNftBalance/nft_bsc.yaml --output-dir ./src/types/tools/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-balance-bsc subgraphs/tools/dodoNftBalance/nft_bsc.yaml",
+
+    "deploy:dodo_starter": "graph codegen subgraphs/starter/starter_rinkeby.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-rinkeby subgraphs/starter/starter_rinkeby.yaml"
   },
   "devDependencies": {
     "@graphprotocol/graph-ts": "^0.19.0",

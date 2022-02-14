@@ -2,7 +2,7 @@ specVersion: 0.0.2
 description: Dodoex.io
 graft:
   base: QmaAECiEEZUWXnyGdzSAP9MJT7uQgrNzytueUsqmBKXacU
-  block: 14247763
+  block: 14321373
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -504,7 +504,7 @@ dataSources:
     network: bsc
     source:
       address: '0x9c9ef6820a1aa0e25770ccde4e974f81cb28debc'
-      abi: CrowdPoolingFactory
+      abi: CrowdPoolingFactoryV2
       startBlock: 13920938
     mapping:
       kind: ethereum/events
@@ -521,6 +521,8 @@ dataSources:
           file: ../../abis/DPP.json
         - name: CrowdPoolingFactory
           file: ../../abis/CrowdPoolingFactory.json
+        - name: CrowdPoolingFactoryV2
+          file: ../../abis/CrowdPoolingFactoryV2.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -534,6 +536,8 @@ dataSources:
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
+        - event: RemoveCP(address)
+          handler: handleRemoveCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory
     network: bsc
@@ -610,7 +614,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/pool.ts
+      file: ../../src/mappings/dodoex/fair.ts
       entities:
         - Pair
         - Token
@@ -646,7 +650,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/pool.ts
+      file: ../../src/mappings/dodoex/fair.ts
       entities:
         - Pair
         - Token
@@ -683,7 +687,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/pool.ts
+      file: ../../src/mappings/dodoex/fair.ts
       entities:
         - Pair
         - Token

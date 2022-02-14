@@ -1,6 +1,6 @@
 import {Address, BigDecimal, BigInt, ethereum} from "@graphprotocol/graph-ts/index";
 import {ADDRESS_ZERO, DODOZooID, TYPE_CLASSICAL_POOL} from "../constant";
-import {createLpToken, createToken, getDODOZoo, ONE_BI, ZERO_BD, ZERO_BI} from "./helpers";
+import {createLpToken, createToken, getDODOZoo, ONE_BI, ZERO_BD, ZERO_BI,fetchPoolFeeRate} from "./helpers";
 import {Pair} from "../../types/dodoex/schema";
 import {DODO as DODOTemplate, DODOLpToken as DODOLpTokenTemplate} from "../../types/dodoex/templates";
 
@@ -85,7 +85,7 @@ export function insertAllPairs4V1Aurora(event: ethereum.Event): void {
             pair.baseReserve = ZERO_BD;
             pair.quoteReserve = ZERO_BD;
 
-            pair.lpFeeRate = BigDecimal.fromString("0.003");
+            pair.lpFeeRate = BigDecimal.fromString("0");
 
             pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
             pair.maintainer = Address.fromString(ADDRESS_ZERO);

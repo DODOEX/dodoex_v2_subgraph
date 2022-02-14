@@ -256,7 +256,7 @@ dataSources:
     name: CrowdPoolingFactory
     network: rinkeby
     source:
-      address: '0x79e15fc9b4154d90424b588533ab277d30d573f4'
+      address: '0xdd43520779ddcfbde373174ee36aead39771cd4f'
       abi: CrowdPoolingFactory
       startBlock: 8732843
     mapping:
@@ -282,6 +282,8 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
@@ -324,7 +326,7 @@ dataSources:
     name: CrowdPoolingFactoryV2
     network: rinkeby
     source:
-      address: '0xdd43520779ddcfbde373174ee36aead39771cd4f'
+      address: '0x79e15fc9b4154d90424b588533ab277d30d573f4'
       abi: CrowdPoolingFactoryV2
       startBlock: 9853339
     mapping:
@@ -400,7 +402,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/pool.ts
+      file: ../../src/mappings/dodoex/fair.ts
       entities:
         - Pair
         - Token
@@ -436,7 +438,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/pool.ts
+      file: ../../src/mappings/dodoex/fair.ts
       entities:
         - Pair
         - Token
@@ -473,7 +475,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/pool.ts
+      file: ../../src/mappings/dodoex/fair.ts
       entities:
         - Pair
         - Token

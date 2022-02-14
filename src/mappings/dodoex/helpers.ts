@@ -452,6 +452,17 @@ export function createLpToken(address: Address, pair: Pair): LpToken {
     return lpToken as LpToken;
 }
 
+export function fetchPoolFeeRate(address: Address): BigDecimal{
+    let pool = DVM.bind(address);
+    let lpFeeRateRes = pool.try__LP_FEE_RATE_();
+    if(lpFeeRateRes.reverted){
+        return BigDecimal.fromString("0.003");
+    }else {
+        return lpFeeRateRes.value.div(BI_18).toBigDecimal()
+    }
+
+}
+
 export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateStruct {
     let pair = Pair.load(poolAddress.toHexString());
     if (pair.type != TYPE_CLASSICAL_POOL) {

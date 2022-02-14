@@ -1,0 +1,81 @@
+type DodoStarter @entity{
+    "id"
+    id:ID!
+}
+
+enum PoolType {
+    Fair,
+    Instant
+}
+
+type Starter @entity{
+    "id address"
+    id:ID!
+    "type: Instant、Fund"
+    type:PoolType!
+    "base token address"
+    base: Bytes!
+    "fund token address"
+    fund: Bytes!
+    "creator"
+    creator: Bytes!
+    "timestamp"
+    timestamp: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type DepositHistory @entity{
+    "id hash-logindex"
+    id: ID!
+    "Starter"
+    starter:Starter!
+    "hash"
+    hash:String!
+    "user"
+    user: Bytes!
+    "fund amount"
+    amount: BigInt!
+    "allocation amount"
+    allocationAmount: BigInt!
+    "timestamp"
+    timestamp: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type ClaimHistory @entity{
+    "id hash-logindex"
+    id: ID!
+    "Starter"
+    starter:Starter!
+    "hash"
+    hash:String!
+    "user"
+    user: Bytes!
+    "token amount"
+    tokenAmount: BigInt!
+    "fund amount"
+    fundAmount: BigInt!
+    "timestamp"
+    timestamp: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
+
+type WithdrawFundHistory @entity{
+    "id hash-logindex"
+    id: ID!
+    "Starter"
+    starter:Starter!
+    "hash"
+    hash:String!
+    "user"
+    user: Bytes!
+    "fund amount"
+    fundAmount: BigInt!
+    "timestamp"
+    timestamp: BigInt!
+    "updatedAt"
+    updatedAt: BigInt!
+}
