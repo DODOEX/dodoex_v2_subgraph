@@ -1,8 +1,8 @@
 specVersion: 0.0.2
 description: Dodoex.io
 graft:
-  base: QmX85Q4589qb4HVktFDnyP3uArf56EJfWk5xyY5HapcTcP
-  block: 4749629
+  base: QmX3k2N2ooShxi9NWEhpZvxyFKFEYfcbh924wx14BJ7PCt
+  block: 4407201
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -310,7 +310,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/fair.ts
+      file: ../../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
@@ -348,7 +348,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/fair.ts
+      file: ../../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
@@ -387,7 +387,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/fair.ts
+      file: ../../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token

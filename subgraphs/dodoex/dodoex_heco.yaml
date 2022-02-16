@@ -332,7 +332,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/fair.ts
+      file: ../../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
@@ -368,7 +368,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/fair.ts
+      file: ../../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
@@ -405,7 +405,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/fair.ts
+      file: ../../src/mappings/dodoex/pool.ts
       entities:
         - Pair
         - Token
