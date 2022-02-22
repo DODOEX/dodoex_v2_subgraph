@@ -10,7 +10,6 @@ import {
     fetchTokenNameByCall, fetchTokenSymbolByCall, fetchTokenDecimalsByCall, fetchTokenTotalSupplyByCall, ONE_BI
 } from "./helpers"
 import {Token} from "../../types/token/schema"
-import {MintableERC20 as MintableERC20Template} from "../../types/token/templates"
 
 export function handleNewERC20(event: NewERC20): void {
     let user = createUser(event.params.creator, event);
@@ -34,5 +33,4 @@ export function handleNewERC20(event: NewERC20): void {
 
     token.save();
     dodoToken.save();
-    MintableERC20Template.create(event.params.erc20);
 }

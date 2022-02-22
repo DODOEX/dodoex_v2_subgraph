@@ -8,6 +8,12 @@ enum PoolType {
     Instant
 }
 
+enum OperationType {
+    Deposit,
+    Claim,
+    Withdraw
+}
+
 type Starter @entity{
     "id address"
     id:ID!

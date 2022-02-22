@@ -35,30 +35,4 @@ dataSources:
       eventHandlers:
         - event: NewERC20(address,address,uint256)
           handler: handleNewERC20
-templates:
-  - kind: ethereum/contract
-    name: MintableERC20
-    network: mbase
-    source:
-      abi: MintableERC20
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ../../src/mappings/token/mintableERC20.ts
-      entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
-      abis:
-        - name: MintableERC20
-          file: ../../abis/MintableERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: Mint(indexed address,uint256)
-          handler: handleMint
-        - event: Burn(indexed address,uint256)
-          handler: handleBurn
 
