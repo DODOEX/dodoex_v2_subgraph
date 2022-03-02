@@ -69,3 +69,4 @@ examples/example-subgraph/node_modules
 tests/cli/validation/*/generated
 
 build
+src/types
