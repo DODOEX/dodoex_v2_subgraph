@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODORouteProxy
-    network: mainnet
+    network: moonriver
     source:
-      address: "0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2"
+      address: "0x0125cd41312f72a0774112ca639d65a2c02e3627"
       abi: DODORouteProxy
-      startBlock: 4719856
+      startBlock: 591020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -33,11 +33,11 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x6B4Fa0bc61Eddc928e0Df9c7f01e407BfcD3e5EF"
+      address: "0xd9dec7c3c06e62a4c1beeb07cadf568f496b14c2"
       abi: DODOV2Proxy02
-      startBlock: 4701113
+      startBlock: 591012
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -60,11 +60,11 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x9aE501385Bc7996A2A4a1FBb00c8d3820611BCB5"
+      address: "0x738ebf387a0ce0eb46b0ef8fa5dea2eae6b1df51"
       abi: DVMFactory
-      startBlock: 4701045
+      startBlock: 545215
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -93,44 +93,11 @@ dataSources:
           handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: mainnet
+    network: moonriver
     source:
-      address: "0xbAb9F4ff4A19a0e8EEBC56b06750253228ffAc6E"
+      address: "0xd0e1aa51df0896c126ce6f8a064e551e0dd3d39b"
       abi: DPPFactory
-      startBlock: 4701054
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DVMFactory/DVMFactory.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: FeeRateModel
-          file: ../abis/FeeRateModel.json
-      eventHandlers:
-        - event: NewDPP(address,address,address,address)
-          handler: handleNewDPP
-        - event: RemoveDPP(address)
-          handler: handleRemoveDPP
-  - kind: ethereum/contract
-    name: DPPFactory_21_10_13
-    network: mainnet
-    source:
-      address: "0xfdD51aAba2f949195a460121aA3f2D392d2524A9"
-      abi: DPPFactory
-      startBlock: 4701054
+      startBlock: 848094
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -159,11 +126,11 @@ dataSources:
           handler: handleRemoveDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x44D5dF24d5Ef52A791D6436Fa45A8D426f6de34e"
+      address: "0xb76de21f04f677f07d9881174a1d8e624276314c"
       abi: DSPFactory
-      startBlock: 4701083
+      startBlock: 545230
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -192,11 +159,11 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x85351262f7474Ebe23FfAcD633cf20A491F1325D"
+      address: "0x0596908263ef2724fbfbcafa1c983fcd7a629038"
       abi: CrowdPoolingFactory
-      startBlock: 4701074
+      startBlock: 545227
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -227,11 +194,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: CrowdPoolingFactoryV2
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x5333eb1e32522f1893b7c9fea3c263807a02d561"
+      address: "0x1b75c99c3ab14764aea1511e68b33f5b9138a241"
       abi: CrowdPoolingFactoryV2
-      startBlock: 4701064
+      startBlock: 545223
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -266,11 +233,11 @@ dataSources:
           handler: handleRemoveCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x78d338f9d54e9e41872e68cb1c01d9499d87ee52"
+      address: "0x043957f7554275b90c5178872fae851dcfc1089d"
       abi: UpCrowdPoolingFactory
-      startBlock: 4701064
+      startBlock: 545223
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -301,11 +268,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: mainnet
+    network: moonriver
     source:
-      address: "0x3a97247df274a17c59a3bd12735ea3fcdfb49950"
+      address: "0x02fcb21dc1cf221939c1d4277fb54016b5d32bc7"
       abi: DODOZoo
-      startBlock: 4721874
+      startBlock: 547505
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -335,7 +302,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: mainnet
+    network: moonriver
     source:
       abi: DVM
     mapping:
@@ -362,12 +329,6 @@ templates:
           file: ../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -379,7 +340,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: mainnet
+    network: moonriver
     source:
       abi: DPP
     mapping:
@@ -418,7 +379,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: mainnet
+    network: moonriver
     source:
       abi: DSP
     mapping:
@@ -447,12 +408,6 @@ templates:
           file: ../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -464,7 +419,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: mainnet
+    network: moonriver
     source:
       abi: CP
     mapping:
@@ -505,7 +460,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: mainnet
+    network: moonriver
     source:
       abi: DODO
     mapping:
@@ -535,19 +490,6 @@ templates:
           file: ../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
           file: ../abis/ERC20NameBytes.json
-      callHandlers:
-        - function: disableTrading()
-          handler: handleDisableTrading
-        - function: enableTrading()
-          handler: handleEnableTrading
-        - function: disableQuoteDeposit()
-          handler: handleDisableQuoteDeposit
-        - function: enableQuoteDeposit()
-          handler: handleEnableQuoteDeposit
-        - function: disableBaseDeposit()
-          handler: handleDisableBaseDeposit
-        - function: enableBaseDeposit()
-          handler: handleEnableBaseDeposit
       eventHandlers:
         - event: Deposit(indexed address,indexed address,bool,uint256,uint256)
           handler: handleDeposit
@@ -567,7 +509,7 @@ templates:
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: DODOLpToken
-    network: mainnet
+    network: moonriver
     source:
       abi: DODOLpToken
     mapping:
@@ -586,7 +528,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CPV2
-    network: mainnet
+    network: moonriver
     source:
       abi: CPV2
     mapping:
