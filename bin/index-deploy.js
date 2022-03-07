@@ -4,15 +4,18 @@ const program = require("commander");
 const inquirer = require("inquirer");
 const execSh = require("exec-sh");
 
+// Example：
+// node bin/index.js deploy -y 'subgraphs/dodoex/dodoex_moonriver-graft.yaml' -s 'dodoex/dodoex-v2-moonriver-alpha'
+
 program.option("-t, --target <platform>", "the-graph or dodo-indexer");
-program.option("-s, --subgraph", "subgraph name");
-program.option("-i, --ipfs", "ipfs server endpoint");
-program.option("-n, --node", "node server endpoint");
-program.option("-c, --chain", "block chain");
+program.option("-s, --subgraph <name>", "subgraph name");
+program.option("-i, --ipfs <endpoint>", "ipfs server endpoint");
+program.option("-n, --node <endpoint>", "node server endpoint");
+program.option("-c, --chain <name>", "block chain");
 program.option("-a, --alpha", "is alpha");
 program.option("-d, --debug", "is debug", true);
-program.option("-y, --yaml", "yaml file name");
-program.option("-u, --accesstoken", "access token");
+program.option("-y, --yaml <name>", "yaml file name");
+program.option("-u, --accesstoken <token>", "access token");
 
 program.parse(process.argv);
 
@@ -59,7 +62,7 @@ async function run() {
         ],
       });
     }
-    if (!subgraph) {
+    if (!ipfs) {
       promps.push({
         type: "rawlist",
         name: "ipfs",
@@ -109,11 +112,11 @@ async function run() {
       });
     }
     const answers = await inquirer.prompt(promps);
-    target = answers.target;
-    subgraph = answers.subgraph;
-    ipfs = answers.ipfs;
-    node = answers.node;
-    chain = answers.chain;
+    if (answers.target) target = answers.target;
+    if (answers.subgraph) subgraph = answers.subgraph;
+    if (answers.ipfs) ipfs = answers.ipfs;
+    if (answers.node) node = answers.node;
+    if (answers.chain) chain = answers.chain;
   }
   deploy();
 }
@@ -121,6 +124,8 @@ async function run() {
 run();
 
 async function deploy() {
+  console.log("target", target, "subgraph", subgraph, "yaml", yaml);
+
   if (!yaml) {
     let ext = "";
     if (alpha) ext = "-graft";
@@ -140,6 +145,9 @@ async function deploy() {
       subgraphName = `dodoex/dodoex-${subgraph}-${chain}`;
     }
     if (alpha) subgraphName += "-alpha";
+  } else {
+    subgraphName = subgraph;
+    subgraph = subgraph.split("/")[0];
   }
 
   let commands = "";
