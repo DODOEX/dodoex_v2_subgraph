@@ -26,6 +26,6 @@
     },
     "dependencies": {
         "@graphprotocol/graph-cli": "^0.24.0",
-        "dodo-data-indexer-cli": "^0.0.3"
+        "dodo-data-indexer-cli": "^0.0.4"
     }
 }

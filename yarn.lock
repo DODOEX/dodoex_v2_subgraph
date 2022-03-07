@@ -2116,10 +2116,10 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-dodo-data-indexer-cli@^0.0.3:
-  version "0.0.3"
-  resolved "https://npm-registry.dodoex.io/dodo-data-indexer-cli/-/dodo-data-indexer-cli-0.0.3.tgz#d9f3bcd9d37240d55dd85a88edff9e33f48560b5"
-  integrity sha512-bQviYlV5nStO2mGB/l26JH1ShMUhLhO6f+zGdp+rHAfbiVpnbiwi1omeUqwy+2XKNmvAqzlcLUYUvHe3iUeY3A==
+dodo-data-indexer-cli@^0.0.4:
+  version "0.0.4"
+  resolved "https://npm-registry.dodoex.io/dodo-data-indexer-cli/-/dodo-data-indexer-cli-0.0.4.tgz#c8ef17b03f78fcc1ed4b1a2c70fb73e2f68ff0b4"
+  integrity sha512-9gSSden2WyjR/PwILMAVnACm+VlCM9a2QdGKhnI51eGmyUSBSHFG40iKaajI8AQW0k7Sp7APpYBWf5HxhtCY3w==
   dependencies:
     "@babel/core" "^7.16.5"
     "@babel/generator" "^7.16.5"
