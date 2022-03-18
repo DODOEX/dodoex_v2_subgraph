@@ -11,6 +11,8 @@ type MinePool @entity {
     stakeToken:Bytes
     "isLptoken"
     isLpToken: Boolean
+    "mineType"
+    platform:BigInt
     "reward details"
     rewardDetail:[RewardDetail!]! @derivedFrom(field: "minePool")
     "updatedAt"

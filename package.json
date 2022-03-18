@@ -24,7 +24,7 @@
     "deploy:dodoex_rinkeby": "cp ./src/mappings/constant-rinkeby.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_rinkeby.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-rinkeby subgraphs/dodoex/dodoex_rinkeby.yaml",
     "deploy:dodoex_heco": "cp ./src/mappings/constant-heco.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_heco.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-v2-heco-hg/heco subgraphs/dodoex/dodoex_heco.yaml --access-token ",
     "deploy:dodoex_heco_alpha": "cp ./src/mappings/constant-heco.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_heco.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-v2-heco-hg-alpha/heco subgraphs/dodoex/dodoex_heco.yaml --access-token ",
-    "deploy:dodoex_mainnet": "cp ./src/mappings/constant-mainnet.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_mainnet.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2 subgraphs/dodoex/dodoex_mainnet.yaml",
+    "deploy:dodoex_mainnet": "cp ./src/mappings/constant-mainnet.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_mainnet.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.studio.thegraph.com/deploy/ dodoex-v2 subgraphs/dodoex/dodoex_mainnet.yaml",
     "deploy:dodoex_moonriver": "cp ./src/mappings/constant-moonriver.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_moonriver.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-moonriver subgraphs/dodoex/dodoex_moonriver.yaml",
     "deploy:dodoex_moonriver_alpha": "cp ./src/mappings/constant-moonriver.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_moonriver-graft.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-moonriver-alpha subgraphs/dodoex/dodoex_moonriver-graft.yaml",
     "deploy:dodoex_boba": "cp ./src/mappings/constant-boba.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_boba.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://graph.mainnet.boba.network:5001 --node https://graph.mainnet.boba.network:8020 dodoex/dodoex-v2-boba subgraphs/dodoex/dodoex_boba.yaml",
@@ -38,7 +38,6 @@
     "deploy:dodoex_mainnet_beta": "cp ./src/mappings/constant-mainnet.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_mainnet.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-beta subgraphs/dodoex/dodoex_mainnet.yaml",
     "deploy:dodoex_mainnet_test": " cp ./src/mappings/constant-mainnet.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_mainnet.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/v2_02 subgraphs/dodoex/dodoex_mainnet.yaml",
     "deploy:dodoex_dev": "cp ./src/mappings/constant-aurora.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_aurora_dev.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-dev subgraphs/dodoex/dodoex_aurora_dev.yaml",
-
     "deploy:token_okchain": "graph codegen subgraphs/token/token_okchain.yaml --output-dir ./src/types/token/ && graph deploy --ipfs https://ipfs.kkt.one --node https://graph.kkt.one/node/ dodoex/dodoex-token-okchain subgraphs/token/token_okchain.yaml",
     "deploy:token_bsc": "graph codegen subgraphs/token/token_bsc.yaml --output-dir ./src/types/token/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-token-bsc subgraphs/token/token_bsc.yaml",
     "deploy:token_bsc_hg": "graph codegen subgraphs/token/token_bsc.yaml --output-dir ./src/types/token/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-token-bsc/bsc subgraphs/token/token_bsc.yaml --access-token ",
@@ -56,21 +55,18 @@
     "deploy:token_moonbeam_alpha": "graph codegen subgraphs/token/token_moonbeam.yaml --output-dir ./src/types/token/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-token-moonbeam-alpha subgraphs/token/token_moonbeam.yaml",
     "deploy:token_boba": "graph codegen subgraphs/token/token_boba.yaml --output-dir ./src/types/token/ && graph deploy --debug --ipfs https://graph.mainnet.boba.network:5001 --node https://graph.mainnet.boba.network:8020 dodoex/dodoex-token-boba subgraphs/token/token_boba.yaml",
     "deploy:token_aurora": "graph codegen subgraphs/token/token_aurora.yaml --output-dir ./src/types/token/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-token-aurora subgraphs/token/token_aurora.yaml",
-
     "deploy:vdodo_bsc": "graph codegen subgraphs/vdodo/vdodo_bsc.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug ---ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo-bsc subgraphs/vdodo/vdodo_bsc.yaml",
     "deploy:vdodo_kovan": "graph codegen subgraphs/vdodo/vdodo_kovan.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/vdodo-kovan subgraphs/vdodo/vdodo_kovan.yaml",
     "deploy:vdodo_rinkeby": "graph codegen subgraphs/vdodo/vdodo_rinkeby.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo-rinkeby subgraphs/vdodo/vdodo_rinkeby.yaml",
     "deploy:vdodo_mainnet": "graph codegen subgraphs/vdodo/vdodo_mainnet.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo subgraphs/vdodo/vdodo_mainnet.yaml",
     "deploy:vdodo_mainnet_alpha": "graph codegen subgraphs/vdodo/vdodo_mainnet.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo-alpha subgraphs/vdodo/vdodo_mainnet.yaml",
     "deploy:vdodo_mainnet_beta": "graph codegen subgraphs/vdodo/vdodo_mainnet.yaml --output-dir ./src/types/vdodo/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-vdodo-beta subgraphs/vdodo/vdodo_mainnet.yaml",
-
     "deploy:nft_kovan": "graph codegen subgraphs/nft/nft_kovan.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/dodo-nft subgraphs/nft/nft_kovan.yaml",
     "deploy:nft_rinkeby": "graph codegen subgraphs/nft/nft_rinkeby.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-rinkeby subgraphs/nft/nft_rinkeby.yaml",
     "deploy:nft_bsc_alpha": "graph codegen subgraphs/nft/nft_bsc-graft.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-bsc-alpha subgraphs/nft/nft_bsc-graft.yaml",
     "deploy:nft_bsc": "graph codegen subgraphs/nft/nft_bsc.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-bsc subgraphs/nft/nft_bsc.yaml",
     "deploy:nft_mainnet": "graph codegen subgraphs/nft/nft_mainnet.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft subgraphs/nft/nft_mainnet.yaml",
     "deploy:nft_rinkeby_test": "graph codegen subgraphs/nft/nft_rinkeby.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/nft_test_06 subgraphs/nft/nft_rinkeby.yaml",
-
     "deploy:dodomine_rinkeby": "graph codegen subgraphs/mine/mine_rinkeby.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodomine-rinkeby subgraphs/mine/mine_rinkeby.yaml",
     "deploy:dodomine_mainnet": "graph codegen subgraphs/mine/mine_mainnet.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3 subgraphs/mine/mine_mainnet.yaml",
     "deploy:dodomine_polygon": "graph codegen subgraphs/mine/mine_polygon.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3-polygon subgraphs/mine/mine_polygon.yaml",
@@ -83,16 +79,14 @@
     "deploy:dodomine_boba": "graph codegen subgraphs/mine/mine_boba.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://graph.mainnet.boba.network:5001 --node https://graph.mainnet.boba.network:8020 dodoex/dodoex-mine-v3-boba subgraphs/mine/mine_boba.yaml",
     "deploy:dodomine_aurora": "graph codegen subgraphs/mine/mine_aurora.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3-aurora subgraphs/mine/mine_aurora.yaml",
     "deploy:dodomine_avax": "graph codegen subgraphs/mine/mine_avax.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3-avax subgraphs/mine/mine_avax.yaml",
-
     "deploy:avatar_rinkeby": "graph codegen subgraphs/avatar/avatar_rinkeby.yaml --output-dir ./src/types/avatar/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-avatar-rinkeby subgraphs/avatar/avatar_rinkeby.yaml",
     "deploy:avatar_bsc": "graph codegen subgraphs/avatar/avatar_bsc.yaml --output-dir ./src/types/avatar/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-avatar-bsc subgraphs/avatar/avatar_bsc.yaml",
-
     "deploy:dodo_nft_balance_bsc": "graph codegen subgraphs/tools/dodoNftBalance/nft_bsc.yaml --output-dir ./src/types/tools/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-balance-bsc subgraphs/tools/dodoNftBalance/nft_bsc.yaml",
-
-    "deploy:dodo_starter": "graph codegen subgraphs/starter/starter_rinkeby.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-rinkeby subgraphs/starter/starter_rinkeby.yaml"
+    "deploy:dodo_starter_rinkeby": "graph codegen subgraphs/starter/starter_rinkeby.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-rinkeby subgraphs/starter/starter_rinkeby.yaml",
+    "deploy:dodo_starter_bsc": "graph codegen subgraphs/starter/starter_bsc.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-bsc subgraphs/starter/starter_bsc.yaml"
   },
   "devDependencies": {
-    "@graphprotocol/graph-ts": "^0.19.0",
+    "@graphprotocol/graph-ts": "0.20.1",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^6.2.2",
@@ -101,6 +95,6 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0"
+    "@graphprotocol/graph-cli": "0.21.1"
   }
 }

@@ -536,6 +536,8 @@ dataSources:
           file: ../../abis/DPP.json
         - name: CrowdPoolingFactory
           file: ../../abis/CrowdPoolingFactory.json
+        - name: CrowdPoolingFactoryV2
+          file: ../../abis/CrowdPoolingFactoryV2.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes

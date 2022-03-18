@@ -5,12 +5,12 @@ schema:
   file: ./mine.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOMineV3Proxy
+    name: DODOMineV3ProxyV2
     network: rinkeby
     source:
-      address: '0xcb15BBb59AC8a4B64A4db9B8d9F66c397d89Bd22'
-      abi: DODOMineV3Proxy
-      startBlock: 8887056
+      address: '0xa998adef597562860de4bc74075ba7d69ea9f8da'
+      abi: DODOMineV3ProxyV2
+      startBlock: 10304452
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: DODOMineV3Proxy
           file: ../../abis/DODOMineV3Proxy.json
+        - name: DODOMineV3ProxyV2
+          file: ../../abis/DODOMineV3ProxyV2.json
         - name: ERC20MineV3
           file: ../../abis/ERC20MineV3.json
         - name: ERC20
@@ -30,15 +32,15 @@ dataSources:
         - name: ERC20NameBytes
           file: ../../abis/ERC20NameBytes.json
       eventHandlers:
-        - event: CreateMineV3(address,address)
-          handler: handleCreateMineV3
+        - event: CreateMineV3(address,address,uint256)
+          handler: handleV2CreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
     network: rinkeby
     source:
       address: '0xeA12A4F762B6D8e2a122847aB1ecF60BB690fEd8'
       abi: DODOMineV3Registry
-      startBlock: 8898426
+      startBlock: 10304452
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -85,3 +87,7 @@ templates:
           handler: handleWithdraw
         - event: NewRewardToken(indexed uint256,address)
           handler: handleNewRewardToken
+        - event: UpdateEndBlock(indexed uint256,uint256)
+          handler: handleUpdateEndBlock
+        - event: UpdateReward(indexed uint256,uint256)
+          handler: handleUpdateReward
