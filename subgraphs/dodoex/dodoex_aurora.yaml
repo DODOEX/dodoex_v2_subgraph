@@ -62,7 +62,7 @@ dataSources:
     name: DVMFactory
     network: aurora
     source:
-      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
+      address: '0x5515363c0412AdD5c72d3E302fE1bD7dCBCF93Fe'
       abi: DVMFactory
       startBlock: 51265155
     mapping:
@@ -95,7 +95,7 @@ dataSources:
     name: DPPFactory
     network: aurora
     source:
-      address: "0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2"
+      address: "0x40672211D4310ad71daDc8cDE7Aa3Fb90d420855"
       abi: DPPFactory
       startBlock: 51265155
     mapping:
@@ -126,7 +126,7 @@ dataSources:
     name: DSPFactory
     network: aurora
     source:
-      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
+      address: '0xbe9a66e49503e84ae59a4d0545365AABedf33b40'
       abi: DSPFactory
       startBlock: 51265155
     mapping:
@@ -159,7 +159,7 @@ dataSources:
     name: CrowdPoolingFactory
     network: aurora
     source:
-      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
+      address: '0xc6962a577A3Be5311f9f9Ab9B8b6A69a25bBc817'
       abi: CrowdPoolingFactory
       startBlock: 51265155
     mapping:
@@ -194,7 +194,7 @@ dataSources:
     name: UpCrowdPoolingFactory
     network: aurora
     source:
-      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
+      address: '0xa356867fDCEa8e71AEaF87805808803806231FdC'
       abi: UpCrowdPoolingFactory
       startBlock: 51265155
     mapping:
@@ -229,7 +229,7 @@ dataSources:
     name: DODOZoo
     network: aurora
     source:
-      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
+      address: '0xf50BDc9E90B7a1c138cb7935071b85c417C4cb8e'
       abi: DODOZoo
       startBlock: 51265155
     mapping:
@@ -395,6 +395,45 @@ dataSources:
     network: aurora
     source:
       address: '0xaf49dbaaf177bee57f84731260a9eb8819d25eff'
+      abi: CrowdPoolingFactoryV2
+      startBlock: 51265155
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: CrowdPoolingFactory
+          file: ../../abis/CrowdPoolingFactory.json
+        - name: CrowdPoolingFactoryV2
+          file: ../../abis/CrowdPoolingFactoryV2.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
+      eventHandlers:
+        - event: NewCP(address,address,address,address)
+          handler: handleNewCP
+        - event: RemoveCP(address)
+          handler: handleRemoveCP
+  - kind: ethereum/contract
+    name: CrowdPoolingFactoryV2
+    network: aurora
+    source:
+      address: '0x8e2f666F316b614c76676215F16F0A9746f96a90'
       abi: CrowdPoolingFactoryV2
       startBlock: 51265155
     mapping:

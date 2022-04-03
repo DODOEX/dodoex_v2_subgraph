@@ -8,9 +8,9 @@ dataSources:
     name: DODOMineV3ProxyV2
     network: rinkeby
     source:
-      address: '0xa998adef597562860de4bc74075ba7d69ea9f8da'
+      address: '0x5776c34652ba1bb2e0fb678923452285a24c9be6'
       abi: DODOMineV3ProxyV2
-      startBlock: 10304452
+      startBlock: 10357746
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -40,7 +40,7 @@ dataSources:
     source:
       address: '0xeA12A4F762B6D8e2a122847aB1ecF60BB690fEd8'
       abi: DODOMineV3Registry
-      startBlock: 10304452
+      startBlock: 10357746
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
