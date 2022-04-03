@@ -430,7 +430,7 @@ dataSources:
         - event: RemoveCP(address)
           handler: handleRemoveCP
   - kind: ethereum/contract
-    name: CrowdPoolingFactoryV2
+    name: CrowdPoolingFactoryV2_202204
     network: aurora
     source:
       address: '0x8e2f666F316b614c76676215F16F0A9746f96a90'
