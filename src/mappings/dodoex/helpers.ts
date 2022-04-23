@@ -467,8 +467,10 @@ export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateSt
     let pair = Pair.load(poolAddress.toHexString());
     if (pair.type != TYPE_CLASSICAL_POOL) {
         let pool = DVM.bind(poolAddress);
-        let pmmState = pool.getPMMState();
-        return pmmState as DVM__getPMMStateResultStateStruct;
+        let pmmState = pool.try_getPMMState();
+        if(pmmState.reverted == false){
+            return pmmState.value as DVM__getPMMStateResultStateStruct;
+        }
     }
     return null;
 }
