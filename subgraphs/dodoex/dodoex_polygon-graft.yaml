@@ -1,5 +1,8 @@
 specVersion: 0.0.2
 description: Dodoex.io
+graft:
+  base: QmcPjkY5yJ4nd8VVN5TkgwSJQu2vzxgdcPXhPdMuK4URiR
+  block: 27447660
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -328,6 +331,37 @@ dataSources:
       eventHandlers:
         - event: DODOBirth(address,address,address)
           handler: handleDODOBirth
+  - kind: ethereum/contract
+    name: DODOMine
+    network: matic
+    source:
+      address: '0xe3c10989ddc5df5b1b9c0e6229c2e4e0862fde3e'
+      abi: DODOMine
+      startBlock: 14359435
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/mine.ts
+      entities:
+        - User
+        - StakeHistory
+      abis:
+        - name: DODOMine
+          file: ../../abis/DODOMine.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: handleWithdraw
+        - event: Claim(indexed address,uint256)
+          handler: handleClaim
 templates:
   - kind: ethereum/contract
     name: DVM

@@ -70,7 +70,7 @@ dataSources:
     name: DODOMine
     network: rinkeby
     source:
-      address: '0x369b918d9d940bcef4f3960b6cb6123a1bb3d7e5'
+      address: '0xae86ba5e42d4322fcb24c0320a68d6952aab4525'
       abi: DODOMine
       startBlock: 8690815
     mapping:
