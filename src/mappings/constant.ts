@@ -7,17 +7,17 @@ export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
 export const DODOV2Proxy02 = "0x45894c062e6f4e58b257e0826675355305dfef0d";
-export const DIP3_TIMESTAMP = 1624442400;
+export const DIP3_TIMESTAMP = 100;
 
-export const DODOZooID = "dodoex-v2-polygon";
-export const CHAIN_BASE_COIN_SYMBOL = "MATIC";
-export const CHAIN_BASE_COIN_NAME = "MATIC";
+export const DODOZooID = "dodoex-v2-aurora";
+export const CHAIN_BASE_COIN_SYMBOL = "ETH";
+export const CHAIN_BASE_COIN_NAME = "ether";
 
-export const SMART_ROUTE_ADDRESSES: string[] = ["0x45894c062e6f4e58b257e0826675355305dfef0d"];
-export const DVM_FACTORY_ADDRESS = "0xbab9f4ff4a19a0e8eebc56b06750253228ffac6e";
-export const DPP_FACTORY_ADDRESS = "0xe55154d09265b18ac7cdac6e646672a5460389a1";
+export const SMART_ROUTE_ADDRESSES: string[] = ["0xd9dec7c3c06e62a4c1beeb07cadf568f496b14c2"];
+export const DVM_FACTORY_ADDRESS = "0x5515363c0412add5c72d3e302fe1bd7dcbcf93fe";
+export const DPP_FACTORY_ADDRESS = "0x40672211d4310ad71dadc8cde7aa3fb90d420855";
 export const CLASSIC_FACTORY_ADDRESS = "0x357c5e9cfa8b834edcef7c7aabd8f9db09119d11";//dodo zoo
-export const CROWDPOOLING_FACTORY_V2: string[]=["0x29e7085fda4a8492fbb16e840488b514149d51f6"];
+export const CROWDPOOLING_FACTORY_V2: string[]=["0xaf49dbaaf177bee57f84731260a9eb8819d25eff"];
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
@@ -32,14 +32,12 @@ export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM"
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270';
+export const WRAPPED_BASE_COIN = '0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb';
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f';//usdt
-export const STABLE_TWO_ADDRESS = '0x2791bca1f2de4661ed88a30c99a7a9449aa84174';//usdc
+export const STABLE_ONE_ADDRESS = '0x4988a896b1227218e4a686fde5eabdcabd91571f';//usdt
+export const STABLE_TWO_ADDRESS = '0xb12bfca5a55806aaf64e99521918a4bf0fc40802';//usdc
 //stable coins pairs
-export const STABLE_COIN_PAIR_ONE = '0xc9f93163c99695c6526b799ebca2207fdf7d61ad';//[USDT_USDC_PAIR]
+export const STABLE_COIN_PAIR_ONE = '0xe4b2dfc82977dd2dce7e8d37895a6a8f50cbb4fb';//[USDT_USDC_PAIR] todo
 //base currency pair
-export const BASE_COIN_PAIR = '0x75c23271661d9d143dcb617222bc4bec783eff34';//[WETH_USDC_PAIR]
-
-
+export const BASE_COIN_PAIR = '0xfe176a2b1e1f67250d2903b8d25f56c0dabcd6b2';//[WETH_USDC_PAIR] todo
 

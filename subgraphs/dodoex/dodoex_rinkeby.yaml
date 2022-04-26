@@ -282,6 +282,8 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
@@ -317,6 +319,8 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
@@ -324,7 +328,7 @@ dataSources:
     name: CrowdPoolingFactoryV2
     network: rinkeby
     source:
-      address: '0xdd43520779ddcfbde373174ee36aead39771cd4f'
+      address: '0x00bda84D618308bdEa0556df64337075396184DF'
       abi: CrowdPoolingFactoryV2
       startBlock: 9853339
     mapping:

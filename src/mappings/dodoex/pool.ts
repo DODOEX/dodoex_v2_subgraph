@@ -57,6 +57,9 @@ export function handleDODOSwap(event: DODOSwap): void {
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.toAmount, toToken.decimals);
     let pmmState = getPMMState(event.address);
+    if(pmmState==null){
+        return;
+    }
 
     //更新时间戳
     fromToken.updatedAt = event.block.timestamp;
@@ -235,6 +238,9 @@ export function handleBuyShares(event: BuyShares): void {
     let baseToken = Token.load(pair.baseToken);
     let quoteToken = Token.load(pair.quoteToken);
     let pmmState = getPMMState(event.address);
+    if(pmmState==null){
+        return;
+    }
 
     let baseAmountChange = convertTokenToDecimal(pmmState.B, baseToken.decimals).minus(pair.baseReserve);
     let quoteAmountChange = convertTokenToDecimal(pmmState.Q, quoteToken.decimals).minus(pair.quoteReserve);
@@ -337,6 +343,9 @@ export function handleSellShares(event: SellShares): void {
 
     let pmmState: DVM__getPMMStateResultStateStruct;
     pmmState = getPMMState(event.address);
+    if(pmmState==null){
+        return;
+    }
 
     let lpToken = createLpToken(event.address, pair as Pair);
 
@@ -436,6 +445,9 @@ export function handleLpFeeRateChange(event: LpFeeRateChange): void {
 
         let pmmState: DVM__getPMMStateResultStateStruct;
         pmmState = getPMMState(event.address);
+        if(pmmState==null){
+            return;
+        }
         let baseToken = Token.load(pair.baseToken);
         let quoteToken = Token.load(pair.quoteToken);
 

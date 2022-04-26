@@ -21,7 +21,6 @@ import {
     createUser,
     createLpToken,
     getDODOZoo,
-    getPMMState,
     BI_18,
     updatePairTraderCount,
     fetchTokenBalance,
