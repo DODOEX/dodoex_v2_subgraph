@@ -1,0 +1,87 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./mine.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DODOMineV3Proxy
+    network: mainnet
+    source:
+      address: '0xcc11D79fd8983BCfd0B1C2928290963E122f58C8'
+      abi: DODOMineV3Proxy
+      startBlock: 2482000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/mine/mineProxy.ts
+      entities:
+        - MinePool
+      abis:
+        - name: DODOMineV3Proxy
+          file: ../../abis/DODOMineV3Proxy.json
+        - name: ERC20MineV3
+          file: ../../abis/ERC20MineV3.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: CreateMineV3(address,address)
+          handler: handleCreateMineV3
+  - kind: ethereum/contract
+    name: DODOMineV3Registry
+    network: mainnet
+    source:
+      address: '0xCF023387C8046c2F9db9C8272d76EfB799fB9572'
+      abi: DODOMineV3Registry
+      startBlock: 2482000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/mine/registry.ts
+      entities:
+        - MinePool
+      abis:
+        - name: DODOMineV3Proxy
+          file: ../../abis/DODOMineV3Proxy.json
+        - name: DODOMineV3Registry
+          file: ../../abis/DODOMineV3Registry.json
+        - name: ERC20MineV3
+          file: ../../abis/ERC20MineV3.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: NewMineV3(address,address,bool)
+          handler: handleNewMineV3
+templates:
+  - kind: ethereum/contract
+    name: ERC20MineV3
+    network: mainnet
+    source:
+      abi: ERC20MineV3
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/mine/mine.ts
+      entities:
+        - MinePool
+      abis:
+        - name: ERC20MineV3
+          file: ../../abis/ERC20MineV3.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+        - event: NewRewardToken(indexed uint256,address)
+          handler: handleNewRewardToken
