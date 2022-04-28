@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: mainnet
+    network: cronos
     source:
       address: '0xDdb86fF3984b213BFC951E16B829aBb64A3c20c0'
       abi: DODOV2Proxy02
@@ -33,7 +33,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory
-    network: mainnet
+    network: cronos
     source:
       address: '0x3D5ACF003Dc729f0cdF8263733C1329A59967458'
       abi: DVMFactory
@@ -66,7 +66,7 @@ dataSources:
           handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: mainnet
+    network: cronos
     source:
       address: "0x41cc4b7F7c915183149834e7d56FdB57dc096980"
       abi: DPPFactory
@@ -97,7 +97,7 @@ dataSources:
           handler: handleNewDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: mainnet
+    network: cronos
     source:
       address: '0xc4403dCe7619943eD9007B9cb64Ef98f683681D3'
       abi: DSPFactory
@@ -130,7 +130,7 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactoryV2
-    network: mainnet
+    network: cronos
     source:
       address: '0x8710Dbb9bad2Be7464c3dcfCEF7B688749233Bb3'
       abi: CrowdPoolingFactory
@@ -165,7 +165,7 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: mainnet
+    network: cronos
     source:
       address: '0xe78ec2626f59686254852C135D9428157fB2fB39'
       abi: DODOZoo
@@ -198,7 +198,7 @@ dataSources:
           handler: handleDODOBirth
   - kind: ethereum/contract
     name: DODOMine
-    network: mainnet
+    network: cronos
     source:
       address: '0xe3c10989ddc5df5b1b9c0e6229c2e4e0862fde3e'
       abi: DODOMine
@@ -230,7 +230,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: mainnet
+    network: cronos
     source:
       abi: DVM
     mapping:
@@ -268,7 +268,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: mainnet
+    network: cronos
     source:
       abi: DPP
     mapping:
@@ -307,7 +307,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: mainnet
+    network: cronos
     source:
       abi: DSP
     mapping:
@@ -347,7 +347,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: mainnet
+    network: cronos
     source:
       abi: CP
     mapping:
@@ -388,7 +388,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: mainnet
+    network: cronos
     source:
       abi: DODO
     mapping:
@@ -437,7 +437,7 @@ templates:
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: DODOLpToken
-    network: mainnet
+    network: cronos
     source:
       abi: DODOLpToken
     mapping:
@@ -456,7 +456,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CPV2
-    network: mainnet
+    network: cronos
     source:
       abi: CPV2
     mapping:

@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: mainnet
+    network: cronos
     source:
       address: '0x57A5A387BE79dedf6a6C4CBC5dF443EC2f8b1eFB'
       abi: ERC20V3Factory

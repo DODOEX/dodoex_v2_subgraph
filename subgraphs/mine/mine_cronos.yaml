@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3Proxy
-    network: mainnet
+    network: cronos
     source:
       address: '0xcc11D79fd8983BCfd0B1C2928290963E122f58C8'
       abi: DODOMineV3Proxy
@@ -34,7 +34,7 @@ dataSources:
           handler: handleCreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
-    network: mainnet
+    network: cronos
     source:
       address: '0xCF023387C8046c2F9db9C8272d76EfB799fB9572'
       abi: DODOMineV3Registry
@@ -65,7 +65,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
-    network: mainnet
+    network: cronos
     source:
       abi: ERC20MineV3
     mapping:
