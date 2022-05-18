@@ -2,20 +2,20 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: starter.graphql
+  file: ./starter.graphql
 dataSources:
   - kind: ethereum/contract
     name: DODOStarterFactory
     network: matic
     source:
-      address: "0x9337ca090c390667984869193e10c3d4f9a17da8"
+      address: '0x9337ca090c390667984869193e10c3d4f9a17da8'
       abi: DODOStarterFactory
       startBlock: 26059557
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODOStarterFactory/DODOStarterFactory.wasm
+      file: ../../src/mappings/starter/factory.ts
       entities:
         - DodoStarter
         - Starter
@@ -24,7 +24,7 @@ dataSources:
         - WithdrawFundHistory
       abis:
         - name: DODOStarterFactory
-          file: ../abis/DODOStarterFactory.json
+          file: ../../abis/DODOStarterFactory.json
       eventHandlers:
         - event: NewFairFund(address,address,address,address)
           handler: handleNewFairFund
@@ -40,7 +40,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/FairFunding/FairFunding.wasm
+      file: ../../src/mappings/starter/fair.ts
       entities:
         - User
         - Token
@@ -48,13 +48,13 @@ templates:
         - TransferHistories
       abis:
         - name: FairFunding
-          file: ../abis/FairFunding.json
+          file: ../../abis/FairFunding.json
       eventHandlers:
         - event: DepositFund(indexed address,uint256)
           handler: handleDepositFund
         - event: WithdrawFund(indexed address,indexed address,uint256,bool)
           handler: handleWithdrawFund
-        - event: ClaimToken(indexed address,indexed address,uint256,uint256)
+        - event:  ClaimToken(indexed address,indexed address,uint256,uint256)
           handler: handleClaimToken
   - kind: ethereum/contract
     name: InstantFunding
@@ -65,7 +65,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/InstantFunding/InstantFunding.wasm
+      file: ../../src/mappings/starter/instant.ts
       entities:
         - User
         - Token
@@ -73,7 +73,7 @@ templates:
         - TransferHistories
       abis:
         - name: InstantFunding
-          file: ../abis/InstantFunding.json
+          file: ../../abis/InstantFunding.json
       eventHandlers:
         - event: DepositFund(indexed address,uint256,uint256)
           handler: handleDepositFund

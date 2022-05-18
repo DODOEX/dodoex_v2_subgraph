@@ -5,11 +5,11 @@ schema:
   file: ./mine.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOMineV3Proxy
+    name: DODOMineV3ProxyV2
     network: cronos
     source:
       address: '0xcc11D79fd8983BCfd0B1C2928290963E122f58C8'
-      abi: DODOMineV3Proxy
+      abi: DODOMineV3ProxyV2
       startBlock: 2482000
     mapping:
       kind: ethereum/events
@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: DODOMineV3Proxy
           file: ../../abis/DODOMineV3Proxy.json
+        - name: DODOMineV3ProxyV2
+          file: ../../abis/DODOMineV3ProxyV2.json
         - name: ERC20MineV3
           file: ../../abis/ERC20MineV3.json
         - name: ERC20
@@ -30,8 +32,8 @@ dataSources:
         - name: ERC20NameBytes
           file: ../../abis/ERC20NameBytes.json
       eventHandlers:
-        - event: CreateMineV3(address,address)
-          handler: handleCreateMineV3
+        - event: CreateMineV3(address,address,uint256)
+          handler: handleV2CreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
     network: cronos
