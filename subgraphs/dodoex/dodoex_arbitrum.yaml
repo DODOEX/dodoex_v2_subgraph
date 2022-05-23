@@ -328,6 +328,33 @@ dataSources:
           handler: handleWithdraw
         - event: Claim(indexed address,uint256)
           handler: handleClaim
+  - kind: ethereum/contract
+    name: DODORouteProxy
+    network: arbitrum-one
+    source:
+      address: '0x3b6067d4caa8a14c63fdbe6318f27a0bbc9f9237'
+      abi: DODORouteProxy
+      startBlock: 226006
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODORouteProxy
+          file: ../../abis/DODORouteProxy.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
 templates:
   - kind: ethereum/contract
     name: DVM
