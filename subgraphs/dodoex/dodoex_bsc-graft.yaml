@@ -538,7 +538,7 @@ dataSources:
     name: CrowdPoolingFactoryV3
     network: bsc
     source:
-      address: '0x9c9ef6820a1aa0e25770ccde4e974f81cb28debc'
+      address: '0x224fece8104771478a3a4ce6d92ab1538d3659ee'
       abi: CrowdPoolingFactory
       startBlock: 19507160
     mapping:
