@@ -27,32 +27,25 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
  - dodoex 
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2
     - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-bsc
-    - heco : https://n10.hg.network/subgraphs/name/dodoex-v2-heco-hg/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-polygon
-    - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-v2-okchain
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-arbitrum
-    - kovan : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-kovan
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-rinkeby
     - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-moonriver
     - aurora : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-aurora
     - avax : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-avax
-    - boba : https://graph.mainnet.boba.network:8000/subgraphs/name/dodoex/dodoex-v2-boba
+    - boba : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-v2-boba
   - token
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token
     - bsc : https://n14.hg.network/subgraphs/name/dodoex-token-bsc/bsc
-    - heco : https://n10.hg.network/subgraphs/name/dodoex-token-heco/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-polygon
-    - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-token-okchain
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-arbitrum
-    - kovan : https://thegraph.com/explorer/subgraph/autarkxu/dodoex-token
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-rinkeby
     - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-moonriver
     - aurora : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-aurora
     - avax : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-avax
-    - boba : https://graph.mainnet.boba.network:8000/subgraphs/name/dodoex/dodoex-token-boba
+    - boba : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-token-boba
 - vdodo
     - ethereum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo
-    - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-vdodo-rinkeby
 - nft
     - kovan : https://api.thegraph.com/subgraphs/name/autarkxu/dodoex-vdodo
@@ -62,13 +55,12 @@ The Graph exposes a GraphQL endpoint to query the events and entities within the
     - bsc : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-bsc
     - heco : https://n10.hg.network/subgraphs/name/dodoex-mine-v3-heco/heco
     - polygon : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-polygon
-    - okchain : https://graph.kkt.one/subgraphs/name/dodoex/dodoex-mine-v3-okchain
     - arbitrum : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-arbitrum
     - rinkeby : https://api.thegraph.com/subgraphs/name/dodoex/dodomine-rinkeby
     - moonriver : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-moonriver
     - aurora : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-aurora
     - avax : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-avax
-    - boba : https://graph.mainnet.boba.network:8000/subgraphs/name/dodoex/dodoex-mine-v3-boba
+    - boba : https://api.thegraph.com/subgraphs/name/dodoex/dodoex-mine-v3-boba
    
 ## 2、 Graphql Examples
  - to get user info
