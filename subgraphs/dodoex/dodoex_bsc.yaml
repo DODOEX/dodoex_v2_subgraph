@@ -532,6 +532,41 @@ dataSources:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
   - kind: ethereum/contract
+    name: CrowdPoolingFactoryV3
+    network: bsc
+    source:
+      address: '0x224fece8104771478a3a4ce6d92ab1538d3659ee'
+      abi: CrowdPoolingFactory
+      startBlock: 19507160
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: CrowdPoolingFactory
+          file: ../../abis/CrowdPoolingFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
+      eventHandlers:
+        - event: NewCP(address,address,address,address)
+          handler: handleNewCP
+  - kind: ethereum/contract
     name: UpCrowdPoolingFactory
     network: bsc
     source:

@@ -328,9 +328,9 @@ dataSources:
     name: CrowdPoolingFactoryV2
     network: rinkeby
     source:
-      address: '0x00bda84D618308bdEa0556df64337075396184DF'
+      address: '0xa23137871c4a4ce8514f581ee82262cd1a49eeae'
       abi: CrowdPoolingFactoryV2
-      startBlock: 9853339
+      startBlock: 10947412
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

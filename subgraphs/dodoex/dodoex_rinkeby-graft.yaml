@@ -1,6 +1,9 @@
 specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
+graft:
+  base: Qmdz8hQZshG3AjUrVqkYkzMF1dDky7xo9iLfFknXTmBoDr
+  block: 10947410
 schema:
   file: ./dodoex.graphql
 dataSources:
@@ -326,9 +329,9 @@ dataSources:
     name: CrowdPoolingFactoryV2
     network: rinkeby
     source:
-      address: '0xdd43520779ddcfbde373174ee36aead39771cd4f'
+      address: '0x46AF6b152F2cb02a3cFcc74014C2617BC4F6cD5C'
       abi: CrowdPoolingFactoryV2
-      startBlock: 9853339
+      startBlock: 10947412
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

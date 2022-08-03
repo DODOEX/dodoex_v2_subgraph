@@ -1,8 +1,8 @@
 specVersion: 0.0.2
 description: Dodoex.io
 graft:
-  base: QmYiWA3463jPx6KEn4ZQbkNyzhewBoueZoE4L3vQmCq5mJ
-  block: 17275069
+  base: QmYsvtdh8u6iifzU5ucZmB7g17RRwvSLecHZJ7gZt7HbGa
+  block: 19507160
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -506,6 +506,41 @@ dataSources:
       address: '0x9c9ef6820a1aa0e25770ccde4e974f81cb28debc'
       abi: CrowdPoolingFactory
       startBlock: 13920938
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: CrowdPoolingFactory
+          file: ../../abis/CrowdPoolingFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: CP
+          file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
+      eventHandlers:
+        - event: NewCP(address,address,address,address)
+          handler: handleNewCP
+  - kind: ethereum/contract
+    name: CrowdPoolingFactoryV3
+    network: bsc
+    source:
+      address: '0x224fece8104771478a3a4ce6d92ab1538d3659ee'
+      abi: CrowdPoolingFactory
+      startBlock: 19507160
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

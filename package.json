@@ -22,7 +22,7 @@
     "deploy:dodoex_bsc_hq": "cp ./src/mappings/constant-bsc.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_bsc.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-v2-bsc-hg/bsc subgraphs/dodoex/dodoex_bsc.yaml --access-token",
     "deploy:dodoex_bsc_alpha_hq": "cp ./src/mappings/constant-bsc.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_bsc.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-v2-bsc-hg-alpha/bsc subgraphs/dodoex/dodoex_bsc.yaml --access-token ",
     "deploy:dodoex_kovan": "cp ./src/mappings/constant-kovan.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_kovan.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-kovan subgraphs/dodoex/dodoex_kovan.yaml",
-    "deploy:dodoex_rinkeby": "cp ./src/mappings/constant-rinkeby.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_rinkeby.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-rinkeby subgraphs/dodoex/dodoex_rinkeby.yaml",
+    "deploy:dodoex_rinkeby": "cp ./src/mappings/constant-rinkeby.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_rinkeby-graft.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-rinkeby subgraphs/dodoex/dodoex_rinkeby-graft.yaml",
     "deploy:dodoex_heco": "cp ./src/mappings/constant-heco.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_heco.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-v2-heco-hg/heco subgraphs/dodoex/dodoex_heco.yaml --access-token ",
     "deploy:dodoex_heco_alpha": "cp ./src/mappings/constant-heco.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_heco.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --node https://api.hg.network/subgraph/deploy --ipfs https://f.hg.network dodoex-v2-heco-hg-alpha/heco subgraphs/dodoex/dodoex_heco.yaml --access-token ",
     "deploy:dodoex_mainnet": "cp ./src/mappings/constant-mainnet.ts ./src/mappings/constant.ts && graph codegen subgraphs/dodoex/dodoex_mainnet.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2 subgraphs/dodoex/dodoex_mainnet.yaml",
@@ -100,6 +100,7 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.21.1"
+    "@graphprotocol/graph-cli": "0.21.1",
+    "ipfs-http-client": "^34.0.0"
   }
 }
