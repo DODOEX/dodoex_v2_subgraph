@@ -2,20 +2,20 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: token.graphql
+  file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: goerli
+    network: mainnet
     source:
-      address: "0xde1eCf0f7C8141FfC2149405947206f76951816e"
+      address: '0x5a0C840a7089aa222c4458b3BE0947fe5a5006DE'
       abi: ERC20V3Factory
-      startBlock: 7462578
+      startBlock: 13155477
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ERC20V3Factory/ERC20V3Factory.wasm
+      file: ../../src/mappings/token/factoryv2.ts
       entities:
         - User
         - Token
@@ -23,31 +23,31 @@ dataSources:
         - TransferHistories
       abis:
         - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
+          file: ../../abis/ERC20Factory.json
         - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
+          file: ../../abis/ERC20V2Factory.json
         - name: ERC20V3Factory
-          file: ../abis/ERC20V3Factory.json
+          file: ../../abis/ERC20V3Factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: NewERC20(address,address,uint256)
           handler: handleNewERC20
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: goerli
+    network: mainnet
     source:
       abi: MintableERC20
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/MintableERC20/MintableERC20.wasm
+      file: ../../src/mappings/token/mintableERC20.ts
       entities:
         - User
         - Token
@@ -55,7 +55,7 @@ templates:
         - TransferHistories
       abis:
         - name: MintableERC20
-          file: ../abis/MintableERC20.json
+          file: ../../abis/MintableERC20.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
