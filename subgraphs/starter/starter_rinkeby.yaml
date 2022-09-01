@@ -8,9 +8,9 @@ dataSources:
     name: DODOStarterFactory
     network: rinkeby
     source:
-      address: '0xa28d60c3ecdc52521c8219bd6a4eba0aa8900f88'
+      address: '0xc3cF2F9faAeE87b67E4ceAb3F67B6074Ae939cF3'
       abi: DODOStarterFactory
-      startBlock: 10012377
+      startBlock: 11200914
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

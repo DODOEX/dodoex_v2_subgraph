@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODORouteProxy
-    network: mainnet
+    network: kcc
     source:
       address: '0xf5048d8F9163AF17Db522Abe9FaF37735C911320'
       abi: DODORouteProxy
@@ -33,7 +33,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: mainnet
+    network: kcc
     source:
       address: '0xf0512872fEc0173d1d99c2dd8CDCb770054b675b'
       abi: DODOV2Proxy02
@@ -60,7 +60,7 @@ dataSources:
           handler: handleOrderHistory
   - kind: ethereum/contract
     name: DVMFactory
-    network: mainnet
+    network: kcc
     source:
       address: '0x31AC053c31a77055b2ae2d3899091C0A9c19cE3a'
       abi: DVMFactory
@@ -93,7 +93,7 @@ dataSources:
           handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: mainnet
+    network: kcc
     source:
       address: '0x4632e6EBd4a01eBF54739A9D71a62CEdb29E9183'
       abi: DPPFactory
@@ -126,7 +126,7 @@ dataSources:
           handler: handleRemoveDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: mainnet
+    network: kcc
     source:
       address: '0xbce44767af0a53A108b3B7ba4F740E03D228Ec0A'
       abi: DSPFactory
@@ -159,7 +159,7 @@ dataSources:
           handler: handleRemoveDSP
   - kind: ethereum/contract
     name: CrowdPoolingFactoryV2
-    network: mainnet
+    network: kcc
     source:
       address: '0xAE1E7e4c5743321d2a8ceeD179264998a56CF1d9'
       abi: CrowdPoolingFactoryV2
@@ -199,7 +199,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: mainnet
+    network: kcc
     source:
       abi: DVM
     mapping:
@@ -235,7 +235,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: mainnet
+    network: kcc
     source:
       abi: DPP
     mapping:
@@ -272,7 +272,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: mainnet
+    network: kcc
     source:
       abi: DSP
     mapping:
@@ -312,7 +312,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: mainnet
+    network: kcc
     source:
       abi: CP
     mapping:
@@ -351,7 +351,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: CPV2
-    network: mainnet
+    network: kcc
     source:
       abi: CPV2
     mapping:
@@ -390,7 +390,7 @@ templates:
           handler: handleSettle
   - kind: ethereum/contract
     name: DODO
-    network: mainnet
+    network: kcc
     source:
       abi: DODO
     mapping:
@@ -437,7 +437,7 @@ templates:
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
     name: DODOLpToken
-    network: mainnet
+    network: kcc
     source:
       abi: DODOLpToken
     mapping:

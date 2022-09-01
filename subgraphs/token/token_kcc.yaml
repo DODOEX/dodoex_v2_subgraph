@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: mainnet
+    network: kcc
     source:
       address: '0x5a0C840a7089aa222c4458b3BE0947fe5a5006DE'
       abi: ERC20V3Factory
@@ -40,7 +40,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MintableERC20
-    network: mainnet
+    network: kcc
     source:
       abi: MintableERC20
     mapping:

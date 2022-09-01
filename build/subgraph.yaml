@@ -2,64 +2,80 @@ specVersion: 0.0.2
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: token.graphql
+  file: starter.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ERC20V3Factory
-    network: goerli
+    name: DODOStarterFactory
+    network: rinkeby
     source:
-      address: "0xde1eCf0f7C8141FfC2149405947206f76951816e"
-      abi: ERC20V3Factory
-      startBlock: 7462578
+      address: "0xc3cF2F9faAeE87b67E4ceAb3F67B6074Ae939cF3"
+      abi: DODOStarterFactory
+      startBlock: 11200914
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ERC20V3Factory/ERC20V3Factory.wasm
+      file: DODOStarterFactory/DODOStarterFactory.wasm
       entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
+        - DodoStarter
+        - Starter
+        - DepositHistory
+        - ClaimHistory
+        - WithdrawFundHistory
       abis:
-        - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
-        - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
-        - name: ERC20V3Factory
-          file: ../abis/ERC20V3Factory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+        - name: DODOStarterFactory
+          file: ../abis/DODOStarterFactory.json
       eventHandlers:
-        - event: NewERC20(address,address,uint256)
-          handler: handleNewERC20
+        - event: NewFairFund(address,address,address,address)
+          handler: handleNewFairFund
+        - event: NewInstantFund(address,address,address,address)
+          handler: handleNewInstantFund
 templates:
   - kind: ethereum/contract
-    name: MintableERC20
-    network: goerli
+    name: FairFunding
+    network: rinkeby
     source:
-      abi: MintableERC20
+      abi: FairFunding
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/MintableERC20/MintableERC20.wasm
+      file: templates/FairFunding/FairFunding.wasm
       entities:
         - User
         - Token
         - UserTokenBlance
         - TransferHistories
       abis:
-        - name: MintableERC20
-          file: ../abis/MintableERC20.json
+        - name: FairFunding
+          file: ../abis/FairFunding.json
       eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: Mint(indexed address,uint256)
-          handler: handleMint
-        - event: Burn(indexed address,uint256)
-          handler: handleBurn
+        - event: DepositFund(indexed address,uint256)
+          handler: handleDepositFund
+        - event: WithdrawFund(indexed address,indexed address,uint256,bool)
+          handler: handleWithdrawFund
+        - event: ClaimToken(indexed address,indexed address,uint256,uint256)
+          handler: handleClaimToken
+  - kind: ethereum/contract
+    name: InstantFunding
+    network: rinkeby
+    source:
+      abi: InstantFunding
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: templates/InstantFunding/InstantFunding.wasm
+      entities:
+        - User
+        - Token
+        - UserTokenBlance
+        - TransferHistories
+      abis:
+        - name: InstantFunding
+          file: ../abis/InstantFunding.json
+      eventHandlers:
+        - event: DepositFund(indexed address,uint256,uint256)
+          handler: handleDepositFund
+        - event: ClaimToken(indexed address,indexed address,uint256)
+          handler: handleClaimToken
