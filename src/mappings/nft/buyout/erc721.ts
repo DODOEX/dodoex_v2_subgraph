@@ -2,7 +2,7 @@ import {Nft, Fragment, User, UserNft} from "../../../types/nft/schema";
 import {Address} from "@graphprotocol/graph-ts";
 import {Transfer} from "../../../types/nft/DODONFT/DODONFT"
 import {DODONFTMint, DODONFTBurn,DODONFT} from "../../../types/nft/DODONFT/DODONFT"
-import {createUser, ZERO_BI, ONE_BI, createAndGetNFT} from "../helpers";
+import {createUser, ZERO_BI, ONE_BI, createAndGetNFT, ADDRESS_ZERO} from "../helpers";
 
 export function handleTransfer(event: Transfer): void {
     let fromUser = createUser(event.params.from,event);
@@ -21,6 +21,7 @@ export function handleTransfer(event: Transfer): void {
         fromUserNft.amount = ZERO_BI;
         fromUserNft.nft = nft.id;
         fromUserNft.createdAt = event.block.timestamp;
+        fromUserNft.isMint = false;
     }
     fromUserNft.tokenID = event.params.tokenId;
     fromUserNft.amount = ZERO_BI;
@@ -31,6 +32,9 @@ export function handleTransfer(event: Transfer): void {
         toUserNft.amount = ZERO_BI;
         toUserNft.nft = nft.id;
         toUserNft.createdAt = event.block.timestamp;
+        if (event.params.from.equals(ADDRESS_ZERO)) {
+            fromUserNft.isMint = true;
+        }
     }
     toUserNft.tokenID = event.params.tokenId;
     toUserNft.amount = ONE_BI;
