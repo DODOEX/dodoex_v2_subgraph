@@ -110,6 +110,8 @@ type UserNft @entity{
     tokenID:  BigInt!
     "token amount"
     amount: BigInt!
+    "is mint"
+    isMint: Boolean
     "createdAt"
     createdAt: BigInt!
     "updatedAt"
