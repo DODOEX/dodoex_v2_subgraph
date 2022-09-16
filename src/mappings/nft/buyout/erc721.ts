@@ -33,7 +33,7 @@ export function handleTransfer(event: Transfer): void {
         toUserNft.nft = nft.id;
         toUserNft.createdAt = event.block.timestamp;
         if (event.params.from.equals(ADDRESS_ZERO)) {
-            fromUserNft.isMint = true;
+            toUserNft.isMint = true;
         }
     }
     toUserNft.tokenID = event.params.tokenId;
