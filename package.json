@@ -80,6 +80,7 @@
     "deploy:nft_rinkeby_test": "graph codegen subgraphs/nft/nft_rinkeby.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/nft_test_06 subgraphs/nft/nft_rinkeby.yaml",
     
     "deploy:dodo_topia_goerli": "graph codegen subgraphs/nft/dodo_topia_goerli.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo_topia_goerli subgraphs/nft/dodo_topia_goerli.yaml",
+    "deploy:dodo_topia_mainnet": "graph codegen subgraphs/nft/dodo_topia_mainnet.yaml --output-dir ./src/types/nft/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo_topia_mainnet subgraphs/nft/dodo_topia_mainnet.yaml",
 
     "deploy:dodomine_rinkeby": "graph codegen subgraphs/mine/mine_rinkeby.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodomine-rinkeby subgraphs/mine/mine_rinkeby.yaml",
     "deploy:dodomine_mainnet": "graph codegen subgraphs/mine/mine_mainnet.yaml --output-dir ./src/types/mine/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-mine-v3 subgraphs/mine/mine_mainnet.yaml",
