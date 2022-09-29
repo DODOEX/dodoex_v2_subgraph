@@ -1,0 +1,35 @@
+specVersion: 0.0.2
+description: Dodoex.io
+repository: https://github.com/DODOEX/dodoex_v2_subgraph
+schema:
+  file: ./nft.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DODOTopia
+    network: mainnet
+    source:
+      abi: DODONFT
+      address: '0x89872650fA1A391f58B4E144222bB02e44db7e3B'
+      startBlock: 15631473
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/nft/buyout/erc721.ts
+      entities:
+        - NftCollateralVault
+        - Nft
+        - VaultNft
+        - Fragment
+      abis:
+        - name: DODONFT
+          file: ../../abis/DODONFT.json
+        - name: DODONFT1155
+          file: ../../abis/DODONFT1155.json
+      eventHandlers:
+        - event: DODONFTMint(address,uint256)
+          handler: handleDODONFTMint
+        - event: DODONFTBurn(uint256)
+          handler: handleDODONFTBurn
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
