@@ -5,11 +5,11 @@ schema:
   file: ./starter.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOStarterFactoryV2
+    name: DODOStarterFactory
     network: goerli
     source:
-      address: '0x17644d3B366273faC75A07996E2F90A99A2946a7'
-      abi: DODOStarterFactoryV2
+      address: '0x17644d3B366273faC75A07996E2F90A99A2946a7' # DODOStarterFactoryV2
+      abi: DODOStarterFactory
       startBlock: 7326888
     mapping:
       kind: ethereum/events
