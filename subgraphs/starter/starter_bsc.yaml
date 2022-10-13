@@ -10,7 +10,7 @@ dataSources:
     source:
       address: '0x79624977c8065650f03c38d5bc0f03a6f929ecb9'
       abi: DODOStarterFactory
-      startBlock: 15640924
+      startBlock: 20484520
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
