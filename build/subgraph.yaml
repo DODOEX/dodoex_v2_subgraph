@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOStarterFactory
-    network: rinkeby
+    network: bsc
     source:
-      address: "0xc3cF2F9faAeE87b67E4ceAb3F67B6074Ae939cF3"
+      address: "0x79624977c8065650f03c38d5bc0f03a6f929ecb9"
       abi: DODOStarterFactory
-      startBlock: 11200914
+      startBlock: 20484520
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -30,10 +30,36 @@ dataSources:
           handler: handleNewFairFund
         - event: NewInstantFund(address,address,address,address)
           handler: handleNewInstantFund
+  - kind: ethereum/contract
+    name: DODOStarterFactoryV2
+    network: bsc
+    source:
+      address: "0xf7625db525b5b26414890cdd026a9d67b73b2620"
+      abi: DODOStarterFactoryV2
+      startBlock: 20484520
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: DODOStarterFactory/DODOStarterFactory.wasm
+      entities:
+        - DodoStarter
+        - Starter
+        - DepositHistory
+        - ClaimHistory
+        - WithdrawFundHistory
+      abis:
+        - name: DODOStarterFactoryV2
+          file: ../abis/DODOStarterFactoryV2.json
+      eventHandlers:
+        - event: NewFairFund(address,address,address,address)
+          handler: handleNewFairFund
+        - event: NewInstantFund(address,address,address,address)
+          handler: handleNewInstantFund
 templates:
   - kind: ethereum/contract
     name: FairFunding
-    network: rinkeby
+    network: bsc
     source:
       abi: FairFunding
     mapping:
@@ -58,7 +84,7 @@ templates:
           handler: handleClaimToken
   - kind: ethereum/contract
     name: InstantFunding
-    network: rinkeby
+    network: bsc
     source:
       abi: InstantFunding
     mapping:

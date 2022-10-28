@@ -104,6 +104,7 @@
 
     "deploy:dodo_nft_balance_bsc": "graph codegen subgraphs/tools/dodoNftBalance/nft_bsc.yaml --output-dir ./src/types/tools/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodo-nft-balance-bsc subgraphs/tools/dodoNftBalance/nft_bsc.yaml",
 
+    "deploy:dodo_starter_goerli": "graph codegen subgraphs/starter/starter_goerli.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-goerli subgraphs/starter/starter_goerli.yaml",
     "deploy:dodo_starter_rinkeby": "graph codegen subgraphs/starter/starter_rinkeby.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-rinkeby subgraphs/starter/starter_rinkeby.yaml",
     "deploy:dodo_starter_bsc": "graph codegen subgraphs/starter/starter_bsc.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-bsc subgraphs/starter/starter_bsc.yaml",
     "deploy:dodo_starter_arbitrum": "graph codegen subgraphs/starter/starter_arbitrum.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-arbitrum subgraphs/starter/starter_arbitrum.yaml",

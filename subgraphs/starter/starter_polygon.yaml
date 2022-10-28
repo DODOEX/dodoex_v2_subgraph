@@ -30,6 +30,32 @@ dataSources:
           handler: handleNewFairFund
         - event: NewInstantFund(address,address,address,address)
           handler: handleNewInstantFund
+  - kind: ethereum/contract
+    name: DODOStarterFactoryV2
+    network: matic
+    source:
+      address: '0x411ec324598ef53b1e8663e335e9094464523e6b'
+      abi: DODOStarterFactoryV2
+      startBlock: 34806700
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/starter/factory.ts
+      entities:
+        - DodoStarter
+        - Starter
+        - DepositHistory
+        - ClaimHistory
+        - WithdrawFundHistory
+      abis:
+        - name: DODOStarterFactoryV2
+          file: ../../abis/DODOStarterFactoryV2.json
+      eventHandlers:
+        - event: NewFairFund(address,address,address,address)
+          handler: handleNewFairFund
+        - event: NewInstantFund(address,address,address,address)
+          handler: handleNewInstantFund
 templates:
   - kind: ethereum/contract
     name: FairFunding
