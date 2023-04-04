@@ -5,6 +5,35 @@ schema:
   file: ./dodoex.graphql
 dataSources:
   - kind: ethereum/contract
+    name: DODOFeeRouteProxy
+    network: arbitrum-one
+    source:
+      address: '0xe05dd51e4eb5636f4f0e8e7fbe82ea31a2ecef16'
+      abi: DODOFeeRouteProxy
+      startBlock: 45989363
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
     name: DODOV2Proxy02
     network: arbitrum-one
     source:
