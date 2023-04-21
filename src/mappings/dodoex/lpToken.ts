@@ -11,7 +11,7 @@ export function handleTransfer(event: Transfer): void{
     }
     let fromUser = createUser(event.params.from,event);
     let toUser = createUser(event.params.to,event);
-    let lpToken = LpToken.load(event.address.toHexString());
+    let lpToken = LpToken.load(event.address.toHexString()) as LpToken;
     let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 
     {

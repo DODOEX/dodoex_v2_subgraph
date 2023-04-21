@@ -163,7 +163,7 @@ const OWNER: string[] = [
     "0x9c59990ec0177d87ed7d60a56f584e6b06c639a2",
 ]
 
-const createTime: i32[] = [
+const createTime: number[] = [
     1596787200,
     1598180006,
     1602236520,
@@ -180,8 +180,8 @@ const createTime: i32[] = [
 ]
 
 export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
-
-    if (DODOZooID != "dodoex-v2") {
+    const network = dataSource.network();
+    if (network == "mainnet") {
         return;
     }
 
@@ -348,8 +348,8 @@ export function handleDeposit(event: Deposit): void {
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
     let quoteToken = createToken(Address.fromString(pair.quoteToken), event);
 
-    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken), pair as Pair);
-    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken), pair as Pair);
+    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken as string), pair as Pair);
+    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken as string), pair as Pair);
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
     let baseAmountChange = ZERO_BD;
@@ -359,13 +359,13 @@ export function handleDeposit(event: Deposit): void {
     //更新用户LP token信息
     let liquidityPositionID: string, lpToken: LpToken;
     if (event.params.isBaseToken) {
-        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
-        lpToken = LpToken.load(pair.baseLpToken) as LpToken;
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken as string);
+        lpToken = LpToken.load(pair.baseLpToken as string) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
         baseAmountChange = amount;
     } else {
-        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
-        lpToken = LpToken.load(pair.quoteLpToken) as LpToken;
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken as string);
+        lpToken = LpToken.load(pair.quoteLpToken as string) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
         quoteAmountChange = amount;
     }
@@ -458,8 +458,8 @@ export function handleWithdraw(event: Withdraw): void {
     let fromUser = createUser(event.transaction.from, event);
     let baseToken = createToken(Address.fromString(pair.baseToken), event);
     let quoteToken = createToken(Address.fromString(pair.quoteToken), event);
-    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken), pair as Pair);
-    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken), pair as Pair);
+    let baseLpToken = createLpToken(Address.fromString(pair.baseLpToken as string), pair as Pair);
+    let quoteLpToken = createLpToken(Address.fromString(pair.quoteLpToken as string), pair as Pair);
 
     let amount = convertTokenToDecimal(event.params.amount, event.params.isBaseToken ? baseToken.decimals : quoteToken.decimals);
     let baseAmountChange = ZERO_BD;
@@ -468,13 +468,13 @@ export function handleWithdraw(event: Withdraw): void {
     //更新用户LP token信息
     let liquidityPositionID: string, lpToken: LpToken;
     if (event.params.isBaseToken) {
-        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken);
-        lpToken = LpToken.load(pair.baseLpToken) as LpToken;
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.baseLpToken as string);
+        lpToken = LpToken.load(pair.baseLpToken as string) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, baseLpToken.decimals);
         baseAmountChange = amount;
     } else {
-        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken);
-        lpToken = LpToken.load(pair.quoteLpToken) as LpToken;
+        liquidityPositionID = event.params.receiver.toHexString().concat("-").concat(pair.quoteLpToken as string);
+        lpToken = LpToken.load(pair.quoteLpToken as string) as LpToken;
         dealedSharesAmount = convertTokenToDecimal(event.params.lpTokenAmount, quoteLpToken.decimals);
         quoteAmountChange = amount;
     }
@@ -998,8 +998,8 @@ export function handleClaimAssets(event: ClaimAssets): void {
     if (pair != null) {
         let baseToken = Token.load(pair.baseToken);
         let quoteToken = Token.load(pair.quoteToken);
-        pair.baseReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.baseToken), dataSource.address()), baseToken.decimals);
-        pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.quoteToken), dataSource.address()), quoteToken.decimals);
+        pair.baseReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.baseToken), dataSource.address()), (baseToken as Token).decimals);
+        pair.quoteReserve = convertTokenToDecimal(fetchTokenBalance(Address.fromString(pair.quoteToken), dataSource.address()), (quoteToken as Token).decimals);
         pair.updatedAt = event.block.timestamp;
         pair.save();
     }

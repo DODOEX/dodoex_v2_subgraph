@@ -52,8 +52,8 @@ export function handleDODOSwap(event: DODOSwap): void {
         return;
     }
     let user = createUser(event.transaction.from, event);
-    let fromToken = Token.load(event.params.fromToken.toHexString());
-    let toToken = Token.load(event.params.toToken.toHexString());
+    let fromToken = Token.load(event.params.fromToken.toHexString()) as Token;
+    let toToken = Token.load(event.params.toToken.toHexString()) as Token;
     let dealedFromAmount = convertTokenToDecimal(event.params.fromAmount, fromToken.decimals);
     let dealedToAmount = convertTokenToDecimal(event.params.toAmount, toToken.decimals);
     let pmmState = getPMMState(event.address);
@@ -235,8 +235,8 @@ export function handleBuyShares(event: BuyShares): void {
 
     let toUser = createUser(event.params.to, event);
     let fromUser = createUser(event.transaction.from, event);
-    let baseToken = Token.load(pair.baseToken);
-    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = Token.load(pair.baseToken) as Token;
+    let quoteToken = Token.load(pair.quoteToken) as Token;
     let pmmState = getPMMState(event.address);
     if(pmmState==null){
         return;
@@ -338,11 +338,11 @@ export function handleSellShares(event: SellShares): void {
     }
     let toUser = createUser(event.params.to, event);
     let fromUser = createUser(event.transaction.from, event);
-    let baseToken = Token.load(pair.baseToken);
-    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = Token.load(pair.baseToken) as Token;
+    let quoteToken = Token.load(pair.quoteToken) as Token;
 
-    let pmmState: DVM__getPMMStateResultStateStruct;
-    pmmState = getPMMState(event.address);
+    let pmmState: DVM__getPMMStateResultStateStruct | null;
+    pmmState = getPMMState(event.address) ;
     if(pmmState==null){
         return;
     }
@@ -443,13 +443,13 @@ export function handleLpFeeRateChange(event: LpFeeRateChange): void {
         let dpp = DPP.bind(event.address);
         pair.lpFeeRate = convertTokenToDecimal(dpp._LP_FEE_RATE_(), BigInt.fromI32(18));
 
-        let pmmState: DVM__getPMMStateResultStateStruct;
+        let pmmState: DVM__getPMMStateResultStateStruct | null;
         pmmState = getPMMState(event.address);
         if(pmmState==null){
             return;
         }
-        let baseToken = Token.load(pair.baseToken);
-        let quoteToken = Token.load(pair.quoteToken);
+        let baseToken = Token.load(pair.baseToken) as Token;
+        let quoteToken = Token.load(pair.quoteToken) as Token;
 
         pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
         pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
@@ -469,7 +469,7 @@ export function handleTransfer(event: Transfer): void {
 
     let fromUser = createUser(event.params.from, event);
     let toUser = createUser(event.params.to, event);
-    let lpToken = LpToken.load(event.address.toHexString());
+    let lpToken = LpToken.load(event.address.toHexString()) as LpToken;
     let dealedAmount = convertTokenToDecimal(event.params.amount, lpToken.decimals);
 
     {

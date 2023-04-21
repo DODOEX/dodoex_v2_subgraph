@@ -83,7 +83,7 @@ export function bigDecimalExp18(): BigDecimal {
 }
 
 export function convertEthToDecimal(eth: BigInt): BigDecimal {
-    return eth.toBigDecimal().div(exponentToBigDecimal(18))
+    return eth.toBigDecimal().div(exponentToBigDecimal(BigInt.fromI32(18)))
 }
 
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
@@ -192,12 +192,8 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
 
     let contract = ERC20.bind(tokenAddress)
     // try types uint8 for decimals
-    let decimalValue = null
     let decimalResult = contract.try_decimals()
-    if (!decimalResult.reverted) {
-        decimalValue = decimalResult.value
-    }
-    return BigInt.fromI32(decimalValue as i32)
+    return BigInt.fromI32(decimalResult.value)
 }
 
 export function fetchTokenBalance(tokenAddress: Address, user: Address): BigInt {
@@ -463,9 +459,9 @@ export function fetchPoolFeeRate(address: Address): BigDecimal{
 
 }
 
-export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateStruct {
+export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateStruct | null {
     let pair = Pair.load(poolAddress.toHexString());
-    if (pair.type != TYPE_CLASSICAL_POOL) {
+    if (pair != null && pair.type != TYPE_CLASSICAL_POOL) {
         let pool = DVM.bind(poolAddress);
         let pmmState = pool.try_getPMMState();
         if(pmmState.reverted == false){
@@ -477,12 +473,12 @@ export function getPMMState(poolAddress: Address): DVM__getPMMStateResultStateSt
 
 export function getQuoteTokenAddress(poolAddress: Address): Address {
     let pair = Pair.load(poolAddress.toHexString());
-    if (pair.type != TYPE_CLASSICAL_POOL) {
+    if (pair != null && pair.type != TYPE_CLASSICAL_POOL) {
         let pool = DVM.bind(poolAddress);
         let quoteToken = pool._QUOTE_TOKEN_();
         return quoteToken as Address;
     }
-    return null;
+    return Address.fromString(ADDRESS_ZERO)
 }
 
 export function updatePairTraderCount(from: Address, to: Address, pair: Pair, event: ethereum.Event): void {
@@ -578,17 +574,21 @@ export function updateStatistics(event: ethereum.Event, pair: Pair, baseVolume: 
     pairHourData.traders = pairHourData.traders.plus(ONE_BI);
     baseDayData.traders = baseDayData.traders.plus(ONE_BI);
     quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
-    fromTraderPair.lastTxTime = event.block.timestamp;
-    fromTraderPair.updatedAt = event.block.timestamp;
-    fromTraderPair.save();
+    if (fromTraderPair != null) {
+        fromTraderPair.lastTxTime = event.block.timestamp;
+        fromTraderPair.updatedAt = event.block.timestamp;
+        fromTraderPair.save();
+    }
 
     let toTraderPair = PairTrader.load(to.toHexString().concat("-").concat(pair.id));
     pairHourData.traders = pairHourData.traders.plus(ONE_BI);
     baseDayData.traders = baseDayData.traders.plus(ONE_BI);
     quoteDayData.traders = quoteDayData.traders.plus(ONE_BI);
-    toTraderPair.lastTxTime = event.block.timestamp;
-    toTraderPair.updatedAt = event.block.timestamp;
-    toTraderPair.save();
+    if (toTraderPair != null) {
+        toTraderPair.lastTxTime = event.block.timestamp;
+        toTraderPair.updatedAt = event.block.timestamp;
+        toTraderPair.save();
+    }
 
     pairDayData.traders = pairDayData.traders.plus(ONE_BI);
 

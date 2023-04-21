@@ -8,6 +8,11 @@
     "build": "graph build",
     "deploy:dodoex_okchain": "cp ./src/mappings/constant-okchain.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_okchain.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://ipfs.kkt.one --node https://graph.kkt.one/node/ dodoex/dodoex-v2-okchain subgraphs/dodoex/dodoex_okchain.yaml --access-token ",
     "deploy:dodoex_arbitrum": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-arbitrum subgraphs/dodoex/dodoex_arbitrum.yaml",
+    
+    "build:studio:dodoex_arbitrum": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum.yaml --output-dir ./src/types/dodoex/ && graph build subgraphs/dodoex/dodoex_arbitrum.yaml",
+    "deploy:studio:dodoex_arbitrum": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum.yaml --output-dir ./src/types/dodoex/ && graph deploy --studio --node https://api.studio.thegraph.com/deploy/ dodoex/dodoex-v2-arbitrum subgraphs/dodoex/dodoex_arbitrum.yaml",
+    
+    
     "deploy:dodoex_arbitrum_rinkeby": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum_rinkeby.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-arbitrum-rinkeby subgraphs/dodoex/dodoex_arbitrum_rinkeby.yaml",
     "deploy:dodoex_optimism": "cp ./src/mappings/constant-optimism.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_optimism.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-optimism subgraphs/dodoex/dodoex_optimism.yaml",
     "deploy:dodoex_arbitrum_temp": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum_temp.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-arbitrum-temp subgraphs/dodoex/dodoex_arbitrum_temp.yaml",
@@ -15,6 +20,8 @@
     "deploy:dodoex_arbitrum_beta": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-arbitrum-beta subgraphs/dodoex/dodoex_arbitrum.yaml",
     "deploy:dodoex_arbitrum_gamma": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-arbitrum-gamma subgraphs/dodoex/dodoex_arbitrum.yaml",
     "deploy:dodoex_arbitrum_autark": "cp ./src/mappings/constant-arbitrum.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_arbitrum.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ autarkxu/arbitrum_dodoex_v2 subgraphs/dodoex/dodoex_arbitrum.yaml",
+    
+    
     "deploy:dodoex_polygon": "cp ./src/mappings/constant-polygon.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_polygon-graft.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-polygon subgraphs/dodoex/dodoex_polygon-graft.yaml",
     "deploy:dodoex_polygon_alpha": "cp ./src/mappings/constant-polygon.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_polygon-graft.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-polygon-alpha subgraphs/dodoex/dodoex_polygon-graft.yaml",
     "deploy:dodoex_bsc": "cp ./src/mappings/constant-bsc.ts ./src/mappings/constant.ts &&graph codegen subgraphs/dodoex/dodoex_bsc.yaml --output-dir ./src/types/dodoex/ && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-v2-bsc subgraphs/dodoex/dodoex_bsc.yaml",
@@ -110,17 +117,15 @@
     "deploy:dodo_starter_arbitrum": "graph codegen subgraphs/starter/starter_arbitrum.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-arbitrum subgraphs/starter/starter_arbitrum.yaml",
     "deploy:dodo_starter_polygon": "graph codegen subgraphs/starter/starter_polygon.yaml --output-dir ./src/types/starter/  && graph deploy --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ dodoex/dodoex-starter-polygon subgraphs/starter/starter_polygon.yaml"
   },
-  "devDependencies": {
-    "@graphprotocol/graph-ts": "0.20.1",
-    "@typescript-eslint/eslint-plugin": "^2.0.0",
-    "@typescript-eslint/parser": "^2.0.0",
-    "eslint": "^6.2.2",
-    "eslint-config-prettier": "^6.1.0",
-    "prettier": "^1.18.2",
-    "typescript": "^3.5.2"
-  },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.21.1",
-    "ipfs-http-client": "^34.0.0"
+    "@graphprotocol/graph-cli": "0.47.0",
+    "@graphprotocol/graph-ts": "0.29.3",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.2"
+  },
+  "engines": {
+    "node": ">= 12.16.0"
   }
 }

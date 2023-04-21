@@ -26,6 +26,7 @@ import {
 
 export function handleBid(event: Bid): void {
     let cp = CrowdPooling.load(event.address.toHexString());
+    if (cp == null) return;
     let token = createToken(Address.fromString(cp.quoteToken), event);
     let dealedAmount = convertTokenToDecimal(event.params.amount, token.decimals);
     cp.poolQuote = cp.poolQuote.plus(dealedAmount);
@@ -121,6 +122,7 @@ export function handleBid(event: Bid): void {
 
 export function handleCancel(event: Cancel): void {
     let cp = CrowdPooling.load(event.address.toHexString());
+    if(cp == null) return 
     let token = createToken(Address.fromString(cp.quoteToken), event);
     let dealedAmount = convertTokenToDecimal(event.params.amount, token.decimals);
     cp.poolQuote = cp.poolQuote.minus(dealedAmount);
@@ -195,7 +197,7 @@ export function handleCancel(event: Cancel): void {
 
 export function handleSettle(event: Settle): void {
     let cp = CrowdPooling.load(event.address.toHexString());
-
+     if (cp == null) return;
     let cpContrct = CP.bind(event.address);
 
     let dvmAddress = cpContrct._POOL_();

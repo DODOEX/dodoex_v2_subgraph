@@ -1,4 +1,4 @@
-import {Address, BigDecimal, BigInt, ethereum} from "@graphprotocol/graph-ts/index";
+import {Address, BigDecimal, BigInt, dataSource, ethereum} from "@graphprotocol/graph-ts/index";
 import {ADDRESS_ZERO, DODOZooID, TYPE_CLASSICAL_POOL} from "../constant";
 import {createLpToken, createToken, getDODOZoo, ONE_BI, ZERO_BD, ZERO_BI,fetchPoolFeeRate} from "./helpers";
 import {Pair} from "../../types/dodoex/schema";
@@ -28,13 +28,13 @@ const OWNER: string[] = [
     "0x16cc37d06fe5061cd0023fb8d142abaabb396a2b",
 ]
 
-const createTime: i32[] = [
+const createTime: number[] = [
     1603911960
 ]
 
 export function insertAllPairs4V1Aurora(event: ethereum.Event): void {
-
-    if (DODOZooID != "dodoex-v2-aurora") {
+    const network = dataSource.network();
+    if (network != "aurora") {
         return;
     }
 

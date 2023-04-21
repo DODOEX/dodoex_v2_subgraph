@@ -4,6 +4,7 @@ import {
 import {BigDecimal, ethereum} from '@graphprotocol/graph-ts'
 import {increaseTxCount} from './dayUpdates'
 import {ZERO_BD} from "./helpers"
+import { ADDRESS_ZERO } from "../constant";
 
 export function addTransaction(event: ethereum.Event, sender: String, type: String): Transaction {
     let id = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString());
@@ -12,7 +13,11 @@ export function addTransaction(event: ethereum.Event, sender: String, type: Stri
         increaseTxCount(event);
         transaction = new Transaction(id);
         transaction.from = event.transaction.from.toHexString();
-        transaction.to = event.transaction.to.toHexString();
+        if (event.transaction.to != null) {
+            transaction.to = event.transaction.to.toHexString();
+        } else {
+            transaction.to = ADDRESS_ZERO
+        }
         transaction.sender = sender as string;
         transaction.type = type as string;
         transaction.tokens = [];
@@ -28,7 +33,7 @@ export function addTransaction(event: ethereum.Event, sender: String, type: Stri
 }
 
 export function addToken(transaction: Transaction,token: Token): void{
-    if(transaction!=null){
+    if(transaction!=null && transaction.tokens != null){
         transaction.tokens.push(token.id);
         transaction.save();
     }

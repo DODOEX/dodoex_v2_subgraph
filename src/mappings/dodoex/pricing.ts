@@ -34,10 +34,10 @@ const STANDARD_TOKEN: string[] = [
 function priceCore(time: BigInt): void {
     let stableOnePair = Pair.load(STABLE_COIN_PAIR_ONE);
     let baseCurrencyPair = Pair.load(BASE_COIN_PAIR);
-    let wrappedBaseCoin = Token.load(WRAPPED_BASE_COIN);
+    let wrappedBaseCoin = Token.load(WRAPPED_BASE_COIN) as Token;
 
-    let stableCoinOne = Token.load(STABLE_ONE_ADDRESS);
-    let stableCoinTwo = Token.load(STABLE_TWO_ADDRESS);
+    let stableCoinOne = Token.load(STABLE_ONE_ADDRESS) as Token;
+    let stableCoinTwo = Token.load(STABLE_TWO_ADDRESS) as Token;
 
     let baseCoin = Token.load(BASE_COIN);
 
@@ -49,8 +49,8 @@ function priceCore(time: BigInt): void {
         let baseUsdPrice = lastTradePrice.div(lastTradePrice.plus(ONE_BD)).times(ONE_BD.plus(ONE_BD));
         let quoteUsdPrice = ONE_BD.div(lastTradePrice.plus(ONE_BD)).times(ONE_BD.plus(ONE_BD));
 
-        let baseToken = Token.load(stableOnePair.baseToken);
-        let quoteToken = Token.load(stableOnePair.quoteToken);
+        let baseToken = Token.load(stableOnePair.baseToken) as Token;
+        let quoteToken = Token.load(stableOnePair.quoteToken) as Token;
         baseToken.usdPrice = baseUsdPrice;
         quoteToken.usdPrice = quoteUsdPrice;
         baseToken.priceUpdateTimestamp = time;
@@ -97,8 +97,8 @@ function priceCore(time: BigInt): void {
 
 function updatePoolTokenPrice(pair: Pair, time: BigInt): void {
     //The function that didn't go through
-    let quoteToken = Token.load(pair.quoteToken);
-    let baseToken = Token.load(pair.baseToken);
+    let quoteToken = Token.load(pair.quoteToken) as Token;
+    let baseToken = Token.load(pair.baseToken) as Token;
 
     if (quoteToken.usdPrice != null) {
         //I'm confused that I can't update the value here

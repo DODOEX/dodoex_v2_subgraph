@@ -30,8 +30,8 @@ export function updatePairDayData(event: ethereum.Event, pair: Pair): PairDayDat
 
     let dayPairID = pair.id.concat("-").concat(BigInt.fromI32(dayID).toString())
 
-    let baseToken = Token.load(pair.baseToken);
-    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = Token.load(pair.baseToken) as Token;
+    let quoteToken = Token.load(pair.quoteToken) as Token;
 
     let pairDayData = PairDayData.load(dayPairID);
     if (pairDayData == null) {
@@ -64,12 +64,12 @@ export function updatePairDayData(event: ethereum.Event, pair: Pair): PairDayDat
 
     if (pair.type != TYPE_DPP_POOL) {
         if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
-            let baseLpToken = LpToken.load(pair.baseLpToken);
+            let baseLpToken = LpToken.load(pair.baseLpToken) as LpToken;
             pairDayData.baseLpTokenTotalSupply = convertTokenToDecimal(baseLpToken.totalSupply, baseLpToken.decimals);
         }
 
         if (pair.quoteLpToken != null && pair.quoteLpToken != ADDRESS_ZERO) {
-            let quoteLpToken = LpToken.load(pair.quoteLpToken);
+            let quoteLpToken = LpToken.load(pair.quoteLpToken) as LpToken;
             pairDayData.quoteLpTokenTotalSupply = convertTokenToDecimal(quoteLpToken.totalSupply, quoteLpToken.decimals);
         }
 
@@ -89,8 +89,8 @@ export function updatePairHourData(event: ethereum.Event, pair: Pair): PairHourD
 
     let hourPairID = pair.id.concat("-").concat(BigInt.fromI32(hourID).toString())
 
-    let baseToken = Token.load(pair.baseToken);
-    let quoteToken = Token.load(pair.quoteToken);
+    let baseToken = Token.load(pair.baseToken) as Token;
+    let quoteToken = Token.load(pair.quoteToken) as Token;
 
     let pairHourData = PairHourData.load(hourPairID);
     if (pairHourData == null) {
@@ -123,12 +123,12 @@ export function updatePairHourData(event: ethereum.Event, pair: Pair): PairHourD
 
     if (pair.type != TYPE_DPP_POOL) {
         if (pair.baseLpToken != null && pair.baseLpToken != ADDRESS_ZERO) {
-            let baseLpToken = LpToken.load(pair.baseLpToken);
+            let baseLpToken = LpToken.load(pair.baseLpToken) as LpToken;
             pairHourData.baseLpTokenTotalSupply = convertTokenToDecimal(baseLpToken.totalSupply, baseLpToken.decimals);
         }
 
         if (pair.quoteLpToken != null && pair.quoteLpToken != ADDRESS_ZERO) {
-            let quoteLpToken = LpToken.load(pair.quoteLpToken);
+            let quoteLpToken = LpToken.load(pair.quoteLpToken) as LpToken;
             pairHourData.quoteLpTokenTotalSupply = convertTokenToDecimal(quoteLpToken.totalSupply, quoteLpToken.decimals);
         }
 
