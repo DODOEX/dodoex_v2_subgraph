@@ -181,6 +181,33 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
+    name: DODOV2Proxy02
+    network: bsc
+    source:
+      address: '0x8f8dd7db1bda5ed3da8c9daf3bfa471c12d58486'
+      abi: DODOV2Proxy02
+      startBlock: 4926661
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
     name: DODOFeeRouteProxy
     network: bsc
     source:
@@ -210,12 +237,12 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DODOV2Proxy02
+    name: DODOFeeRouteProxy-widgit
     network: bsc
     source:
-      address: '0x8f8dd7db1bda5ed3da8c9daf3bfa471c12d58486'
-      abi: DODOV2Proxy02
-      startBlock: 4926661
+      address: '0xa8b034301bb5dd3610db585def3e7c0d52f2319f'
+      abi: DODOFeeRouteProxy
+      startBlock: 23887578
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -225,6 +252,8 @@ dataSources:
         - Pair
         - Token
       abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
         - name: DODOV2Proxy02
           file: ../../abis/DODOV2Proxy02.json
         - name: ERC20

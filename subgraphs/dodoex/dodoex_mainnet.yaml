@@ -1,7 +1,7 @@
 specVersion: 0.0.2
 description: Dodoex.io
 graft:
-  base: QmZRnLHdYZDVU3CP5DXzLF5GGyxEg5uz6kXRG5FateiqQH
+  base: QmRBS2JuiFPEAzPFMFvkrUxNF8HHihvG5KLbKBTqo3QQBH
   block: 16180938
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
@@ -12,6 +12,35 @@ dataSources:
     network: mainnet
     source:
       address: '0x50f9bDe1c76bba997a5d6e7FEFff695ec8536194'
+      abi: DODOFeeRouteProxy
+      startBlock: 16180938
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODOFeeRouteProxy-widgit
+    network: mainnet
+    source:
+      address: '0x21b9f852534fb9ddc3a0a7b24f067b50d8ac9a99'
       abi: DODOFeeRouteProxy
       startBlock: 16180938
     mapping:
