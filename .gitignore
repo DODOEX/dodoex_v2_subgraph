@@ -13,5 +13,5 @@ yarn.lock
 .tsbuildinfo.*
 .docker
 .docker.*
-build
+build/
 src/types/
