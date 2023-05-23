@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3ProxyV2
-    network: base-testnet
+    network: cfx
     source:
-      address: '0xe0096b3Dc84f4cca520638F7F4be84A560798C3f'
+      address: '0x14F7B8Fb0c1447DdE7bcf92a8d9BB058c8A5FE64'
       abi: DODOMineV3ProxyV2
-      startBlock: 3436551
+      startBlock: 70692860
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -36,11 +36,11 @@ dataSources:
           handler: handleV2CreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
-    network: base-testnet
+    network: cfx
     source:
-      address: '0xFF57A5CBf6279d68A301d46E72347772bfC844FD'
+      address: '0x4632e6EBd4a01eBF54739A9D71a62CEdb29E9183'
       abi: DODOMineV3Registry
-      startBlock: 3436551
+      startBlock: 70692585
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -67,7 +67,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
-    network: base-testnet
+    network: cfx
     source:
       abi: ERC20MineV3
     mapping:
