@@ -1,36 +1,29 @@
 specVersion: 0.0.2
 description: Dodoex.io
-graft:
-  base: QmcQM6MaZRS9soQNsKfPDHmqsMKB1nebuZJwoiysA525aY
-  block: 23887577
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: dodoex.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODONFTRegistry
-    network: bsc
+    name: DODOFeeRouteProxy
+    network: moonriver
     source:
-      address: "0x2c0dd764a0be8a7e747cb0765e268d576edce31a"
-      abi: DODONFTRegistry
-      startBlock: 9092832
+      address: "0x003B18357460e789e711849749A793c430d14f97"
+      abi: DODOFeeRouteProxy
+      startBlock: 591020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DODOFeeRouteProxy/DODOFeeRouteProxy.wasm
       entities:
         - Pair
         - Token
       abis:
-        - name: DODOZoo
-          file: ../abis/DODOZoo.json
-        - name: DODO
-          file: ../abis/DODO.json
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: DODONFTRegistry
-          file: ../abis/DODONFTRegistry.json
+        - name: DODOFeeRouteProxy
+          file: ../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../abis/DODOV2Proxy02.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -38,22 +31,49 @@ dataSources:
         - name: ERC20NameBytes
           file: ../abis/ERC20NameBytes.json
       eventHandlers:
-        - event: NewRegistry(address,address,address)
-          handler: handleNewRegistry
-        - event: RemoveRegistry(address)
-          handler: handleRemoveRegistry
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DODORouteProxy
-    network: bsc
+    name: DODOFeeRouteProxyWidgit
+    network: moonriver
     source:
-      address: "0x6b3d817814eabc984d51896b1015c0b89e9737ca"
-      abi: DODORouteProxy
-      startBlock: 7967129
+      address: "0x2144BF2003bFd9Aa0950716333fBb5B7A1Caeda4"
+      abi: DODOFeeRouteProxy
+      startBlock: 591020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODORouteProxy/DODORouteProxy.wasm
+      file: DODOFeeRouteProxy/DODOFeeRouteProxy.wasm
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODORouteProxy
+    network: moonriver
+    source:
+      address: "0x0125cd41312f72a0774112ca639d65a2c02e3627"
+      abi: DODORouteProxy
+      startBlock: 591020
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: DODOFeeRouteProxy/DODOFeeRouteProxy.wasm
       entities:
         - Pair
         - Token
@@ -70,131 +90,17 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DODOMine
-    network: bsc
-    source:
-      address: "0x01f9bfac04e6184e90bd7eafd51999ce430cc750"
-      abi: DODOMine
-      startBlock: 5007474
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODOMine/DODOMine.wasm
-      entities:
-        - User
-        - StakeHistory
-      abis:
-        - name: DODOMine
-          file: ../abis/DODOMine.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: Deposit(indexed address,indexed uint256,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,indexed uint256,uint256)
-          handler: handleWithdraw
-        - event: Claim(indexed address,uint256)
-          handler: handleClaim
-  - kind: ethereum/contract
-    name: DODOIncentive
-    network: bsc
-    source:
-      address: "0x80930cb1849f7d42531506ff45e66724338a821b"
-      abi: DODOIncentive
-      startBlock: 4208077
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODOIncentive/DODOIncentive.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODO
-          file: ../abis/DODO.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: DODOIncentive
-          file: ../abis/DODOIncentive.json
-      eventHandlers:
-        - event: Incentive(address,uint256)
-          handler: handleIncentive
-  - kind: ethereum/contract
-    name: DODOV2Proxy01
-    network: bsc
-    source:
-      address: "0xb57dd5c265dbb13ca014f2332069e90cd0e22e65"
-      abi: DODOV2Proxy01
-      startBlock: 4208152
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODORouteProxy/DODORouteProxy.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOV2Proxy01
-          file: ../abis/DODOV2Proxy01.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
-  - kind: ethereum/contract
-    name: DODOV2Proxy02_2012_02_17
-    network: bsc
-    source:
-      address: "0xd56281ef996b6b29874c77d2e1464216e8043127"
-      abi: DODOV2Proxy02
-      startBlock: 4675013
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODORouteProxy/DODORouteProxy.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOV2Proxy02
-          file: ../abis/DODOV2Proxy02.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
-  - kind: ethereum/contract
     name: DODOV2Proxy02
-    network: bsc
+    network: moonriver
     source:
-      address: "0x8f8dd7db1bda5ed3da8c9daf3bfa471c12d58486"
+      address: "0xd9dec7c3c06e62a4c1beeb07cadf568f496b14c2"
       abi: DODOV2Proxy02
-      startBlock: 4926661
+      startBlock: 591012
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODORouteProxy/DODORouteProxy.wasm
+      file: DODOFeeRouteProxy/DODOFeeRouteProxy.wasm
       entities:
         - Pair
         - Token
@@ -211,75 +117,17 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DODOFeeRouteProxy
-    network: bsc
+    name: DVMFactory
+    network: moonriver
     source:
-      address: "0x0656fd85364d03b103ceeda192fb2d3906a6ac15"
-      abi: DODOFeeRouteProxy
-      startBlock: 23887578
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODORouteProxy/DODORouteProxy.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOFeeRouteProxy
-          file: ../abis/DODOFeeRouteProxy.json
-        - name: DODOV2Proxy02
-          file: ../abis/DODOV2Proxy02.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
-  - kind: ethereum/contract
-    name: DODOFeeRouteProxy-widgit
-    network: bsc
-    source:
-      address: "0xa8b034301bb5dd3610db585def3e7c0d52f2319f"
-      abi: DODOFeeRouteProxy
-      startBlock: 23887578
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODORouteProxy/DODORouteProxy.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOFeeRouteProxy
-          file: ../abis/DODOFeeRouteProxy.json
-        - name: DODOV2Proxy02
-          file: ../abis/DODOV2Proxy02.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
-  - kind: ethereum/contract
-    name: DVMFactory_2020_02_21
-    network: bsc
-    source:
-      address: "0xf50bdc9e90b7a1c138cb7935071b85c417c4cb8e"
+      address: "0x738ebf387a0ce0eb46b0ef8fa5dea2eae6b1df51"
       abi: DVMFactory
-      startBlock: 5674967
+      startBlock: 545215
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DVMFactory/DVMFactory.wasm
       entities:
         - Pair
         - Token
@@ -299,144 +147,20 @@ dataSources:
       eventHandlers:
         - event: NewDVM(address,address,address,address)
           handler: handleNewDVM
-  - kind: ethereum/contract
-    name: DVMFactory_2020_02_16
-    network: bsc
-    source:
-      address: "0x790b4a80fb1094589a3c0efc8740aa9b0c1733fb"
-      abi: DVMFactory
-      startBlock: 5730780
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVMFactory
-          file: ../abis/DVMFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: FeeRateModel
-          file: ../abis/FeeRateModel.json
-      eventHandlers:
-        - event: NewDVM(address,address,address,address)
-          handler: handleNewDVM
-  - kind: ethereum/contract
-    name: DPPFactory_2021_01_22
-    network: bsc
-    source:
-      address: "0x7737fd30535c69545deeea54ab8dd590ccaebd3c"
-      abi: DPPFactory
-      startBlock: 4208108
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: FeeRateModel
-          file: ../abis/FeeRateModel.json
-      eventHandlers:
-        - event: NewDPP(address,address,address,address)
-          handler: handleNewDPP
-  - kind: ethereum/contract
-    name: DPPFactory_2021_02_17
-    network: bsc
-    source:
-      address: "0x9b64c81ba54ea51e1f6b7fefb3cff8aa6f1e2a09"
-      abi: DPPFactory
-      startBlock: 4323290
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: FeeRateModel
-          file: ../abis/FeeRateModel.json
-      eventHandlers:
-        - event: NewDPP(address,address,address,address)
-          handler: handleNewDPP
+        - event: RemoveDVM(address)
+          handler: handleRemoveDVM
   - kind: ethereum/contract
     name: DPPFactory
-    network: bsc
+    network: moonriver
     source:
-      address: "0xafe0a75dffb395eaabd0a7e1bbbd0b11f8609eef"
+      address: "0xd0e1aa51df0896c126ce6f8a064e551e0dd3d39b"
       abi: DPPFactory
-      startBlock: 4926619
+      startBlock: 848094
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: FeeRateModel
-          file: ../abis/FeeRateModel.json
-      eventHandlers:
-        - event: NewDPP(address,address,address,address)
-          handler: handleNewDPP
-        - event: RemoveDPP(address)
-          handler: handleRemoveDPP
-  - kind: ethereum/contract
-    name: DPPFactory_21_10_13
-    network: bsc
-    source:
-      address: "0xd9cac3d964327e47399aebd8e1e6dcc4c251daae"
-      abi: DPPFactory
-      startBlock: 11677242
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DVMFactory/DVMFactory.wasm
       entities:
         - Pair
         - Token
@@ -460,16 +184,16 @@ dataSources:
           handler: handleRemoveDPP
   - kind: ethereum/contract
     name: DSPFactory
-    network: bsc
+    network: moonriver
     source:
-      address: "0x0fb9815938ad069bf90e14fe6c596c514bede767"
+      address: "0xb76de21f04f677f07d9881174a1d8e624276314c"
       abi: DSPFactory
-      startBlock: 6695425
+      startBlock: 545230
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DVMFactory/DVMFactory.wasm
       entities:
         - Pair
         - Token
@@ -492,50 +216,17 @@ dataSources:
         - event: RemoveDSP(address)
           handler: handleRemoveDSP
   - kind: ethereum/contract
-    name: CrowdPoolingFactory_20200721
-    network: bsc
-    source:
-      address: "0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5"
-      abi: CrowdPoolingFactory
-      startBlock: 4208124
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: CrowdPoolingFactory
-          file: ../abis/CrowdPoolingFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: CP
-          file: ../abis/CP.json
-      eventHandlers:
-        - event: NewCP(address,address,address,address)
-          handler: handleNewCP
-  - kind: ethereum/contract
     name: CrowdPoolingFactory
-    network: bsc
+    network: moonriver
     source:
-      address: "0x778df5b12170e8af8df94356bfc864e57ce185dc"
+      address: "0x0596908263ef2724fbfbcafa1c983fcd7a629038"
       abi: CrowdPoolingFactory
-      startBlock: 4926634
+      startBlock: 545227
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DVMFactory/DVMFactory.wasm
       entities:
         - Pair
         - Token
@@ -544,6 +235,8 @@ dataSources:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: CrowdPoolingFactory
           file: ../abis/CrowdPoolingFactory.json
         - name: ERC20
@@ -559,16 +252,16 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: CrowdPoolingFactoryV2
-    network: bsc
+    network: moonriver
     source:
-      address: "0x9c9ef6820a1aa0e25770ccde4e974f81cb28debc"
-      abi: CrowdPoolingFactory
-      startBlock: 13920938
+      address: "0x1b75c99c3ab14764aea1511e68b33f5b9138a241"
+      abi: CrowdPoolingFactoryV2
+      startBlock: 545223
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DVMFactory/DVMFactory.wasm
       entities:
         - Pair
         - Token
@@ -579,6 +272,8 @@ dataSources:
           file: ../abis/DPP.json
         - name: CrowdPoolingFactory
           file: ../abis/CrowdPoolingFactory.json
+        - name: CrowdPoolingFactoryV2
+          file: ../abis/CrowdPoolingFactoryV2.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -592,53 +287,20 @@ dataSources:
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
-  - kind: ethereum/contract
-    name: CrowdPoolingFactoryV3
-    network: bsc
-    source:
-      address: "0x224fece8104771478a3a4ce6d92ab1538d3659ee"
-      abi: CrowdPoolingFactory
-      startBlock: 19507160
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: DPP
-          file: ../abis/DPP.json
-        - name: CrowdPoolingFactory
-          file: ../abis/CrowdPoolingFactory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-        - name: CP
-          file: ../abis/CP.json
-        - name: CPV2
-          file: ../abis/CPV2.json
-      eventHandlers:
-        - event: NewCP(address,address,address,address)
-          handler: handleNewCP
+        - event: RemoveCP(address)
+          handler: handleRemoveCP
   - kind: ethereum/contract
     name: UpCrowdPoolingFactory
-    network: bsc
+    network: moonriver
     source:
-      address: "0x4f57f6929e58ae564f6ab090fe0aeecb39b0f270"
+      address: "0x043957f7554275b90c5178872fae851dcfc1089d"
       abi: UpCrowdPoolingFactory
-      startBlock: 5699943
+      startBlock: 545223
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: DODONFTRegistry/DODONFTRegistry.wasm
+      file: DVMFactory/DVMFactory.wasm
       entities:
         - Pair
         - Token
@@ -664,11 +326,11 @@ dataSources:
           handler: handleNewCP
   - kind: ethereum/contract
     name: DODOZoo
-    network: bsc
+    network: moonriver
     source:
-      address: "0xca459456a45e300aa7ef447dbb60f87cccb42828"
+      address: "0x02fcb21dc1cf221939c1d4277fb54016b5d32bc7"
       abi: DODOZoo
-      startBlock: 726278
+      startBlock: 547505
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -680,10 +342,12 @@ dataSources:
       abis:
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: DODO
-          file: ../abis/DODO.json
         - name: DVM
           file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -696,7 +360,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: DVM
-    network: bsc
+    network: moonriver
     source:
       abi: DVM
     mapping:
@@ -711,6 +375,10 @@ templates:
       abis:
         - name: DVM
           file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: DVMFactory
           file: ../abis/DVMFactory.json
         - name: DPPFactory
@@ -719,8 +387,6 @@ templates:
           file: ../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: DPP
-          file: ../abis/DPP.json
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -732,7 +398,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: DPP
-    network: bsc
+    network: moonriver
     source:
       abi: DPP
     mapping:
@@ -744,14 +410,16 @@ templates:
         - Pair
         - Token
       abis:
-        - name: DVMFactory
-          file: ../abis/DVMFactory.json
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
         - name: DVM
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
+        - name: DVMFactory
+          file: ../abis/DVMFactory.json
+        - name: DPPFactory
+          file: ../abis/DPPFactory.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -769,7 +437,7 @@ templates:
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
     name: DSP
-    network: bsc
+    network: moonriver
     source:
       abi: DSP
     mapping:
@@ -809,7 +477,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CP
-    network: bsc
+    network: moonriver
     source:
       abi: CP
     mapping:
@@ -825,6 +493,8 @@ templates:
           file: ../abis/DVM.json
         - name: DPP
           file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -848,7 +518,7 @@ templates:
           handler: handleClaim
   - kind: ethereum/contract
     name: DODO
-    network: bsc
+    network: moonriver
     source:
       abi: DODO
     mapping:
@@ -860,16 +530,18 @@ templates:
         - Pair
         - Token
       abis:
+        - name: DVM
+          file: ../abis/DVM.json
+        - name: DPP
+          file: ../abis/DPP.json
+        - name: DODO
+          file: ../abis/DODO.json
         - name: DVMFactory
           file: ../abis/DVMFactory.json
         - name: DPPFactory
           file: ../abis/DPPFactory.json
-        - name: DODO
-          file: ../abis/DODO.json
         - name: DODOZoo
           file: ../abis/DODOZoo.json
-        - name: DVM
-          file: ../abis/DVM.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -894,48 +566,15 @@ templates:
         - event: UpdateMaintainerFeeRate(uint256,uint256)
           handler: handleUpdateMaintainerFeeRate
   - kind: ethereum/contract
-    name: ERC20
-    network: bsc
-    source:
-      abi: ERC20
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: templates/ERC20/ERC20.wasm
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DVMFactory
-          file: ../abis/DVMFactory.json
-        - name: DPPFactory
-          file: ../abis/DPPFactory.json
-        - name: DODO
-          file: ../abis/DODO.json
-        - name: DODOZoo
-          file: ../abis/DODOZoo.json
-        - name: DVM
-          file: ../abis/DVM.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-  - kind: ethereum/contract
     name: DODOLpToken
-    network: bsc
+    network: moonriver
     source:
       abi: DODOLpToken
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/ERC20/ERC20.wasm
+      file: templates/DODOLpToken/DODOLpToken.wasm
       entities:
         - Pair
         - Token
@@ -947,7 +586,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum/contract
     name: CPV2
-    network: bsc
+    network: moonriver
     source:
       abi: CPV2
     mapping:

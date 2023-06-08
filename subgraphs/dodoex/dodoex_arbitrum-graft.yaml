@@ -1,8 +1,5 @@
 specVersion: 0.0.2
 description: Dodoex.io
-graft:
-  base: QmVbEmYjNRU5zyRDq6WDCWLnq952vDVWaM8AmVtvxpMy4b
-  block: 45989363
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -12,6 +9,35 @@ dataSources:
     network: arbitrum-one
     source:
       address: '0xe05dd51e4eb5636f4f0e8e7fbe82ea31a2ecef16'
+      abi: DODOFeeRouteProxy
+      startBlock: 45989363
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODOFeeRouteProxyWidgit
+    network: arbitrum-one
+    source:
+      address: '0xc4A1a152812dE96b2B1861E433f42290CDD7f113'
       abi: DODOFeeRouteProxy
       startBlock: 45989363
     mapping:
@@ -360,6 +386,33 @@ dataSources:
           handler: handleWithdraw
         - event: Claim(indexed address,uint256)
           handler: handleClaim
+  - kind: ethereum/contract
+    name: DODORouteProxy
+    network: arbitrum-one
+    source:
+      address: '0x3b6067d4caa8a14c63fdbe6318f27a0bbc9f9237'
+      abi: DODORouteProxy
+      startBlock: 226006
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODORouteProxy
+          file: ../../abis/DODORouteProxy.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
 templates:
   - kind: ethereum/contract
     name: DVM
