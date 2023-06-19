@@ -1,5 +1,5 @@
 import { Transaction, Token } from "../../types/dodoex/schema";
-import { BigDecimal, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, ethereum } from "@graphprotocol/graph-ts";
 import { increaseTxCount } from "./dayUpdates";
 import { ZERO_BD } from "./helpers";
 import { ADDRESS_ZERO } from "../constant";
@@ -18,7 +18,8 @@ export function addTransaction(
     increaseTxCount(event);
     transaction = new Transaction(id);
     transaction.from = event.transaction.from.toHexString();
-    transaction.to = event.transaction.to;
+    if (event.transaction.to)
+      transaction.to = (event.transaction.to as Address).toHexString();
     transaction.sender = sender;
     transaction.type = type;
     transaction.tokens = [];

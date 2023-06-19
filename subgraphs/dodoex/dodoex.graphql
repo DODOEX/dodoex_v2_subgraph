@@ -50,7 +50,7 @@ type Transaction @entity {
   "from"
   from: String!
   "to"
-  to: Bytes
+  to: String
   "sender"
   sender: String!
   "type(TRADE、LP、CP)"
