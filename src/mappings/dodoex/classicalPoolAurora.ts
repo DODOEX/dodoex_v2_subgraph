@@ -68,6 +68,7 @@ export function insertAllPairs4V1Aurora(event: ethereum.Event): void {
       pair.type = TYPE_CLASSICAL_POOL;
 
       pair.creator = Address.fromString(OWNER[i]);
+      pair.owner = pair.creator;
       pair.createdAtTimestamp = BigInt.fromString(createTime[i]);
       pair.createdAtBlockNumber = event.block.number;
 

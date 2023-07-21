@@ -1,8 +1,8 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description: Dodoex.io
-graft:
-  base: QmTwThpUEJGrBB1cbvPfW9aCEEud2gjHDeQf4N7Nuxp5zA
-  block: 25223859
+# graft:
+#   base: QmTwThpUEJGrBB1cbvPfW9aCEEud2gjHDeQf4N7Nuxp5zA
+#   block: 25223859
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./token.graphql
@@ -16,7 +16,7 @@ dataSources:
       startBlock: 14349331
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/token/factory.ts
       entities:
@@ -45,7 +45,7 @@ dataSources:
       startBlock: 14349331
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/token/factoryv2.ts
       entities:
@@ -76,7 +76,7 @@ dataSources:
       startBlock: 25181211
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/token/factoryv2.ts
       entities:

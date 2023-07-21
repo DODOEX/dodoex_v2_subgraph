@@ -216,6 +216,7 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
       pair.type = TYPE_CLASSICAL_POOL;
 
       pair.creator = Address.fromString(OWNER[i]);
+      pair.owner = pair.creator;
       pair.createdAtTimestamp = BigInt.fromString(createTime[i]);
       pair.createdAtBlockNumber = event.block.number;
 
@@ -305,6 +306,7 @@ export function handleDODOBirth(event: DODOBirth): void {
     pair.type = TYPE_CLASSICAL_POOL;
 
     pair.creator = Address.fromString(ADDRESS_ZERO);
+    pair.owner = pair.creator;
     pair.createdAtTimestamp = event.block.timestamp;
     pair.createdAtBlockNumber = event.block.number;
     pair.lastTradePrice = ZERO_BD;
@@ -1334,6 +1336,7 @@ export function handleAddDODO(call: AddDODOCall): void {
     pair.type = TYPE_CLASSICAL_POOL;
 
     pair.creator = Address.fromString(ADDRESS_ZERO);
+    pair.owner = pair.creator;
     pair.createdAtTimestamp = call.block.timestamp;
     pair.createdAtBlockNumber = call.block.number;
     pair.lastTradePrice = ZERO_BD;

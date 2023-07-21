@@ -285,6 +285,8 @@ type Pair @entity {
   source: String
   "creator"
   creator: Bytes!
+  "owner"
+  owner: Bytes
   "base token"
   baseToken: Token!
   "quote token"
@@ -362,6 +364,34 @@ type Pair @entity {
   "deposit quote allowed"
   isDepositQuoteAllowed: Boolean!
 
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+"PMMState"
+type PairDetail @entity {
+  "pair address"
+  id: ID!
+  pair: Pair!
+  i: BigInt!
+  k: BigInt!
+  "baseReserve"
+  b: BigInt!
+  "quoteReserve"
+  q: BigInt!
+  b0: BigInt!
+  q0: BigInt!
+  r: BigInt!
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type DPPOracleAdmin @entity {
+  "DPPOracleAdmin address"
+  id: ID!
+  pair: Pair!
+  previousOwner: Bytes
+  newOwner: Bytes
   "updatedAt"
   updatedAt: BigInt
 }
