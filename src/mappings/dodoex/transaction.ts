@@ -21,6 +21,7 @@ export function addTransaction(
     if (event.transaction.to)
       transaction.to = (event.transaction.to as Address).toHexString();
     transaction.sender = sender;
+    transaction.address = event.address;
     transaction.type = type;
     transaction.tokens = [];
     transaction.volumeUSD = ZERO_BD;

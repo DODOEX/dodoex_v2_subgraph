@@ -59,6 +59,8 @@ type Transaction @entity {
   tokens: [Token!]
   "volumeUSD"
   volumeUSD: BigDecimal!
+  "event address"
+  address: Bytes!
 
   "updatedAt"
   updatedAt: BigInt
