@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
@@ -13,7 +13,7 @@ dataSources:
       startBlock: 9092832
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -48,7 +48,7 @@ dataSources:
       startBlock: 7967129
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -75,7 +75,7 @@ dataSources:
       startBlock: 5007474
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/mine.ts
       entities:
@@ -106,7 +106,7 @@ dataSources:
       startBlock: 4208077
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/incentive.ts
       entities:
@@ -135,7 +135,7 @@ dataSources:
       startBlock: 4208152
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -162,7 +162,7 @@ dataSources:
       startBlock: 4675013
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -189,7 +189,7 @@ dataSources:
       startBlock: 4926661
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -216,7 +216,7 @@ dataSources:
       startBlock: 23887578
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -245,7 +245,7 @@ dataSources:
       startBlock: 23887578
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -274,7 +274,7 @@ dataSources:
       startBlock: 5674967
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -305,7 +305,7 @@ dataSources:
       startBlock: 5730780
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -336,7 +336,7 @@ dataSources:
       startBlock: 4208108
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -367,7 +367,7 @@ dataSources:
       startBlock: 4323290
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -398,7 +398,7 @@ dataSources:
       startBlock: 4926619
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -431,7 +431,7 @@ dataSources:
       startBlock: 11677242
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -464,7 +464,7 @@ dataSources:
       startBlock: 6695425
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -497,7 +497,7 @@ dataSources:
       startBlock: 4208124
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -530,7 +530,7 @@ dataSources:
       startBlock: 4926634
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -563,7 +563,7 @@ dataSources:
       startBlock: 13920938
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -598,7 +598,7 @@ dataSources:
       startBlock: 19507160
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -633,7 +633,7 @@ dataSources:
       startBlock: 5699943
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/poolFactory.ts
       entities:
@@ -668,7 +668,7 @@ dataSources:
       startBlock: 726278
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/classicPoolFromV1.ts
       entities:
@@ -698,7 +698,7 @@ templates:
       abi: DVM
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/pool.ts
       entities:
@@ -734,7 +734,7 @@ templates:
       abi: DPP
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/pool.ts
       entities:
@@ -765,13 +765,52 @@ templates:
         - event: LpFeeRateChange(uint256)
           handler: handleLpFeeRateChange
   - kind: ethereum/contract
+    name: DPPOracleAdmin
+    network: bsc
+    source:
+      abi: DPPOracleAdmin
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/pool.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: DPPOracleAdmin
+          file: ../../abis/DPPOracleAdmin.json
+        - name: DODO
+          file: ../../abis/DODO.json
+        - name: DVMFactory
+          file: ../../abis/DVMFactory.json
+        - name: DPPFactory
+          file: ../../abis/DPPFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleDPPOwnershipTransferred
+  - kind: ethereum/contract
     name: DSP
     network: bsc
     source:
       abi: DSP
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/pool.ts
       entities:
@@ -811,7 +850,7 @@ templates:
       abi: CP
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/crowdPooling.ts
       entities:
@@ -850,7 +889,7 @@ templates:
       abi: DODO
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/classicPoolFromV1.ts
       entities:
@@ -897,7 +936,7 @@ templates:
       abi: ERC20
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/lpToken.ts
       entities:
@@ -930,7 +969,7 @@ templates:
       abi: DODOLpToken
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/lpToken.ts
       entities:
@@ -949,7 +988,7 @@ templates:
       abi: CPV2
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/crowdPooling.ts
       entities:

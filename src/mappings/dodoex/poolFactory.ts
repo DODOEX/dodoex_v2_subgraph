@@ -65,12 +65,14 @@ import { CP } from "../../types/dodoex/CrowdPoolingFactory/CP";
 import { ADDRESS_ZERO } from "../constant";
 
 export function handleNewDVM(event: NewDVM): void {
+  log.info("handleNewDVM start", []);
+  log.info("handleNewDVM 0, {}", [event.params.dvm.toHexString()]);
   createUser(event.params.creator, event);
   //1、获取token schema信息
   let baseToken = createToken(event.params.baseToken, event);
   let quoteToken = createToken(event.params.quoteToken, event);
   let pair = Pair.load(event.params.dvm.toHexString());
-
+  log.info("handleNewDVM 1, {}", [event.params.dvm.toHexString()]);
   if (pair == null) {
     pair = new Pair(event.params.dvm.toHexString());
     pair.baseToken = event.params.baseToken.toHexString();
@@ -87,7 +89,7 @@ export function handleNewDVM(event: NewDVM): void {
     pair.baseLpToken = event.params.dvm.toHexString();
     pair.quoteLpToken = event.params.dvm.toHexString();
     createLpToken(event.params.dvm, pair as Pair);
-
+    log.info("handleNewDVM 2, {}", [event.params.dvm.toHexString()]);
     pair.lastTradePrice = ZERO_BD;
     pair.txCount = ZERO_BI;
     pair.volumeBaseToken = ZERO_BD;
@@ -106,6 +108,7 @@ export function handleNewDVM(event: NewDVM): void {
 
     let dvm = DVM.bind(event.params.dvm);
     let pmmState = dvm.try_getPMMState();
+    log.info("handleNewDVM 3, {}", [event.params.dvm.toHexString()]);
     if (pmmState.reverted == false) {
       createPairDetail(pair, pmmState.value, event.block.timestamp);
       pair.i = pmmState.value.i;

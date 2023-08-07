@@ -178,19 +178,19 @@ const OWNER: string[] = [
 ];
 
 const createTime: string[] = [
-  "1596787200",
-  "1598180006",
-  "1602236520",
-  "1598613764",
-  "1598702967",
-  "1599011490",
-  "1599011463",
-  "1599011490",
-  "1601348330",
-  "1603302872",
-  "1604862756",
-  "1606415616",
-  "1603911960",
+  "1596852721",
+  "1598280806",
+  "1602294120",
+  "1598714564",
+  "1598803767",
+  "1599040290",
+  "1599040290",
+  "1599040290",
+  "1601377130",
+  "1603374872",
+  "1604934756",
+  "1606444416",
+  "1603940710",
 ];
 
 export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
@@ -202,7 +202,10 @@ export function insertAllPairs4V1Mainnet(event: ethereum.Event): void {
   let dodoZoo = getDODOZoo();
 
   for (let i = 0; i < POOLS_ADDRESS.length; i++) {
-    if (Pair.load(POOLS_ADDRESS[i].toString()) == null) {
+    if (
+      Pair.load(POOLS_ADDRESS[i].toString()) == null &&
+      event.block.timestamp.ge(BigInt.fromString(createTime[i]))
+    ) {
       //tokens
       let baseToken = createToken(Address.fromString(BASE_TOKENS[i]), event);
       let quoteToken = createToken(Address.fromString(QUOTE_TOKENS[i]), event);

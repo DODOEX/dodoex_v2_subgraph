@@ -165,8 +165,14 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
   let symbolValue = "unknown";
   let symbolResult = contract.try_symbol();
   if (symbolResult.reverted) {
+    log.error("ERC20.try_symbol reverted. address: {}", [
+      tokenAddress.toHexString(),
+    ]);
     let symbolResultBytes = contractSymbolBytes.try_symbol();
     if (!symbolResultBytes.reverted) {
+      log.error("ERC20SymbolBytes.try_symbol reverted. address: {}", [
+        tokenAddress.toHexString(),
+      ]);
       // for broken pairs that have no symbol function exposed
       if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
         symbolValue = symbolResultBytes.value.toString();
@@ -199,8 +205,14 @@ export function fetchTokenName(tokenAddress: Address): string {
   let nameValue = "unknown";
   let nameResult = contract.try_name();
   if (nameResult.reverted) {
+    log.error("ERC20.try_name reverted. address: {}", [
+      tokenAddress.toHexString(),
+    ]);
     let nameResultBytes = contractNameBytes.try_name();
     if (!nameResultBytes.reverted) {
+      log.error("ERC20NameBytes.try_name reverted. address: {}", [
+        tokenAddress.toHexString(),
+      ]);
       // for broken exchanges that have no name function exposed
       if (!isNullEthValue(nameResultBytes.value.toHexString())) {
         nameValue = nameResultBytes.value.toString();
@@ -220,6 +232,9 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
   let contract = ERC20.bind(tokenAddress);
   let totalSupplyResult = contract.try_totalSupply();
   if (totalSupplyResult.reverted) {
+    log.error("ERC20.try_totalSupply reverted. address: {}", [
+      tokenAddress.toHexString(),
+    ]);
     return BigInt.fromI32(0);
   }
   return totalSupplyResult.value;
@@ -239,6 +254,11 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
   let contract = ERC20.bind(tokenAddress);
   // try types uint8 for decimals
   let decimalResult = contract.try_decimals();
+  if (decimalResult.reverted) {
+    log.error("ERC20.try_decimals reverted. address: {}", [
+      tokenAddress.toHexString(),
+    ]);
+  }
   return BigInt.fromI32(decimalResult.value);
 }
 
@@ -253,6 +273,9 @@ export function fetchTokenBalance(
   let balance = 0;
   let balanceResult = contract.try_balanceOf(user);
   if (balanceResult.reverted) {
+    log.error("ERC20.try_balanceOf reverted. address: {}", [
+      tokenAddress.toHexString(),
+    ]);
     return BigInt.fromI32(0);
   }
 
