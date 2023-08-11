@@ -3,6 +3,7 @@
 const program = require("commander");
 const inquirer = require("inquirer");
 const execSh = require("exec-sh");
+const { chains } = require("./config");
 
 // Example：
 // node bin/index.js deploy -y 'subgraphs/dodoex/dodoex_moonriver-graft.yaml' -s 'dodoex/dodoex-v2-moonriver-alpha'
@@ -107,26 +108,7 @@ async function run() {
         type: "rawlist",
         name: "chain",
         message: "Please select the chain",
-        choices: [
-          "mainnet",
-          "bsc",
-          "rinkeby",
-          "kovan",
-          "okchain",
-          "arbitrum",
-          "polygon",
-          "heco",
-          "moonriver",
-          "boba",
-          "aurora",
-          "avax",
-          "cfx",
-          "base",
-          "base_mainnet",
-          "scroll-alpha",
-          "scroll-sepolia",
-          "line",
-        ],
+        choices: chains,
       });
     }
     const answers = await inquirer.prompt(promps);
