@@ -1,841 +1,873 @@
 type DodoZoo @entity {
-    "id"
-    id: ID!
-    "pairs count"
-    pairCount: BigInt!
-    "tokens count"
-    tokenCount: BigInt!
-    "crowdpooling count"
-    crowdpoolingCount: BigInt!
-    "transactions count"
-    txCount: BigInt!
-    "unique users"
-    uniqueUsersCount: BigInt!
-    "volume usd"
-    volumeUSD: BigDecimal!
-    "fee usd"
-    feeUSD: BigDecimal!
-    "maintainer fee usd"
-    maintainerFeeUSD: BigDecimal!
-    "DIP3 maintainer fee usd "
-    DIP3MaintainerFeeUSD: BigDecimal!
-    "updatedAt"
-    updatedAt: BigInt
+  "id"
+  id: ID!
+  "pairs count"
+  pairCount: BigInt!
+  "tokens count"
+  tokenCount: BigInt!
+  "crowdpooling count"
+  crowdpoolingCount: BigInt!
+  "transactions count"
+  txCount: BigInt!
+  "unique users"
+  uniqueUsersCount: BigInt!
+  "volume usd"
+  volumeUSD: BigDecimal!
+  "fee usd"
+  feeUSD: BigDecimal!
+  "maintainer fee usd"
+  maintainerFeeUSD: BigDecimal!
+  "DIP3 maintainer fee usd "
+  DIP3MaintainerFeeUSD: BigDecimal!
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type DodoDayData @entity {
-    "day id"
-    id: ID!
-    "uinx timestamp(start of day)"
-    date: Int!
-    "transactions count"
-    txCount: BigInt!
-    "unique users"
-    uniqueUsersCount: BigInt!
-    "volume usd"
-    volumeUSD: BigDecimal!
-    "fee usd"
-    feeUSD: BigDecimal!
-    "maintainer fee usd"
-    maintainerFeeUSD: BigDecimal!
-    "updatedAt"
-    updatedAt: BigInt
+  "day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "transactions count"
+  txCount: BigInt!
+  "unique users"
+  uniqueUsersCount: BigInt!
+  "volume usd"
+  volumeUSD: BigDecimal!
+  "fee usd"
+  feeUSD: BigDecimal!
+  "maintainer fee usd"
+  maintainerFeeUSD: BigDecimal!
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type Transaction @entity {
-    "hash"
-    id: ID!
-    "timestamp"
-    timestamp: BigInt!
-    "from"
-    from: String!
-    "to"
-    to: String!
-    "sender"
-    sender: String!
-    "type(TRADE、LP、CP)"
-    type: String!
-    "tokens"
-    tokens: [Token!]
-    "volumeUSD"
-    volumeUSD: BigDecimal!
+  "hash"
+  id: ID!
+  "timestamp"
+  timestamp: BigInt!
+  "from"
+  from: String!
+  "to"
+  to: String
+  "sender"
+  sender: String!
+  "type(TRADE、LP、CP)"
+  type: String!
+  "tokens"
+  tokens: [Token!]
+  "volumeUSD"
+  volumeUSD: BigDecimal!
+  "event address"
+  address: Bytes!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type User @entity {
-    "user address"
-    id: ID!
-    "swapped times"
-    txCount: BigInt!
-    "trading reward recieved"
-    tradingRewardRecieved: BigDecimal!
-    "liquidity Positions"
-    liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
-    "timestamp"
-    timestamp: BigInt!
-    "updatedAt"
-    updatedAt: BigInt
+  "user address"
+  id: ID!
+  "swapped times"
+  txCount: BigInt!
+  "trading reward recieved"
+  tradingRewardRecieved: BigDecimal!
+  "liquidity Positions"
+  liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
+  "timestamp"
+  timestamp: BigInt!
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type UserDayData @entity {
-    "user address - date"
-    id: ID!
-    "date"
-    date: Int!
-    "trade count"
-    tradeCount: BigInt!
-    "add liquidity count"
-    addLPCount: BigInt!
-    "remove liquidity count"
-    removeLPCount: BigInt!
-    "cp bid count"
-    bidCount: BigInt!
-    "cp cancel count"
-    cancelCount: BigInt!
-    "cp claim count"
-    claimCount: BigInt!
+  "user address - date"
+  id: ID!
+  "date"
+  date: Int!
+  "trade count"
+  tradeCount: BigInt!
+  "add liquidity count"
+  addLPCount: BigInt!
+  "remove liquidity count"
+  removeLPCount: BigInt!
+  "cp bid count"
+  bidCount: BigInt!
+  "cp cancel count"
+  cancelCount: BigInt!
+  "cp claim count"
+  claimCount: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type LiquidityPosition @entity {
-    "user address - lp Token address"
-    id: ID!
-    "user"
-    user: User!
-    "pair"
-    pair: Pair
-    "lp token"
-    lpToken: LpToken!
-    "lp token balance"
-    liquidityTokenBalance: BigDecimal!
-    "lp token balance in mining contract"
-    liquidityTokenInMining: BigDecimal!
-    "last add time"
-    lastTxTime: BigInt!
-    "updatedAt"
-    updatedAt: BigInt
+  "user address - lp Token address"
+  id: ID!
+  "user"
+  user: User!
+  "pair"
+  pair: Pair
+  "lp token"
+  lpToken: LpToken!
+  "lp token balance"
+  liquidityTokenBalance: BigDecimal!
+  "lp token balance in mining contract"
+  liquidityTokenInMining: BigDecimal!
+  "last add time"
+  lastTxTime: BigInt!
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type Token @entity {
-    "token address"
-    id: ID!
+  "token address"
+  id: ID!
 
-    "untracked volume"
-    untrackedVolume: BigDecimal!
-    "total trade volume"
-    tradeVolume: BigDecimal!
-    "total trade volume for bridge"
-    tradeVolumeBridge: BigDecimal!
-    "traded volume of USD"
-    volumeUSD: BigDecimal!
-    "traded volume of USD for bridge"
-    volumeUSDBridge: BigDecimal!
+  "untracked volume"
+  untrackedVolume: BigDecimal!
+  "total trade volume"
+  tradeVolume: BigDecimal!
+  "total trade volume for bridge"
+  tradeVolumeBridge: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+  "traded volume of USD for bridge"
+  volumeUSDBridge: BigDecimal!
 
-    "transactions across all pairs"
-    txCount: BigInt!
-    "trader count"
-    traderCount: BigInt!
+  "transactions across all pairs"
+  txCount: BigInt!
+  "trader count"
+  traderCount: BigInt!
 
-    "liquidity across all pairs"
-    totalLiquidityOnDODO: BigDecimal!
+  "liquidity across all pairs"
+  totalLiquidityOnDODO: BigDecimal!
 
-    "usd price(only stable coin and classical pool has usd price)"
-    usdPrice: BigDecimal!
-    "price update time"
-    priceUpdateTimestamp: BigInt!
+  "usd price(only stable coin and classical pool has usd price)"
+  usdPrice: BigDecimal!
+  "price update time"
+  priceUpdateTimestamp: BigInt!
 
-    "token symbol"
-    symbol: String!
-    "token name"
-    name: String!
-    "token decimals"
-    decimals: BigInt!
-    "total supply"
-    totalSupply: BigInt!
-    "timestamp"
-    timestamp: BigInt!
+  "token symbol"
+  symbol: String!
+  "token name"
+  name: String!
+  "token decimals"
+  decimals: BigInt!
+  "total supply"
+  totalSupply: BigInt!
+  "timestamp"
+  timestamp: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type TokenTrader @entity{
-    "token address - user address"
-    id: ID!
-    "pair"
-    token: Token!
-    "user"
-    trader: User!
-    "last trade time"
-    lastTxTime: BigInt!
+type TokenTrader @entity {
+  "token address - user address"
+  id: ID!
+  "pair"
+  token: Token!
+  "user"
+  trader: User!
+  "last trade time"
+  lastTxTime: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type LpToken @entity {
-    "token address"
-    id: ID!
-    "belong pair"
-    pair: Pair
+  "token address"
+  id: ID!
+  "belong pair"
+  pair: Pair
 
-    "token symbol"
-    symbol: String!
-    "token name"
-    name: String!
-    "token decimals"
-    decimals: BigInt!
-    "total supply"
-    totalSupply: BigInt!
+  "token symbol"
+  symbol: String!
+  "token name"
+  name: String!
+  "token decimals"
+  decimals: BigInt!
+  "total supply"
+  totalSupply: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type OrderHistory @entity {
-    "order id"
-    id: ID!
-    "source (from : smartroute event、pool swap event)"
-    source: String!
-    "transaction hash"
-    hash: String!
-    "block"
-    block: BigInt!
-    "timestamp of this transaction"
-    timestamp: BigInt!
-    "msg sender"
-    sender: Bytes!
-    "tx from address"
-    from: Bytes!
-    "from token"
-    fromToken: Token!
-    "to token"
-    toToken: Token!
-    "to address"
-    to: Bytes!
-    "log index"
-    logIndex: BigInt
-    "from token amount"
-    amountIn: BigDecimal!
-    "to token amount"
-    amountOut: BigDecimal!
+  "order id"
+  id: ID!
+  "source (from : smartroute event、pool swap event)"
+  source: String!
+  "transaction hash"
+  hash: String!
+  "block"
+  block: BigInt!
+  "timestamp of this transaction"
+  timestamp: BigInt!
+  "msg sender"
+  sender: Bytes!
+  "tx from address"
+  from: Bytes!
+  "from token"
+  fromToken: Token!
+  "to token"
+  toToken: Token!
+  "to address"
+  to: Bytes!
+  "log index"
+  logIndex: BigInt
+  "from token amount"
+  amountIn: BigDecimal!
+  "to token amount"
+  amountOut: BigDecimal!
 
-    "traded volume of USD"
-    volumeUSD: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
 
-    "trading incentive reward"
-    tradingReward: BigDecimal!
+  "trading incentive reward"
+  tradingReward: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type LiquidityHistory @entity {
-    "txid - logindex"
-    id: ID!
-    "type (DEPOSIT、WITHDRAW)"
-    type: String!
-    "hash"
-    hash: String!
-    "block number"
-    block: BigInt!
-    "timestamp"
-    timestamp: BigInt!
-    "user"
-    user: User!
-    "lp token"
-    lpToken:LpToken!
-    "from"
-    from: Bytes!
-    "amount"
-    amount: BigDecimal!
-    "balance in wallet"
-    balance: BigDecimal!
-    "baseToken amount change"
-    baseAmountChange: BigDecimal
-    "quoteToken amount change"
-    quoteAmountChange: BigDecimal
-    "pair"
-    pair: Pair
-    "base reserve"
-    baseReserve: BigDecimal
-    "quote reserve"
-    quoteReserve: BigDecimal
-    "lp token total supply"
-    lpTokenTotalSupply: BigDecimal
-    "base token price"
-    baseTokenPrice: BigDecimal
-    "quote token Price"
-    quoteTokenPrice: BigDecimal
+  "txid - logindex"
+  id: ID!
+  "type (DEPOSIT、WITHDRAW)"
+  type: String!
+  "hash"
+  hash: String!
+  "block number"
+  block: BigInt!
+  "timestamp"
+  timestamp: BigInt!
+  "user"
+  user: User!
+  "lp token"
+  lpToken: LpToken!
+  "from"
+  from: Bytes!
+  "amount"
+  amount: BigDecimal!
+  "balance in wallet"
+  balance: BigDecimal!
+  "baseToken amount change"
+  baseAmountChange: BigDecimal
+  "quoteToken amount change"
+  quoteAmountChange: BigDecimal
+  "pair"
+  pair: Pair
+  "base reserve"
+  baseReserve: BigDecimal
+  "quote reserve"
+  quoteReserve: BigDecimal
+  "lp token total supply"
+  lpTokenTotalSupply: BigDecimal
+  "base token price"
+  baseTokenPrice: BigDecimal
+  "quote token Price"
+  quoteTokenPrice: BigDecimal
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type Pair @entity {
-    "pool address"
-    id: ID!
-    "pool type（CLASSICAL、DVM、DPP）"
-    type: String!
-    "pool source(default:null)"
-    source:String
-    "creator"
-    creator: Bytes!
-    "base token"
-    baseToken: Token!
-    "quote token"
-    quoteToken: Token!
-    "base token symbol"
-    baseSymbol: String
-    "quote token symbol"
-    quoteSymbol: String
-    "i"
-    i: BigInt
-    "k"
-    k: BigInt
-    "lp Fee Rate"
-    lpFeeRate: BigDecimal!
+  "pool address"
+  id: ID!
+  "pool type（CLASSICAL、DVM、DPP）"
+  type: String!
+  "pool source(default:null)"
+  source: String
+  "creator"
+  creator: Bytes!
+  "owner"
+  owner: Bytes
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
+  "base token symbol"
+  baseSymbol: String
+  "quote token symbol"
+  quoteSymbol: String
+  "i"
+  i: BigInt
+  "k"
+  k: BigInt
+  "lp Fee Rate"
+  lpFeeRate: BigDecimal!
 
-    "base LP token, for DPP is null, for dodo v1 lpToken is different"
-    baseLpToken: LpToken
-    "quote LP token,for DPP is null, for dodo v1 lpToken is different"
-    quoteLpToken: LpToken
+  "base LP token, for DPP is null, for dodo v1 lpToken is different"
+  baseLpToken: LpToken
+  "quote LP token,for DPP is null, for dodo v1 lpToken is different"
+  quoteLpToken: LpToken
 
-    "base token reserve"
-    baseReserve: BigDecimal!
-    "quote token reserve"
-    quoteReserve: BigDecimal!
+  "base token reserve"
+  baseReserve: BigDecimal!
+  "quote token reserve"
+  quoteReserve: BigDecimal!
 
-    "last trade price (quote/base)"
-    lastTradePrice: BigDecimal!
+  "last trade price (quote/base)"
+  lastTradePrice: BigDecimal!
 
-    "untracked base volume"
-    untrackedBaseVolume: BigDecimal!
-    "untracked quote volume"
-    untrackedQuoteVolume: BigDecimal!
-    "trade volume of basetoken"
-    volumeBaseToken: BigDecimal!
-    "trade volume of quotetoken"
-    volumeQuoteToken: BigDecimal!
-    "traded volume of USD"
-    volumeUSD: BigDecimal!
-    "lp fee base"
-    feeBase: BigDecimal!
-    "lp fee quote"
-    feeQuote: BigDecimal!
-    "lp fee of USD"
-    feeUSD: BigDecimal!
+  "untracked base volume"
+  untrackedBaseVolume: BigDecimal!
+  "untracked quote volume"
+  untrackedQuoteVolume: BigDecimal!
+  "trade volume of basetoken"
+  volumeBaseToken: BigDecimal!
+  "trade volume of quotetoken"
+  volumeQuoteToken: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+  "lp fee base"
+  feeBase: BigDecimal!
+  "lp fee quote"
+  feeQuote: BigDecimal!
+  "lp fee of USD"
+  feeUSD: BigDecimal!
 
-    "transactions count"
-    txCount: BigInt!
-    "createAtTimestamp"
-    createdAtTimestamp: BigInt!
-    "createAtBlock"
-    createdAtBlockNumber: BigInt!
-    "liquidity provider count"
-    liquidityProviderCount: BigInt!
+  "transactions count"
+  txCount: BigInt!
+  "createAtTimestamp"
+  createdAtTimestamp: BigInt!
+  "createAtBlock"
+  createdAtBlockNumber: BigInt!
+  "liquidity provider count"
+  liquidityProviderCount: BigInt!
 
-    "mtFee Rate Model"
-    mtFeeRateModel: Bytes!
-    "maintainer"
-    maintainer: Bytes!
-    "maintainer fee rate"
-    mtFeeRate: BigInt!
-    "maintainer fee base token"
-    mtFeeBase: BigDecimal!
-    "maintainer fee quote token"
-    mtFeeQuote: BigDecimal!
-    "maintainer fee in USD"
-    mtFeeUSD: BigDecimal!
+  "mtFee Rate Model"
+  mtFeeRateModel: Bytes!
+  "maintainer"
+  maintainer: Bytes!
+  "maintainer fee rate"
+  mtFeeRate: BigInt!
+  "maintainer fee base token"
+  mtFeeBase: BigDecimal!
+  "maintainer fee quote token"
+  mtFeeQuote: BigDecimal!
+  "maintainer fee in USD"
+  mtFeeUSD: BigDecimal!
 
-    "trader count"
-    traderCount: BigInt!
+  "trader count"
+  traderCount: BigInt!
 
-    "trade allowed"
-    isTradeAllowed: Boolean!
-    "deposit base allowed"
-    isDepositBaseAllowed: Boolean!
-    "deposit quote allowed"
-    isDepositQuoteAllowed: Boolean!
+  "trade allowed"
+  isTradeAllowed: Boolean!
+  "deposit base allowed"
+  isDepositBaseAllowed: Boolean!
+  "deposit quote allowed"
+  isDepositQuoteAllowed: Boolean!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type PairTrader @entity{
-    "pair address - user address"
-    id: ID!
-    "pair"
-    pair: Pair
-    "user"
-    trader: User!
-    "last trade time"
-    lastTxTime: BigInt!
+"PMMState"
+type PairDetail @entity {
+  "pair address"
+  id: ID!
+  pair: Pair!
+  i: BigInt!
+  k: BigInt!
+  "baseReserve"
+  b: BigInt!
+  "quoteReserve"
+  q: BigInt!
+  b0: BigInt!
+  q0: BigInt!
+  r: BigInt!
+  "updatedAt"
+  updatedAt: BigInt
+}
 
-    "updatedAt"
-    updatedAt: BigInt
+type DPPOracleAdmin @entity {
+  "DPPOracleAdmin address"
+  id: ID!
+  pair: Pair!
+  previousOwner: Bytes
+  newOwner: Bytes
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type PairTrader @entity {
+  "pair address - user address"
+  id: ID!
+  "pair"
+  pair: Pair
+  "user"
+  trader: User!
+  "last trade time"
+  lastTxTime: BigInt!
+
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type Swap @entity {
-    "transaction hash + \"-\" + index in swaps Transaction array"
-    id: ID!
-    "transaction hash"
-    hash: String!
-    "transaction timestamp"
-    timestamp: BigInt!
-    "trading pair"
-    pair: Pair
+  "transaction hash + \"-\" + index in swaps Transaction array"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "transaction timestamp"
+  timestamp: BigInt!
+  "trading pair"
+  pair: Pair
 
-    "msg.sender"
-    sender: Bytes!
-    "tx from address"
-    from: Bytes!
-    "from token"
-    fromToken: Token!
-    "to token"
-    toToken: Token!
-    "to address"
-    to: Bytes!
-    "log index"
-    logIndex: BigInt!
-    "from token amount"
-    amountIn: BigDecimal!
-    "to token amount"
-    amountOut: BigDecimal!
-    "lp fee base"
-    feeBase: BigDecimal!
-    "lp fee quote"
-    feeQuote: BigDecimal!
+  "msg.sender"
+  sender: Bytes!
+  "tx from address"
+  from: Bytes!
+  "from token"
+  fromToken: Token!
+  "to token"
+  toToken: Token!
+  "to address"
+  to: Bytes!
+  "log index"
+  logIndex: BigInt!
+  "from token amount"
+  amountIn: BigDecimal!
+  "to token amount"
+  amountOut: BigDecimal!
+  "lp fee base"
+  feeBase: BigDecimal!
+  "lp fee quote"
+  feeQuote: BigDecimal!
 
-    "base volume"
-    baseVolume: BigDecimal!
-    "quote volume"
-    quoteVolume: BigDecimal!
-    "traded volume of USD"
-    volumeUSD: BigDecimal!
+  "base volume"
+  baseVolume: BigDecimal!
+  "quote volume"
+  quoteVolume: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type MaintainerFeeTx @entity {
-    "ID:transaction hash - event index"
-    id: ID!
-    "transaction hash"
-    hash: String!
-    "earning token"
-    token:Token!
-    "amount"
-    amount:BigDecimal!
-    "volume in usd"
-    volumeUSD: BigDecimal!
+  "ID:transaction hash - event index"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "earning token"
+  token: Token!
+  "amount"
+  amount: BigDecimal!
+  "volume in usd"
+  volumeUSD: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type MaintainerEarnings @entity {
-    "maintainer address - token address"
-    id: ID!
-    "maintainer address"
-    maintainer: Bytes!
-    "token address"
-    token: Token!
-    "amount"
-    amount:  BigDecimal!
-    "amount of usd"
-    amountUSD:  BigDecimal!
+  "maintainer address - token address"
+  id: ID!
+  "maintainer address"
+  maintainer: Bytes!
+  "token address"
+  token: Token!
+  "amount"
+  amount: BigDecimal!
+  "amount of usd"
+  amountUSD: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type FlashLoan @entity {
-    "transaction hash + \"-\" + index in swaps Transaction array"
-    id: ID!
-    "transaction hash"
-    hash: String!
-    "transaction timestamp"
-    timestamp: BigInt!
-    "trading pair"
-    pair: Pair
-    "msg.sender"
-    sender: Bytes!
-    "tx from address"
-    from: Bytes!
-    "base amount"
-    baseAmount: BigDecimal!
-    "quote amount"
-    quoteAmount: BigDecimal!
-    "traded volume of USD"
-    volumeUSD: BigDecimal!
+  "transaction hash + \"-\" + index in swaps Transaction array"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "transaction timestamp"
+  timestamp: BigInt!
+  "trading pair"
+  pair: Pair
+  "msg.sender"
+  sender: Bytes!
+  "tx from address"
+  from: Bytes!
+  "base amount"
+  baseAmount: BigDecimal!
+  "quote amount"
+  quoteAmount: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type PairDayData @entity {
-    "pair address - day id"
-    id: ID!
-    "uinx timestamp(start of day)"
-    date: Int!
-    "pair address"
-    pairAddress: Bytes!
-    "pair"
-    pair: Pair
-    "base token"
-    baseToken: Token!
-    "quote token"
-    quoteToken: Token!
+  "pair address - day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "pair address"
+  pairAddress: Bytes!
+  "pair"
+  pair: Pair
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
 
-    "base token reserve"
-    baseTokenReserve: BigDecimal!
-    "quote token reserve"
-    quoteTokenReserve: BigDecimal!
-    "base token price"
-    baseUsdPrice: BigDecimal!
-    "quote token price"
-    quoteUsdPrice: BigDecimal!
+  "base token reserve"
+  baseTokenReserve: BigDecimal!
+  "quote token reserve"
+  quoteTokenReserve: BigDecimal!
+  "base token price"
+  baseUsdPrice: BigDecimal!
+  "quote token price"
+  quoteUsdPrice: BigDecimal!
 
-    "total supply of base lp token"
-    baseLpTokenTotalSupply: BigDecimal!
-    "total supply of quote lp token"
-    quoteLpTokenTotalSupply: BigDecimal!
+  "total supply of base lp token"
+  baseLpTokenTotalSupply: BigDecimal!
+  "total supply of quote lp token"
+  quoteLpTokenTotalSupply: BigDecimal!
 
-    "untracked base volume"
-    untrackedBaseVolume: BigDecimal!
-    "untracked quote volume"
-    untrackedQuoteVolume: BigDecimal!
-    "base token volume"
-    volumeBase: BigDecimal!
-    "quote token volume"
-    volumeQuote: BigDecimal!
-    "USD volume"
-    volumeUSD: BigDecimal!
+  "untracked base volume"
+  untrackedBaseVolume: BigDecimal!
+  "untracked quote volume"
+  untrackedQuoteVolume: BigDecimal!
+  "base token volume"
+  volumeBase: BigDecimal!
+  "quote token volume"
+  volumeQuote: BigDecimal!
+  "USD volume"
+  volumeUSD: BigDecimal!
 
-    "daily txns"
-    txns: BigInt!
-    "daily traders"
-    traders: BigInt!
-    "base token trading fee get"
-    feeBase: BigDecimal!
-    "quote token trading fee"
-    feeQuote: BigDecimal!
+  "daily txns"
+  txns: BigInt!
+  "daily traders"
+  traders: BigInt!
+  "base token trading fee get"
+  feeBase: BigDecimal!
+  "quote token trading fee"
+  feeQuote: BigDecimal!
 
-    "lp Fee Rate"
-    lpFeeRate: BigDecimal!
+  "lp Fee Rate"
+  lpFeeRate: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type PairHourData @entity {
-    "pair address - hour id"
-    id: ID!
-    "uinx timestamp(start of hour)"
-    hour: Int!
-    "pair address"
-    pairAddress: Bytes!
-    "pair"
-    pair: Pair
-    "base token"
-    baseToken: Token!
-    "quote token"
-    quoteToken: Token!
+  "pair address - hour id"
+  id: ID!
+  "uinx timestamp(start of hour)"
+  hour: Int!
+  "pair address"
+  pairAddress: Bytes!
+  "pair"
+  pair: Pair
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
 
-    "base token reserve"
-    baseTokenReserve: BigDecimal!
-    "quote token reserve"
-    quoteTokenReserve: BigDecimal!
-    "base token price"
-    baseUsdPrice: BigDecimal!
-    "quote token price"
-    quoteUsdPrice: BigDecimal!
+  "base token reserve"
+  baseTokenReserve: BigDecimal!
+  "quote token reserve"
+  quoteTokenReserve: BigDecimal!
+  "base token price"
+  baseUsdPrice: BigDecimal!
+  "quote token price"
+  quoteUsdPrice: BigDecimal!
 
-    "total supply of base lp token"
-    baseLpTokenTotalSupply: BigDecimal!
-    "total supply of quote lp token"
-    quoteLpTokenTotalSupply: BigDecimal!
+  "total supply of base lp token"
+  baseLpTokenTotalSupply: BigDecimal!
+  "total supply of quote lp token"
+  quoteLpTokenTotalSupply: BigDecimal!
 
-    "untracked base volume"
-    untrackedBaseVolume: BigDecimal!
-    "untracked quote volume"
-    untrackedQuoteVolume: BigDecimal!
-    "base token volume"
-    volumeBase: BigDecimal!
-    "quote token volume"
-    volumeQuote: BigDecimal!
-    "USD volume"
-    volumeUSD: BigDecimal!
+  "untracked base volume"
+  untrackedBaseVolume: BigDecimal!
+  "untracked quote volume"
+  untrackedQuoteVolume: BigDecimal!
+  "base token volume"
+  volumeBase: BigDecimal!
+  "quote token volume"
+  volumeQuote: BigDecimal!
+  "USD volume"
+  volumeUSD: BigDecimal!
 
-    "daily txns"
-    txns: BigInt!
-    "daily traders"
-    traders: BigInt!
-    "base token trading fee get"
-    feeBase: BigDecimal!
-    "quote token trading fee"
-    feeQuote: BigDecimal!
+  "daily txns"
+  txns: BigInt!
+  "daily traders"
+  traders: BigInt!
+  "base token trading fee get"
+  feeBase: BigDecimal!
+  "quote token trading fee"
+  feeQuote: BigDecimal!
 
-    "lp Fee Rate"
-    lpFeeRate: BigDecimal!
+  "lp Fee Rate"
+  lpFeeRate: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type TokenDayData @entity {
-    "token address - day id"
-    id: ID!
-    "uinx timestamp(start of day)"
-    date: Int!
-    "token address"
-    token: Token!
+  "token address - day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "token address"
+  token: Token!
 
-    "untracked base volume"
-    untrackedVolume: BigDecimal!
+  "untracked base volume"
+  untrackedVolume: BigDecimal!
 
-    "usdPrice"
-    usdPrice: BigDecimal!
-    "volume"
-    volume: BigDecimal!
-    "bridge volume"
-    volumeBridge: BigDecimal!
-    "traded volume of USD"
-    volumeUSD: BigDecimal!
-    "tx occured"
-    txns: BigInt!
+  "usdPrice"
+  usdPrice: BigDecimal!
+  "volume"
+  volume: BigDecimal!
+  "bridge volume"
+  volumeBridge: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+  "tx occured"
+  txns: BigInt!
 
-    "daily traders"
-    traders: BigInt!
+  "daily traders"
+  traders: BigInt!
 
-    "liquidity stats"
-    totalLiquidityToken: BigDecimal!
+  "liquidity stats"
+  totalLiquidityToken: BigDecimal!
 
-    "trading fee lp get"
-    fee: BigDecimal!
+  "trading fee lp get"
+  fee: BigDecimal!
 
-    "maintainer fee"
-    maintainerFee: BigDecimal!
-    "maintainer fee in usd"
-    maintainerFeeUSD: BigDecimal!
+  "maintainer fee"
+  maintainerFee: BigDecimal!
+  "maintainer fee in usd"
+  maintainerFeeUSD: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type CrowdPooling @entity {
-    "cp address"
-    id: ID!
-    "version"
-    version: BigInt
-    "is overcap stop"
-    isOvercapStop: Boolean
-    "pool feerate"
-    feeRate: BigInt
-    "token cliff rate"
-    tokenCliffRate: BigInt
-    "token claim duration"
-    tokenClaimDuration: BigInt
-    "token vesting duration"
-    tokenVestingDuration: BigInt
-    "serial number"
-    serialNumber: BigInt!
-    "creator"
-    creator: Bytes!
-    "create time"
-    createTime: BigInt!
-    "base token"
-    baseToken: Token!
-    "quote token"
-    quoteToken: Token!
-    "bid start time"
-    bidStartTime: BigInt!
-    "bid end time"
-    bidEndTime: BigInt!
-    "clam end time"
-    calmEndTime: BigInt!
-    "freeze duration"
-    freezeDuration: BigInt!
-    "vesting duration"
-    vestingDuration: BigInt!
-    "i"
-    i: BigInt!
-    "k"
-    k: BigInt!
-    "mt fee rate model"
-    mtFeeRateModel: Bytes!
-    "total shares"
-    totalShares: BigDecimal!
-    "total base"
-    totalBase: BigDecimal!
-    "settle state"
-    settled: Boolean!
-    "created dvm address"
-    dvm: Pair
-    "liquidator"
-    liquidator: Bytes!
+  "cp address"
+  id: ID!
+  "version"
+  version: BigInt
+  "is overcap stop"
+  isOvercapStop: Boolean
+  "pool feerate"
+  feeRate: BigInt
+  "token cliff rate"
+  tokenCliffRate: BigInt
+  "token claim duration"
+  tokenClaimDuration: BigInt
+  "token vesting duration"
+  tokenVestingDuration: BigInt
+  "serial number"
+  serialNumber: BigInt!
+  "creator"
+  creator: Bytes!
+  "create time"
+  createTime: BigInt!
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
+  "bid start time"
+  bidStartTime: BigInt!
+  "bid end time"
+  bidEndTime: BigInt!
+  "clam end time"
+  calmEndTime: BigInt!
+  "freeze duration"
+  freezeDuration: BigInt!
+  "vesting duration"
+  vestingDuration: BigInt!
+  "i"
+  i: BigInt!
+  "k"
+  k: BigInt!
+  "mt fee rate model"
+  mtFeeRateModel: Bytes!
+  "total shares"
+  totalShares: BigDecimal!
+  "total base"
+  totalBase: BigDecimal!
+  "settle state"
+  settled: Boolean!
+  "created dvm address"
+  dvm: Pair
+  "liquidator"
+  liquidator: Bytes!
 
-    "total quote in pool"
-    poolQuote: BigDecimal!
-    "pool quote cap"
-    poolQuoteCap: BigDecimal!
-    "investors count = creators"
-    investorsCount: BigInt!
+  "total quote in pool"
+  poolQuote: BigDecimal!
+  "pool quote cap"
+  poolQuoteCap: BigDecimal!
+  "investors count = creators"
+  investorsCount: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type BidPosition @entity {
-    "user address - pair address"
-    id: ID!
-    "user"
-    user: User!
-    "cp address"
-    cp: CrowdPooling!
-    "shares"
-    shares: BigDecimal!
-    "total quote invested"
-    investedQuote: BigDecimal!
-    "last bid time"
-    lastTxTime: BigInt!
-    "claimed"
-    claimed: Boolean!
+  "user address - pair address"
+  id: ID!
+  "user"
+  user: User!
+  "cp address"
+  cp: CrowdPooling!
+  "shares"
+  shares: BigDecimal!
+  "total quote invested"
+  investedQuote: BigDecimal!
+  "last bid time"
+  lastTxTime: BigInt!
+  "claimed"
+  claimed: Boolean!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
 type BidHistory @entity {
-    "txid - logindex"
-    id: ID!
-    "user"
-    user: User!
-    "cp address"
-    cp: CrowdPooling!
-    "action ：bid、cancle"
-    action: String!
-    "hash"
-    hash: String!
-    "block"
-    block: BigInt!
-    "timestamp"
-    timestamp: BigInt!
-    "quote"
-    quote: BigDecimal!
-    "share"
-    share: BigDecimal!
-    "fee"
-    fee: BigDecimal!
+  "txid - logindex"
+  id: ID!
+  "user"
+  user: User!
+  "cp address"
+  cp: CrowdPooling!
+  "action ：bid、cancle"
+  action: String!
+  "hash"
+  hash: String!
+  "block"
+  block: BigInt!
+  "timestamp"
+  timestamp: BigInt!
+  "quote"
+  quote: BigDecimal!
+  "share"
+  share: BigDecimal!
+  "fee"
+  fee: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type CrowdPoolingDayData @entity{
-    "cp address - day id"
-    id: ID!
-    "uinx timestamp(start of day)"
-    date: Int!
-    "CrowdPooling"
-    crowdPooling: CrowdPooling!
-    "total quote invest in durnation = taker tokens"
-    investedQuote: BigDecimal!
-    "total quote canceled in durnation"
-    canceledQuote: BigDecimal!
-    "invest count"
-    investCount: BigInt!
-    "creator: newly investor"
-    newcome: BigInt!
-    "total quote in pool"
-    poolQuote: BigDecimal!
-    "investors count"
-    investors: BigInt!
+type CrowdPoolingDayData @entity {
+  "cp address - day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "CrowdPooling"
+  crowdPooling: CrowdPooling!
+  "total quote invest in durnation = taker tokens"
+  investedQuote: BigDecimal!
+  "total quote canceled in durnation"
+  canceledQuote: BigDecimal!
+  "invest count"
+  investCount: BigInt!
+  "creator: newly investor"
+  newcome: BigInt!
+  "total quote in pool"
+  poolQuote: BigDecimal!
+  "investors count"
+  investors: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type CrowdPoolingHourData @entity{
-    "cp address - hour id"
-    id: ID!
-    "uinx timestamp(start of hour)"
-    hour: Int!
-    "CrowdPooling"
-    crowdPooling: CrowdPooling!
-    "total quote invest in durnation = taker tokens"
-    investedQuote: BigDecimal!
-    "total quote canceled in durnation"
-    canceledQuote: BigDecimal!
-    "invest count"
-    investCount: BigInt!
-    "creator: newly investor"
-    newcome: BigInt!
-    "total quote in pool"
-    poolQuote: BigDecimal!
-    "investors count"
-    investors: BigInt!
+type CrowdPoolingHourData @entity {
+  "cp address - hour id"
+  id: ID!
+  "uinx timestamp(start of hour)"
+  hour: Int!
+  "CrowdPooling"
+  crowdPooling: CrowdPooling!
+  "total quote invest in durnation = taker tokens"
+  investedQuote: BigDecimal!
+  "total quote canceled in durnation"
+  canceledQuote: BigDecimal!
+  "invest count"
+  investCount: BigInt!
+  "creator: newly investor"
+  newcome: BigInt!
+  "total quote in pool"
+  poolQuote: BigDecimal!
+  "investors count"
+  investors: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type TradingIncentive @entity{
-    "id (contract address)"
-    id: ID!
-    "total amount released"
-    totalAmount: BigDecimal!
-    "total user"
-    totalUser: BigInt!
+type TradingIncentive @entity {
+  "id (contract address)"
+  id: ID!
+  "total amount released"
+  totalAmount: BigDecimal!
+  "total user"
+  totalUser: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type IncentiveRewardHistory @entity{
-    "id (transaction - log index)"
-    id: ID!
-    "user"
-    user: User!
-    "reward amount"
-    amount: BigDecimal!
-    "timestamp"
-    timestamp: BigInt!
-    "reward times in this transaction"
-    times: BigInt!
+type IncentiveRewardHistory @entity {
+  "id (transaction - log index)"
+  id: ID!
+  "user"
+  user: User!
+  "reward amount"
+  amount: BigDecimal!
+  "timestamp"
+  timestamp: BigInt!
+  "reward times in this transaction"
+  times: BigInt!
 
-    "total amount released"
-    totalAmount: BigDecimal!
-    "total user"
-    totalUser: BigInt!
+  "total amount released"
+  totalAmount: BigDecimal!
+  "total user"
+  totalUser: BigInt!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type Pool @entity{
-    "pid"
-    id: ID!
-    "lp token"
-    lpToken: String!
-    "staked balance"
-    staked: BigDecimal!
+type Pool @entity {
+  "pid"
+  id: ID!
+  "lp token"
+  lpToken: String!
+  "staked balance"
+  staked: BigDecimal!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }
 
-type MiningPool @entity{
-    "pool id"
-    id: ID!
-    "lp token"
-    lpToken: LpToken!
+type MiningPool @entity {
+  "pool id"
+  id: ID!
+  "lp token"
+  lpToken: LpToken!
 
-    "updatedAt"
-    updatedAt: BigInt
+  "updatedAt"
+  updatedAt: BigInt
 }

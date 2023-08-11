@@ -1,4 +1,4 @@
-specVersion: 0.0.4
+specVersion: 0.0.5
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3ProxyV2
-    network: bsc
+    network: base-testnet
     source:
-      address: '0x8f3fb1f9148dc473453163bf31de1d830eb5c590'
+      address: '0xe0096b3Dc84f4cca520638F7F4be84A560798C3f'
       abi: DODOMineV3ProxyV2
-      startBlock: 16535457
+      startBlock: 3436551
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -35,40 +35,12 @@ dataSources:
         - event: CreateMineV3(address,address,uint256)
           handler: handleV2CreateMineV3
   - kind: ethereum/contract
-    name: DODOMineV3Proxy
-    network: bsc
-    source:
-      address: '0x3c39dCb3630D305530a30419b3DEEcea629597AC'
-      abi: DODOMineV3Proxy
-      startBlock: 9537428
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: ../../src/mappings/mine/mineProxy.ts
-      entities:
-        - MinePool
-      abis:
-        - name: DODOMineV3Proxy
-          file: ../../abis/DODOMineV3Proxy.json
-        - name: ERC20MineV3
-          file: ../../abis/ERC20MineV3.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: CreateMineV3(address,address)
-          handler: handleCreateMineV3
-  - kind: ethereum/contract
     name: DODOMineV3Registry
-    network: bsc
+    network: base-testnet
     source:
-      address: '0x2A5aa99095E3724b8955BF7b5E47dbe2730dabD8'
+      address: '0xFF57A5CBf6279d68A301d46E72347772bfC844FD'
       abi: DODOMineV3Registry
-      startBlock: 9537428
+      startBlock: 3436551
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -95,7 +67,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
-    network: bsc
+    network: base-testnet
     source:
       abi: ERC20MineV3
     mapping:
@@ -119,3 +91,4 @@ templates:
           handler: handleUpdateEndBlock
         - event: UpdateReward(indexed uint256,uint256)
           handler: handleUpdateReward
+
