@@ -43,6 +43,15 @@ dataSources:
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
+    name: DODOFeeRouteProxyWidgit
+    network: avalanche
+    source:
+      address: '0xbce44767af0a53A108b3B7ba4F740E03D228Ec0A'
+      abi: DODOFeeRouteProxy
+      startBlock: 23610148
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -51,6 +60,10 @@ dataSources:
       abis:
         - name: DODORouteProxy
           file: ../../abis/DODORouteProxy.json
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
         - name: ERC20
           file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
