@@ -21,7 +21,7 @@ const chains = [
   "base_mainnet",
   "scroll-alpha",
   "scroll-sepolia",
-  "line",
+  "linea",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = ["arbitrum", "polygon", "mainnet"];
