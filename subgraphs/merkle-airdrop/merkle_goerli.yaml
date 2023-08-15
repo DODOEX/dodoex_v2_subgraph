@@ -2,25 +2,25 @@ specVersion: 0.0.4
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: merkle.graphql
+  file: ./merkle.graphql
 dataSources:
   - kind: ethereum/contract
     name: MerkleDistributor
     network: goerli
     source:
-      address: "0xfF0f9997737e4588F24209E427B44Cd19839010B"
+      address: '0xfF0f9997737e4588F24209E427B44Cd19839010B'
       abi: MerkleDistributor
       startBlock: 9520465
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: MerkleDistributor/MerkleDistributor.wasm
+      file: ../../src/mappings/merkle-airdrop/index.ts
       entities:
         - Claimed
       abis:
         - name: MerkleDistributor
-          file: ../abis/MerkleDistributor.json
+          file: ../../abis/MerkleDistributor.json
       eventHandlers:
         - event: Claimed(uint256,address,uint256)
           handler: handleClaimed
