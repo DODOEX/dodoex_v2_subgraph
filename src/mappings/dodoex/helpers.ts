@@ -603,12 +603,12 @@ export function getPMMState(
 
 export function getQuoteTokenAddress(poolAddress: Address): Address {
   let pair = Pair.load(poolAddress.toHexString());
-  if (pair != null && pair.type != TYPE_CLASSICAL_POOL) {
-    let pool = DVM.bind(poolAddress);
-    let quoteToken = pool._QUOTE_TOKEN_();
-    return quoteToken as Address;
+  if (pair != null) {
+    return Address.fromString(pair.quoteToken);
   }
-  return Address.fromString(ADDRESS_ZERO);
+  let pool = DVM.bind(poolAddress);
+  let quoteToken = pool._QUOTE_TOKEN_();
+  return quoteToken as Address;
 }
 
 export function updatePairTraderCount(

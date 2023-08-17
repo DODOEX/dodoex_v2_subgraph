@@ -1,4 +1,4 @@
-//kovan
+//mainnet
 export const TYPE_VIRTUAL_POOL = "VIRTUAL";
 export const TYPE_DVM_POOL = "DVM";
 export const TYPE_DPP_POOL = "DPP";
@@ -6,44 +6,43 @@ export const TYPE_DSP_POOL = "DSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";
-export const DODOZooID = "dodoex-v2-linea";
-export const CHAIN_BASE_COIN_SYMBOL = "ETH";
-export const CHAIN_BASE_COIN_NAME = "ethereum";
 export const DIP3_TIMESTAMP = 1624442400;
 
-export const SMART_ROUTE_ADDRESSES: string[] = [
-  "0x4cad0052524648a7fa2cfe279997b00239295f33",
-];
-export const DVM_FACTORY_ADDRESS = "0xc0F9553Df63De5a97Fe64422c8578D0657C360f7";
-export const DPP_FACTORY_ADDRESS = "0x97bBF5BB1dcfC93A8c67e97E50Bea19DB3416A83";
-export const CLASSIC_FACTORY_ADDRESS =
-  "0x6B9577b87666af89bd0e144b9b64e8Ed166E303d";
-export const CROWDPOOLING_FACTORY_V2: string[] = [
-  "0x6B9577b87666af89bd0e144b9b64e8Ed166E303d",
-];
+export const DODOV1Proxy01 = "0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e";
+export const DODOV1Proxy02 = "0x6ed3fd491f5b10384787b3fb162a72227fafbf63";
+export const DODOV1Proxy03 = "0x9a9942458754bdf65dcbcd0b6b4b842a7d4031ab";
+export const DODOV1Proxy04 = "0xa2cb66ebb947d217f61510882096f6e95c1de97d";
+export const DODOV2Proxy01 = "0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5";
+export const DODOV2Proxy02 = "0xa356867fdcea8e71aeaf87805808803806231fdc";
 
-export const DVM_FACTORY_DEPLOY_BLOCK = 152408;
-export const DPP_FACTORY_DEPLOY_BLOCK = 152408;
+export const DODOZooID = "dodoex-v2";
+export const CHAIN_BASE_COIN_SYMBOL = "ETH";
+export const CHAIN_BASE_COIN_NAME = "ether";
 
-export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
-export const BASE_COIN = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+export const SMART_ROUTE_ADDRESSES: string[] = ["0xd0678ec59d1337e29d1e1b1b6338f3e85d311f5e", "0x6ed3fd491f5b10384787b3fb162a72227fafbf63", "0x9a9942458754bdf65dcbcd0b6b4b842a7d4031ab", "0x9ae501385bc7996a2a4a1fbb00c8d3820611bcb5", "0xa2cb66ebb947d217f61510882096f6e95c1de97d", "0xa356867fdcea8e71aeaf87805808803806231fdc"];
+export const DVM_FACTORY_ADDRESS = "0x72d220ce168c4f361dd4dee5d826a01ad8598f6c";
+export const DPP_FACTORY_ADDRESS = "0xb5dc5e183c2acf02ab879a8569ab4edaf147d537";
+export const CLASSIC_FACTORY_ADDRESS = "0x3a97247df274a17c59a3bd12735ea3fcdfb49950";//dodo zoo
+export const CROWDPOOLING_FACTORY_V2: string[]=["0x1e5d8ee8fb7f0d791475c59391db8f6cd06aa656"];
 
-export const TRANSACTION_TYPE_SWAP = "SWAP";
-export const TRANSACTION_TYPE_LP_ADD = "LP_ADD";
-export const TRANSACTION_TYPE_LP_REMOVE = "LP_REMOVE";
-export const TRANSACTION_TYPE_CP_BID = "CP_BID";
-export const TRANSACTION_TYPE_CP_CANCEL = "CP_CANCEL";
-export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM";
+export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
+export const BASE_COIN = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
+export const TRANSACTION_TYPE_SWAP = "SWAP"
+export const TRANSACTION_TYPE_LP_ADD = "LP_ADD"
+export const TRANSACTION_TYPE_LP_REMOVE = "LP_REMOVE"
+export const TRANSACTION_TYPE_CP_BID = "CP_BID"
+export const TRANSACTION_TYPE_CP_CANCEL = "CP_CANCEL"
+export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM"
 
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = "0xb26c0d8be2960c70641a95a9195be1f59ac83ac0";
+export const WRAPPED_BASE_COIN = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = "0x0adcbae18580120667f7ff6c6451a426b13c67b7"; //usdt
-export const STABLE_TWO_ADDRESS = "0xab0733588776b8881f7712f6abca98f510e6b63d"; //usdc
+export const STABLE_ONE_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7';//usdt
+export const STABLE_TWO_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';//usdc
 //stable coins pairs
-export const STABLE_COIN_PAIR_ONE =
-  "0xe8c1b7e0505c97c59ff2f12ebf91a8eaa59d4c73"; //[USDT_USDC_PAIR]
+export const STABLE_COIN_PAIR_ONE = '0xc9f93163c99695c6526b799ebca2207fdf7d61ad';//[USDT_USDC_PAIR]
 //base currency pair
-export const BASE_COIN_PAIR = "0x75f5d66a7bbb9330a9067c0833ec9b3198b71666"; //[WETH_USDC_PAIR]
+export const BASE_COIN_PAIR = '0x75c23271661d9d143dcb617222bc4bec783eff34';//[WETH_USDC_PAIR]
