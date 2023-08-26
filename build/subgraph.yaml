@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: MerkleDistributor
-    network: goerli
+    network: base
     source:
-      address: "0xfF0f9997737e4588F24209E427B44Cd19839010B"
+      address: "0x39767dc49cb7ef6a1f32b8c1e65e4faf51692471"
       abi: MerkleDistributor
-      startBlock: 9520465
+      startBlock: 3091658
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: MerkleDistributor
           file: ../abis/MerkleDistributor.json
+        - name: ERC20
+          file: ../abis/ERC20.json
       eventHandlers:
         - event: Claimed(uint256,address,uint256)
           handler: handleClaimed
