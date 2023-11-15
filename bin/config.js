@@ -24,6 +24,7 @@ const chains = [
   "linea",
   "scroll",
   "manta",
+  "mantle",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = ["arbitrum", "polygon", "mainnet"];

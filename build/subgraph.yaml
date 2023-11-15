@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: manta
+    network: mantle
     source:
-      address: "0xc0F9553Df63De5a97Fe64422c8578D0657C360f7"
+      address: "0xFD2b7994f91c08aAa5e013E899334A2DBb500DF1"
       abi: ERC20V3Factory
-      startBlock: 384132
+      startBlock: 21053981
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
