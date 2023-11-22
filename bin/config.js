@@ -11,6 +11,7 @@ const chains = [
   "okchain",
   "arbitrum",
   "polygon",
+  "optimism",
   "heco",
   "moonriver",
   "boba",
@@ -25,6 +26,7 @@ const chains = [
   "scroll",
   "manta",
   "mantle",
+  "tokb",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = ["arbitrum", "polygon", "mainnet"];
