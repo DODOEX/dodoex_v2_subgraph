@@ -2,20 +2,20 @@ specVersion: 0.0.6
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: token.graphql
+  file: ./token.graphql
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: tokb
+    network: scroll
     source:
-      address: "0x4A81Aa47722E1cF27A8726F247E68a766bE58d8e"
+      address: '0x1F076a800005c758a505E759720eb6737136e893'
       abi: ERC20V3Factory
-      startBlock: 299037
+      startBlock: 83057
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ERC20V3Factory/ERC20V3Factory.wasm
+      file: ../../src/mappings/token/factoryv2.ts
       entities:
         - User
         - Token
@@ -23,17 +23,17 @@ dataSources:
         - TransferHistories
       abis:
         - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
+          file: ../../abis/ERC20Factory.json
         - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
+          file: ../../abis/ERC20V2Factory.json
         - name: ERC20V3Factory
-          file: ../abis/ERC20V3Factory.json
+          file: ../../abis/ERC20V3Factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: NewERC20(address,address,uint256)
           handler: handleNewERC20
