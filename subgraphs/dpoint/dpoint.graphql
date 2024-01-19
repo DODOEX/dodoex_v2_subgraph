@@ -1,0 +1,36 @@
+type Claimed @entity {
+  " { Transaction hash }-{ Log index } "
+  id: ID!
+  " Transaction hash of the transaction that emitted this event "
+  hash: String!
+  " Event log index. For transactions that don't emit event, create arbitrary index starting from 0 "
+  logIndex: Int!
+  " Block number of this event "
+  blockNumber: BigInt!
+  " Timestamp of this event "
+  timestamp: BigInt!
+  account: Bytes!
+  amount: BigInt!
+  claimedAmount: BigInt!
+  originAmount: BigInt!
+  remainingRatio: BigInt!
+  address: Bytes!
+  token: Token!
+  "updatedAt"
+  updatedAt: BigInt!
+}
+
+type Token @entity {
+  "token address"
+  id: ID!
+  "token symbol"
+  symbol: String!
+  "token name"
+  name: String!
+  "token decimals"
+  decimals: BigInt!
+  "total supply"
+  totalSupply: BigInt!
+  "updatedAt"
+  updatedAt: BigInt!
+}
