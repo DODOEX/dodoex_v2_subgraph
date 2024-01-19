@@ -2,26 +2,26 @@ specVersion: 0.0.4
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: dpoint.graphql
+  file: ./dpoint.graphql
 dataSources:
   - kind: ethereum/contract
     name: LockedTokenVaultFactory
     network: goerli
     source:
-      address: "0x7A6a6bCeA8bfA93893aCC3df6D2A81ECb0E8dC1d"
+      address: '0x7A6a6bCeA8bfA93893aCC3df6D2A81ECb0E8dC1d'
       abi: LockedTokenVaultFactory
       startBlock: 10381816
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: LockedTokenVaultFactory/LockedTokenVaultFactory.wasm
+      file: ../../src/mappings/dpoint/factory.ts
       entities: []
       abis:
         - name: LockedTokenVaultFactory
-          file: ../abis/LockedTokenVaultFactory.json
+          file: ../../abis/LockedTokenVaultFactory.json
         - name: LockedTokenVault
-          file: ../abis/LockedTokenVault.json
+          file: ../../abis/LockedTokenVault.json
       eventHandlers:
         - event: CreateVault(address)
           handler: handleCreateVault
@@ -35,15 +35,15 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: templates/LockedTokenVault/LockedTokenVault.wasm
+      file: ../../src/mappings/dpoint/index.ts
       entities:
-        - ERC20
-        - Claimed
+      - ERC20
+      - Claimed
       abis:
         - name: LockedTokenVault
-          file: ../abis/LockedTokenVault.json
+          file: ../../abis/LockedTokenVault.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
       eventHandlers:
         - event: Claim(indexed address,uint256,uint256,uint256)
           handler: handleClaim

@@ -383,6 +383,8 @@ function getDefaultConfig() {
       "graph codegen subgraphs/merkle-airdrop/merkle_goerli.yaml --output-dir ./src/types/merkle/  && graph deploy --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020 dodoex/merkle_airdrop_goerli subgraphs/merkle-airdrop/merkle_goerli.yaml",
     "deploy:studio:merkle_airdrop_base_mainnet":
       "graph codegen subgraphs/merkle-airdrop/merkle_base_mainnet.yaml --output-dir ./src/types/merkle/  && graph deploy --studio --node https://api.studio.thegraph.com/deploy/  dodoex_merkle_airdrop_base subgraphs/merkle-airdrop/merkle_base_mainnet.yaml",
+    "deploy:studio:dpoint_scroll":
+      "graph codegen subgraphs/dpoint/dpoint_scroll.yaml --output-dir ./src/types/dpoint/  && graph deploy --studio --node https://api.studio.thegraph.com/deploy/  dodoex_dpoint_scroll subgraphs/dpoint/dpoint_scroll.yaml",
   };
   return config2;
 }
