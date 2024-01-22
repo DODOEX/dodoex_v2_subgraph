@@ -19,6 +19,7 @@ import {
   MaintainerEarnings,
 } from "../../types/dodoex/schema";
 import { insertAllPairs4V1Aurora } from "./classicalPoolAurora";
+
 import {
   DODO as DODOTemplate,
   DODOLpToken as DODOLpTokenTemplate,
