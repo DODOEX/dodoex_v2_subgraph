@@ -22,6 +22,8 @@ dataSources:
           file: ../../abis/LockedTokenVaultFactory.json
         - name: LockedTokenVault
           file: ../../abis/LockedTokenVault.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
       eventHandlers:
         - event: CreateVault(address)
           handler: handleCreateVault

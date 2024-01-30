@@ -8,9 +8,9 @@ dataSources:
     name: LockedTokenVaultFactory
     network: scroll
     source:
-      address: '0x7A6a6bCeA8bfA93893aCC3df6D2A81ECb0E8dC1d'
+      address: '0xEAf81DeAf1477C6DE6981D7902A287988E65e439'
       abi: LockedTokenVaultFactory
-      startBlock: 10381816
+      startBlock: 2765712
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
