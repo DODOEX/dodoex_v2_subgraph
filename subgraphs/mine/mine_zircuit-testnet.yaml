@@ -2,84 +2,84 @@ specVersion: 0.0.5
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: mine.graphql
+  file: ./mine.graphql
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3ProxyV2
-    network: bitlayer
+    network: zircuit_testnet
     source:
-      address: "0x8A89153f246EA1501dec23db0Ba001F239aE1067"
+      address: '0x69a730Fb2724391F875c48CB8950519bc8Fb7b12'
       abi: DODOMineV3ProxyV2
-      startBlock: 2019532
+      startBlock: 9389726
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: DODOMineV3ProxyV2/DODOMineV3ProxyV2.wasm
+      file: ../../src/mappings/mine/mineProxy.ts
       entities:
         - MinePool
       abis:
         - name: DODOMineV3Proxy
-          file: ../abis/DODOMineV3Proxy.json
+          file: ../../abis/DODOMineV3Proxy.json
         - name: DODOMineV3ProxyV2
-          file: ../abis/DODOMineV3ProxyV2.json
+          file: ../../abis/DODOMineV3ProxyV2.json
         - name: ERC20MineV3
-          file: ../abis/ERC20MineV3.json
+          file: ../../abis/ERC20MineV3.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: CreateMineV3(address,address,uint256)
           handler: handleV2CreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
-    network: bitlayer
+    network: zircuit_testnet
     source:
-      address: "0x62e2EC354E15ddA6A1E43586c86e745A59b4B81e"
+      address: '0x03cd2F7D623b1B9c461bf93eBB3CEc47c2124985'
       abi: DODOMineV3Registry
-      startBlock: 2019532
+      startBlock: 9389726
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: DODOMineV3Registry/DODOMineV3Registry.wasm
+      file: ../../src/mappings/mine/registry.ts
       entities:
         - MinePool
       abis:
         - name: DODOMineV3Proxy
-          file: ../abis/DODOMineV3Proxy.json
+          file: ../../abis/DODOMineV3Proxy.json
         - name: DODOMineV3Registry
-          file: ../abis/DODOMineV3Registry.json
+          file: ../../abis/DODOMineV3Registry.json
         - name: ERC20MineV3
-          file: ../abis/ERC20MineV3.json
+          file: ../../abis/ERC20MineV3.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../../abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../../abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: NewMineV3(address,address,bool)
           handler: handleNewMineV3
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
-    network: bitlayer
+    network: zircuit_testnet
     source:
       abi: ERC20MineV3
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: templates/ERC20MineV3/ERC20MineV3.wasm
+      file: ../../src/mappings/mine/mine.ts
       entities:
         - MinePool
       abis:
         - name: ERC20MineV3
-          file: ../abis/ERC20MineV3.json
+          file: ../../abis/ERC20MineV3.json
       eventHandlers:
         - event: Deposit(indexed address,uint256)
           handler: handleDeposit
@@ -91,3 +91,4 @@ templates:
           handler: handleUpdateEndBlock
         - event: UpdateReward(indexed uint256,uint256)
           handler: handleUpdateReward
+

@@ -27,6 +27,9 @@ const chains = [
   "manta",
   "mantle",
   "tokb",
+  "dodochain-testnet",
+  "bitlayer",
+  "zircuit-testnet",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = ["arbitrum", "polygon", "mainnet"];
