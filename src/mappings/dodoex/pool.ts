@@ -24,6 +24,7 @@ import {
   updateUserDayDataAndDodoDayData,
   updateTokenTraderCount,
   createPairDetail,
+  exponentToBigDecimal,
 } from "./helpers";
 import {
   DODOSwap,
@@ -157,15 +158,13 @@ export function handleDODOSwap(event: DODOSwap): void {
     pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(quoteVolume);
     untrackedBaseVolume = baseVolume;
     untrackedQuoteVolume = quoteVolume;
-    fromToken.untrackedVolume = fromToken.untrackedVolume.plus(
-      dealedFromAmount
-    );
+    fromToken.untrackedVolume =
+      fromToken.untrackedVolume.plus(dealedFromAmount);
     toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
   }
   pair.untrackedBaseVolume = pair.untrackedBaseVolume.plus(untrackedBaseVolume);
-  pair.untrackedQuoteVolume = pair.untrackedQuoteVolume.plus(
-    untrackedQuoteVolume
-  );
+  pair.untrackedQuoteVolume =
+    pair.untrackedQuoteVolume.plus(untrackedQuoteVolume);
   pair.save();
 
   //3、user info update
@@ -304,16 +303,18 @@ export function handleBuyShares(event: BuyShares): void {
   }
   createPairDetail(pair, pmmState, event.block.timestamp);
 
-  let baseAmountChange = convertTokenToDecimal(
-    pmmState.B,
-    baseToken.decimals
-  ).minus(pair.baseReserve);
-  let quoteAmountChange = convertTokenToDecimal(
-    pmmState.Q,
-    quoteToken.decimals
-  ).minus(pair.quoteReserve);
-
   let lpToken = createLpToken(event.address, pair as Pair);
+
+  let baseAmountChange = event.params.increaseShares
+    .toBigDecimal()
+    .div(lpToken.totalSupply.toBigDecimal())
+    .times(pmmState.B.toBigDecimal())
+    .div(exponentToBigDecimal(lpToken.decimals));
+  let quoteAmountChange = event.params.increaseShares
+    .toBigDecimal()
+    .div(lpToken.totalSupply.toBigDecimal())
+    .times(pmmState.Q.toBigDecimal())
+    .div(exponentToBigDecimal(lpToken.decimals));
 
   let dealedSharesAmount = convertTokenToDecimal(
     event.params.increaseShares,
@@ -352,7 +353,6 @@ export function handleBuyShares(event: BuyShares): void {
 
   baseToken.txCount = baseToken.txCount.plus(ONE_BI);
   quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
-  lpToken.totalSupply = lpToken.totalSupply.plus(event.params.increaseShares);
 
   //增加shares发生时的快照
   let liquidityHistoryID = event.transaction.hash
@@ -434,8 +434,18 @@ export function handleSellShares(event: SellShares): void {
     return;
   }
   createPairDetail(pair, pmmState, event.block.timestamp);
-
   let lpToken = createLpToken(event.address, pair as Pair);
+
+  let baseAmountChange = event.params.decreaseShares
+    .toBigDecimal()
+    .div(lpToken.totalSupply.toBigDecimal())
+    .times(pmmState.B.toBigDecimal())
+    .div(exponentToBigDecimal(lpToken.decimals));
+  let quoteAmountChange = event.params.decreaseShares
+    .toBigDecimal()
+    .div(lpToken.totalSupply.toBigDecimal())
+    .times(pmmState.Q.toBigDecimal())
+    .div(exponentToBigDecimal(lpToken.decimals));
 
   let dealedSharesAmount = convertTokenToDecimal(
     event.params.decreaseShares,
@@ -477,7 +487,6 @@ export function handleSellShares(event: SellShares): void {
   baseToken.txCount = baseToken.txCount.plus(ONE_BI);
   quoteToken.txCount = quoteToken.txCount.plus(ONE_BI);
 
-  lpToken.totalSupply = lpToken.totalSupply.minus(event.params.decreaseShares);
   //增加shares发生时的快照
   let liquidityHistoryID = event.transaction.hash
     .toHexString()
@@ -502,6 +511,8 @@ export function handleSellShares(event: SellShares): void {
       lpToken.totalSupply,
       lpToken.decimals
     );
+    liquidityHistory.baseAmountChange = baseAmountChange;
+    liquidityHistory.quoteAmountChange = quoteAmountChange;
   }
 
   //更新时间戳
@@ -598,9 +609,8 @@ export function handleTransfer(event: Transfer): void {
       position.lastTxTime = event.block.timestamp;
       position.liquidityTokenInMining = ZERO_BD;
     }
-    position.liquidityTokenBalance = position.liquidityTokenBalance.plus(
-      dealedAmount
-    );
+    position.liquidityTokenBalance =
+      position.liquidityTokenBalance.plus(dealedAmount);
     position.updatedAt = event.block.timestamp;
     position.save();
   }
@@ -619,9 +629,8 @@ export function handleTransfer(event: Transfer): void {
       position.lastTxTime = ZERO_BI;
       position.liquidityTokenInMining = ZERO_BD;
     }
-    position.liquidityTokenBalance = position.liquidityTokenBalance.minus(
-      dealedAmount
-    );
+    position.liquidityTokenBalance =
+      position.liquidityTokenBalance.minus(dealedAmount);
     position.updatedAt = event.block.timestamp;
     position.save();
   }

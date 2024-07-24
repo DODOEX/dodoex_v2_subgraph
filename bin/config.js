@@ -30,9 +30,10 @@ const chains = [
   "dodochain-testnet",
   "bitlayer",
   "zircuit-testnet",
+  "arb-sep",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
-const supportStudioChains = ["arbitrum", "polygon", "mainnet"];
+const supportStudioChains = ["arbitrum", "polygon", "mainnet", "arb-sep"];
 module.exports = {
   studioNodeUrl,
   theGraphNodeUrl,
