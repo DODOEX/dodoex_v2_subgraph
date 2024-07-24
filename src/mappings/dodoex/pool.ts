@@ -305,16 +305,14 @@ export function handleBuyShares(event: BuyShares): void {
 
   let lpToken = createLpToken(event.address, pair as Pair);
 
-  let baseAmountChange = event.params.increaseShares
-    .toBigDecimal()
-    .div(lpToken.totalSupply.toBigDecimal())
-    .times(pmmState.B.toBigDecimal())
-    .div(exponentToBigDecimal(lpToken.decimals));
-  let quoteAmountChange = event.params.increaseShares
-    .toBigDecimal()
-    .div(lpToken.totalSupply.toBigDecimal())
-    .times(pmmState.Q.toBigDecimal())
-    .div(exponentToBigDecimal(lpToken.decimals));
+  let baseAmountChange = convertTokenToDecimal(
+    pmmState.B,
+    baseToken.decimals
+  ).minus(pair.baseReserve);
+  let quoteAmountChange = convertTokenToDecimal(
+    pmmState.Q,
+    quoteToken.decimals
+  ).minus(pair.quoteReserve);
 
   let dealedSharesAmount = convertTokenToDecimal(
     event.params.increaseShares,
@@ -436,16 +434,12 @@ export function handleSellShares(event: SellShares): void {
   createPairDetail(pair, pmmState, event.block.timestamp);
   let lpToken = createLpToken(event.address, pair as Pair);
 
-  let baseAmountChange = event.params.decreaseShares
-    .toBigDecimal()
-    .div(lpToken.totalSupply.toBigDecimal())
-    .times(pmmState.B.toBigDecimal())
-    .div(exponentToBigDecimal(lpToken.decimals));
-  let quoteAmountChange = event.params.decreaseShares
-    .toBigDecimal()
-    .div(lpToken.totalSupply.toBigDecimal())
-    .times(pmmState.Q.toBigDecimal())
-    .div(exponentToBigDecimal(lpToken.decimals));
+  let baseAmountChange = pair.baseReserve.minus(
+    convertTokenToDecimal(pmmState.B, baseToken.decimals)
+  );
+  let quoteAmountChange = pair.quoteReserve.minus(
+    convertTokenToDecimal(pmmState.Q, quoteToken.decimals)
+  );
 
   let dealedSharesAmount = convertTokenToDecimal(
     event.params.decreaseShares,
