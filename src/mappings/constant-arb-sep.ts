@@ -3,6 +3,7 @@ export const TYPE_VIRTUAL_POOL = "VIRTUAL";
 export const TYPE_DVM_POOL = "DVM";
 export const TYPE_DPP_POOL = "DPP";
 export const TYPE_DSP_POOL = "DSP";
+export const TYPE_GSP_POOL = "GSP";
 export const TYPE_CLASSICAL_POOL = "CLASSICAL";
 export const SOURCE_SMART_ROUTE = "SMART_ROUTE";
 export const SOURCE_POOL_SWAP = "DODO_POOL";

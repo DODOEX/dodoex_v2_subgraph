@@ -31,9 +31,18 @@ const chains = [
   "bitlayer",
   "zircuit-testnet",
   "arb-sep",
+  "zircuit",
+  "sepolia",
+  "okb",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
-const supportStudioChains = ["arbitrum", "polygon", "mainnet", "arb-sep"];
+const supportStudioChains = [
+  "arbitrum",
+  "polygon",
+  "mainnet",
+  "arb-sep",
+  "sepolia",
+];
 module.exports = {
   studioNodeUrl,
   theGraphNodeUrl,
