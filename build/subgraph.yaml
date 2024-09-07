@@ -1,30 +1,27 @@
-specVersion: 0.0.5
+specVersion: 0.0.4
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
-  file: mine.graphql
+  file: vdodo.graphql
 dataSources:
   - kind: ethereum/contract
-    name: DODOMineV3ProxyV2
-    network: okb
+    name: vDODOToken
+    network: mainnet
     source:
-      address: "0x62e2EC354E15ddA6A1E43586c86e745A59b4B81e"
-      abi: DODOMineV3ProxyV2
-      startBlock: 4090720
+      address: "0xc4436fbae6eba5d95bf7d53ae515f8a707bd402a"
+      abi: vDODOToken
+      startBlock: 11848651
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: DODOMineV3ProxyV2/DODOMineV3ProxyV2.wasm
+      file: vDODOToken/vDODOToken.wasm
       entities:
-        - MinePool
+        - User
+        - StakeHistory
       abis:
-        - name: DODOMineV3Proxy
-          file: ../abis/DODOMineV3Proxy.json
-        - name: DODOMineV3ProxyV2
-          file: ../abis/DODOMineV3ProxyV2.json
-        - name: ERC20MineV3
-          file: ../abis/ERC20MineV3.json
+        - name: vDODOToken
+          file: ../abis/vDODOToken.json
         - name: ERC20
           file: ../abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -32,62 +29,15 @@ dataSources:
         - name: ERC20NameBytes
           file: ../abis/ERC20NameBytes.json
       eventHandlers:
-        - event: CreateMineV3(address,address,uint256)
-          handler: handleV2CreateMineV3
-  - kind: ethereum/contract
-    name: DODOMineV3Registry
-    network: okb
-    source:
-      address: "0xec627fef2AbC5632C01BA9435caAa78871E2e305"
-      abi: DODOMineV3Registry
-      startBlock: 4090720
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: DODOMineV3Registry/DODOMineV3Registry.wasm
-      entities:
-        - MinePool
-      abis:
-        - name: DODOMineV3Proxy
-          file: ../abis/DODOMineV3Proxy.json
-        - name: DODOMineV3Registry
-          file: ../abis/DODOMineV3Registry.json
-        - name: ERC20MineV3
-          file: ../abis/ERC20MineV3.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: NewMineV3(address,address,bool)
-          handler: handleNewMineV3
-templates:
-  - kind: ethereum/contract
-    name: ERC20MineV3
-    network: okb
-    source:
-      abi: ERC20MineV3
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: templates/ERC20MineV3/ERC20MineV3.wasm
-      entities:
-        - MinePool
-      abis:
-        - name: ERC20MineV3
-          file: ../abis/ERC20MineV3.json
-      eventHandlers:
-        - event: Deposit(indexed address,uint256)
-          handler: handleDeposit
-        - event: Withdraw(indexed address,uint256)
-          handler: handleWithdraw
-        - event: NewRewardToken(indexed uint256,address)
-          handler: handleNewRewardToken
-        - event: UpdateEndBlock(indexed uint256,uint256)
-          handler: handleUpdateEndBlock
-        - event: UpdateReward(indexed uint256,uint256)
-          handler: handleUpdateReward
+        - event: MintVDODO(address,address,uint256)
+          handler: handleMintVDODO
+        - event: RedeemVDODO(address,uint256,uint256,uint256)
+          handler: handleRedeemVDODO
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: PreDeposit(uint256)
+          handler: handlePreDeposit
+        - event: ChangePerReward(uint256)
+          handler: handleChangePerReward
+        - event: DonateDODO(address,uint256)
+          handler: handleDonateDODO

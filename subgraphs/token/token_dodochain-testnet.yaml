@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: dodochain-testnet2
+    network: dodochain-testnet3
     source:
       address: '0xDC249Ea92D2e532ed63B45dc7C05B21926B97c6F'
       abi: ERC20V3Factory

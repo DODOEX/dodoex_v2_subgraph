@@ -611,6 +611,28 @@ export function getPMMState(
   return null;
 }
 
+export function updatePairPmm(
+  address: Address,
+  pair: Pair,
+  event: ethereum.Event
+): void {
+  let pmmState: DVM__getPMMStateResultStateStruct | null;
+  pmmState = getPMMState(address);
+  if (pmmState == null) {
+    return;
+  }
+  createPairDetail(pair, pmmState, event.block.timestamp);
+  let baseToken = Token.load(pair.baseToken) as Token;
+  let quoteToken = Token.load(pair.quoteToken) as Token;
+
+  pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
+  pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
+  pair.i = pmmState.i;
+  pair.k = pmmState.K;
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
+}
+
 export function getQuoteTokenAddress(poolAddress: Address): Address {
   let pair = Pair.load(poolAddress.toHexString());
   if (pair != null) {

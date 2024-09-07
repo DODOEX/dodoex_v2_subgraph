@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description: Dodoex.io
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
@@ -13,7 +13,7 @@ dataSources:
       startBlock: 11848651
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/vdodo/core.ts
       entities:

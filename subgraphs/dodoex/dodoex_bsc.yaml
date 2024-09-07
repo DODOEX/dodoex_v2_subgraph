@@ -1,8 +1,8 @@
 specVersion: 0.0.4
 description: Dodoex.io
-graft:
-  base: QmU2D6A3QDtTwrzC6NgK2ngZEskS1bzEwo599bUdjhzPVz
-  block: 39336465
+# graft:
+#   base: QmUMiKv8gQVhZwrfSkhM24J5YoEau3KkK9xPGfY5PWeSza
+#   block: 41809388
 features:
   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
@@ -523,6 +523,39 @@ dataSources:
         - event: RemoveDSP(address)
           handler: handleRemoveDSP
   - kind: ethereum/contract
+    name: GSPFactory
+    network: bsc
+    source:
+      address: '0x78d43a889F42a344Fe98C3fb9455791Dc8178d55'
+      abi: GSPFactory
+      startBlock: 41809388
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: GSP
+          file: ../../abis/GSP.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewGSP(address,address,address,address)
+          handler: handleNewGSP
+        - event: RemoveGSP(address)
+          handler: handleRemoveGSP
+  - kind: ethereum/contract
     name: CrowdPoolingFactory_20200721
     network: bsc
     source:
@@ -870,6 +903,56 @@ templates:
           file: ../../abis/DPP.json
         - name: DSP
           file: ../../abis/DSP.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
+      eventHandlers:
+        - event: DODOSwap(address,address,uint256,uint256,address,address)
+          handler: handleDODOSwap
+        - event: BuyShares(address,uint256,uint256)
+          handler: handleBuyShares
+        - event: SellShares(address,address,uint256,uint256)
+          handler: handleSellShares
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: GSP
+    network: bsc
+    source:
+      abi: GSP
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/pool.ts
+      entities:
+        - Pair
+        - Token
+        - DODOSwap
+      abis:
+        - name: DVMFactory
+          file: ../../abis/DVMFactory.json
+        - name: DPPFactory
+          file: ../../abis/DPPFactory.json
+        - name: DSPFactory
+          file: ../../abis/DSPFactory.json
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json          
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: DSP
+          file: ../../abis/DSP.json
+        - name: GSP
+          file: ../../abis/GSP.json          
         - name: FeeRateModel
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo

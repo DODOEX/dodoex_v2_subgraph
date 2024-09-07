@@ -45,7 +45,7 @@ dataSources:
       startBlock: 45989363
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ../../src/mappings/dodoex/smartRoute.ts
       entities:
@@ -220,6 +220,39 @@ dataSources:
           handler: handleNewDSP
         - event: RemoveDSP(address)
           handler: handleRemoveDSP
+  - kind: ethereum/contract
+    name: GSPFactory
+    network: arbitrum-one
+    source:
+      address: '0x46E55A974c5995675b025f7F607C3278B36f0c29'
+      abi: GSPFactory
+      startBlock: 248209288
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: GSP
+          file: ../../abis/GSP.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewGSP(address,address,address,address)
+          handler: handleNewGSP
+        - event: RemoveGSP(address)
+          handler: handleRemoveGSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory
     network: arbitrum-one
@@ -446,6 +479,12 @@ templates:
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json            
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -564,6 +603,12 @@ templates:
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -573,6 +618,66 @@ templates:
           handler: handleSellShares
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+  - kind: ethereum/contract
+    name: GSP
+    network: arbitrum-one
+    source:
+      abi: GSP
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/pool.ts
+      entities:
+        - Pair
+        - Token
+        - DODOSwap
+      abis:
+        - name: DVMFactory
+          file: ../../abis/DVMFactory.json
+        - name: DPPFactory
+          file: ../../abis/DPPFactory.json
+        - name: DSPFactory
+          file: ../../abis/DSPFactory.json
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json          
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: DSP
+          file: ../../abis/DSP.json
+        - name: GSP
+          file: ../../abis/GSP.json          
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
+      eventHandlers:
+        - event: DODOSwap(address,address,uint256,uint256,address,address)
+          handler: handleDODOSwap
+        - event: BuyShares(address,uint256,uint256)
+          handler: handleBuyShares
+        - event: SellShares(address,address,uint256,uint256)
+          handler: handleSellShares
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: IChange(uint256)
+          handler: handleIChange
+        - event: KChange(uint256)
+          handler: handleKChange  
+        - event: LpFeeRateChange(uint256)
+          handler: handleLpFeeRateChange   
+        - event: MtFeeRateChange(uint256)
+          handler: handleMtFeeRateChange       
+        - event: RChange(uint8)
+          handler: handleRChange           
   - kind: ethereum/contract
     name: CP
     network: arbitrum-one

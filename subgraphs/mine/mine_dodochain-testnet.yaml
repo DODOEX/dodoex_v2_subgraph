@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3ProxyV2
-    network: dodochain-testnet2
+    network: dodochain-testnet3
     source:
       address: '0x391f8D754E4BaC453d059BA7D2137C4905bF48d4'
       abi: DODOMineV3ProxyV2
@@ -36,7 +36,7 @@ dataSources:
           handler: handleV2CreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
-    network: dodochain-testnet2
+    network: dodochain-testnet3
     source:
       address: '0x85C23863977dA7c3CEaCe129e292ba0F4d8aAA00'
       abi: DODOMineV3Registry
@@ -67,7 +67,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
-    network: dodochain-testnet2
+    network: dodochain-testnet3
     source:
       abi: ERC20MineV3
     mapping:

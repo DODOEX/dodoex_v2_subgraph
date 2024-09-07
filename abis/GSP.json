@@ -74,19 +74,6 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "newOracle",
-        "type": "address"
-      }
-    ],
-    "name": "ChangeOracle",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
         "name": "borrower",
         "type": "address"
       },
@@ -153,6 +140,45 @@
       }
     ],
     "name": "DODOSwap",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newI",
+        "type": "uint256"
+      }
+    ],
+    "name": "IChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newK",
+        "type": "uint256"
+      }
+    ],
+    "name": "KChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newLpFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "LpFeeRateChange",
     "type": "event"
   },
   {
@@ -498,19 +524,6 @@
   },
   {
     "inputs": [],
-    "name": "_O_",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "_PRICE_LIMIT_",
     "outputs": [
       {
@@ -597,11 +610,63 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "k",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustK",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "lpFeeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustLpFeeRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "mtFeeRate",
         "type": "uint256"
       }
     ],
     "name": "adjustMtFeeRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "i",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "priceLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustPriceLimit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -712,32 +777,6 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newAdmin",
-        "type": "address"
-      }
-    ],
-    "name": "changeAdmin",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOracle",
-        "type": "address"
-      }
-    ],
-    "name": "changeOracle",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -1015,13 +1054,18 @@
       },
       {
         "internalType": "uint256",
+        "name": "i",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "k",
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "o",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "priceLimit",
+        "type": "uint256"
       },
       {
         "internalType": "bool",

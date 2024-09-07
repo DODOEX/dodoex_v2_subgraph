@@ -190,7 +190,40 @@ dataSources:
     name: GSPFactory
     network: sepolia
     source:
-      address: '0xD936B3CBFFbCE67315C1bc1957b261A6eF637128'
+      address: '0xa4aAeb4ED67d4451E4Dfd7aA595f76265A6dC697'
+      abi: GSPFactory
+      startBlock: 6559916
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: GSP
+          file: ../../abis/GSP.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewGSP(address,address,address,address)
+          handler: handleNewGSP
+        - event: RemoveGSP(address)
+          handler: handleRemoveGSP          
+  - kind: ethereum/contract
+    name: GSPFactory-2
+    network: sepolia
+    source:
+      address: '0xd936b3cbffbce67315c1bc1957b261a6ef637128'
       abi: GSPFactory
       startBlock: 6492271
     mapping:
@@ -218,7 +251,7 @@ dataSources:
         - event: NewGSP(address,address,address,address)
           handler: handleNewGSP
         - event: RemoveGSP(address)
-          handler: handleRemoveGSP          
+          handler: handleRemoveGSP  
   - kind: ethereum/contract
     name: CrowdPoolingFactory
     network: sepolia
@@ -607,6 +640,16 @@ templates:
           handler: handleSellShares
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+        - event: IChange(uint256)
+          handler: handleIChange
+        - event: KChange(uint256)
+          handler: handleKChange  
+        - event: LpFeeRateChange(uint256)
+          handler: handleLpFeeRateChange   
+        - event: MtFeeRateChange(uint256)
+          handler: handleMtFeeRateChange       
+        - event: RChange(uint8)
+          handler: handleRChange
   - kind: ethereum/contract
     name: CP
     network: sepolia

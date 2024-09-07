@@ -1,4 +1,10 @@
-import { BigInt, BigDecimal, ethereum, log } from "@graphprotocol/graph-ts";
+import {
+  BigInt,
+  BigDecimal,
+  ethereum,
+  log,
+  Address,
+} from "@graphprotocol/graph-ts";
 import {
   OrderHistory,
   Token,
@@ -25,6 +31,7 @@ import {
   updateTokenTraderCount,
   createPairDetail,
   exponentToBigDecimal,
+  updatePairPmm,
 } from "./helpers";
 import {
   DODOSwap,
@@ -34,6 +41,12 @@ import {
 } from "../../types/dodoex/templates/DVM/DVM";
 import { LpFeeRateChange, DPP } from "../../types/dodoex/templates/DPP/DPP";
 import { OwnershipTransferred } from "../../types/dodoex/templates/DPPOracleAdmin/DPPOracleAdmin";
+import {
+  IChange,
+  KChange,
+  RChange,
+  MtFeeRateChange,
+} from "../../types/dodoex/templates/GSP/GSP";
 import { DVM__getPMMStateResultStateStruct } from "../../types/dodoex/DVMFactory/DVM";
 import { calculateUsdVolume, updatePrice } from "./pricing";
 import { addToken, addTransaction, addVolume } from "./transaction";
@@ -49,6 +62,7 @@ import {
   TRANSACTION_TYPE_LP_REMOVE,
   TRANSACTION_TYPE_CP_CLAIM,
   DIP3_TIMESTAMP,
+  TYPE_GSP_POOL,
 } from "../constant";
 
 export function handleDODOSwap(event: DODOSwap): void {
@@ -550,28 +564,14 @@ export function handleLpFeeRateChange(event: LpFeeRateChange): void {
   if (pair === null) {
     return;
   }
-  if (pair.type == TYPE_DPP_POOL) {
+  if (pair.type == TYPE_DPP_POOL || pair.type == TYPE_GSP_POOL) {
     let dpp = DPP.bind(event.address);
     pair.lpFeeRate = convertTokenToDecimal(
       dpp._LP_FEE_RATE_(),
       BigInt.fromI32(18)
     );
 
-    let pmmState: DVM__getPMMStateResultStateStruct | null;
-    pmmState = getPMMState(event.address);
-    if (pmmState == null) {
-      return;
-    }
-    createPairDetail(pair, pmmState, event.block.timestamp);
-    let baseToken = Token.load(pair.baseToken) as Token;
-    let quoteToken = Token.load(pair.quoteToken) as Token;
-
-    pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
-    pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
-    pair.i = pmmState.i;
-    pair.k = pmmState.K;
-    pair.updatedAt = event.block.timestamp;
-    pair.save();
+    updatePairPmm(event.address, pair, event);
   }
 }
 
@@ -644,4 +644,34 @@ export function handleDPPOwnershipTransferred(
   dppOracleAdmin.newOwner = event.params.newOwner;
   dppOracleAdmin.updatedAt = event.block.timestamp;
   dppOracleAdmin.save();
+}
+
+export function handleIChange(event: IChange): void {
+  let pair = Pair.load(event.address.toHexString());
+  if (!pair) return;
+  pair.i = event.params.newI;
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
+}
+
+export function handleKChange(event: KChange): void {
+  let pair = Pair.load(event.address.toHexString());
+  if (!pair) return;
+  pair.k = event.params.newK;
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
+}
+
+export function handleRChange(event: RChange): void {
+  let pair = Pair.load(event.address.toHexString());
+  if (!pair) return;
+  updatePairPmm(event.address, pair, event);
+}
+
+export function handleMtFeeRateChange(event: MtFeeRateChange): void {
+  let pair = Pair.load(event.address.toHexString());
+  if (!pair) return;
+  pair.mtFeeRate = event.params.newMtFee;
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
 }
