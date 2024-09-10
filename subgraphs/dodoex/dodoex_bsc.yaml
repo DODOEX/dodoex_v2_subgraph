@@ -1,8 +1,8 @@
 specVersion: 0.0.4
 description: Dodoex.io
 # graft:
-#   base: QmUMiKv8gQVhZwrfSkhM24J5YoEau3KkK9xPGfY5PWeSza
-#   block: 41809388
+#   base: QmdiudgxBoBikgSkqBktvLVAMhtoawNsY5oYXY3GY5REoq
+#   block: 42127304
 features:
   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
@@ -972,6 +972,16 @@ templates:
           handler: handleSellShares
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+        - event: IChange(uint256)
+          handler: handleIChange
+        - event: KChange(uint256)
+          handler: handleKChange  
+        - event: LpFeeRateChange(uint256)
+          handler: handleLpFeeRateChange   
+        - event: MtFeeRateChange(uint256)
+          handler: handleMtFeeRateChange       
+        - event: RChange(uint8)
+          handler: handleRChange
   - kind: ethereum/contract
     name: CP
     network: bsc
