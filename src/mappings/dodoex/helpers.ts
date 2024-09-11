@@ -605,8 +605,9 @@ export function getPMMState(
     let pmmState = pool.try_getPMMState();
     if (pmmState.reverted) {
       log.warning("getPMMState reverted: {}", [poolAddress.toHexString()]);
+    } else {
+      return pmmState.value as DVM__getPMMStateResultStateStruct;
     }
-    return pmmState.value as DVM__getPMMStateResultStateStruct;
   }
   return null;
 }

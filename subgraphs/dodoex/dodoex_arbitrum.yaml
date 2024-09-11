@@ -1,8 +1,8 @@
 specVersion: 0.0.4
 description: Dodoex.io
-# graft:
-#   base: QmbhmHajvCeLUhwWsy7rcJZcCb7zWmHazYeor5Z3G5UjD6
-#   block: 248209289
+graft:
+  base: QmPMLJWfXJN9Juyj5h14NKJh9qvteiNs6PMTocqfHocWJk
+  block: 252253560
 features:
   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
