@@ -85,3 +85,7 @@ templates:
           handler: handleWithdraw
         - event: NewRewardToken(indexed uint256,address)
           handler: handleNewRewardToken
+        - event: UpdateEndBlock(indexed uint256,uint256)
+          handler: handleUpdateEndBlock
+        - event: UpdateReward(indexed uint256,uint256)
+          handler: handleUpdateReward          

@@ -243,7 +243,9 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
   // hardcode overrides
   if (
-    tokenAddress.toHexString() == "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9"
+    tokenAddress.toHexString() ==
+      "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9" ||
+    tokenAddress.toHexString() == "0x623b3357095ea5e41920dec8b873cc95839f861d"
   ) {
     return BigInt.fromI32(18);
   }
@@ -527,7 +529,11 @@ export function updateVirtualPairVolume(
   return pair as Pair;
 }
 
-export function createLpToken(address: Address, pair: Pair): LpToken {
+export function createLpToken(
+  address: Address,
+  pair: Pair,
+  isUpdateTotalSupply: boolean = true
+): LpToken {
   let lpToken = LpToken.load(address.toHexString());
 
   if (lpToken == null) {
@@ -544,12 +550,14 @@ export function createLpToken(address: Address, pair: Pair): LpToken {
   //for V1 classical hardcode pools
   if (lpToken.symbol == "unknown") {
     lpToken.symbol = fetchTokenSymbol(address);
-    lpToken.totalSupply = fetchTokenTotalSupply(address);
     lpToken.name = fetchTokenName(address);
     lpToken.decimals = fetchTokenDecimals(address);
     lpToken.save();
   }
 
+  if (isUpdateTotalSupply || lpToken.symbol == "unknown") {
+    lpToken.totalSupply = fetchTokenTotalSupply(address);
+  }
   return lpToken as LpToken;
 }
 
@@ -595,11 +603,35 @@ export function getPMMState(
   if (pair != null && pair.type != TYPE_CLASSICAL_POOL) {
     let pool = DVM.bind(poolAddress);
     let pmmState = pool.try_getPMMState();
-    if (pmmState.reverted == false) {
+    if (pmmState.reverted) {
+      log.warning("getPMMState reverted: {}", [poolAddress.toHexString()]);
+    } else {
       return pmmState.value as DVM__getPMMStateResultStateStruct;
     }
   }
   return null;
+}
+
+export function updatePairPmm(
+  address: Address,
+  pair: Pair,
+  event: ethereum.Event
+): void {
+  let pmmState: DVM__getPMMStateResultStateStruct | null;
+  pmmState = getPMMState(address);
+  if (pmmState == null) {
+    return;
+  }
+  createPairDetail(pair, pmmState, event.block.timestamp);
+  let baseToken = Token.load(pair.baseToken) as Token;
+  let quoteToken = Token.load(pair.quoteToken) as Token;
+
+  pair.baseReserve = convertTokenToDecimal(pmmState.B, baseToken.decimals);
+  pair.quoteReserve = convertTokenToDecimal(pmmState.Q, quoteToken.decimals);
+  pair.i = pmmState.i;
+  pair.k = pmmState.K;
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
 }
 
 export function getQuoteTokenAddress(poolAddress: Address): Address {
@@ -618,14 +650,8 @@ export function updatePairTraderCount(
   pair: Pair,
   event: ethereum.Event
 ): void {
-  let fromPairID = from
-    .toHexString()
-    .concat("-")
-    .concat(pair.id);
-  let toPairID = to
-    .toHexString()
-    .concat("-")
-    .concat(pair.id);
+  let fromPairID = from.toHexString().concat("-").concat(pair.id);
+  let toPairID = to.toHexString().concat("-").concat(pair.id);
 
   let fromTraderPair = PairTrader.load(fromPairID);
   if (fromTraderPair == null) {
@@ -694,12 +720,10 @@ export function updateStatistics(
   volumeUSD: BigDecimal
 ): void {
   let pairHourData = updatePairHourData(event, pair);
-  pairHourData.untrackedBaseVolume = pairHourData.untrackedBaseVolume.plus(
-    untrackedBaseVolume
-  );
-  pairHourData.untrackedQuoteVolume = pairHourData.untrackedBaseVolume.plus(
-    untrackedQuoteVolume
-  );
+  pairHourData.untrackedBaseVolume =
+    pairHourData.untrackedBaseVolume.plus(untrackedBaseVolume);
+  pairHourData.untrackedQuoteVolume =
+    pairHourData.untrackedBaseVolume.plus(untrackedQuoteVolume);
   pairHourData.volumeBase = pairHourData.volumeBase.plus(baseVolume);
   pairHourData.volumeQuote = pairHourData.volumeQuote.plus(quoteVolume);
   pairHourData.feeBase = pairHourData.feeBase.plus(feeBase);
@@ -708,12 +732,10 @@ export function updateStatistics(
   pairHourData.updatedAt = event.block.timestamp;
 
   let pairDayData = updatePairDayData(event, pair);
-  pairDayData.untrackedBaseVolume = pairDayData.untrackedBaseVolume.plus(
-    untrackedBaseVolume
-  );
-  pairDayData.untrackedQuoteVolume = pairDayData.untrackedBaseVolume.plus(
-    untrackedQuoteVolume
-  );
+  pairDayData.untrackedBaseVolume =
+    pairDayData.untrackedBaseVolume.plus(untrackedBaseVolume);
+  pairDayData.untrackedQuoteVolume =
+    pairDayData.untrackedBaseVolume.plus(untrackedQuoteVolume);
   pairDayData.volumeBase = pairDayData.volumeBase.plus(baseVolume);
   pairDayData.volumeQuote = pairDayData.volumeQuote.plus(quoteVolume);
   pairDayData.feeBase = pairDayData.feeBase.plus(feeBase);
@@ -722,9 +744,8 @@ export function updateStatistics(
   pairDayData.updatedAt = event.block.timestamp;
 
   let baseDayData = updateTokenDayData(baseToken, event);
-  baseDayData.untrackedVolume = baseDayData.untrackedVolume.plus(
-    untrackedBaseVolume
-  );
+  baseDayData.untrackedVolume =
+    baseDayData.untrackedVolume.plus(untrackedBaseVolume);
   baseDayData.volume = baseDayData.volume.plus(baseVolume);
   baseDayData.fee = baseDayData.fee.plus(feeBase);
   baseDayData.txns = baseDayData.txns.plus(ONE_BI);
@@ -732,9 +753,8 @@ export function updateStatistics(
   baseDayData.updatedAt = event.block.timestamp;
 
   let quoteDayData = updateTokenDayData(quoteToken, event);
-  quoteDayData.untrackedVolume = baseDayData.untrackedVolume.plus(
-    untrackedQuoteVolume
-  );
+  quoteDayData.untrackedVolume =
+    baseDayData.untrackedVolume.plus(untrackedQuoteVolume);
   quoteDayData.volume = quoteDayData.volume.plus(quoteVolume);
   quoteDayData.fee = quoteDayData.fee.plus(feeQuote);
   quoteDayData.txns = quoteDayData.txns.plus(ONE_BI);
@@ -742,10 +762,7 @@ export function updateStatistics(
   quoteDayData.updatedAt = event.block.timestamp;
 
   let fromTraderPair = PairTrader.load(
-    event.transaction.from
-      .toHexString()
-      .concat("-")
-      .concat(pair.id)
+    event.transaction.from.toHexString().concat("-").concat(pair.id)
   );
   pairHourData.traders = pairHourData.traders.plus(ONE_BI);
   baseDayData.traders = baseDayData.traders.plus(ONE_BI);
@@ -757,10 +774,7 @@ export function updateStatistics(
   }
 
   let toTraderPair = PairTrader.load(
-    to
-      .toHexString()
-      .concat("-")
-      .concat(pair.id)
+    to.toHexString().concat("-").concat(pair.id)
   );
   pairHourData.traders = pairHourData.traders.plus(ONE_BI);
   baseDayData.traders = baseDayData.traders.plus(ONE_BI);

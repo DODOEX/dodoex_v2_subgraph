@@ -1,14 +1,36 @@
 specVersion: 0.0.4
 description: Dodoex.io
-# graft:
-#   base: QmTEi7cu6yUiBjkfbu1HojabrsWkCFjhSLv6YH9D7PhE34
-#   block: 80607250
-# features:
-#   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
 dataSources:
+  - kind: ethereum/contract
+    name: DODOV2Proxy02
+    network: aurora
+    source:
+      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
+      abi: DODOV2Proxy02
+      startBlock: 53254349
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
   - kind: ethereum/contract
     name: DODOFeeRouteProxy
     network: aurora
@@ -39,7 +61,7 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DODOFeeRouteProxyWidgit
+    name: DODOFeeRouteProxy-widgit
     network: aurora
     source:
       address: '0x0218E24dd47f9a1D05418eAa5B9cEDB13Ca48492'
@@ -68,39 +90,12 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
-    name: DODOV2Proxy02
-    network: aurora
-    source:
-      address: '0xd9deC7c3C06e62a4c1BeEB07CadF568f496b14c2'
-      abi: DODOV2Proxy02
-      startBlock: 51265155
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/smartRoute.ts
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: DODOV2Proxy02
-          file: ../../abis/DODOV2Proxy02.json
-        - name: ERC20
-          file: ../../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
-  - kind: ethereum/contract
     name: DODORouteProxy
     network: aurora
     source:
       address: '0x0125cd41312f72a0774112ca639d65a2c02e3627'
       abi: DODORouteProxy
-      startBlock: 51265155
+      startBlock: 53254716
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -120,14 +115,14 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
       eventHandlers:
         - event: OrderHistory(address,address,address,uint256,uint256)
-          handler: handleOrderHistory
+          handler: handleOrderHistory          
   - kind: ethereum/contract
     name: DVMFactory
     network: aurora
     source:
       address: '0x5515363c0412AdD5c72d3E302fE1bD7dCBCF93Fe'
       abi: DVMFactory
-      startBlock: 51265155
+      startBlock: 51263254
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -629,6 +624,12 @@ templates:
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json  
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -747,6 +748,12 @@ templates:
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -862,6 +869,12 @@ templates:
       abis:
         - name: DODOLpToken
           file: ../../abis/DODOLpToken.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer

@@ -39,7 +39,7 @@ function createConfig() {
 }
 function createDeployDodoexConfig() {
   const getCodegenCmd = (name) => {
-    return `graph codegen subgraphs/dodoex/dodoex_${name}.yaml --output-dir ./src/types/dodoex/ `;
+    return `./node_modules/.bin/graph codegen subgraphs/dodoex/dodoex_${name}.yaml --output-dir ./src/types/dodoex/ `;
   };
   const deployDodoex = {};
   for (const chain of chains) {
@@ -47,52 +47,52 @@ function createDeployDodoexConfig() {
       chain
     )} && ${getCodegenCmd(
       chain
-    )} && graph deploy --ipfs ${theGraphIpfsUrl} --node ${theGraphNodeUrl} dodoex/dodoex-v2-${chain} subgraphs/dodoex/dodoex_${chain}.yaml`;
+    )} && ./node_modules/.bin/graph deploy --ipfs ${theGraphIpfsUrl} --node ${theGraphNodeUrl} dodoex/dodoex-v2-${chain} subgraphs/dodoex/dodoex_${chain}.yaml`;
     deployDodoex[`deploy:local:dodoex_${chain}`] = `${getCpCmd(
       chain
     )} && ${getCodegenCmd(
       chain
-    )} && graph deploy --ipfs ${localIpfsUrl} --node ${localNodeUrl} dodoex/dodoex-v2-${chain} subgraphs/dodoex/dodoex_${chain}.yaml`;
+    )} && ./node_modules/.bin/graph deploy --ipfs ${localIpfsUrl} --node ${localNodeUrl} dodoex/dodoex-v2-${chain} subgraphs/dodoex/dodoex_${chain}.yaml`;
   }
   for (const chain of supportAlphaChains) {
     deployDodoex[`deploy:dodoex_${chain}_alpha`] = `${getCpCmd(
       chain
     )} && ${getCodegenCmd(
       chain
-    )} && graph deploy --ipfs ${theGraphIpfsUrl} --node ${theGraphNodeUrl} dodoex/dodoex-v2-${chain}-alpha subgraphs/dodoex/dodoex_${chain}-graft.yaml`;
+    )} && ./node_modules/.bin/graph deploy --ipfs ${theGraphIpfsUrl} --node ${theGraphNodeUrl} dodoex/dodoex-v2-${chain}-alpha subgraphs/dodoex/dodoex_${chain}-graft.yaml`;
   }
   for (const chain of supportStudioChains) {
     deployDodoex[`deploy:studio:dodoex_${chain}`] = `${getCpCmd(
       chain
     )} && ${getCodegenCmd(
       chain
-    )} && graph deploy --node ${studioNodeUrl} dodoex_v2_${chain} subgraphs/dodoex/dodoex_${chain}.yaml`;
+    )} && ./node_modules/.bin/graph deploy --node ${studioNodeUrl} dodoex_v2_${chain} subgraphs/dodoex/dodoex_${chain}.yaml`;
   }
   deployDodoex["deploy:dodoex_okchain"] = `${getCpCmd(
     "okchain"
   )} && ${getCodegenCmd(
     "okchain"
-  )} && graph deploy --ipfs https://ipfs.kkt.one --node https://graph.kkt.one/node/ dodoex/dodoex-v2-okchain subgraphs/dodoex/dodoex_okchain.yaml --access-token `;
+  )} && ./node_modules/.bin/graph deploy --ipfs https://ipfs.kkt.one --node https://graph.kkt.one/node/ dodoex/dodoex-v2-okchain subgraphs/dodoex/dodoex_okchain.yaml --access-token `;
   return deployDodoex;
 }
 function createDeployConfig(key, subgraphName, path, typePath) {
   const getCodegenCmd = (name) => {
-    return `graph codegen ${path}_${name}.yaml --output-dir ./src/types/${typePath ||
+    return `./node_modules/.bin/graph codegen ${path}_${name}.yaml --output-dir ./src/types/${typePath ||
       key}/ `;
   };
   const deployConfig = {};
   for (const chain of chains) {
     deployConfig[`deploy:${key}_${chain}`] = `${getCodegenCmd(
       chain
-    )} && graph deploy --ipfs ${theGraphIpfsUrl} --node ${theGraphNodeUrl} dodoex/${subgraphName}-${chain} ${path}_${chain}.yaml`;
+    )} && ./node_modules/.bin/graph deploy --ipfs ${theGraphIpfsUrl} --node ${theGraphNodeUrl} dodoex/${subgraphName}-${chain} ${path}_${chain}.yaml`;
     deployConfig[`deploy:local:${key}_${chain}`] = `${getCodegenCmd(
       chain
-    )} && graph deploy --ipfs ${localIpfsUrl} --node ${localNodeUrl} dodoex/${subgraphName}-${chain} ${path}_${chain}.yaml`;
+    )} && ./node_modules/.bin/graph deploy --ipfs ${localIpfsUrl} --node ${localNodeUrl} dodoex/${subgraphName}-${chain} ${path}_${chain}.yaml`;
   }
   for (const chain of supportStudioChains) {
     deployConfig[`deploy:studio:${key}_${chain}`] = `${getCodegenCmd(
       chain
-    )} && graph deploy --node ${studioNodeUrl} ${subgraphName}-${chain} ${path}_${chain}.yaml`;
+    )} && ./node_modules/.bin/graph deploy --node ${studioNodeUrl} ${subgraphName}-${chain} ${path}_${chain}.yaml`;
   }
   return deployConfig;
 }
@@ -383,6 +383,8 @@ function getDefaultConfig() {
       "graph codegen subgraphs/merkle-airdrop/merkle_goerli.yaml --output-dir ./src/types/merkle/  && graph deploy --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020 dodoex/merkle_airdrop_goerli subgraphs/merkle-airdrop/merkle_goerli.yaml",
     "deploy:studio:merkle_airdrop_base_mainnet":
       "graph codegen subgraphs/merkle-airdrop/merkle_base_mainnet.yaml --output-dir ./src/types/merkle/  && graph deploy --studio --node https://api.studio.thegraph.com/deploy/  dodoex_merkle_airdrop_base subgraphs/merkle-airdrop/merkle_base_mainnet.yaml",
+    "deploy:studio:dpoint_scroll":
+      "graph codegen subgraphs/dpoint/dpoint_scroll.yaml --output-dir ./src/types/dpoint/  && graph deploy --studio --node https://api.studio.thegraph.com/deploy/  dodoex_dpoint_scroll subgraphs/dpoint/dpoint_scroll.yaml",
   };
   return config2;
 }

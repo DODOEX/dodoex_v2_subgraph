@@ -1,8 +1,8 @@
 specVersion: 0.0.4
 description: Dodoex.io
-graft:
-  base: QmNjntYEcbLPzyvjhMCB3AruMbzWcU8UxrJAGcYvS3Aagf
-  block: 12241838
+# graft:
+#   base: QmdiudgxBoBikgSkqBktvLVAMhtoawNsY5oYXY3GY5REoq
+#   block: 42127304
 features:
   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
@@ -271,6 +271,35 @@ dataSources:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
   - kind: ethereum/contract
+    name: DODOFeeRouteProxy-widgit-24-6-5
+    network: bsc
+    source:
+      address: '0xb95ed7e958e196688984951f41ac2888f4b10ab9'
+      abi: DODOFeeRouteProxy
+      startBlock: 39336465
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory
+  - kind: ethereum/contract
     name: DVMFactory_2020_02_21
     network: bsc
     source:
@@ -493,6 +522,39 @@ dataSources:
           handler: handleNewDSP
         - event: RemoveDSP(address)
           handler: handleRemoveDSP
+  - kind: ethereum/contract
+    name: GSPFactory
+    network: bsc
+    source:
+      address: '0x78d43a889F42a344Fe98C3fb9455791Dc8178d55'
+      abi: GSPFactory
+      startBlock: 41809388
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/poolFactory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+        - name: GSP
+          file: ../../abis/GSP.json
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+      eventHandlers:
+        - event: NewGSP(address,address,address,address)
+          handler: handleNewGSP
+        - event: RemoveGSP(address)
+          handler: handleRemoveGSP
   - kind: ethereum/contract
     name: CrowdPoolingFactory_20200721
     network: bsc
@@ -723,6 +785,12 @@ templates:
           file: ../../abis/DODOZoo.json
         - name: DPP
           file: ../../abis/DPP.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -839,6 +907,12 @@ templates:
           file: ../../abis/FeeRateModel.json
         - name: DODOZoo
           file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
       eventHandlers:
         - event: DODOSwap(address,address,uint256,uint256,address,address)
           handler: handleDODOSwap
@@ -848,6 +922,66 @@ templates:
           handler: handleSellShares
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+  - kind: ethereum/contract
+    name: GSP
+    network: bsc
+    source:
+      abi: GSP
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/pool.ts
+      entities:
+        - Pair
+        - Token
+        - DODOSwap
+      abis:
+        - name: DVMFactory
+          file: ../../abis/DVMFactory.json
+        - name: DPPFactory
+          file: ../../abis/DPPFactory.json
+        - name: DSPFactory
+          file: ../../abis/DSPFactory.json
+        - name: GSPFactory
+          file: ../../abis/GSPFactory.json          
+        - name: DVM
+          file: ../../abis/DVM.json
+        - name: DPP
+          file: ../../abis/DPP.json
+        - name: DSP
+          file: ../../abis/DSP.json
+        - name: GSP
+          file: ../../abis/GSP.json          
+        - name: FeeRateModel
+          file: ../../abis/FeeRateModel.json
+        - name: DODOZoo
+          file: ../../abis/DODOZoo.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
+      eventHandlers:
+        - event: DODOSwap(address,address,uint256,uint256,address,address)
+          handler: handleDODOSwap
+        - event: BuyShares(address,uint256,uint256)
+          handler: handleBuyShares
+        - event: SellShares(address,address,uint256,uint256)
+          handler: handleSellShares
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: IChange(uint256)
+          handler: handleIChange
+        - event: KChange(uint256)
+          handler: handleKChange  
+        - event: LpFeeRateChange(uint256)
+          handler: handleLpFeeRateChange   
+        - event: MtFeeRateChange(uint256)
+          handler: handleMtFeeRateChange       
+        - event: RChange(uint8)
+          handler: handleRChange
   - kind: ethereum/contract
     name: CP
     network: bsc
@@ -983,6 +1117,12 @@ templates:
       abis:
         - name: DODOLpToken
           file: ../../abis/DODOLpToken.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json           
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer

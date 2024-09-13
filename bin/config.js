@@ -27,9 +27,22 @@ const chains = [
   "manta",
   "mantle",
   "tokb",
+  "dodochain-testnet",
+  "bitlayer",
+  "zircuit-testnet",
+  "arb-sep",
+  "zircuit",
+  "sepolia",
+  "okb",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
-const supportStudioChains = ["arbitrum", "polygon", "mainnet"];
+const supportStudioChains = [
+  "arbitrum",
+  "polygon",
+  "mainnet",
+  "arb-sep",
+  "sepolia",
+];
 module.exports = {
   studioNodeUrl,
   theGraphNodeUrl,

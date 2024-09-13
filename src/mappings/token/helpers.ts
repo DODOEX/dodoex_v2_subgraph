@@ -6,9 +6,9 @@ import {
   Address,
   ethereum,
 } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../types/token/ERC20Factory/ERC20";
-import { ERC20NameBytes } from "../../types/token/ERC20Factory/ERC20NameBytes";
-import { ERC20SymbolBytes } from "../../types/token/ERC20Factory/ERC20SymbolBytes";
+import { ERC20 } from "../../types/token/ERC20V2Factory/ERC20";
+import { ERC20NameBytes } from "../../types/token/ERC20V2Factory/ERC20NameBytes";
+import { ERC20SymbolBytes } from "../../types/token/ERC20V2Factory/ERC20SymbolBytes";
 import { User, DodoToken } from "../../types/token/schema";
 
 import {
