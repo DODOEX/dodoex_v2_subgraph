@@ -38,6 +38,8 @@ const chains = [
   "zero-testnet",
   "berachain-testnet",
   "taiko",
+  "zero-mainnet",
+  "morph",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
