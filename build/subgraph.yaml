@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: morph
+    network: zero_mainnet
     source:
-      address: "0x8Ebbfe204E7EdA4be46b9d09c5dfa8b3e1500462"
+      address: "0xB182B6d922Ea00C194411a268D30C8c74A5ED3FE"
       abi: ERC20V3Factory
-      startBlock: 192911
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

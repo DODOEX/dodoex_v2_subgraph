@@ -8,9 +8,9 @@ dataSources:
     name: DODOMineV3ProxyV2
     network: zero_mainnet
     source:
-      address: '0xc024A42028c6cf2bE328741D884287A7C2D4a086'
+      address: '0xdf6bbE9C88aAc64d724D0a95613ed0dBBDb16f23'
       abi: DODOMineV3ProxyV2
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -38,9 +38,9 @@ dataSources:
     name: DODOMineV3Registry
     network: zero_mainnet
     source:
-      address: '0x7caE37985F29B958204a87656436F1631807607d'
+      address: '0x228E504E37EC209Fe330d93738b56917e149D5C0'
       abi: DODOMineV3Registry
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

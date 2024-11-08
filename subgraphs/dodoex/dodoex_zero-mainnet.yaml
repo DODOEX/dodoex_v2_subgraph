@@ -8,9 +8,9 @@ dataSources:
     name: DODOV2Proxy02
     network: zero_mainnet
     source:
-      address: '0xd4232aBF37D2A851A2DfA289F76cc6aB933addCF'
+      address: '0x016B4cD52EC7A49Ad33140252Ba55C5B24079Ad6'
       abi: DODOV2Proxy02
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -35,9 +35,9 @@ dataSources:
     name: DODOFeeRouteProxy
     network: zero_mainnet
     source:
-      address: '0x7035ace3E9b7c82a463DD3fB412eC2479aA4D25f'
+      address: '0x2aea827424f99a187A2bF056F0782E927AB2066a'
       abi: DODOFeeRouteProxy
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -66,9 +66,9 @@ dataSources:
     name: DODOFeeRouteProxy-widgit
     network: zero_mainnet
     source:
-      address: '0x55Bb5FB604Aef53d37e6823A6E3365EBa3eA7fd7'
+      address: '0x0e038eaEf8383dfcE2B80b6E4E3F25Fd963527C4'
       abi: DODOFeeRouteProxy
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -97,9 +97,9 @@ dataSources:
     name: DVMFactory
     network: zero_mainnet
     source:
-      address: '0x12b73877321b53e41C33c3850d0C04e23de2792F'
+      address: '0x781dd6009E6aca6758D05F5907C72231E1117294'
       abi: DVMFactory
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -130,9 +130,9 @@ dataSources:
     name: DPPFactory
     network: zero_mainnet
     source:
-      address: "0x794717Fe9ED50d88e3F1ACfF7eA1A89963c109fd"
+      address: "0x1D7E9589c8c7438b64d2a585B4D1F5D946E4Bd64"
       abi: DPPFactory
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -161,9 +161,9 @@ dataSources:
     name: DSPFactory
     network: zero_mainnet
     source:
-      address: '0x58691A1B765de297F2C1d2eeE7d2BBE664A79C22'
+      address: '0x3D4c730FD4663f226E60dE899Ffed72a3762AfA7'
       abi: DSPFactory
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -194,9 +194,9 @@ dataSources:
     name: GSPFactory
     network: zero_mainnet
     source:
-      address: '0x5071a9C31f3dEdbE52d4f6f032Db54fD02885350'
+      address: '0x1E080d9c6133e98A955F6020711AFAf73265A7F6'
       abi: GSPFactory
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -227,9 +227,9 @@ dataSources:
     name: CrowdPoolingFactory
     network: zero_mainnet
     source:
-      address: '0x3BD357e0D40249441f90fb57a77BD0beC76f2E8A'
+      address: '0xeAa57581ea6003E3F128d1425859FD03901dD310'
       abi: CrowdPoolingFactory
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

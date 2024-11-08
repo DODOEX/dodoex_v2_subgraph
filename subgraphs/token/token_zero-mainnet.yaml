@@ -8,9 +8,9 @@ dataSources:
     name: ERC20V3Factory
     network: zero_mainnet
     source:
-      address: '0xC2331AA6D43A589C9B7eb571700be1fA69b154aa'
+      address: '0xB182B6d922Ea00C194411a268D30C8c74A5ED3FE'
       abi: ERC20V3Factory
-      startBlock: 1000
+      startBlock: 1730
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
