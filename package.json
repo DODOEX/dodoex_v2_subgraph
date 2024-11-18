@@ -12,7 +12,9 @@
     "cmd": "node bin/index.js cmd",
     "codegen": "node bin/index.js codegen",
     "codegen:amm_v2_taiko": "graph codegen subgraphs/amm-v2/amm-v2_taiko.yaml --output-dir ./src/types/amm-v2/",
-    "deploy:local:amm_v2_taiko": "cp ./src/mappings/constant-taiko.ts ./src/mappings/constant.ts && graph codegen subgraphs/amm-v2/amm-v2_taiko.yaml --output-dir ./src/types/amm-v2/ && graph deploy amm-v2-taiko --network taiko --ipfs http://localhost:5001 --debug"
+    "deploy:local:amm_v2_taiko": "cp ./src/mappings/constant-taiko.ts ./src/mappings/constant.ts && graph codegen subgraphs/amm-v2/amm-v2_taiko.yaml --output-dir ./src/types/amm-v2/ && graph deploy amm-v2-taiko --network taiko --ipfs http://localhost:5001 --debug",
+    "codegen:amm_v3_sepolia": "graph codegen subgraphs/amm-v3/amm-v3_sepolia.yaml --output-dir ./src/types/amm-v3/",
+    "deploy:local:amm_v3_sepolia": "cp ./src/mappings/constant-sepolia.ts ./src/mappings/constant.ts && graph codegen subgraphs/amm-v3/amm-v3_sepolia.yaml --output-dir ./src/types/amm-v3/ && graph deploy amm-v3-sepolia --network sepolia --ipfs http://localhost:5001 --debug"
   },
   "bin": {
     "index": "bin/index.js"
