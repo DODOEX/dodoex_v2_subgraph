@@ -182,7 +182,6 @@ type Token @entity {
   derivedETH: BigDecimal!
 
   # token specific volume
-  tradeVolume: BigDecimal!
   tradeVolumeUSD: BigDecimal!
   untrackedVolumeUSD: BigDecimal!
 
@@ -679,9 +678,6 @@ type TokenDayData @entity {
 
   "daily traders"
   traders: BigInt!
-
-  "liquidity stats"
-  totalLiquidityToken: BigDecimal!
 
   "trading fee lp get"
   fee: BigDecimal!

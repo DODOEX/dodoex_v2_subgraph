@@ -130,7 +130,7 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
   return totalSupplyValue;
 }
 
-export function fetchTokenDecimals(tokenAddress: Address): BigInt | null {
+export function fetchTokenDecimals(tokenAddress: Address): BigInt {
   // static definitions overrides
   let staticDefinition = TokenDefinition.fromAddress(tokenAddress);
   if (staticDefinition != null) {
@@ -144,7 +144,7 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt | null {
       return decimalResult.value;
     }
   }
-  return null;
+  return ZERO_BI;
 }
 
 export function createUser(address: Address, timestamp: BigInt): User {
@@ -171,8 +171,7 @@ export function createLpToken(
 
   if (lpToken == null) {
     lpToken = new LpToken(address.toHexString());
-    lpToken.decimals = ZERO_BI;
-    if (decimals != null) lpToken.decimals = decimals;
+    lpToken.decimals = decimals;
     lpToken.name = fetchTokenName(address);
     lpToken.symbol = fetchTokenSymbol(address);
     lpToken.totalSupply = ZERO_BI;
@@ -184,8 +183,7 @@ export function createLpToken(
   if (lpToken.symbol == "unknown") {
     lpToken.symbol = fetchTokenSymbol(address);
     lpToken.name = fetchTokenName(address);
-    lpToken.decimals = ZERO_BI;
-    if (decimals != null) lpToken.decimals = decimals;
+    lpToken.decimals = decimals;
     lpToken.save();
   }
 

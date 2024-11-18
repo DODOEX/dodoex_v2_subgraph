@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { log } from "@graphprotocol/graph-ts";
+import { Address, log } from "@graphprotocol/graph-ts";
 
 import { PairCreated } from "../../types/amm-v2/Factory/Factory";
 import { Bundle, Pair, Token, AMMFactory } from "../../types/amm-v2/schema";
@@ -10,7 +10,7 @@ import {
   fetchTokenSymbol,
   fetchTokenTotalSupply,
 } from "./helpers";
-import { FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../constant";
+import { ADDRESS_ZERO, FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../constant";
 
 export function handleNewPair(event: PairCreated): void {
   // load factory (create if first exchange)
@@ -61,6 +61,7 @@ export function handleNewPair(event: PairCreated): void {
     baseToken.untrackedVolumeUSD = ZERO_BD;
     baseToken.totalLiquidity = ZERO_BD;
     // token0.allPairs = []
+    baseToken.timestamp = event.block.timestamp;
     baseToken.txCount = ZERO_BI;
     baseToken.untrackedVolume = ZERO_BD;
     baseToken.tradeVolume = ZERO_BD;
@@ -92,6 +93,7 @@ export function handleNewPair(event: PairCreated): void {
     quoteToken.untrackedVolumeUSD = ZERO_BD;
     quoteToken.totalLiquidity = ZERO_BD;
     // token1.allPairs = []
+    quoteToken.timestamp = event.block.timestamp;
     quoteToken.txCount = ZERO_BI;
     quoteToken.untrackedVolume = ZERO_BD;
     quoteToken.tradeVolume = ZERO_BD;
@@ -124,6 +126,34 @@ export function handleNewPair(event: PairCreated): void {
   pair.untrackedQuoteVolume = ZERO_BD;
   pair.baseTokenPrice = ZERO_BD;
   pair.quoteTokenPrice = ZERO_BD;
+  //Supplementary data
+  pair.type = "AMMV2";
+  pair.creator = event.transaction.from;
+  pair.owner = event.transaction.from;
+  pair.i = ZERO_BI;
+  pair.k = ZERO_BI;
+  pair.lpFeeRate = ZERO_BD;
+  pair.untrackedBaseVolume = ZERO_BD;
+  pair.untrackedQuoteVolume = ZERO_BD;
+  pair.untrackedVolumeUSD = ZERO_BD;
+  pair.createdAtTimestamp = event.block.timestamp;
+  pair.createdAtBlockNumber = event.block.number;
+  pair.liquidityProviderCount = ZERO_BI;
+  pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
+  pair.maintainer = Address.fromString(ADDRESS_ZERO);
+  pair.mtFeeRate = ZERO_BI;
+  pair.mtFeeBase = ZERO_BD;
+  pair.mtFeeQuote = ZERO_BD;
+  pair.mtFeeUSD = ZERO_BD;
+  pair.isTradeAllowed = true;
+  pair.isDepositBaseAllowed = true;
+  pair.isDepositQuoteAllowed = true;
+  pair.lastTradePrice = ZERO_BD;
+  pair.feeBase = ZERO_BD;
+  pair.feeQuote = ZERO_BD;
+  pair.feeUSD = ZERO_BD;
+  pair.txCount = ZERO_BI;
+  pair.traderCount = ZERO_BI;
 
   // create the tracked contract based on the template
   PairTemplate.create(event.params.pair);

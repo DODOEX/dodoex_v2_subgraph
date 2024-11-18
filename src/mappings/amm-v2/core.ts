@@ -773,6 +773,9 @@ export function handleSwap(event: Swap): void {
   swap.sender = event.params.sender;
   swap.from = event.transaction.from;
   swap.to = event.params.to;
+  swap.fromToken = pair.baseToken;
+  swap.toToken = pair.quoteToken;
+  swap.to = event.params.to;
   swap.logIndex = event.logIndex;
   swap.amount0In = amount0In;
   swap.amountIn = amount0In;

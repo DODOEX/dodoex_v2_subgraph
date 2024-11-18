@@ -56,13 +56,24 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
   if (pairDayData === null) {
     pairDayData = new PairDayData(dayPairID);
     pairDayData.date = dayStartTimestamp;
+    pairDayData.pair = event.address.toHexString();
+    pairDayData.pairAddress = event.address;
     pairDayData.baseToken = pair.baseToken;
     pairDayData.quoteToken = pair.quoteToken;
-    pairDayData.pairAddress = event.address;
     pairDayData.volumeBase = ZERO_BD;
     pairDayData.volumeQuote = ZERO_BD;
     pairDayData.volumeUSD = ZERO_BD;
     pairDayData.txns = ZERO_BI;
+    pairDayData.baseUsdPrice = ZERO_BD;
+    pairDayData.quoteUsdPrice = ZERO_BD;
+    pairDayData.baseLpTokenTotalSupply = ZERO_BD;
+    pairDayData.quoteLpTokenTotalSupply = ZERO_BD;
+    pairDayData.untrackedBaseVolume = ZERO_BD;
+    pairDayData.untrackedQuoteVolume = ZERO_BD;
+    pairDayData.traders = ZERO_BI;
+    pairDayData.feeBase = ZERO_BD;
+    pairDayData.feeQuote = ZERO_BD;
+    pairDayData.lpFeeRate = ZERO_BD;
   }
 
   pairDayData.totalSupply = pair.totalSupply;
@@ -90,10 +101,23 @@ export function updatePairHourData(event: ethereum.Event): PairHourData {
     pairHourData = new PairHourData(hourPairID);
     pairHourData.hour = hourStartUnix;
     pairHourData.pair = event.address.toHexString();
+    pairHourData.pairAddress = event.address;
+    pairHourData.baseToken = pair.baseToken;
+    pairHourData.quoteToken = pair.quoteToken;
     pairHourData.volumeBase = ZERO_BD;
     pairHourData.volumeQuote = ZERO_BD;
     pairHourData.volumeUSD = ZERO_BD;
     pairHourData.txns = ZERO_BI;
+    pairHourData.baseUsdPrice = ZERO_BD;
+    pairHourData.quoteUsdPrice = ZERO_BD;
+    pairHourData.baseLpTokenTotalSupply = ZERO_BD;
+    pairHourData.quoteLpTokenTotalSupply = ZERO_BD;
+    pairHourData.untrackedBaseVolume = ZERO_BD;
+    pairHourData.untrackedQuoteVolume = ZERO_BD;
+    pairHourData.traders = ZERO_BI;
+    pairHourData.feeBase = ZERO_BD;
+    pairHourData.feeQuote = ZERO_BD;
+    pairHourData.lpFeeRate = ZERO_BD;
   }
 
   pairHourData.totalSupply = pair.totalSupply;
@@ -131,6 +155,15 @@ export function updateTokenDayData(
     tokenDayData.dailyVolumeUSD = ZERO_BD;
     tokenDayData.txns = ZERO_BI;
     tokenDayData.totalLiquidityUSD = ZERO_BD;
+    tokenDayData.untrackedVolume = ZERO_BD;
+    tokenDayData.volume = ZERO_BD;
+    tokenDayData.volumeBridge = ZERO_BD;
+    tokenDayData.volumeUSD = ZERO_BD;
+    tokenDayData.traders = ZERO_BI;
+    tokenDayData.fee = ZERO_BD;
+    tokenDayData.maintainerFee = ZERO_BD;
+    tokenDayData.maintainerFeeUSD = ZERO_BD;
+    tokenDayData.dailyTxns = ZERO_BI;
   }
   tokenDayData.usdPrice = token.derivedETH.times(bundle.ethPrice);
   tokenDayData.totalLiquidityToken = token.totalLiquidity;
