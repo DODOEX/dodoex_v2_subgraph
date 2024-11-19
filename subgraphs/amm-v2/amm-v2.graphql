@@ -330,6 +330,8 @@ type Pair @entity {
   k: BigInt
   "lp Fee Rate"
   lpFeeRate: BigDecimal!
+  feeRate: BigInt!
+  lpMtRatio: BigInt!
 
   "base LP token, for DPP is null, for dodo v1 lpToken is different"
   baseLpToken: LpToken

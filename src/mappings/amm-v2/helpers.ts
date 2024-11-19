@@ -176,7 +176,6 @@ export function createLpToken(
     lpToken.symbol = fetchTokenSymbol(address);
     lpToken.totalSupply = ZERO_BI;
     lpToken.pair = pair.id;
-    lpToken.save();
   }
 
   //for V1 classical hardcode pools
@@ -184,11 +183,11 @@ export function createLpToken(
     lpToken.symbol = fetchTokenSymbol(address);
     lpToken.name = fetchTokenName(address);
     lpToken.decimals = decimals;
-    lpToken.save();
   }
 
   if (isUpdateTotalSupply || lpToken.symbol == "unknown") {
     lpToken.totalSupply = fetchTokenTotalSupply(address);
   }
+  lpToken.save();
   return lpToken as LpToken;
 }

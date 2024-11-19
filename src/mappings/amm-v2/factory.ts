@@ -1,16 +1,24 @@
 /* eslint-disable prefer-const */
-import { Address, log } from "@graphprotocol/graph-ts";
+import { Address, log, BigInt } from "@graphprotocol/graph-ts";
 
 import { PairCreated } from "../../types/amm-v2/Factory/Factory";
 import { Bundle, Pair, Token, AMMFactory } from "../../types/amm-v2/schema";
 import { Pair as PairTemplate } from "../../types/amm-v2/templates";
 import {
+  convertTokenToDecimal,
+  createLpToken,
   fetchTokenDecimals,
   fetchTokenName,
   fetchTokenSymbol,
   fetchTokenTotalSupply,
 } from "./helpers";
-import { ADDRESS_ZERO, FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../constant";
+import {
+  ADDRESS_ZERO,
+  BI_18,
+  FACTORY_ADDRESS,
+  ZERO_BD,
+  ZERO_BI,
+} from "../constant";
 
 export function handleNewPair(event: PairCreated): void {
   // load factory (create if first exchange)
@@ -132,7 +140,8 @@ export function handleNewPair(event: PairCreated): void {
   pair.owner = event.transaction.from;
   pair.i = ZERO_BI;
   pair.k = ZERO_BI;
-  pair.lpFeeRate = ZERO_BD;
+  pair.feeRate = event.params.feeRate;
+  pair.lpFeeRate = convertTokenToDecimal(event.params.feeRate, BI_18);
   pair.untrackedBaseVolume = ZERO_BD;
   pair.untrackedQuoteVolume = ZERO_BD;
   pair.untrackedVolumeUSD = ZERO_BD;
@@ -141,7 +150,8 @@ export function handleNewPair(event: PairCreated): void {
   pair.liquidityProviderCount = ZERO_BI;
   pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
   pair.maintainer = Address.fromString(ADDRESS_ZERO);
-  pair.mtFeeRate = ZERO_BI;
+  pair.lpMtRatio = BigInt.fromI32(6);
+  pair.mtFeeRate = event.params.feeRate.div(pair.lpMtRatio);
   pair.mtFeeBase = ZERO_BD;
   pair.mtFeeQuote = ZERO_BD;
   pair.mtFeeUSD = ZERO_BD;
@@ -154,6 +164,11 @@ export function handleNewPair(event: PairCreated): void {
   pair.feeUSD = ZERO_BD;
   pair.txCount = ZERO_BI;
   pair.traderCount = ZERO_BI;
+  let lpToken = createLpToken(event.params.pair, pair as Pair);
+  lpToken.updatedAt = event.block.timestamp;
+  lpToken.save();
+  pair.baseLpToken = lpToken.id;
+  pair.quoteLpToken = lpToken.id;
 
   // create the tracked contract based on the template
   PairTemplate.create(event.params.pair);

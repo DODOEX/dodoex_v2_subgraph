@@ -10,9 +10,9 @@ dataSources:
     name: Factory
     network: sepolia
     source:
-      address: "0xCbEf0Cb50b0312CEa0E7378f36f471A4A2e809a8"
+      address: "0xac0626654db0f41db02af7e21624866771686fdc"
       abi: Factory
-      startBlock: 6714379
+      startBlock: 7060447
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -31,7 +31,7 @@ dataSources:
         - name: ERC20NameBytes
           file: ../abis/amm-v2/ERC20NameBytes.json
       eventHandlers:
-        - event: PairCreated(indexed address,indexed address,address,uint256)
+        - event: PairCreated(indexed address,indexed address,address,uint256,uint256)
           handler: handleNewPair
 templates:
   - kind: ethereum/contract
@@ -69,3 +69,7 @@ templates:
           handler: handleTransfer
         - event: Sync(uint112,uint112)
           handler: handleSync
+        - event: FeeRateChange(uint256)
+          handler: handleFeeRateChange
+        - event: LpMtRatioChange(uint256)
+          handler: handleLpMtRatioChange

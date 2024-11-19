@@ -26,6 +26,8 @@ import {
   Swap,
   Sync,
   Transfer,
+  FeeRateChange,
+  LpMtRatioChange,
 } from "../../types/amm-v2/templates/Pair/Pair";
 import {
   updatePairDayData,
@@ -270,6 +272,8 @@ export function handleTransfer(event: Transfer): void {
     return;
   }
   let lpToken = createLpToken(event.address, pair as Pair);
+  lpToken.updatedAt = event.block.timestamp;
+  lpToken.save();
   {
     let toUserLiquidityPositionID = toUser.id.concat("-").concat(lpToken.id);
     let position = LiquidityPosition.load(toUserLiquidityPositionID);
@@ -473,6 +477,8 @@ export function handleMint(event: Mint): void {
 
   //Supplementary data
   let lpToken = createLpToken(event.address, pair as Pair);
+  lpToken.updatedAt = event.block.timestamp;
+  lpToken.save();
   let liquidityPositionID = event.params.sender
     .toHexString()
     .concat("-")
@@ -598,6 +604,8 @@ export function handleBurn(event: Burn): void {
 
   //Supplementary data
   let lpToken = createLpToken(event.address, pair as Pair);
+  lpToken.updatedAt = event.block.timestamp;
+  lpToken.save();
   let liquidityPositionID = event.params.sender
     .toHexString()
     .concat("-")
@@ -890,4 +898,31 @@ export function handleSwap(event: Swap): void {
     orderHistory.updatedAt = event.block.timestamp;
     orderHistory.save();
   }
+}
+
+export function handleFeeRateChange(event: FeeRateChange): void {
+  let pair = Pair.load(event.address.toHexString())!;
+  let token0 = Token.load(pair.baseToken);
+  let token1 = Token.load(pair.quoteToken);
+  if (token0 === null || token1 === null) {
+    return;
+  }
+  pair.feeRate = event.params.feeRate;
+  pair.lpFeeRate = convertTokenToDecimal(pair.feeRate, BI_18);
+  pair.mtFeeRate = pair.feeRate.div(pair.lpMtRatio);
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
+}
+
+export function handleLpMtRatioChange(event: LpMtRatioChange): void {
+  let pair = Pair.load(event.address.toHexString())!;
+  let token0 = Token.load(pair.baseToken);
+  let token1 = Token.load(pair.quoteToken);
+  if (token0 === null || token1 === null) {
+    return;
+  }
+  pair.lpMtRatio = event.params.lpMtRatio;
+  pair.mtFeeRate = pair.feeRate.div(pair.lpMtRatio);
+  pair.updatedAt = event.block.timestamp;
+  pair.save();
 }
