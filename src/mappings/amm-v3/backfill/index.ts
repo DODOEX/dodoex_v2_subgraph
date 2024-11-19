@@ -33,7 +33,7 @@ function populateToken(
     Address.fromString(tokenAddress),
     tokenOverrides
   );
-  if (decimals === null) {
+  if (decimals === ZERO_BI) {
     return;
   }
   token.decimals = decimals;

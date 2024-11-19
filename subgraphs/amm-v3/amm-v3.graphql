@@ -80,8 +80,6 @@ type Token @entity {
 
   # volume in token units
   volume: BigDecimal!
-  # volume in derived USD
-  volumeUSD: BigDecimal!
   # volume in USD even on pools with less reliable USD values
   untrackedVolumeUSD: BigDecimal!
   # fees in USD
@@ -559,8 +557,6 @@ type Swap @entity {
 
   # pointer to transaction
   transaction: Transaction!
-  # timestamp of transaction
-  timestamp: BigInt!
   # pool swap occured within
   pool: Pool!
   # allow indexing by tokens

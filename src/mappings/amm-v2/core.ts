@@ -265,33 +265,28 @@ export function handleTransfer(event: Transfer): void {
   transaction.save();
 
   //Supplementary data
-  if (
-    event.params.to.toHexString() == ADDRESS_ZERO ||
-    event.params.from.toHexString() == ADDRESS_ZERO
-  ) {
-    return;
-  }
   let lpToken = createLpToken(event.address, pair as Pair);
   lpToken.updatedAt = event.block.timestamp;
   lpToken.save();
-  {
+  if (toUser.id != ADDRESS_ZERO) {
     let toUserLiquidityPositionID = toUser.id.concat("-").concat(lpToken.id);
     let position = LiquidityPosition.load(toUserLiquidityPositionID);
     if (position == null) {
       position = new LiquidityPosition(toUserLiquidityPositionID);
       position.pair = event.address.toHexString();
-      position.user = event.params.to.toHexString();
+      position.user = toUser.id;
       position.liquidityTokenBalance = ZERO_BD;
       position.lpToken = lpToken.id;
       position.lastTxTime = event.block.timestamp;
       position.liquidityTokenInMining = ZERO_BD;
+      position.lastAmount = value;
     }
     position.liquidityTokenBalance = position.liquidityTokenBalance.plus(value);
     position.updatedAt = event.block.timestamp;
     position.save();
   }
 
-  {
+  if (fromUser.id != ADDRESS_ZERO) {
     let fromUserLiquidityPositionID = fromUser.id
       .concat("-")
       .concat(lpToken.id);
@@ -299,11 +294,12 @@ export function handleTransfer(event: Transfer): void {
     if (position == null) {
       position = new LiquidityPosition(fromUserLiquidityPositionID);
       position.pair = event.address.toHexString();
-      position.user = event.params.to.toHexString();
+      position.user = fromUser.id;
       position.liquidityTokenBalance = ZERO_BD;
       position.lpToken = lpToken.id;
       position.lastTxTime = ZERO_BI;
       position.liquidityTokenInMining = ZERO_BD;
+      position.lastAmount = value;
     }
     position.liquidityTokenBalance =
       position.liquidityTokenBalance.minus(value);
@@ -476,22 +472,16 @@ export function handleMint(event: Mint): void {
   updateTokenDayData(token1 as Token, event);
 
   //Supplementary data
+  let user = createUser(event.transaction.from, event.block.timestamp);
   let lpToken = createLpToken(event.address, pair as Pair);
   lpToken.updatedAt = event.block.timestamp;
   lpToken.save();
-  let liquidityPositionID = event.params.sender
-    .toHexString()
+  let liquidityPositionID = user.id
     .concat("-")
     .concat(event.address.toHexString());
   let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
   if (liquidityPosition == null) {
-    liquidityPosition = new LiquidityPosition(liquidityPositionID);
-    liquidityPosition.pair = event.address.toHexString();
-    liquidityPosition.user = event.params.sender.toHexString();
-    liquidityPosition.liquidityTokenBalance = ZERO_BD;
-    liquidityPosition.lpToken = lpToken.id;
-    liquidityPosition.lastTxTime = event.block.timestamp;
-    liquidityPosition.liquidityTokenInMining = ZERO_BD;
+    return;
   }
   //   liquidityPosition.liquidityTokenBalance = balance;
   let liquidityHistoryID = event.transaction.hash
@@ -506,9 +496,9 @@ export function handleMint(event: Mint): void {
     liquidityHistory.from = event.transaction.from;
     liquidityHistory.pair = event.address.toHexString();
     liquidityHistory.timestamp = event.block.timestamp;
-    liquidityHistory.user = event.params.sender.toHexString();
-    liquidityHistory.amount = ZERO_BD;
-    liquidityHistory.balance = ZERO_BD;
+    liquidityHistory.user = user.id;
+    liquidityHistory.amount = liquidityPosition.lastAmount;
+    liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
     liquidityHistory.lpToken = lpToken.id;
     liquidityHistory.type = "DEPOSIT";
     liquidityHistory.baseReserve = pair.baseReserve;
@@ -517,8 +507,8 @@ export function handleMint(event: Mint): void {
       lpToken.totalSupply,
       lpToken.decimals
     );
-    liquidityHistory.baseAmountChange = ZERO_BD;
-    liquidityHistory.quoteAmountChange = ZERO_BD;
+    liquidityHistory.baseAmountChange = token0Amount;
+    liquidityHistory.quoteAmountChange = token1Amount;
   }
   liquidityPosition.updatedAt = event.block.timestamp;
   liquidityHistory.updatedAt = event.block.timestamp;
@@ -603,22 +593,16 @@ export function handleBurn(event: Burn): void {
   updateTokenDayData(token1 as Token, event);
 
   //Supplementary data
+  let user = createUser(event.transaction.from, event.block.timestamp);
   let lpToken = createLpToken(event.address, pair as Pair);
   lpToken.updatedAt = event.block.timestamp;
   lpToken.save();
-  let liquidityPositionID = event.params.sender
-    .toHexString()
+  let liquidityPositionID = user.id
     .concat("-")
     .concat(event.address.toHexString());
   let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
   if (liquidityPosition == null) {
-    liquidityPosition = new LiquidityPosition(liquidityPositionID);
-    liquidityPosition.pair = event.address.toHexString();
-    liquidityPosition.user = event.params.sender.toHexString();
-    liquidityPosition.liquidityTokenBalance = ZERO_BD;
-    liquidityPosition.lpToken = lpToken.id;
-    liquidityPosition.lastTxTime = event.block.timestamp;
-    liquidityPosition.liquidityTokenInMining = ZERO_BD;
+    return;
   }
   //   liquidityPosition.liquidityTokenBalance = balance;
   let liquidityHistoryID = event.transaction.hash
@@ -633,9 +617,9 @@ export function handleBurn(event: Burn): void {
     liquidityHistory.from = event.transaction.from;
     liquidityHistory.pair = event.address.toHexString();
     liquidityHistory.timestamp = event.block.timestamp;
-    liquidityHistory.user = event.params.sender.toHexString();
-    liquidityHistory.amount = ZERO_BD;
-    liquidityHistory.balance = ZERO_BD;
+    liquidityHistory.user = user.id;
+    liquidityHistory.amount = liquidityPosition.lastAmount;
+    liquidityHistory.balance = liquidityPosition.liquidityTokenBalance;
     liquidityHistory.lpToken = lpToken.id;
     liquidityHistory.type = "WITHDRAW";
     liquidityHistory.baseReserve = pair.baseReserve;
@@ -644,8 +628,8 @@ export function handleBurn(event: Burn): void {
       lpToken.totalSupply,
       lpToken.decimals
     );
-    liquidityHistory.baseAmountChange = ZERO_BD;
-    liquidityHistory.quoteAmountChange = ZERO_BD;
+    liquidityHistory.baseAmountChange = token0Amount;
+    liquidityHistory.quoteAmountChange = token1Amount;
   }
   liquidityPosition.updatedAt = event.block.timestamp;
   liquidityHistory.updatedAt = event.block.timestamp;

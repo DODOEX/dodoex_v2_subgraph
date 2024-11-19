@@ -8,6 +8,7 @@ import {
   getStaticDefinition,
   StaticTokenDefinition,
 } from "./staticTokenDefinition";
+import { ZERO_BI } from "../../constant";
 
 export function fetchTokenSymbol(
   tokenAddress: Address,
@@ -93,7 +94,7 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
 export function fetchTokenDecimals(
   tokenAddress: Address,
   tokenOverrides: StaticTokenDefinition[]
-): BigInt | null {
+): BigInt {
   // try with the static definition
   const staticTokenDefinition = getStaticDefinition(
     tokenAddress,
@@ -113,5 +114,5 @@ export function fetchTokenDecimals(
     }
   }
 
-  return null;
+  return ZERO_BI;
 }

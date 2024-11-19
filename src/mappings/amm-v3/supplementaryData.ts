@@ -15,7 +15,8 @@ import {
   fetchTokenSymbol,
   fetchTokenTotalSupply,
 } from "./utils/token";
-import { ADDRESS_ZERO, ZERO_BD, ZERO_BI } from "../constant";
+import { ADDRESS_ZERO, BI_18, ZERO_BD, ZERO_BI } from "../constant";
+import { convertTokenToDecimal } from "./utils";
 
 export function createPair(pool: Pool): Pair {
   let id = pool.id;
@@ -46,6 +47,7 @@ export function createPair(pool: Pool): Pair {
     pair.mtFeeBase = ZERO_BD;
     pair.mtFeeQuote = ZERO_BD;
     pair.mtFeeUSD = ZERO_BD;
+    pair.lastTradePrice = ZERO_BD;
     pair.isTradeAllowed = true;
     pair.isDepositBaseAllowed = true;
     pair.isDepositQuoteAllowed = true;
@@ -57,7 +59,7 @@ export function createPair(pool: Pool): Pair {
   pair.quoteLpToken = baseLpToken.id;
   pair.baseReserve = pool.totalValueLockedToken0;
   pair.quoteReserve = pool.totalValueLockedToken1;
-  pair.lastTradePrice = pool.token1Price.div(pool.token0Price);
+  //   pair.lastTradePrice = pool.token1Price.div(pool.token0Price);
   pair.volumeBaseToken = pool.volumeToken0;
   pair.volumeQuoteToken = pool.volumeToken1;
   pair.volumeUSD = pool.volumeUSD;
@@ -66,6 +68,7 @@ export function createPair(pool: Pool): Pair {
   pair.feeUSD = pool.feesUSD;
   pair.txCount = pool.txCount;
   pair.traderCount = ZERO_BI;
+  pair.lpFeeRate = convertTokenToDecimal(pool.feeTier, BI_18);
 
   pair.updatedAt = pool.updatedAt;
   pair.save();
@@ -83,27 +86,24 @@ export function createLpToken(
 
   if (lpToken == null) {
     lpToken = new LpToken(address.toHexString());
-    lpToken.decimals = ZERO_BI;
-    if (decimals != null) lpToken.decimals = decimals;
+    lpToken.decimals = decimals;
     lpToken.name = fetchTokenName(address, []);
     lpToken.symbol = fetchTokenSymbol(address, []);
     lpToken.totalSupply = ZERO_BI;
     lpToken.pair = pair.id;
-    lpToken.save();
   }
 
   //for V1 classical hardcode pools
   if (lpToken.symbol == "unknown") {
     lpToken.symbol = fetchTokenSymbol(address, []);
     lpToken.name = fetchTokenName(address, []);
-    lpToken.decimals = ZERO_BI;
-    if (decimals != null) lpToken.decimals = decimals;
-    lpToken.save();
+    lpToken.decimals = decimals;
   }
 
   if (isUpdateTotalSupply || lpToken.symbol == "unknown") {
     lpToken.totalSupply = fetchTokenTotalSupply(address);
   }
+  lpToken.save();
   return lpToken as LpToken;
 }
 

@@ -117,6 +117,8 @@ export function handleNewPair(event: PairCreated): void {
   let pair = new Pair(event.params.pair.toHexString()) as Pair;
   pair.baseToken = baseToken.id;
   pair.quoteToken = quoteToken.id;
+  pair.baseSymbol = baseToken.symbol;
+  pair.quoteSymbol = quoteToken.symbol;
   pair.liquidityProviderCount = ZERO_BI;
   pair.createdAtTimestamp = event.block.timestamp;
   pair.createdAtBlockNumber = event.block.number;

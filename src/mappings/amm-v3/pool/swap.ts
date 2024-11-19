@@ -316,13 +316,13 @@ export function handleSwapHelper(
     poolHourData.save();
     factory.updatedAt = event.block.timestamp;
     factory.save();
-    pool.updatedAt = event.block.timestamp;
-    createPair(pool);
-    pool.save();
     token0.updatedAt = event.block.timestamp;
     token0.save();
     token1.updatedAt = event.block.timestamp;
     token1.save();
+    pool.updatedAt = event.block.timestamp;
+    createPair(pool);
+    pool.save();
 
     //Supplementary data
     let swapID = event.transaction.hash

@@ -78,7 +78,7 @@ export function handlePoolCreatedHelper(
     const decimals = fetchTokenDecimals(event.params.token0, tokenOverrides);
 
     // bail if we couldn't figure out the decimals
-    if (decimals === null) {
+    if (decimals === ZERO_BI) {
       log.debug("mybug the decimal on token 0 was null", []);
       return;
     }
@@ -104,6 +104,7 @@ export function handlePoolCreatedHelper(
     token0.totalLiquidityOnDODO = ZERO_BD;
     token0.usdPrice = ZERO_BD;
     token0.priceUpdateTimestamp = ZERO_BI;
+    token0.timestamp = event.block.timestamp;
   }
 
   if (token1 === null) {
@@ -113,7 +114,7 @@ export function handlePoolCreatedHelper(
     token1.totalSupply = fetchTokenTotalSupply(event.params.token1);
     const decimals = fetchTokenDecimals(event.params.token1, tokenOverrides);
     // bail if we couldn't figure out the decimals
-    if (decimals === null) {
+    if (decimals === ZERO_BI) {
       log.debug("mybug the decimal on token 0 was null", []);
       return;
     }
@@ -138,6 +139,7 @@ export function handlePoolCreatedHelper(
     token1.totalLiquidityOnDODO = ZERO_BD;
     token1.usdPrice = ZERO_BD;
     token1.priceUpdateTimestamp = ZERO_BI;
+    token1.timestamp = event.block.timestamp;
   }
 
   // update white listed pools
@@ -180,15 +182,15 @@ export function handlePoolCreatedHelper(
   pool.collectedFeesToken1 = ZERO_BD;
   pool.collectedFeesUSD = ZERO_BD;
 
-  pool.updatedAt = event.block.timestamp;
-  createPair(pool);
-  pool.save();
   // create the tracked contract based on the template
   PoolTemplate.create(event.params.pool);
   token0.updatedAt = event.block.timestamp;
   token0.save();
   token1.updatedAt = event.block.timestamp;
   token1.save();
+  pool.updatedAt = event.block.timestamp;
+  createPair(pool);
+  pool.save();
   factory.updatedAt = event.block.timestamp;
   factory.save();
 }

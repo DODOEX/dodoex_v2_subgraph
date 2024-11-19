@@ -135,6 +135,7 @@ type LiquidityPosition @entity {
   liquidityTokenInMining: BigDecimal!
   "last add time"
   lastTxTime: BigInt!
+  lastAmount: BigDecimal!
   "updatedAt"
   updatedAt: BigInt
 }

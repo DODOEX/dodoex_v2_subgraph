@@ -12,7 +12,7 @@ export function createTick(
   event: MintEvent
 ): Tick {
   const tick = new Tick(tickId);
-  tick.tickIdx = BigInt.fromI32(tickIdx);
+  tick.tickIdx = BigInt.fromI32(tickIdx as i32);
   tick.pool = poolId;
   tick.poolAddress = poolId;
 
