@@ -1,4 +1,4 @@
-import { BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
 
 import { Transaction } from "../../../types/amm-v3/schema";
 import { BI_18, ONE_BD, ZERO_BD, ZERO_BI } from "../../constant";
@@ -120,6 +120,14 @@ export function loadTransaction(event: ethereum.Event): Transaction {
   transaction.timestamp = event.block.timestamp;
   transaction.gasUsed = BigInt.zero(); //needs to be moved to transaction receipt
   transaction.gasPrice = event.transaction.gasPrice;
+  transaction.from = event.transaction.from.toHexString();
+  if (event.transaction.to)
+    transaction.to = (event.transaction.to as Address).toHexString();
+  transaction.sender = transaction.from;
+  transaction.address = event.address;
+  transaction.type = "TRANSFER";
+  transaction.tokens = [];
+  transaction.volumeUSD = ZERO_BD;
   transaction.updatedAt = event.block.timestamp;
   transaction.save();
   return transaction as Transaction;

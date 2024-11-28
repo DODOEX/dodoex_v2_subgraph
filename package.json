@@ -11,10 +11,10 @@
     "deploy": "node bin/index.js deploy",
     "cmd": "node bin/index.js cmd",
     "codegen": "node bin/index.js codegen",
-    "codegen:amm_v2_sepolia": "graph codegen subgraphs/amm-v2/amm-v2_sepolia.yaml --output-dir ./src/types/amm-v2/",
+    "codegen:amm_v2_sepolia": "./node_modules/.bin/graph codegen subgraphs/amm-v2/amm-v2_sepolia.yaml --output-dir ./src/types/amm-v2/",
     "deploy:studio:amm_v2_sepolia": "cp ./src/mappings/constant-sepolia.ts ./src/mappings/constant.ts && ./node_modules/.bin/graph  codegen subgraphs/amm-v2/amm-v2_sepolia.yaml --output-dir ./src/types/amm-v2/ && ./node_modules/.bin/graph deploy --node https://api.studio.thegraph.com/deploy/ amm-v2-sepolia subgraphs/amm-v2/amm-v2_sepolia.yaml",
     "deploy:local:amm_v2_sepolia": "cp ./src/mappings/constant-sepolia.ts ./src/mappings/constant.ts && ./node_modules/.bin/graph  codegen subgraphs/amm-v2/amm-v2_sepolia.yaml --output-dir ./src/types/amm-v2/ && ./node_modules/.bin/graph deploy --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020 amm-v2-sepolia subgraphs/amm-v2/amm-v2_sepolia.yaml",
-    "codegen:amm_v3_sepolia": "graph codegen subgraphs/amm-v3/amm-v3_sepolia.yaml --output-dir ./src/types/amm-v3/",
+    "codegen:amm_v3_sepolia": "./node_modules/.bin/graph codegen subgraphs/amm-v3/amm-v3_sepolia.yaml --output-dir ./src/types/amm-v3/",
     "deploy:studio:amm_v3_sepolia": "cp ./src/mappings/constant-sepolia.ts ./src/mappings/constant.ts && ./node_modules/.bin/graph  codegen subgraphs/amm-v3/amm-v3_sepolia.yaml --output-dir ./src/types/amm-v3/ && ./node_modules/.bin/graph deploy --node https://api.studio.thegraph.com/deploy/ amm-v3-sepolia subgraphs/amm-v3/amm-v3_sepolia.yaml",
     "deploy:local:amm_v3_sepolia": "cp ./src/mappings/constant-sepolia.ts ./src/mappings/constant.ts && ./node_modules/.bin/graph  codegen subgraphs/amm-v3/amm-v3_sepolia.yaml --output-dir ./src/types/amm-v3/ && ./node_modules/.bin/graph deploy --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020 amm-v3-sepolia subgraphs/amm-v3/amm-v3_sepolia.yaml"
   },

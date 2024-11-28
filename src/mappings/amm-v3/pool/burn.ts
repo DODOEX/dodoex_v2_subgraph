@@ -7,13 +7,12 @@ import {
   Pool,
   Tick,
   Token,
-  LiquidityPosition,
-  LiquidityHistory,
+  LiquidityTracker,
 } from "../../../types/amm-v3/schema";
 import { Burn as BurnEvent } from "../../../types/amm-v3/templates/Pool/Pool";
 import { convertTokenToDecimal, loadTransaction } from "../utils";
 import { getSubgraphConfig, SubgraphConfig } from "../utils/chains";
-import { ONE_BI } from "../..//constant";
+import { ONE_BI } from "../../constant";
 import {
   updatePoolDayData,
   updatePoolHourData,
@@ -21,8 +20,7 @@ import {
   updateTokenHourData,
   updateAMMDayData,
 } from "../utils/intervalUpdates";
-import { createLpToken, createPair } from "../supplementaryData";
-import { ZERO_BD } from "../../constant";
+import { createPair } from "../supplementaryData";
 
 export function handleBurn(event: BurnEvent): void {
   handleBurnHelper(event);
@@ -106,8 +104,8 @@ export function handleBurnHelper(
       poolAddress + "#" + BigInt.fromI32(event.params.tickUpper).toString();
     const lowerTick = Tick.load(lowerTickId);
     const upperTick = Tick.load(upperTickId);
+    const amount = event.params.amount;
     if (lowerTick && upperTick) {
-      const amount = event.params.amount;
       lowerTick.liquidityGross = lowerTick.liquidityGross.minus(amount);
       lowerTick.liquidityNet = lowerTick.liquidityNet.minus(amount);
       upperTick.liquidityGross = upperTick.liquidityGross.minus(amount);
@@ -129,7 +127,7 @@ export function handleBurnHelper(
     token1.updatedAt = event.block.timestamp;
     token1.save();
     pool.updatedAt = event.block.timestamp;
-    let pair = createPair(pool);
+    createPair(pool);
     pool.save();
     factory.updatedAt = event.block.timestamp;
     factory.save();
@@ -137,51 +135,28 @@ export function handleBurnHelper(
     burn.save();
 
     // supplementary Data
-    let lpToken = createLpToken(event.address, pair);
-    let liquidityPositionID = event.params.owner
+    let liquidityTrackerId = event.transaction.hash
       .toHexString()
-      .concat("-")
-      .concat(event.address.toHexString());
-    let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
-    if (liquidityPosition == null) {
-      liquidityPosition = new LiquidityPosition(liquidityPositionID);
-      liquidityPosition.pair = event.address.toHexString();
-      liquidityPosition.user = event.params.owner.toHexString();
-      liquidityPosition.liquidityTokenBalance = ZERO_BD;
-      liquidityPosition.lpToken = lpToken.id;
-      liquidityPosition.lastTxTime = event.block.timestamp;
-      liquidityPosition.liquidityTokenInMining = ZERO_BD;
+      .concat("#")
+      .concat(event.params.amount.toString())
+      .concat("#")
+      .concat(event.params.amount0.toString())
+      .concat("#")
+      .concat(event.params.amount1.toString());
+    let liquidityTracker = LiquidityTracker.load(liquidityTrackerId);
+    if (liquidityTracker == null) {
+      liquidityTracker = new LiquidityTracker(liquidityTrackerId);
+      liquidityTracker.hash = event.transaction.hash.toHexString();
+      liquidityTracker.pool = pool.id;
+      liquidityTracker.liquidity = event.params.amount;
+      liquidityTracker.amount0 = event.params.amount0;
+      liquidityTracker.amount1 = event.params.amount1;
+      liquidityTracker.tickLower = BigInt.fromI32(event.params.tickLower);
+      liquidityTracker.tickUpper = BigInt.fromI32(event.params.tickUpper);
+      liquidityTracker.logIndex = event.logIndex;
+      liquidityTracker.owner = event.params.owner;
+      liquidityTracker.updatedAt = event.block.timestamp;
+      liquidityTracker.save();
     }
-    //   liquidityPosition.liquidityTokenBalance = balance;
-    let liquidityHistoryID = event.transaction.hash
-      .toHexString()
-      .concat("-")
-      .concat(event.logIndex.toString());
-    let liquidityHistory = LiquidityHistory.load(liquidityHistoryID);
-    if (liquidityHistory == null) {
-      liquidityHistory = new LiquidityHistory(liquidityHistoryID);
-      liquidityHistory.block = event.block.number;
-      liquidityHistory.hash = event.transaction.hash.toHexString();
-      liquidityHistory.from = event.transaction.from;
-      liquidityHistory.pair = event.address.toHexString();
-      liquidityHistory.timestamp = event.block.timestamp;
-      liquidityHistory.user = event.params.owner.toHexString();
-      liquidityHistory.amount = ZERO_BD;
-      liquidityHistory.balance = ZERO_BD;
-      liquidityHistory.lpToken = lpToken.id;
-      liquidityHistory.type = "WITHDRAW";
-      liquidityHistory.baseReserve = pair.baseReserve;
-      liquidityHistory.quoteReserve = pair.quoteReserve;
-      liquidityHistory.lpTokenTotalSupply = convertTokenToDecimal(
-        lpToken.totalSupply,
-        lpToken.decimals
-      );
-      liquidityHistory.baseAmountChange = ZERO_BD;
-      liquidityHistory.quoteAmountChange = ZERO_BD;
-    }
-    liquidityPosition.updatedAt = event.block.timestamp;
-    liquidityHistory.updatedAt = event.block.timestamp;
-    liquidityPosition.save();
-    liquidityHistory.save();
   }
 }

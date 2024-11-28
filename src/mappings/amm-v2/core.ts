@@ -276,11 +276,11 @@ export function handleTransfer(event: Transfer): void {
       position.pair = event.address.toHexString();
       position.user = toUser.id;
       position.liquidityTokenBalance = ZERO_BD;
-      position.lpToken = lpToken.id;
-      position.lastTxTime = event.block.timestamp;
       position.liquidityTokenInMining = ZERO_BD;
-      position.lastAmount = value;
+      position.lpToken = lpToken.id;
     }
+    position.lastTxTime = event.block.timestamp;
+    position.lastAmount = value;
     position.liquidityTokenBalance = position.liquidityTokenBalance.plus(value);
     position.updatedAt = event.block.timestamp;
     position.save();
@@ -296,11 +296,11 @@ export function handleTransfer(event: Transfer): void {
       position.pair = event.address.toHexString();
       position.user = fromUser.id;
       position.liquidityTokenBalance = ZERO_BD;
-      position.lpToken = lpToken.id;
-      position.lastTxTime = ZERO_BI;
       position.liquidityTokenInMining = ZERO_BD;
-      position.lastAmount = value;
+      position.lpToken = lpToken.id;
     }
+    position.lastTxTime = event.block.timestamp;
+    position.lastAmount = value;
     position.liquidityTokenBalance =
       position.liquidityTokenBalance.minus(value);
     position.updatedAt = event.block.timestamp;
@@ -892,8 +892,11 @@ export function handleFeeRateChange(event: FeeRateChange): void {
     return;
   }
   pair.feeRate = event.params.feeRate;
-  pair.lpFeeRate = convertTokenToDecimal(pair.feeRate, BI_18);
   pair.mtFeeRate = pair.feeRate.div(pair.lpMtRatio);
+  pair.lpFeeRate = convertTokenToDecimal(
+    pair.feeRate.minus(pair.mtFeeRate),
+    BI_18
+  );
   pair.updatedAt = event.block.timestamp;
   pair.save();
 }
@@ -907,6 +910,10 @@ export function handleLpMtRatioChange(event: LpMtRatioChange): void {
   }
   pair.lpMtRatio = event.params.lpMtRatio;
   pair.mtFeeRate = pair.feeRate.div(pair.lpMtRatio);
+  pair.lpFeeRate = convertTokenToDecimal(
+    pair.feeRate.minus(pair.mtFeeRate),
+    BI_18
+  );
   pair.updatedAt = event.block.timestamp;
   pair.save();
 }

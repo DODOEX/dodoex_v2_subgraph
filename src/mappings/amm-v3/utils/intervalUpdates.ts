@@ -158,6 +158,17 @@ export function updateTokenDayData(
     tokenDayData.high = tokenPrice;
     tokenDayData.low = tokenPrice;
     tokenDayData.close = tokenPrice;
+    tokenDayData.txns = ZERO_BI;
+    tokenDayData.untrackedVolume = ZERO_BD;
+    tokenDayData.volume = ZERO_BD;
+    tokenDayData.volumeBridge = ZERO_BD;
+    tokenDayData.volumeUSD = ZERO_BD;
+    tokenDayData.traders = ZERO_BI;
+    tokenDayData.fee = ZERO_BD;
+    tokenDayData.maintainerFee = ZERO_BD;
+    tokenDayData.maintainerFeeUSD = ZERO_BD;
+    tokenDayData.usdPrice = ZERO_BD;
+    tokenDayData.totalLiquidityToken = ZERO_BD;
   }
 
   if (tokenPrice.gt(tokenDayData.high)) {
@@ -172,6 +183,7 @@ export function updateTokenDayData(
   tokenDayData.priceUSD = token.derivedETH.times(bundle.ethPriceUSD);
   tokenDayData.totalValueLocked = token.totalValueLocked;
   tokenDayData.totalValueLockedUSD = token.totalValueLockedUSD;
+  tokenDayData.updatedAt = event.block.timestamp;
   tokenDayData.save();
 
   return tokenDayData as TokenDayData;

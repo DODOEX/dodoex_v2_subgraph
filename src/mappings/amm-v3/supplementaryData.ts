@@ -1,4 +1,4 @@
-import { Address, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
   LpToken,
   Pair,
@@ -8,6 +8,7 @@ import {
   PoolDayData,
   PoolHourData,
   Token,
+  User,
 } from "../../types/amm-v3/schema";
 import {
   fetchTokenDecimals,
@@ -53,6 +54,8 @@ export function createPair(pool: Pool): Pair {
     pair.isDepositQuoteAllowed = true;
   }
   let baseLpToken = createLpToken(Address.fromString(pool.id), pair, false);
+  baseLpToken.updatedAt = pool.updatedAt;
+  baseLpToken.save();
   baseLpToken.updatedAt = pool.updatedAt;
   baseLpToken.save();
   pair.baseLpToken = baseLpToken.id;
@@ -179,4 +182,18 @@ export function updatePairHourData(poolHourData: PoolHourData): PairHourData {
   pairHourData.save();
 
   return pairHourData as PairHourData;
+}
+
+export function createUser(address: Address, timestamp: BigInt): User {
+  let user = User.load(address.toHexString());
+  if (user === null) {
+    user = new User(address.toHexString());
+    user.usdSwapped = ZERO_BD;
+    user.txCount = ZERO_BI;
+    user.tradingRewardRecieved = ZERO_BD;
+    user.timestamp = timestamp;
+  }
+  user.updatedAt = timestamp;
+  user.save();
+  return user as User;
 }

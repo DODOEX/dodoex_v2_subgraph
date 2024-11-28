@@ -2,74 +2,109 @@ specVersion: 0.0.4
 description: Dodoex.io
 features:
   - grafting
-repository: https://github.com/DODOEX/amm_v2_subgraph
+repository: https://github.com/DODOEX/amm_v3_subgraph
 schema:
-  file: amm-v2.graphql
+  file: amm-v3.graphql
 dataSources:
   - kind: ethereum/contract
     name: Factory
     network: sepolia
     source:
-      address: "0xac0626654db0f41db02af7e21624866771686fdc"
+      address: "0x3d2A7Bac4E8439ABe86B58324695e921a5FC0987"
       abi: Factory
-      startBlock: 7060447
+      startBlock: 7060511
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: Factory/Factory.wasm
       entities:
-        - Pair
+        - Pool
         - Token
       abis:
         - name: Factory
-          file: ../abis/amm-v2/factory.json
+          file: ../abis/amm-v3/factory.json
         - name: ERC20
-          file: ../abis/amm-v2/ERC20.json
+          file: ../abis/amm-v3/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/amm-v2/ERC20SymbolBytes.json
+          file: ../abis/amm-v3/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/amm-v2/ERC20NameBytes.json
+          file: ../abis/amm-v3/ERC20NameBytes.json
+        - name: Pool
+          file: ../abis/amm-v3/pool.json
+        - name: NonfungiblePositionManager
+          file: ../abis/amm-v3/NonfungiblePositionManager.json
       eventHandlers:
-        - event: PairCreated(indexed address,indexed address,address,uint256,uint256)
-          handler: handleNewPair
-templates:
+        - event: PoolCreated(indexed address,indexed address,indexed uint24,int24,address)
+          handler: handlePoolCreated
   - kind: ethereum/contract
-    name: Pair
+    name: NonfungiblePositionManager
     network: sepolia
     source:
-      abi: Pair
+      address: "0x483E5c0f309577f79b0a19cE65E332DD388aD7A8"
+      abi: NonfungiblePositionManager
+      startBlock: 7060511
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: templates/Pair/Pair.wasm
+      file: NonfungiblePositionManager/NonfungiblePositionManager.wasm
       entities:
-        - Pair
+        - Pool
         - Token
       abis:
-        - name: Pair
-          file: ../abis/amm-v2/pair.json
         - name: Factory
-          file: ../abis/amm-v2/factory.json
+          file: ../abis/amm-v3/factory.json
         - name: ERC20
-          file: ../abis/amm-v2/ERC20.json
+          file: ../abis/amm-v3/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/amm-v2/ERC20SymbolBytes.json
+          file: ../abis/amm-v3/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/amm-v2/ERC20NameBytes.json
+          file: ../abis/amm-v3/ERC20NameBytes.json
+        - name: Pool
+          file: ../abis/amm-v3/pool.json
+        - name: NonfungiblePositionManager
+          file: ../abis/amm-v3/NonfungiblePositionManager.json
       eventHandlers:
-        - event: Mint(indexed address,uint256,uint256)
-          handler: handleMint
-        - event: Burn(indexed address,uint256,uint256,indexed address)
-          handler: handleBurn
-        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+        - event: IncreaseLiquidity(indexed uint256,uint128,uint256,uint256)
+          handler: handleIncreaseLiquidity
+        - event: DecreaseLiquidity(indexed uint256,uint128,uint256,uint256)
+          handler: handleDecreaseLiquidity
+templates:
+  - kind: ethereum/contract
+    name: Pool
+    network: sepolia
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: templates/Pool/Pool.wasm
+      entities:
+        - Pool
+        - Token
+      abis:
+        - name: Factory
+          file: ../abis/amm-v3/factory.json
+        - name: ERC20
+          file: ../abis/amm-v3/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/amm-v3/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/amm-v3/ERC20NameBytes.json
+        - name: Pool
+          file: ../abis/amm-v3/pool.json
+        - name: NonfungiblePositionManager
+          file: ../abis/amm-v3/NonfungiblePositionManager.json
+      eventHandlers:
+        - event: Initialize(uint160,int24)
+          handler: handleInitialize
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
           handler: handleSwap
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: Sync(uint112,uint112)
-          handler: handleSync
-        - event: FeeRateChange(uint256)
-          handler: handleFeeRateChange
-        - event: LpMtRatioChange(uint256)
-          handler: handleLpMtRatioChange
+        - event: Mint(address,indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleBurn
+        - event: Collect(indexed address,address,indexed int24,indexed int24,uint128,uint128)
+          handler: handleCollect

@@ -1067,3 +1067,25 @@ type Collect @entity {
   "updatedAt"
   updatedAt: BigInt
 }
+
+type LiquidityTracker @entity {
+  "hash + liquidity + amount0 + amount1"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  pool: Pool!
+  liquidity: BigInt!
+  amount0: BigInt!
+  amount1: BigInt!
+  # lower tick of position
+  tickLower: BigInt!
+  # upper tick of position
+  tickUpper: BigInt!
+  # position within the transactions
+  logIndex: BigInt
+  owner: Bytes
+  tokenId: BigInt
+
+  "updatedAt"
+  updatedAt: BigInt
+}

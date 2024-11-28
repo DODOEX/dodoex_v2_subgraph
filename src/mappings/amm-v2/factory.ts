@@ -142,8 +142,13 @@ export function handleNewPair(event: PairCreated): void {
   pair.owner = event.transaction.from;
   pair.i = ZERO_BI;
   pair.k = ZERO_BI;
+  pair.lpMtRatio = BigInt.fromI32(6);
+  pair.mtFeeRate = event.params.feeRate.div(pair.lpMtRatio);
   pair.feeRate = event.params.feeRate;
-  pair.lpFeeRate = convertTokenToDecimal(event.params.feeRate, BI_18);
+  pair.lpFeeRate = convertTokenToDecimal(
+    pair.feeRate.minus(pair.mtFeeRate),
+    BI_18
+  );
   pair.untrackedBaseVolume = ZERO_BD;
   pair.untrackedQuoteVolume = ZERO_BD;
   pair.untrackedVolumeUSD = ZERO_BD;
@@ -152,8 +157,6 @@ export function handleNewPair(event: PairCreated): void {
   pair.liquidityProviderCount = ZERO_BI;
   pair.mtFeeRateModel = Address.fromString(ADDRESS_ZERO);
   pair.maintainer = Address.fromString(ADDRESS_ZERO);
-  pair.lpMtRatio = BigInt.fromI32(6);
-  pair.mtFeeRate = event.params.feeRate.div(pair.lpMtRatio);
   pair.mtFeeBase = ZERO_BD;
   pair.mtFeeQuote = ZERO_BD;
   pair.mtFeeUSD = ZERO_BD;
