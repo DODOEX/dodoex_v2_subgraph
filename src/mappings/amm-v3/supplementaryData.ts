@@ -71,7 +71,7 @@ export function createPair(pool: Pool): Pair {
   pair.feeUSD = pool.feesUSD;
   pair.txCount = pool.txCount;
   pair.traderCount = ZERO_BI;
-  pair.lpFeeRate = convertTokenToDecimal(pool.feeTier, BI_18);
+  pair.lpFeeRate = pool.feeTier.toBigDecimal();
 
   pair.updatedAt = pool.updatedAt;
   pair.save();
@@ -134,6 +134,7 @@ export function updatePairDayData(poolDayData: PoolDayData): PairDayData {
   if (pool !== null) {
     pairDayData.baseTokenReserve = pool.totalValueLockedToken0;
     pairDayData.quoteTokenReserve = pool.totalValueLockedToken1;
+    pairDayData.lpFeeRate = pool.feeTier.toBigDecimal();
   }
   pairDayData.baseUsdPrice = poolDayData.token0Price;
   pairDayData.quoteUsdPrice = poolDayData.token1Price;
@@ -171,6 +172,7 @@ export function updatePairHourData(poolHourData: PoolHourData): PairHourData {
   if (pool !== null) {
     pairHourData.baseTokenReserve = pool.totalValueLockedToken0;
     pairHourData.quoteTokenReserve = pool.totalValueLockedToken1;
+    pairHourData.lpFeeRate = pool.feeTier.toBigDecimal();
   }
   pairHourData.baseUsdPrice = poolHourData.token0Price;
   pairHourData.quoteUsdPrice = poolHourData.token1Price;

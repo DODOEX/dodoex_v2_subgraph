@@ -1,4 +1,4 @@
-import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 
 import {
   IncreaseLiquidity as IncreaseLiquidityEvent,
@@ -118,7 +118,7 @@ function updateLpPosition(
   const pool = Pool.load(poolAddress)!;
   let pair = createPair(pool);
   let user = createUser(event.transaction.from, event.block.timestamp);
-  let lpToken = createLpToken(event.address, pair);
+  let lpToken = createLpToken(Address.fromString(pair.id), pair);
   lpToken.updatedAt = event.block.timestamp;
   lpToken.save();
   let tickId = "#"
@@ -127,14 +127,14 @@ function updateLpPosition(
     .concat(tickUpper.toString());
   let liquidityPositionID = user.id
     .concat("-")
-    .concat(event.address.toHexString())
+    .concat(pair.id)
     .concat(tickId)
     .concat("#")
     .concat(tokenId);
   let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
   if (liquidityPosition == null) {
     liquidityPosition = new LiquidityPosition(liquidityPositionID);
-    liquidityPosition.pair = event.address.toHexString();
+    liquidityPosition.pair = pair.id;
     liquidityPosition.user = user.id;
     liquidityPosition.liquidityTokenBalance = ZERO_BD;
     liquidityPosition.lpToken = lpToken.id;
@@ -157,7 +157,7 @@ function updateLpPosition(
     liquidityHistory.block = event.block.number;
     liquidityHistory.hash = event.transaction.hash.toHexString();
     liquidityHistory.from = event.transaction.from;
-    liquidityHistory.pair = event.address.toHexString();
+    liquidityHistory.pair = pair.id;
     liquidityHistory.timestamp = event.block.timestamp;
     liquidityHistory.user = user.id;
     liquidityHistory.amount = amount.toBigDecimal();
