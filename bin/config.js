@@ -40,6 +40,7 @@ const chains = [
   "taiko",
   "zero-mainnet",
   "morph",
+  "plume",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
