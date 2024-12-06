@@ -11,7 +11,7 @@ import {
   LiquidityTracker,
   Pool,
 } from "../../types/amm-v3/schema";
-import { ZERO_BD } from "../constant";
+import { ADDRESS_ZERO, ZERO_BD } from "../constant";
 import { createLpToken, createPair, createUser } from "./supplementaryData";
 import { convertTokenToDecimal } from "./utils";
 
@@ -37,24 +37,40 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     .concat("#")
     .concat(event.params.amount1.toString());
   let liquidityTracker = LiquidityTracker.load(liquidityTrackerId);
-  if (
-    liquidityTracker != null &&
-    liquidityTracker.tickLower.toI32() == position.getTickLower() &&
-    liquidityTracker.tickUpper.toI32() == position.getTickUpper()
-  ) {
-    updateLpPosition(
-      liquidityTracker.pool,
-      event.params.liquidity,
-      event.params.amount0,
-      event.params.amount1,
-      liquidityTracker.tickLower,
-      liquidityTracker.tickUpper,
-      event.params.tokenId.toString(),
-      position.getLiquidity(),
-      "DEPOSIT",
-      event
-    );
-    liquidityTracker.tokenId = event.params.tokenId;
+  if (liquidityTracker != null) {
+    if (
+      liquidityTracker.tickLower.toI32() == position.getTickLower() &&
+      liquidityTracker.tickUpper.toI32() == position.getTickUpper()
+    ) {
+      updateLpPosition(
+        liquidityTracker.pool,
+        event.params.liquidity,
+        event.params.amount0,
+        event.params.amount1,
+        liquidityTracker.tickLower,
+        liquidityTracker.tickUpper,
+        event.params.tokenId.toString(),
+        position.getLiquidity(),
+        "DEPOSIT",
+        event
+      );
+      liquidityTracker.tokenId = event.params.tokenId.toString();
+      liquidityTracker.updatedAt = event.block.timestamp;
+      liquidityTracker.save();
+    }
+  } else {
+    liquidityTracker = new LiquidityTracker(liquidityTrackerId);
+    liquidityTracker.hash = event.transaction.hash.toHexString();
+    liquidityTracker.pool = ADDRESS_ZERO;
+    liquidityTracker.liquidity = event.params.liquidity;
+    liquidityTracker.amount0 = event.params.amount0;
+    liquidityTracker.amount1 = event.params.amount1;
+    liquidityTracker.tickLower = BigInt.fromI32(position.getTickLower());
+    liquidityTracker.tickUpper = BigInt.fromI32(position.getTickUpper());
+    liquidityTracker.logIndex = event.logIndex;
+    liquidityTracker.owner = event.address;
+    liquidityTracker.tokenId = event.params.tokenId.toString();
+    liquidityTracker.updatedAt = event.block.timestamp;
     liquidityTracker.save();
   }
 }
@@ -81,29 +97,45 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
     .concat("#")
     .concat(event.params.amount1.toString());
   let liquidityTracker = LiquidityTracker.load(liquidityTrackerId);
-  if (
-    liquidityTracker != null &&
-    liquidityTracker.tickLower.toI32() == position.getTickLower() &&
-    liquidityTracker.tickUpper.toI32() == position.getTickUpper()
-  ) {
-    updateLpPosition(
-      liquidityTracker.pool,
-      event.params.liquidity,
-      event.params.amount0,
-      event.params.amount1,
-      liquidityTracker.tickLower,
-      liquidityTracker.tickUpper,
-      event.params.tokenId.toString(),
-      position.getLiquidity(),
-      "WITHDRAW",
-      event
-    );
-    liquidityTracker.tokenId = event.params.tokenId;
+  if (liquidityTracker != null) {
+    if (
+      liquidityTracker.tickLower.toI32() == position.getTickLower() &&
+      liquidityTracker.tickUpper.toI32() == position.getTickUpper()
+    ) {
+      updateLpPosition(
+        liquidityTracker.pool,
+        event.params.liquidity,
+        event.params.amount0,
+        event.params.amount1,
+        liquidityTracker.tickLower,
+        liquidityTracker.tickUpper,
+        event.params.tokenId.toString(),
+        position.getLiquidity(),
+        "WITHDRAW",
+        event
+      );
+    }
+    liquidityTracker.tokenId = event.params.tokenId.toString();
+    liquidityTracker.updatedAt = event.block.timestamp;
+    liquidityTracker.save();
+  } else {
+    liquidityTracker = new LiquidityTracker(liquidityTrackerId);
+    liquidityTracker.hash = event.transaction.hash.toHexString();
+    liquidityTracker.pool = ADDRESS_ZERO;
+    liquidityTracker.liquidity = event.params.liquidity;
+    liquidityTracker.amount0 = event.params.amount0;
+    liquidityTracker.amount1 = event.params.amount1;
+    liquidityTracker.tickLower = BigInt.fromI32(position.getTickLower());
+    liquidityTracker.tickUpper = BigInt.fromI32(position.getTickUpper());
+    liquidityTracker.logIndex = event.logIndex;
+    liquidityTracker.owner = event.address;
+    liquidityTracker.tokenId = event.params.tokenId.toString();
+    liquidityTracker.updatedAt = event.block.timestamp;
     liquidityTracker.save();
   }
 }
 
-function updateLpPosition(
+export function updateLpPosition(
   poolAddress: string,
   amount: BigInt,
   amount0: BigInt,
@@ -115,6 +147,9 @@ function updateLpPosition(
   type: string,
   event: ethereum.Event
 ): void {
+  if (tokenId == "-1") {
+    return;
+  }
   const pool = Pool.load(poolAddress)!;
   let pair = createPair(pool);
   let user = createUser(event.transaction.from, event.block.timestamp);
@@ -130,7 +165,7 @@ function updateLpPosition(
     .concat(pair.id)
     .concat(tickId)
     .concat("#")
-    .concat(tokenId);
+    .concat(tokenId.toString());
   let liquidityPosition = LiquidityPosition.load(liquidityPositionID);
   if (liquidityPosition == null) {
     liquidityPosition = new LiquidityPosition(liquidityPositionID);
@@ -150,7 +185,7 @@ function updateLpPosition(
     .concat(event.logIndex.toString())
     .concat(tickId)
     .concat("#")
-    .concat(tokenId);
+    .concat(tokenId.toString());
   let liquidityHistory = LiquidityHistory.load(liquidityHistoryID);
   if (liquidityHistory == null) {
     liquidityHistory = new LiquidityHistory(liquidityHistoryID);

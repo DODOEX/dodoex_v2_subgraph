@@ -21,6 +21,7 @@ import {
   updateAMMDayData,
 } from "../utils/intervalUpdates";
 import { createPair } from "../supplementaryData";
+import { updateLpPosition } from "../nonfungiblePositionManager";
 
 export function handleBurn(event: BurnEvent): void {
   handleBurnHelper(event);
@@ -155,8 +156,27 @@ export function handleBurnHelper(
       liquidityTracker.tickUpper = BigInt.fromI32(event.params.tickUpper);
       liquidityTracker.logIndex = event.logIndex;
       liquidityTracker.owner = event.params.owner;
+      liquidityTracker.tokenId = "-1";
       liquidityTracker.updatedAt = event.block.timestamp;
       liquidityTracker.save();
+    } else {
+      liquidityTracker.pool = pool.id;
+      liquidityTracker.tickLower = BigInt.fromI32(event.params.tickLower);
+      liquidityTracker.tickUpper = BigInt.fromI32(event.params.tickUpper);
+      liquidityTracker.updatedAt = event.block.timestamp;
+      liquidityTracker.save();
+      updateLpPosition(
+        liquidityTracker.pool,
+        liquidityTracker.liquidity,
+        liquidityTracker.amount0,
+        liquidityTracker.amount1,
+        liquidityTracker.tickLower,
+        liquidityTracker.tickUpper,
+        liquidityTracker.tokenId,
+        liquidityTracker.liquidity,
+        "WITHDRAW",
+        event
+      );
     }
   }
 }

@@ -147,7 +147,7 @@ export function handleNewPair(event: PairCreated): void {
   pair.feeRate = event.params.feeRate;
   pair.lpFeeRate = convertTokenToDecimal(
     pair.feeRate.minus(pair.mtFeeRate),
-    BI_18
+    BigInt.fromI32(4)
   );
   pair.untrackedBaseVolume = ZERO_BD;
   pair.untrackedQuoteVolume = ZERO_BD;

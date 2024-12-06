@@ -13,9 +13,9 @@ dataSources:
     name: Factory
     network: sepolia
     source:
-      address: '0xac0626654db0f41db02af7e21624866771686fdc'
+      address: '0xf553a3EA6ecc758ed6f05F62C831b1D71bA7e09c'
       abi: Factory
-      startBlock: 7060447
+      startBlock: 7201316
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

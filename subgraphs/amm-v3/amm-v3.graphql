@@ -1084,7 +1084,7 @@ type LiquidityTracker @entity {
   # position within the transactions
   logIndex: BigInt
   owner: Bytes
-  tokenId: BigInt
+  tokenId: String!
 
   "updatedAt"
   updatedAt: BigInt

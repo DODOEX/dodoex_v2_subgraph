@@ -895,7 +895,7 @@ export function handleFeeRateChange(event: FeeRateChange): void {
   pair.mtFeeRate = pair.feeRate.div(pair.lpMtRatio);
   pair.lpFeeRate = convertTokenToDecimal(
     pair.feeRate.minus(pair.mtFeeRate),
-    BI_18
+    BigInt.fromI32(4)
   );
   pair.updatedAt = event.block.timestamp;
   pair.save();
@@ -912,7 +912,7 @@ export function handleLpMtRatioChange(event: LpMtRatioChange): void {
   pair.mtFeeRate = pair.feeRate.div(pair.lpMtRatio);
   pair.lpFeeRate = convertTokenToDecimal(
     pair.feeRate.minus(pair.mtFeeRate),
-    BI_18
+    BigInt.fromI32(4)
   );
   pair.updatedAt = event.block.timestamp;
   pair.save();
