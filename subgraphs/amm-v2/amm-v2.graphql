@@ -1,0 +1,771 @@
+type AMMFactory @entity {
+  # factory address
+  id: ID!
+
+  # pair info
+  pairCount: Int!
+
+  # total volume
+  totalVolumeUSD: BigDecimal!
+  totalVolumeETH: BigDecimal!
+
+  # untracked values - less confident USD scores
+  untrackedVolumeUSD: BigDecimal!
+
+  # total liquidity
+  totalLiquidityUSD: BigDecimal!
+  totalLiquidityETH: BigDecimal!
+
+  # transactions
+  txCount: BigInt!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type AMMDayData @entity {
+  "day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "transactions count"
+  txCount: BigInt!
+  "unique users"
+  uniqueUsersCount: BigInt!
+  "volume usd"
+  volumeUSD: BigDecimal!
+  "fee usd"
+  feeUSD: BigDecimal!
+  "maintainer fee usd"
+  maintainerFeeUSD: BigDecimal!
+
+  dailyVolumeETH: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  dailyVolumeUntracked: BigDecimal!
+
+  totalVolumeETH: BigDecimal!
+  totalLiquidityETH: BigDecimal!
+  totalVolumeUSD: BigDecimal! # Accumulate at each trade, not just calculated off whatever totalVolume is. making it more accurate as it is a live conversion
+  totalLiquidityUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type Transaction @entity {
+  "hash"
+  id: ID!
+  blockNumber: BigInt!
+  "timestamp"
+  timestamp: BigInt!
+  "from"
+  from: String!
+  "to"
+  to: String
+  "sender"
+  sender: String!
+  "type(TRADE、LP、CP)"
+  type: String!
+  "tokens"
+  tokens: [Token!]
+  "volumeUSD"
+  volumeUSD: BigDecimal!
+  "event address"
+  address: Bytes!
+
+  mints: [Mint!]!
+  burns: [Burn!]!
+  swaps: [Swap!]!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type User @entity {
+  "user address"
+  id: ID!
+  "swapped times"
+  txCount: BigInt!
+  "trading reward recieved"
+  tradingRewardRecieved: BigDecimal!
+  "liquidity Positions"
+  liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
+  "timestamp"
+  timestamp: BigInt!
+
+  usdSwapped: BigDecimal!
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type UserDayData @entity {
+  "user address - date"
+  id: ID!
+  "date"
+  date: Int!
+  "trade count"
+  tradeCount: BigInt!
+  "add liquidity count"
+  addLPCount: BigInt!
+  "remove liquidity count"
+  removeLPCount: BigInt!
+  "cp bid count"
+  bidCount: BigInt!
+  "cp cancel count"
+  cancelCount: BigInt!
+  "cp claim count"
+  claimCount: BigInt!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type LiquidityPosition @entity {
+  "user address - lp Token address"
+  id: ID!
+  "user"
+  user: User!
+  "pair"
+  pair: Pair
+  "lp token"
+  lpToken: LpToken!
+  "lp token balance"
+  liquidityTokenBalance: BigDecimal!
+  "lp token balance in mining contract"
+  liquidityTokenInMining: BigDecimal!
+  "last add time"
+  lastTxTime: BigInt!
+  lastAmount: BigDecimal!
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type Token @entity {
+  "token address"
+  id: ID!
+
+  "untracked volume"
+  untrackedVolume: BigDecimal!
+  "total trade volume"
+  tradeVolume: BigDecimal!
+  "total trade volume for bridge"
+  tradeVolumeBridge: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+  "traded volume of USD for bridge"
+  volumeUSDBridge: BigDecimal!
+
+  "transactions across all pairs"
+  txCount: BigInt!
+  "trader count"
+  traderCount: BigInt!
+
+  "liquidity across all pairs"
+  totalLiquidityOnDODO: BigDecimal!
+
+  "usd price(only stable coin and classical pool has usd price)"
+  usdPrice: BigDecimal!
+  "price update time"
+  priceUpdateTimestamp: BigInt!
+
+  "token symbol"
+  symbol: String!
+  "token name"
+  name: String!
+  "token decimals"
+  decimals: BigInt!
+  "total supply"
+  totalSupply: BigInt!
+  "timestamp"
+  timestamp: BigInt!
+
+  # derived prices
+  derivedETH: BigDecimal!
+
+  # token specific volume
+  tradeVolumeUSD: BigDecimal!
+  untrackedVolumeUSD: BigDecimal!
+
+  # liquidity across all pairs
+  totalLiquidity: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type TokenTrader @entity {
+  "token address - user address"
+  id: ID!
+  "pair"
+  token: Token!
+  "user"
+  trader: User!
+  "last trade time"
+  lastTxTime: BigInt!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type LpToken @entity {
+  "token address"
+  id: ID!
+  "belong pair"
+  pair: Pair
+
+  "token symbol"
+  symbol: String!
+  "token name"
+  name: String!
+  "token decimals"
+  decimals: BigInt!
+  "total supply"
+  totalSupply: BigInt!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type OrderHistory @entity {
+  "order id"
+  id: ID!
+  "source (from : smartroute event、pool swap event)"
+  source: String!
+  "transaction hash"
+  hash: String!
+  "block"
+  block: BigInt!
+  "timestamp of this transaction"
+  timestamp: BigInt!
+  "msg sender"
+  sender: Bytes!
+  "tx from address"
+  from: Bytes!
+  "from token"
+  fromToken: Token!
+  "to token"
+  toToken: Token!
+  "to address"
+  to: Bytes!
+  "log index"
+  logIndex: BigInt
+  "from token amount"
+  amountIn: BigDecimal!
+  "to token amount"
+  amountOut: BigDecimal!
+
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+
+  "trading incentive reward"
+  tradingReward: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type LiquidityHistory @entity {
+  "txid - logindex"
+  id: ID!
+  "type (DEPOSIT、WITHDRAW)"
+  type: String!
+  "hash"
+  hash: String!
+  "block number"
+  block: BigInt!
+  "timestamp"
+  timestamp: BigInt!
+  "user"
+  user: User!
+  "lp token"
+  lpToken: LpToken!
+  "from"
+  from: Bytes!
+  "amount"
+  amount: BigDecimal!
+  "balance in wallet"
+  balance: BigDecimal!
+  "baseToken amount change"
+  baseAmountChange: BigDecimal
+  "quoteToken amount change"
+  quoteAmountChange: BigDecimal
+  "pair"
+  pair: Pair
+  "base reserve"
+  baseReserve: BigDecimal
+  "quote reserve"
+  quoteReserve: BigDecimal
+  "lp token total supply"
+  lpTokenTotalSupply: BigDecimal
+  "base token price"
+  baseTokenPrice: BigDecimal
+  "quote token Price"
+  quoteTokenPrice: BigDecimal
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type Pair @entity {
+  "pool address"
+  id: ID!
+  "pool type（CLASSICAL、DVM、DPP）"
+  type: String!
+  "pool source(default:null)"
+  source: String
+  "creator"
+  creator: Bytes!
+  "owner"
+  owner: Bytes
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
+  "base token symbol"
+  baseSymbol: String
+  "quote token symbol"
+  quoteSymbol: String
+  "i"
+  i: BigInt
+  "k"
+  k: BigInt
+  "lp Fee Rate"
+  lpFeeRate: BigDecimal!
+  feeRate: BigInt!
+  lpMtRatio: BigInt!
+
+  "base LP token, for DPP is null, for dodo v1 lpToken is different"
+  baseLpToken: LpToken
+  "quote LP token,for DPP is null, for dodo v1 lpToken is different"
+  quoteLpToken: LpToken
+
+  "base token reserve"
+  baseReserve: BigDecimal!
+  "quote token reserve"
+  quoteReserve: BigDecimal!
+
+  "last trade price (quote/base)"
+  lastTradePrice: BigDecimal!
+
+  "untracked base volume"
+  untrackedBaseVolume: BigDecimal!
+  "untracked quote volume"
+  untrackedQuoteVolume: BigDecimal!
+  untrackedVolumeUSD: BigDecimal!
+  "trade volume of basetoken"
+  volumeBaseToken: BigDecimal!
+  "trade volume of quotetoken"
+  volumeQuoteToken: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+  "lp fee base"
+  feeBase: BigDecimal!
+  "lp fee quote"
+  feeQuote: BigDecimal!
+  "lp fee of USD"
+  feeUSD: BigDecimal!
+
+  "transactions count"
+  txCount: BigInt!
+  "createAtTimestamp"
+  createdAtTimestamp: BigInt!
+  "createAtBlock"
+  createdAtBlockNumber: BigInt!
+  "liquidity provider count"
+  liquidityProviderCount: BigInt!
+
+  "mtFee Rate Model"
+  mtFeeRateModel: Bytes!
+  "maintainer"
+  maintainer: Bytes!
+  "maintainer fee rate"
+  mtFeeRate: BigInt!
+  "maintainer fee base token"
+  mtFeeBase: BigDecimal!
+  "maintainer fee quote token"
+  mtFeeQuote: BigDecimal!
+  "maintainer fee in USD"
+  mtFeeUSD: BigDecimal!
+
+  "trader count"
+  traderCount: BigInt!
+
+  "trade allowed"
+  isTradeAllowed: Boolean!
+  "deposit base allowed"
+  isDepositBaseAllowed: Boolean!
+  "deposit quote allowed"
+  isDepositQuoteAllowed: Boolean!
+
+  totalSupply: BigDecimal!
+
+  # derived liquidity
+  reserveETH: BigDecimal!
+  reserveUSD: BigDecimal!
+  # used for separating per pair reserves and global
+  trackedReserveETH: BigDecimal!
+
+  # Price in terms of the asset pair
+  baseTokenPrice: BigDecimal!
+  quoteTokenPrice: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type PairTrader @entity {
+  "pair address - user address"
+  id: ID!
+  "pair"
+  pair: Pair
+  "user"
+  trader: User!
+  "last trade time"
+  lastTxTime: BigInt!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type Swap @entity {
+  "transaction hash + \"-\" + index in swaps Transaction array"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "transaction timestamp"
+  timestamp: BigInt!
+  "trading pair"
+  pair: Pair
+
+  "msg.sender"
+  sender: Bytes!
+  "tx from address"
+  from: Bytes!
+  "from token"
+  fromToken: Token!
+  "to token"
+  toToken: Token!
+  "to address"
+  to: Bytes!
+  "log index"
+  logIndex: BigInt!
+  "from token amount"
+  amountIn: BigDecimal!
+  "to token amount"
+  amountOut: BigDecimal!
+  "lp fee base"
+  feeBase: BigDecimal!
+  "lp fee quote"
+  feeQuote: BigDecimal!
+
+  "base volume"
+  baseVolume: BigDecimal!
+  "quote volume"
+  quoteVolume: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+
+  amount0In: BigDecimal!
+  amount1In: BigDecimal!
+  amount0Out: BigDecimal!
+  amount1Out: BigDecimal!
+
+  # derived info
+  amountUSD: BigDecimal!
+
+  transaction: Transaction!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type MaintainerFeeTx @entity {
+  "ID:transaction hash - event index"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "earning token"
+  token: Token!
+  "amount"
+  amount: BigDecimal!
+  "volume in usd"
+  volumeUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type MaintainerEarnings @entity {
+  "maintainer address - token address"
+  id: ID!
+  "maintainer address"
+  maintainer: Bytes!
+  "token address"
+  token: Token!
+  "amount"
+  amount: BigDecimal!
+  "amount of usd"
+  amountUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type FlashLoan @entity {
+  "transaction hash + \"-\" + index in swaps Transaction array"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "transaction timestamp"
+  timestamp: BigInt!
+  "trading pair"
+  pair: Pair
+  "msg.sender"
+  sender: Bytes!
+  "tx from address"
+  from: Bytes!
+  "base amount"
+  baseAmount: BigDecimal!
+  "quote amount"
+  quoteAmount: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type PairDayData @entity {
+  "pair address - day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "pair address"
+  pairAddress: Bytes!
+  "pair"
+  pair: Pair
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
+
+  "base token reserve"
+  baseTokenReserve: BigDecimal!
+  "quote token reserve"
+  quoteTokenReserve: BigDecimal!
+  "base token price"
+  baseUsdPrice: BigDecimal!
+  "quote token price"
+  quoteUsdPrice: BigDecimal!
+
+  "total supply of base lp token"
+  baseLpTokenTotalSupply: BigDecimal!
+  "total supply of quote lp token"
+  quoteLpTokenTotalSupply: BigDecimal!
+
+  "untracked base volume"
+  untrackedBaseVolume: BigDecimal!
+  "untracked quote volume"
+  untrackedQuoteVolume: BigDecimal!
+  "base token volume"
+  volumeBase: BigDecimal!
+  "quote token volume"
+  volumeQuote: BigDecimal!
+  "USD volume"
+  volumeUSD: BigDecimal!
+
+  "daily txns"
+  txns: BigInt!
+  "daily traders"
+  traders: BigInt!
+  "base token trading fee get"
+  feeBase: BigDecimal!
+  "quote token trading fee"
+  feeQuote: BigDecimal!
+
+  "lp Fee Rate"
+  lpFeeRate: BigDecimal!
+
+  # total supply for LP historical returns
+  totalSupply: BigDecimal
+
+  # derived liquidity
+  reserveUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type PairHourData @entity {
+  "pair address - hour id"
+  id: ID!
+  "uinx timestamp(start of hour)"
+  hour: Int!
+  "pair address"
+  pairAddress: Bytes!
+  "pair"
+  pair: Pair
+  "base token"
+  baseToken: Token!
+  "quote token"
+  quoteToken: Token!
+
+  "base token reserve"
+  baseTokenReserve: BigDecimal!
+  "quote token reserve"
+  quoteTokenReserve: BigDecimal!
+  "base token price"
+  baseUsdPrice: BigDecimal!
+  "quote token price"
+  quoteUsdPrice: BigDecimal!
+
+  "total supply of base lp token"
+  baseLpTokenTotalSupply: BigDecimal!
+  "total supply of quote lp token"
+  quoteLpTokenTotalSupply: BigDecimal!
+
+  "untracked base volume"
+  untrackedBaseVolume: BigDecimal!
+  "untracked quote volume"
+  untrackedQuoteVolume: BigDecimal!
+  "base token volume"
+  volumeBase: BigDecimal!
+  "quote token volume"
+  volumeQuote: BigDecimal!
+  "USD volume"
+  volumeUSD: BigDecimal!
+
+  "daily txns"
+  txns: BigInt!
+  "daily traders"
+  traders: BigInt!
+  "base token trading fee get"
+  feeBase: BigDecimal!
+  "quote token trading fee"
+  feeQuote: BigDecimal!
+
+  "lp Fee Rate"
+  lpFeeRate: BigDecimal!
+
+  # total supply for LP historical returns
+  totalSupply: BigDecimal
+
+  # derived liquidity
+  reserveUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type TokenDayData @entity {
+  "token address - day id"
+  id: ID!
+  "uinx timestamp(start of day)"
+  date: Int!
+  "token address"
+  token: Token!
+
+  "untracked base volume"
+  untrackedVolume: BigDecimal!
+
+  "usdPrice"
+  usdPrice: BigDecimal!
+  "volume"
+  volume: BigDecimal!
+  "bridge volume"
+  volumeBridge: BigDecimal!
+  "traded volume of USD"
+  volumeUSD: BigDecimal!
+  "tx occured"
+  txns: BigInt!
+
+  "daily traders"
+  traders: BigInt!
+
+  "trading fee lp get"
+  fee: BigDecimal!
+
+  "maintainer fee"
+  maintainerFee: BigDecimal!
+  "maintainer fee in usd"
+  maintainerFeeUSD: BigDecimal!
+
+  # volume stats
+  dailyVolumeToken: BigDecimal!
+  dailyVolumeETH: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  dailyTxns: BigInt!
+
+  # liquidity stats
+  totalLiquidityToken: BigDecimal!
+  totalLiquidityETH: BigDecimal!
+  totalLiquidityUSD: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+# stores for USD calculations
+type Bundle @entity {
+  id: ID!
+  ethPrice: BigDecimal! # price of ETH usd
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type Mint @entity {
+  # transaction hash + "-" + index in mints Transaction array
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt! # need this to pull recent txns for specific token or pair
+  pair: Pair!
+
+  # populated from the primary Transfer event
+  to: Bytes!
+  liquidity: BigDecimal!
+
+  # populated from the Mint event
+  sender: Bytes
+  amount0: BigDecimal
+  amount1: BigDecimal
+  logIndex: BigInt
+  # derived amount based on available prices of tokens
+  amountUSD: BigDecimal
+
+  # optional fee fields, if a Transfer event is fired in _mintFee
+  feeTo: Bytes
+  feeLiquidity: BigDecimal
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
+type Burn @entity {
+  # transaction hash + "-" + index in mints Transaction array
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt! # need this to pull recent txns for specific token or pair
+  pair: Pair!
+
+  # populated from the primary Transfer event
+  liquidity: BigDecimal!
+
+  # populated from the Burn event
+  sender: Bytes
+  amount0: BigDecimal
+  amount1: BigDecimal
+  to: Bytes
+  logIndex: BigInt
+  # derived amount based on available prices of tokens
+  amountUSD: BigDecimal
+
+  # mark uncomplete in ETH case
+  needsComplete: Boolean!
+
+  # optional fee fields, if a Transfer event is fired in _mintFee
+  feeTo: Bytes
+  feeLiquidity: BigDecimal
+
+  "updatedAt"
+  updatedAt: BigInt
+}

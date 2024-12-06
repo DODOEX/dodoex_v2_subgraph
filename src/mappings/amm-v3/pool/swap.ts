@@ -1,0 +1,362 @@
+import { BigDecimal, BigInt, log } from "@graphprotocol/graph-ts";
+
+import {
+  Bundle,
+  AMMFactory,
+  Pool,
+  Swap,
+  Token,
+  OrderHistory,
+} from "../../../types/amm-v3/schema";
+import { Swap as SwapEvent } from "../../../types/amm-v3/templates/Pool/Pool";
+import { convertTokenToDecimal, loadTransaction, safeDiv } from "../utils";
+import { getSubgraphConfig, SubgraphConfig } from "../utils/chains";
+import { ONE_BI, ZERO_BD } from "../../constant";
+import {
+  updatePoolDayData,
+  updatePoolHourData,
+  updateTokenDayData,
+  updateTokenHourData,
+  updateAMMDayData,
+} from "../utils/intervalUpdates";
+import {
+  findNativePerToken,
+  getNativePriceInUSD,
+  getTrackedAmountUSD,
+  sqrtPriceX96ToTokenPrices,
+} from "../utils/pricing";
+import { SMART_ROUTE_ADDRESSES, SOURCE_POOL_SWAP } from "../../constant";
+import { createPair } from "../supplementaryData";
+
+export function handleSwap(event: SwapEvent): void {
+  handleSwapHelper(event);
+}
+
+export function handleSwapHelper(
+  event: SwapEvent,
+  subgraphConfig: SubgraphConfig = getSubgraphConfig()
+): void {
+  const factoryAddress = subgraphConfig.factoryAddress;
+  const stablecoinWrappedNativePoolAddress =
+    subgraphConfig.stablecoinWrappedNativePoolAddress;
+  const stablecoinIsToken0 = subgraphConfig.stablecoinIsToken0;
+  const wrappedNativeAddress = subgraphConfig.wrappedNativeAddress;
+  const stablecoinAddresses = subgraphConfig.stablecoinAddresses;
+  const minimumNativeLocked = subgraphConfig.minimumNativeLocked;
+  const whitelistTokens = subgraphConfig.whitelistTokens;
+
+  const bundle = Bundle.load("1")!;
+  const factory = AMMFactory.load(factoryAddress)!;
+  const pool = Pool.load(event.address.toHexString())!;
+
+  // hot fix for bad pricing
+  if (pool.id == "0x9663f2ca0454accad3e094448ea6f77443880454") {
+    return;
+  }
+
+  const token0 = Token.load(pool.token0);
+  const token1 = Token.load(pool.token1);
+
+  if (token0 && token1) {
+    // amounts - 0/1 are token deltas: can be positive or negative
+    const amount0 = convertTokenToDecimal(
+      event.params.amount0,
+      token0.decimals
+    );
+    const amount1 = convertTokenToDecimal(
+      event.params.amount1,
+      token1.decimals
+    );
+
+    // need absolute amounts for volume
+    let amount0Abs = amount0;
+    if (amount0.lt(ZERO_BD)) {
+      amount0Abs = amount0.times(BigDecimal.fromString("-1"));
+    }
+    let amount1Abs = amount1;
+    if (amount1.lt(ZERO_BD)) {
+      amount1Abs = amount1.times(BigDecimal.fromString("-1"));
+    }
+
+    const amount0ETH = amount0Abs.times(token0.derivedETH);
+    const amount1ETH = amount1Abs.times(token1.derivedETH);
+    const amount0USD = amount0ETH.times(bundle.ethPriceUSD);
+    const amount1USD = amount1ETH.times(bundle.ethPriceUSD);
+
+    // get amount that should be tracked only - div 2 because cant count both input and output as volume
+    const amountTotalUSDTracked = getTrackedAmountUSD(
+      amount0Abs,
+      token0 as Token,
+      amount1Abs,
+      token1 as Token,
+      whitelistTokens
+    ).div(BigDecimal.fromString("2"));
+    const amountTotalETHTracked = safeDiv(
+      amountTotalUSDTracked,
+      bundle.ethPriceUSD
+    );
+    const amountTotalUSDUntracked = amount0USD
+      .plus(amount1USD)
+      .div(BigDecimal.fromString("2"));
+
+    const feesETH = amountTotalETHTracked
+      .times(pool.feeTier.toBigDecimal())
+      .div(BigDecimal.fromString("1000000"));
+    const feesUSD = amountTotalUSDTracked
+      .times(pool.feeTier.toBigDecimal())
+      .div(BigDecimal.fromString("1000000"));
+
+    // global updates
+    factory.txCount = factory.txCount.plus(ONE_BI);
+    factory.totalVolumeETH = factory.totalVolumeETH.plus(amountTotalETHTracked);
+    factory.totalVolumeUSD = factory.totalVolumeUSD.plus(amountTotalUSDTracked);
+    factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(
+      amountTotalUSDUntracked
+    );
+    factory.totalFeesETH = factory.totalFeesETH.plus(feesETH);
+    factory.totalFeesUSD = factory.totalFeesUSD.plus(feesUSD);
+
+    // reset aggregate tvl before individual pool tvl updates
+    const currentPoolTvlETH = pool.totalValueLockedETH;
+    factory.totalValueLockedETH =
+      factory.totalValueLockedETH.minus(currentPoolTvlETH);
+
+    // pool volume
+    pool.volumeToken0 = pool.volumeToken0.plus(amount0Abs);
+    pool.volumeToken1 = pool.volumeToken1.plus(amount1Abs);
+    pool.volumeUSD = pool.volumeUSD.plus(amountTotalUSDTracked);
+    pool.untrackedVolumeUSD = pool.untrackedVolumeUSD.plus(
+      amountTotalUSDUntracked
+    );
+    pool.feesUSD = pool.feesUSD.plus(feesUSD);
+    pool.txCount = pool.txCount.plus(ONE_BI);
+
+    // Update the pool with the new active liquidity, price, and tick.
+    pool.liquidity = event.params.liquidity;
+    pool.tick = BigInt.fromI32(event.params.tick);
+    pool.sqrtPrice = event.params.sqrtPriceX96;
+    pool.totalValueLockedToken0 = pool.totalValueLockedToken0.plus(amount0);
+    pool.totalValueLockedToken1 = pool.totalValueLockedToken1.plus(amount1);
+
+    // update token0 data
+    token0.volume = token0.volume.plus(amount0Abs);
+    token0.totalValueLocked = token0.totalValueLocked.plus(amount0);
+    token0.volumeUSD = token0.volumeUSD.plus(amountTotalUSDTracked);
+    token0.untrackedVolumeUSD = token0.untrackedVolumeUSD.plus(
+      amountTotalUSDUntracked
+    );
+    token0.feesUSD = token0.feesUSD.plus(feesUSD);
+    token0.txCount = token0.txCount.plus(ONE_BI);
+
+    // update token1 data
+    token1.volume = token1.volume.plus(amount1Abs);
+    token1.totalValueLocked = token1.totalValueLocked.plus(amount1);
+    token1.volumeUSD = token1.volumeUSD.plus(amountTotalUSDTracked);
+    token1.untrackedVolumeUSD = token1.untrackedVolumeUSD.plus(
+      amountTotalUSDUntracked
+    );
+    token1.feesUSD = token1.feesUSD.plus(feesUSD);
+    token1.txCount = token1.txCount.plus(ONE_BI);
+
+    // updated pool ratess
+    const prices = sqrtPriceX96ToTokenPrices(
+      pool.sqrtPrice,
+      token0 as Token,
+      token1 as Token
+    );
+    pool.token0Price = prices[0];
+    pool.token1Price = prices[1];
+    pool.updatedAt = event.block.timestamp;
+    pool.save();
+
+    // update USD pricing
+    bundle.ethPriceUSD = getNativePriceInUSD(
+      stablecoinWrappedNativePoolAddress,
+      stablecoinIsToken0
+    );
+    bundle.updatedAt = event.block.timestamp;
+    bundle.save();
+    token0.derivedETH = findNativePerToken(
+      token0 as Token,
+      wrappedNativeAddress,
+      stablecoinAddresses,
+      minimumNativeLocked
+    );
+    token1.derivedETH = findNativePerToken(
+      token1 as Token,
+      wrappedNativeAddress,
+      stablecoinAddresses,
+      minimumNativeLocked
+    );
+
+    /**
+     * Things afffected by new USD rates
+     */
+    pool.totalValueLockedETH = pool.totalValueLockedToken0
+      .times(token0.derivedETH)
+      .plus(pool.totalValueLockedToken1.times(token1.derivedETH));
+    pool.totalValueLockedUSD = pool.totalValueLockedETH.times(
+      bundle.ethPriceUSD
+    );
+
+    factory.totalValueLockedETH = factory.totalValueLockedETH.plus(
+      pool.totalValueLockedETH
+    );
+    factory.totalValueLockedUSD = factory.totalValueLockedETH.times(
+      bundle.ethPriceUSD
+    );
+
+    token0.totalValueLockedUSD = token0.totalValueLocked
+      .times(token0.derivedETH)
+      .times(bundle.ethPriceUSD);
+    token1.totalValueLockedUSD = token1.totalValueLocked
+      .times(token1.derivedETH)
+      .times(bundle.ethPriceUSD);
+
+    // create Swap event
+    const transaction = loadTransaction(event);
+    const swap = new Swap(transaction.id + "-" + event.logIndex.toString());
+    swap.transaction = transaction.id;
+    swap.timestamp = transaction.timestamp;
+    swap.pool = pool.id;
+    swap.token0 = pool.token0;
+    swap.token1 = pool.token1;
+    swap.sender = event.params.sender;
+    swap.origin = event.transaction.from;
+    swap.to = event.params.recipient;
+    swap.amount0 = amount0;
+    swap.amount1 = amount1;
+    swap.amountUSD = amountTotalUSDTracked;
+    swap.tick = BigInt.fromI32(event.params.tick);
+    swap.sqrtPriceX96 = event.params.sqrtPriceX96;
+    swap.logIndex = event.logIndex;
+    swap.feeBase = ZERO_BD;
+    swap.feeQuote = ZERO_BD;
+    swap.baseVolume = ZERO_BD;
+    swap.quoteVolume = ZERO_BD;
+    swap.volumeUSD = ZERO_BD;
+
+    // interval data
+    const ammDayData = updateAMMDayData(event, factoryAddress);
+    const poolDayData = updatePoolDayData(event);
+    const poolHourData = updatePoolHourData(event);
+    const token0DayData = updateTokenDayData(token0 as Token, event);
+    const token1DayData = updateTokenDayData(token1 as Token, event);
+    const token0HourData = updateTokenHourData(token0 as Token, event);
+    const token1HourData = updateTokenHourData(token1 as Token, event);
+
+    // update volume metrics
+    ammDayData.volumeETH = ammDayData.volumeETH.plus(amountTotalETHTracked);
+    ammDayData.volumeUSD = ammDayData.volumeUSD.plus(amountTotalUSDTracked);
+    ammDayData.feesUSD = ammDayData.feesUSD.plus(feesUSD);
+
+    poolDayData.volumeUSD = poolDayData.volumeUSD.plus(amountTotalUSDTracked);
+    poolDayData.volumeToken0 = poolDayData.volumeToken0.plus(amount0Abs);
+    poolDayData.volumeToken1 = poolDayData.volumeToken1.plus(amount1Abs);
+    poolDayData.feesUSD = poolDayData.feesUSD.plus(feesUSD);
+
+    poolHourData.volumeUSD = poolHourData.volumeUSD.plus(amountTotalUSDTracked);
+    poolHourData.volumeToken0 = poolHourData.volumeToken0.plus(amount0Abs);
+    poolHourData.volumeToken1 = poolHourData.volumeToken1.plus(amount1Abs);
+    poolHourData.feesUSD = poolHourData.feesUSD.plus(feesUSD);
+
+    token0DayData.volume = token0DayData.volume.plus(amount0Abs);
+    token0DayData.volumeUSD = token0DayData.volumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token0DayData.untrackedVolumeUSD = token0DayData.untrackedVolumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token0DayData.feesUSD = token0DayData.feesUSD.plus(feesUSD);
+
+    token0HourData.volume = token0HourData.volume.plus(amount0Abs);
+    token0HourData.volumeUSD = token0HourData.volumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token0HourData.untrackedVolumeUSD = token0HourData.untrackedVolumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token0HourData.feesUSD = token0HourData.feesUSD.plus(feesUSD);
+
+    token1DayData.volume = token1DayData.volume.plus(amount1Abs);
+    token1DayData.volumeUSD = token1DayData.volumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token1DayData.untrackedVolumeUSD = token1DayData.untrackedVolumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token1DayData.feesUSD = token1DayData.feesUSD.plus(feesUSD);
+
+    token1HourData.volume = token1HourData.volume.plus(amount1Abs);
+    token1HourData.volumeUSD = token1HourData.volumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token1HourData.untrackedVolumeUSD = token1HourData.untrackedVolumeUSD.plus(
+      amountTotalUSDTracked
+    );
+    token1HourData.feesUSD = token1HourData.feesUSD.plus(feesUSD);
+
+    swap.updatedAt = event.block.timestamp;
+    swap.save();
+    token0DayData.updatedAt = event.block.timestamp;
+    token0DayData.save();
+    token1DayData.updatedAt = event.block.timestamp;
+    token1DayData.save();
+    ammDayData.updatedAt = event.block.timestamp;
+    ammDayData.save();
+    poolDayData.updatedAt = event.block.timestamp;
+    poolDayData.save();
+    poolHourData.updatedAt = event.block.timestamp;
+    poolHourData.save();
+    token0HourData.updatedAt = event.block.timestamp;
+    token0HourData.save();
+    token1HourData.updatedAt = event.block.timestamp;
+    token1HourData.save();
+    poolHourData.updatedAt = event.block.timestamp;
+    poolHourData.save();
+    factory.updatedAt = event.block.timestamp;
+    factory.save();
+    token0.updatedAt = event.block.timestamp;
+    token0.save();
+    token1.updatedAt = event.block.timestamp;
+    token1.save();
+    pool.updatedAt = event.block.timestamp;
+    createPair(pool);
+    pool.save();
+
+    //Supplementary data
+    let swapID = event.transaction.hash
+      .toHexString()
+      .concat("-")
+      .concat(event.logIndex.toString());
+
+    let orderHistory = OrderHistory.load(swapID);
+    if (
+      SMART_ROUTE_ADDRESSES.indexOf(event.params.recipient.toHexString()) ==
+        -1 &&
+      orderHistory == null
+    ) {
+      log.warning(`external swap from {},hash : {}`, [
+        event.params.sender.toHexString(),
+        event.transaction.hash.toHexString(),
+      ]);
+      orderHistory = new OrderHistory(swapID);
+      orderHistory.source = SOURCE_POOL_SWAP;
+      orderHistory.hash = event.transaction.hash.toHexString();
+      orderHistory.timestamp = event.block.timestamp;
+      orderHistory.block = event.block.number;
+      orderHistory.fromToken = token0.id;
+      orderHistory.toToken = token1.id;
+      orderHistory.from = event.transaction.from;
+      orderHistory.to = event.params.recipient;
+      orderHistory.sender = event.params.recipient;
+      orderHistory.amountIn = amount0;
+      orderHistory.amountOut = amount1;
+      orderHistory.logIndex = event.logIndex;
+      orderHistory.tradingReward = ZERO_BD;
+      orderHistory.volumeUSD = amountTotalUSDTracked;
+      orderHistory.updatedAt = event.block.timestamp;
+      orderHistory.save();
+    }
+  }
+}
