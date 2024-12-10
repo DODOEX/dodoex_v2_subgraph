@@ -41,6 +41,7 @@ const chains = [
   "zero-mainnet",
   "morph",
   "plume",
+  "neox",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
