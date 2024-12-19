@@ -42,6 +42,9 @@ const chains = [
   "morph",
   "plume",
   "neox",
+  "hashkey",
+  "plume-testnet",
+  "tac-testnet",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
