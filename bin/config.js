@@ -46,6 +46,7 @@ const chains = [
   "plume-testnet",
   "tac-testnet",
   "hemi",
+  "berachain",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [

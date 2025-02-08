@@ -216,8 +216,18 @@ export function handleSwapHelper(
     // create Swap event
     const transaction = loadTransaction(event);
     const swap = new Swap(transaction.id + "-" + event.logIndex.toString());
-    swap.transaction = transaction.id;
+    swap.hash = event.transaction.hash.toHexString();
     swap.timestamp = transaction.timestamp;
+    swap.pair = pool.id;
+    swap.sender = event.params.sender;
+    swap.from = event.transaction.from;
+    swap.fromToken = token0.id;
+    swap.toToken = token1.id;
+    swap.to = event.params.recipient;
+    swap.logIndex = event.logIndex;
+    swap.amountIn = amount0;
+    swap.amountOut = amount1;
+    swap.transaction = transaction.id;
     swap.pool = pool.id;
     swap.token0 = pool.token0;
     swap.token1 = pool.token1;
