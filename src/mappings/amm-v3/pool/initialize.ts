@@ -8,6 +8,7 @@ import {
   updatePoolHourData,
 } from "../utils/intervalUpdates";
 import { findNativePerToken, getNativePriceInUSD } from "../utils/pricing";
+import { updatePairDayData, updatePairHourData } from "../supplementaryData";
 
 export function handleInitialize(event: Initialize): void {
   handleInitializeHelper(event);
@@ -44,8 +45,14 @@ export function handleInitializeHelper(
   bundle.updatedAt = event.block.timestamp;
   bundle.save();
 
-  updatePoolDayData(event);
-  updatePoolHourData(event);
+  const poolDayData = updatePoolDayData(event);
+  const poolHourData = updatePoolHourData(event);
+  poolDayData.updatedAt = event.block.timestamp;
+  poolHourData.updatedAt = event.block.timestamp;
+  poolDayData.save();
+  poolHourData.save();
+  updatePairHourData(poolHourData);
+  updatePairDayData(poolDayData);
 
   // update token prices
   if (token0 && token1) {

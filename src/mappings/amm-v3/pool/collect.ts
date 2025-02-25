@@ -19,7 +19,11 @@ import {
   updateAMMDayData,
 } from "../utils/intervalUpdates";
 import { getTrackedAmountUSD } from "../utils/pricing";
-import { createPair } from "../supplementaryData";
+import {
+  createPair,
+  updatePairDayData,
+  updatePairHourData,
+} from "../supplementaryData";
 
 export function handleCollect(event: CollectEvent): void {
   handleCollectHelper(event);
@@ -130,13 +134,13 @@ export function handleCollectHelper(
   collect.tickUpper = BigInt.fromI32(event.params.tickUpper);
   collect.logIndex = event.logIndex;
 
-  updateAMMDayData(event, factoryAddress);
-  updatePoolDayData(event);
-  updatePoolHourData(event);
-  updateTokenDayData(token0 as Token, event);
-  updateTokenDayData(token1 as Token, event);
-  updateTokenHourData(token0 as Token, event);
-  updateTokenHourData(token1 as Token, event);
+  const ammDayData = updateAMMDayData(event, factoryAddress);
+  const poolDayData = updatePoolDayData(event);
+  const poolHourData = updatePoolHourData(event);
+  const token0DayData = updateTokenDayData(token0 as Token, event);
+  const token1DayData = updateTokenDayData(token1 as Token, event);
+  const token0HourData = updateTokenHourData(token0 as Token, event);
+  const token1HourData = updateTokenHourData(token1 as Token, event);
 
   token0.updatedAt = event.block.timestamp;
   token0.save();
@@ -149,6 +153,22 @@ export function handleCollectHelper(
   factory.save();
   collect.updatedAt = event.block.timestamp;
   collect.save();
+  ammDayData.updatedAt = event.block.timestamp;
+  ammDayData.save();
+  poolDayData.updatedAt = event.block.timestamp;
+  poolDayData.save();
+  poolHourData.updatedAt = event.block.timestamp;
+  poolHourData.save();
+  token0DayData.updatedAt = event.block.timestamp;
+  token0DayData.save();
+  token1DayData.updatedAt = event.block.timestamp;
+  token1DayData.save();
+  token0HourData.updatedAt = event.block.timestamp;
+  token0HourData.save();
+  token1HourData.updatedAt = event.block.timestamp;
+  token1HourData.save();
+  updatePairHourData(poolHourData);
+  updatePairDayData(poolDayData);
 
   return;
 }

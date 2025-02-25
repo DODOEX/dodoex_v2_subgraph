@@ -58,7 +58,7 @@ export const DAI_WETH_PAIR = "0x7d02a3e0180451b17e5d7f29ef78d06f8117106c"; // cr
 export const USDT_WETH_PAIR = "0x9c2dc7377717603eb92b2655c5f2e7997a4945bd"; // created block
 // token where amounts should contribute to tracked volume and liquidity
 export let WHITELIST: string[] = [
-  "0xa51894664a773981c6c112c43ce576f315d5b1b6", // WETH
+  WETH_ADDRESS, // WETH
   "0x7d02a3e0180451b17e5d7f29ef78d06f8117106c", // DAI
   "0x07d83526730c7438048d55a4fc0b850e2aab6f0b", // USDC
   "0x9c2dc7377717603eb92b2655c5f2e7997a4945bd", // USDT
@@ -84,3 +84,10 @@ export let UNTRACKED_PAIRS: string[] = [
 ];
 
 // AMM V3
+export const factoryAddress = "0x78172691DD3B8ADa7aEbd9bFfB487FB11D735DB2";
+export const WHITELIST_TOKENS: string[] = WHITELIST;
+export const USDC_WETH_03_POOL = "0x4e0a1d4f6c2548550a983a0c446dd67abd00869d";
+export const stablecoinAddresses: string[] = [
+  "0x07d83526730c7438048d55a4fc0b850e2aab6f0b", // USDC
+  "0x9c2dc7377717603eb92b2655c5f2e7997a4945bd", // USDT
+];

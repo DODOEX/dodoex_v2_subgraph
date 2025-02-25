@@ -1,4 +1,4 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import {
   LpToken,
   Pair,
@@ -17,7 +17,6 @@ import {
   fetchTokenTotalSupply,
 } from "./utils/token";
 import { ADDRESS_ZERO, BI_18, ZERO_BD, ZERO_BI } from "../constant";
-import { convertTokenToDecimal } from "./utils";
 
 export function createPair(pool: Pool): Pair {
   let id = pool.id;
@@ -111,13 +110,14 @@ export function createLpToken(
 }
 
 export function updatePairDayData(poolDayData: PoolDayData): PairDayData {
-  let hourPoolID = poolDayData.id;
-  let pairDayData = PairDayData.load(hourPoolID);
+  let dayPoolID = poolDayData.id;
+  let pairDayData = PairDayData.load(dayPoolID);
   let pool = Pool.load(poolDayData.pool);
   if (pairDayData === null) {
-    pairDayData = new PairDayData(hourPoolID);
+    pairDayData = new PairDayData(dayPoolID);
     pairDayData.date = poolDayData.date;
     pairDayData.pairAddress = Address.fromString(poolDayData.pool);
+    pairDayData.pair = poolDayData.pool;
     if (pool !== null) {
       pairDayData.baseToken = pool.token0;
       pairDayData.quoteToken = pool.token1;
@@ -129,7 +129,6 @@ export function updatePairDayData(poolDayData: PoolDayData): PairDayData {
     pairDayData.traders = ZERO_BI;
     pairDayData.feeBase = ZERO_BD;
     pairDayData.feeQuote = ZERO_BD;
-    pairDayData.lpFeeRate = ZERO_BD;
   }
   if (pool !== null) {
     pairDayData.baseTokenReserve = pool.totalValueLockedToken0;
@@ -140,6 +139,13 @@ export function updatePairDayData(poolDayData: PoolDayData): PairDayData {
   pairDayData.quoteUsdPrice = poolDayData.token1Price;
   pairDayData.volumeBase = poolDayData.volumeToken0;
   pairDayData.volumeQuote = poolDayData.volumeToken1;
+  pairDayData.feeBase = poolDayData.volumeToken0
+    .times(pairDayData.lpFeeRate)
+    .div(BigDecimal.fromString("1000000"));
+  pairDayData.feeQuote = poolDayData.volumeToken1
+    .times(pairDayData.lpFeeRate)
+    .div(BigDecimal.fromString("1000000"));
+  pairDayData.volumeUSD = poolDayData.volumeUSD;
   pairDayData.txns = poolDayData.txCount;
 
   pairDayData.updatedAt = poolDayData.updatedAt;
@@ -156,6 +162,7 @@ export function updatePairHourData(poolHourData: PoolHourData): PairHourData {
     pairHourData = new PairHourData(hourPoolID);
     pairHourData.hour = poolHourData.periodStartUnix;
     pairHourData.pairAddress = Address.fromString(poolHourData.pool);
+    pairHourData.pair = poolHourData.pool;
     if (pool !== null) {
       pairHourData.baseToken = pool.token0;
       pairHourData.quoteToken = pool.token1;
@@ -167,7 +174,6 @@ export function updatePairHourData(poolHourData: PoolHourData): PairHourData {
     pairHourData.traders = ZERO_BI;
     pairHourData.feeBase = ZERO_BD;
     pairHourData.feeQuote = ZERO_BD;
-    pairHourData.lpFeeRate = ZERO_BD;
   }
   if (pool !== null) {
     pairHourData.baseTokenReserve = pool.totalValueLockedToken0;
@@ -178,6 +184,13 @@ export function updatePairHourData(poolHourData: PoolHourData): PairHourData {
   pairHourData.quoteUsdPrice = poolHourData.token1Price;
   pairHourData.volumeBase = poolHourData.volumeToken0;
   pairHourData.volumeQuote = poolHourData.volumeToken1;
+  pairHourData.volumeUSD = poolHourData.volumeUSD;
+  pairHourData.feeBase = poolHourData.volumeToken0
+    .times(pairHourData.lpFeeRate)
+    .div(BigDecimal.fromString("1000000"));
+  pairHourData.feeQuote = poolHourData.volumeToken1
+    .times(pairHourData.lpFeeRate)
+    .div(BigDecimal.fromString("1000000"));
   pairHourData.txns = poolHourData.txCount;
 
   pairHourData.updatedAt = poolHourData.updatedAt;

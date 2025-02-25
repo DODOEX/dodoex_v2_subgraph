@@ -20,7 +20,11 @@ import {
   updateTokenHourData,
   updateAMMDayData,
 } from "../utils/intervalUpdates";
-import { createPair } from "../supplementaryData";
+import {
+  createPair,
+  updatePairDayData,
+  updatePairHourData,
+} from "../supplementaryData";
 import { updateLpPosition } from "../nonfungiblePositionManager";
 
 export function handleBurn(event: BurnEvent): void {
@@ -115,13 +119,13 @@ export function handleBurnHelper(
       lowerTick.save();
       upperTick.save();
     }
-    updateAMMDayData(event, factoryAddress);
-    updatePoolDayData(event);
-    updatePoolHourData(event);
-    updateTokenDayData(token0 as Token, event);
-    updateTokenDayData(token1 as Token, event);
-    updateTokenHourData(token0 as Token, event);
-    updateTokenHourData(token1 as Token, event);
+    const ammDayData = updateAMMDayData(event, factoryAddress);
+    const poolDayData = updatePoolDayData(event);
+    const poolHourData = updatePoolHourData(event);
+    const token0DayData = updateTokenDayData(token0 as Token, event);
+    const token1DayData = updateTokenDayData(token1 as Token, event);
+    const token0HourData = updateTokenHourData(token0 as Token, event);
+    const token1HourData = updateTokenHourData(token1 as Token, event);
 
     token0.updatedAt = event.block.timestamp;
     token0.save();
@@ -134,6 +138,22 @@ export function handleBurnHelper(
     factory.save();
     burn.updatedAt = event.block.timestamp;
     burn.save();
+    ammDayData.updatedAt = event.block.timestamp;
+    ammDayData.save();
+    poolDayData.updatedAt = event.block.timestamp;
+    poolDayData.save();
+    poolHourData.updatedAt = event.block.timestamp;
+    poolHourData.save();
+    token0DayData.updatedAt = event.block.timestamp;
+    token0DayData.save();
+    token1DayData.updatedAt = event.block.timestamp;
+    token1DayData.save();
+    token0HourData.updatedAt = event.block.timestamp;
+    token0HourData.save();
+    token1HourData.updatedAt = event.block.timestamp;
+    token1HourData.save();
+    updatePairHourData(poolHourData);
+    updatePairDayData(poolDayData);
 
     // supplementary Data
     let liquidityTrackerId = event.transaction.hash

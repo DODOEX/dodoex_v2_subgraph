@@ -7,6 +7,13 @@ import {
 
 import { OPTIMISM_POOL_MAPPINGS } from "../backfill/poolMappings";
 import { StaticTokenDefinition } from "./staticTokenDefinition";
+import {
+  factoryAddress,
+  stablecoinAddresses,
+  USDC_WETH_03_POOL,
+  WETH_ADDRESS,
+  WHITELIST_TOKENS,
+} from "../../constant";
 
 export enum ChainId {
   ARBITRUM_ONE = 42161,
@@ -497,22 +504,13 @@ export function getSubgraphConfig(): SubgraphConfig {
     };
   } else if (selectedNetwork == TAIKO_NETWORK_NAME) {
     return {
-      factoryAddress: "0x78172691DD3B8ADa7aEbd9bFfB487FB11D735DB2",
-      stablecoinWrappedNativePoolAddress:
-        "0x310fd2d1cf90acdc7462c145bac35e579021a1bf", // USDC/WETH 1% pool
+      factoryAddress: factoryAddress,
+      stablecoinWrappedNativePoolAddress: USDC_WETH_03_POOL, // USDC/WETH 1% pool
       stablecoinIsToken0: true,
-      wrappedNativeAddress: "0xa51894664a773981c6c112c43ce576f315d5b1b6", // WETH
+      wrappedNativeAddress: WETH_ADDRESS, // WETH
       minimumNativeLocked: BigDecimal.fromString("1"),
-      stablecoinAddresses: [
-        "0x07d83526730c7438048d55a4fc0b850e2aab6f0b", // USDC
-        "0x9c2dc7377717603eb92b2655c5f2e7997a4945bd", // USDT
-      ],
-      whitelistTokens: [
-        "0xa51894664a773981c6c112c43ce576f315d5b1b6", // WETH
-        "0x7d02a3e0180451b17e5d7f29ef78d06f8117106c", // DAI
-        "0x07d83526730c7438048d55a4fc0b850e2aab6f0b", // USDC
-        "0x9c2dc7377717603eb92b2655c5f2e7997a4945bd", // USDT
-      ],
+      stablecoinAddresses: stablecoinAddresses,
+      whitelistTokens: WHITELIST_TOKENS,
       tokenOverrides: [],
       poolsToSkip: [],
       poolMappings: [],

@@ -1,39 +1,110 @@
-specVersion: 0.0.6
+specVersion: 0.0.4
 description: Dodoex.io
-repository: https://github.com/DODOEX/dodoex_v2_subgraph
+features:
+  - grafting
+repository: https://github.com/DODOEX/amm_v3_subgraph
 schema:
-  file: token.graphql
+  file: amm-v3.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ERC20V3Factory
-    network: birdlayer
+    name: Factory
+    network: taiko
     source:
-      address: "0xDC249Ea92D2e532ed63B45dc7C05B21926B97c6F"
-      abi: ERC20V3Factory
-      startBlock: 41
+      address: "0x78172691DD3B8ADa7aEbd9bFfB487FB11D735DB2"
+      abi: Factory
+      startBlock: 749212
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ERC20V3Factory/ERC20V3Factory.wasm
+      file: Factory/Factory.wasm
       entities:
-        - User
+        - Pool
         - Token
-        - UserTokenBlance
-        - TransferHistories
       abis:
-        - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
-        - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
-        - name: ERC20V3Factory
-          file: ../abis/ERC20V3Factory.json
+        - name: Factory
+          file: ../abis/amm-v3/factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../abis/amm-v3/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../abis/amm-v3/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../abis/amm-v3/ERC20NameBytes.json
+        - name: Pool
+          file: ../abis/amm-v3/pool.json
+        - name: NonfungiblePositionManager
+          file: ../abis/amm-v3/NonfungiblePositionManager.json
       eventHandlers:
-        - event: NewERC20(address,address,uint256)
-          handler: handleNewERC20
+        - event: PoolCreated(indexed address,indexed address,indexed uint24,int24,address)
+          handler: handlePoolCreated
+  - kind: ethereum/contract
+    name: NonfungiblePositionManager
+    network: taiko
+    source:
+      address: "0x2623281DdcC34A73a9e8898f2c57A32A860903f1"
+      abi: NonfungiblePositionManager
+      startBlock: 749212
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: NonfungiblePositionManager/NonfungiblePositionManager.wasm
+      entities:
+        - Pool
+        - Token
+      abis:
+        - name: Factory
+          file: ../abis/amm-v3/factory.json
+        - name: ERC20
+          file: ../abis/amm-v3/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/amm-v3/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/amm-v3/ERC20NameBytes.json
+        - name: Pool
+          file: ../abis/amm-v3/pool.json
+        - name: NonfungiblePositionManager
+          file: ../abis/amm-v3/NonfungiblePositionManager.json
+      eventHandlers:
+        - event: IncreaseLiquidity(indexed uint256,uint128,uint256,uint256)
+          handler: handleIncreaseLiquidity
+        - event: DecreaseLiquidity(indexed uint256,uint128,uint256,uint256)
+          handler: handleDecreaseLiquidity
+templates:
+  - kind: ethereum/contract
+    name: Pool
+    network: taiko
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: templates/Pool/Pool.wasm
+      entities:
+        - Pool
+        - Token
+      abis:
+        - name: Factory
+          file: ../abis/amm-v3/factory.json
+        - name: ERC20
+          file: ../abis/amm-v3/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../abis/amm-v3/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../abis/amm-v3/ERC20NameBytes.json
+        - name: Pool
+          file: ../abis/amm-v3/pool.json
+        - name: NonfungiblePositionManager
+          file: ../abis/amm-v3/NonfungiblePositionManager.json
+      eventHandlers:
+        - event: Initialize(uint160,int24)
+          handler: handleInitialize
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
+          handler: handleSwap
+        - event: Mint(address,indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleBurn
+        - event: Collect(indexed address,address,indexed int24,indexed int24,uint128,uint128)
+          handler: handleCollect
