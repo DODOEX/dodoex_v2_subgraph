@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DODOMineV3ProxyV2
-    network: plume
+    network: plume-new
     source:
-      address: '0xcBF3378D432CB181aae32a6A80AA94CF8e00f534'
+      address: '0x9ef37fD4791eb28e46c3D50Ed83F2a10B3082784'
       abi: DODOMineV3ProxyV2
-      startBlock: 54690
+      startBlock: 15478
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -36,11 +36,11 @@ dataSources:
           handler: handleV2CreateMineV3
   - kind: ethereum/contract
     name: DODOMineV3Registry
-    network: plume
+    network: plume-new
     source:
-      address: '0xC7EaBEc77Be175432DC20c0056Cce4c2C78B84F3'
+      address: '0xC975769aB5Ef947CB82535ca6607B0683a355195'
       abi: DODOMineV3Registry
-      startBlock: 54690
+      startBlock: 15478
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -67,7 +67,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: ERC20MineV3
-    network: plume
+    network: plume-new
     source:
       abi: ERC20MineV3
     mapping:
