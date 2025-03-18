@@ -49,6 +49,8 @@ const chains = [
   "berachain",
   "taiko-hekla",
   "birdlayer",
+  "rise-testnet",
+  "monad-testnet",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
