@@ -3,6 +3,7 @@ import {
   BigDecimal,
   BigInt,
   dataSource,
+  log,
 } from "@graphprotocol/graph-ts";
 
 import { OPTIMISM_POOL_MAPPINGS } from "../backfill/poolMappings";
@@ -502,7 +503,8 @@ export function getSubgraphConfig(): SubgraphConfig {
       poolsToSkip: [],
       poolMappings: [],
     };
-  } else if (selectedNetwork == TAIKO_NETWORK_NAME) {
+  } else {
+    log.warning("Unsupported Network: {}", [selectedNetwork]);
     return {
       factoryAddress: factoryAddress,
       stablecoinWrappedNativePoolAddress: USDC_WETH_03_POOL, // USDC/WETH 1% pool
@@ -515,7 +517,5 @@ export function getSubgraphConfig(): SubgraphConfig {
       poolsToSkip: [],
       poolMappings: [],
     };
-  } else {
-    throw new Error("Unsupported Network");
   }
 }
