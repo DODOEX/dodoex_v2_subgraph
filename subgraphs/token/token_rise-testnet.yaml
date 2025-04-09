@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ERC20V3Factory
-    network: rise-testnet
+    network: rise-sepolia
     source:
       address: '0x3eE78C6214D924a54944f8719Df14cAD0C0107B7'
       abi: ERC20V3Factory

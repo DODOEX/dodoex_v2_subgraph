@@ -11,11 +11,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: rise-sepolia
+    network: nero
     source:
-      address: '0x4f8C8E05e946de09d768d062c5e969D1C8920C72'
+      address: '0x2F95b87AF3970A686fC20572e44978b621C6FFF7'
       abi: Factory
-      startBlock: 8317776
+      startBlock: 4147008
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -39,7 +39,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pair
-    network: rise-sepolia
+    network: nero
     source:
       abi: Pair
     mapping:

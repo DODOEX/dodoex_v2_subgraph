@@ -11,11 +11,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: rise-sepolia
+    network: nero
     source:
-      address: '0x21AD45b37C130a77Acc06DFA752dDb224Aed9943'
+      address: '0xDb9C49aa313Fd830B6A5D5f29CDc688F58A5744e'
       abi: Factory
-      startBlock: 8317776
+      startBlock: 4147008
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -42,11 +42,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: rise-sepolia
+    network: nero
     source:
-      address: '0x39C9DD6549700588fBF3d565F39AFDAd953029F7'
+      address: '0x0ee0e7e9C1C53c4d0658489Bc1D64081E1606b5b'
       abi: NonfungiblePositionManager
-      startBlock: 8317776
+      startBlock: 4147008
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -76,7 +76,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: rise-sepolia
+    network: nero
     source:
       abi: Pool
     mapping:
