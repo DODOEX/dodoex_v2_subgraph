@@ -1,3 +1,5 @@
+import { BigDecimal, BigInt } from "@graphprotocol/graph-ts/index";
+
 //kovan
 export const TYPE_VIRTUAL_POOL = "VIRTUAL";
 export const TYPE_DVM_POOL = "DVM";
@@ -39,12 +41,53 @@ export const TRANSACTION_TYPE_CP_CLAIM = "CP_CLAIM";
 /**
  * usd pricing
  */
-export const WRAPPED_BASE_COIN = "0xb26c0d8be2960c70641a95a9195be1f59ac83ac0";
+export const WRAPPED_BASE_COIN = "0x4200000000000000000000000000000000000006";
 //pricing supported stable coins
-export const STABLE_ONE_ADDRESS = "0x0adcbae18580120667f7ff6c6451a426b13c67b7"; //usdt
-export const STABLE_TWO_ADDRESS = "0xab0733588776b8881f7712f6abca98f510e6b63d"; //usdc
+export const STABLE_ONE_ADDRESS = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; //usdt
+export const STABLE_TWO_ADDRESS = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"; //usdc
 //stable coins pairs
 export const STABLE_COIN_PAIR_ONE =
   "0xe8c1b7e0505c97c59ff2f12ebf91a8eaa59d4c73"; //[USDT_USDC_PAIR]
 //base currency pair
 export const BASE_COIN_PAIR = "0x75f5d66a7bbb9330a9067c0833ec9b3198b71666"; //[WETH_USDC_PAIR]
+
+// AMM V2
+export const WETH_ADDRESS = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1";
+export const USDC_WETH_PAIR = "0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C"; // created
+export const DAI_WETH_PAIR = "0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C"; // created block
+export const USDT_WETH_PAIR = "0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C"; // created block
+// token where amounts should contribute to tracked volume and liquidity
+export let WHITELIST: string[] = [
+  WETH_ADDRESS, // WETH
+  "0x50c5725949a6f0c72e6c4a641f24049a917db0cb", // DAI
+  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC
+  "0x820c137fa70c8691f0e44dc420a5e53c168921dc", // USDS
+];
+
+// minimum liquidity required to count towards tracked volume for pairs with small # of Lps
+export let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString("400000");
+
+// minimum liquidity for price to get tracked
+export let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("2");
+
+export const FACTORY_ADDRESS = "0x1909B6842964030aF3897bdf8ba760bD91439463";
+
+export let ZERO_BI = BigInt.fromI32(0);
+export let ONE_BI = BigInt.fromI32(1);
+export let ZERO_BD = BigDecimal.fromString("0");
+export let ONE_BD = BigDecimal.fromString("1");
+export let BI_18 = BigInt.fromI32(18);
+
+// rebass tokens, dont count in tracked volume
+export let UNTRACKED_PAIRS: string[] = [
+  "0x9ea3b5b4ec044b70375236a281986106457b20ef",
+];
+
+// AMM V3
+export const factoryAddress = "0xd0de7cA3298fff085E2cb82F8a861a0254256BA0";
+export const WHITELIST_TOKENS: string[] = WHITELIST;
+export const USDC_WETH_03_POOL = "0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C";
+export const stablecoinAddresses: string[] = [
+  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC
+  "0x820c137fa70c8691f0e44dc420a5e53c168921dc", // USDT
+];

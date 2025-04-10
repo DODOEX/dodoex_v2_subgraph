@@ -1,63 +1,66 @@
 specVersion: 0.0.4
 description: Dodoex.io
+# graft:
+#   base: QmYbAxokzn5w3CT9byQYa7aF33LM3CcLN8Rr5weLTFSgdm
+#   block: 19337060
 features:
   - grafting
 repository: https://github.com/DODOEX/amm_v2_subgraph
 schema:
-  file: amm-v2.graphql
+  file: ./amm-v2.graphql
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: matic
+    network: arbitrum-one
     source:
-      address: "0x562723560131C47417dfcD6BB1A089E4D7C7943C"
+      address: '0x38886EDE1Fc92886F9a11C37a1f5e75474858eaa'
       abi: Factory
-      startBlock: 70084514
+      startBlock: 324428727
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: Factory/Factory.wasm
+      file: ../../src/mappings/amm-v2/factory.ts
       entities:
         - Pair
         - Token
       abis:
         - name: Factory
-          file: ../abis/amm-v2/factory.json
+          file: ../../abis/amm-v2/factory.json
         - name: ERC20
-          file: ../abis/amm-v2/ERC20.json
+          file: ../../abis/amm-v2/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/amm-v2/ERC20SymbolBytes.json
+          file: ../../abis/amm-v2/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/amm-v2/ERC20NameBytes.json
+          file: ../../abis/amm-v2/ERC20NameBytes.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256,uint256)
           handler: handleNewPair
 templates:
   - kind: ethereum/contract
     name: Pair
-    network: matic
+    network: arbitrum-one
     source:
       abi: Pair
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: templates/Pair/Pair.wasm
+      file: ../../src/mappings/amm-v2/core.ts
       entities:
         - Pair
         - Token
       abis:
         - name: Pair
-          file: ../abis/amm-v2/pair.json
+          file: ../../abis/amm-v2/pair.json
         - name: Factory
-          file: ../abis/amm-v2/factory.json
+          file: ../../abis/amm-v2/factory.json
         - name: ERC20
-          file: ../abis/amm-v2/ERC20.json
+          file: ../../abis/amm-v2/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/amm-v2/ERC20SymbolBytes.json
+          file: ../../abis/amm-v2/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/amm-v2/ERC20NameBytes.json
+          file: ../../abis/amm-v2/ERC20NameBytes.json          
       eventHandlers:
         - event: Mint(indexed address,uint256,uint256)
           handler: handleMint

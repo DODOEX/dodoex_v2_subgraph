@@ -1,3 +1,5 @@
+import { BigDecimal, BigInt } from "@graphprotocol/graph-ts/index";
+
 //bsc
 export const TYPE_VIRTUAL_POOL = "VIRTUAL";
 export const TYPE_DVM_POOL = "DVM";
@@ -53,3 +55,44 @@ export const STABLE_COIN_PAIR_ONE =
   "0xbe60d4c4250438344bec816ec2dec99925deb4c7"; //[USDT_BUSD_PAIR]
 //base currency pair
 export const BASE_COIN_PAIR = "0x327134de48fcdd75320f4c32498d1980470249ae"; //[WBNB_BUSD_PAIR]
+
+// AMM V2
+export const WETH_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+export const USDC_WETH_PAIR = "0x47a90A2d92A8367A91EfA1906bFc8c1E05bf10c4"; // created
+export const DAI_WETH_PAIR = "0x47a90A2d92A8367A91EfA1906bFc8c1E05bf10c4"; // created block
+export const USDT_WETH_PAIR = "0x47a90A2d92A8367A91EfA1906bFc8c1E05bf10c4"; // created block
+// token where amounts should contribute to tracked volume and liquidity
+export let WHITELIST: string[] = [
+  WETH_ADDRESS, // WETH
+  "0x50c5725949a6f0c72e6c4a641f24049a917db0cb", // DAI
+  "0x8965349fb649a33a30cbfda057d8ec2c48abe2a2", // USDC
+  "0x55d398326f99059ff775485246999027b3197955", // USDT
+];
+
+// minimum liquidity required to count towards tracked volume for pairs with small # of Lps
+export let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString("400000");
+
+// minimum liquidity for price to get tracked
+export let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString("2");
+
+export const FACTORY_ADDRESS = "0x562723560131C47417dfcD6BB1A089E4D7C7943C";
+
+export let ZERO_BI = BigInt.fromI32(0);
+export let ONE_BI = BigInt.fromI32(1);
+export let ZERO_BD = BigDecimal.fromString("0");
+export let ONE_BD = BigDecimal.fromString("1");
+export let BI_18 = BigInt.fromI32(18);
+
+// rebass tokens, dont count in tracked volume
+export let UNTRACKED_PAIRS: string[] = [
+  "0x9ea3b5b4ec044b70375236a281986106457b20ef",
+];
+
+// AMM V3
+export const factoryAddress = "0x814473c0f2a32c57b98585157b78ea02a41f70fb";
+export const WHITELIST_TOKENS: string[] = WHITELIST;
+export const USDC_WETH_03_POOL = "0x47a90A2d92A8367A91EfA1906bFc8c1E05bf10c4";
+export const stablecoinAddresses: string[] = [
+  "0x8965349fb649a33a30cbfda057d8ec2c48abe2a2", // USDC
+  "0x55d398326f99059ff775485246999027b3197955", // USDT
+];
