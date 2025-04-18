@@ -51,6 +51,8 @@ const chains = [
   "birdlayer",
   "rise-testnet",
   "monad-testnet",
+  "nero",
+  "zetachain-testnet",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
