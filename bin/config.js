@@ -53,6 +53,7 @@ const chains = [
   "monad-testnet",
   "nero",
   "zetachain-testnet",
+  "pharos-testnet",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
