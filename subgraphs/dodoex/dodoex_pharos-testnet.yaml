@@ -8,9 +8,9 @@ dataSources:
     name: DODOV2Proxy02
     network: pharos-testnet
     source:
-      address: '0x680829027709E2ef95D079aC97DDF5feAb82D248'
+      address: '0xDdfAddf910cED65F5856AbD37eff061914eebf3F'
       abi: DODOV2Proxy02
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -35,9 +35,9 @@ dataSources:
     name: DODOFeeRouteProxy
     network: pharos-testnet
     source:
-      address: '0x80465a300299e90132DFa2c7c3Fc3a12424599bB'
+      address: '0x4dc403406f63f43B2710e729b45a478Dca540705'
       abi: DODOFeeRouteProxy
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -66,9 +66,9 @@ dataSources:
     name: DODOFeeRouteProxy-widgit
     network: pharos-testnet
     source:
-      address: '0x819829e5CF6e19F9fED92F6b4CC1edF45a2cC4A2'
+      address: '0x81d28cf1604C82eC4C617bc25342AbD2eC7Fd8c0'
       abi: DODOFeeRouteProxy
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -97,9 +97,9 @@ dataSources:
     name: DVMFactory
     network: pharos-testnet
     source:
-      address: '0x8bCcE4CCEEf7e841A2A8A48F3250B9FB3b25B0C3'
+      address: '0x67aE5157007639c84B15540D5EC9b7a6C7449b4b'
       abi: DVMFactory
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -130,9 +130,9 @@ dataSources:
     name: DPPFactory
     network: pharos-testnet
     source:
-      address: "0x4c639e4d0bfeC3D0766AAA0500Ae7e91418505Bf"
+      address: "0x525BE0a25601379bF3f15B6Ae56Cc5CAf7BBd7d7"
       abi: DPPFactory
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -161,9 +161,9 @@ dataSources:
     name: DSPFactory
     network: pharos-testnet
     source:
-      address: '0x0f9053E174c123098C17e60A2B1FAb3b303f9e29'
+      address: '0xfcE6Be7d7B7DdE5DB8f5baF52ac1966251Be0709'
       abi: DSPFactory
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -194,9 +194,9 @@ dataSources:
     name: GSPFactory
     network: pharos-testnet
     source:
-      address: '0x6db1ed60c9d6090C87a280a0592365EE83Ca87Ed'
+      address: '0x1DeA5cb0c39D922E69440D92C2F3b9Fa8c12695b'
       abi: GSPFactory
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -227,9 +227,9 @@ dataSources:
     name: CrowdPoolingFactory
     network: pharos-testnet
     source:
-      address: '0x9Ac82EAD1945dF394867df6A053f7375634710fb'
+      address: '0x460830473733c804bB550F913D65B5B88Af95eA9'
       abi: CrowdPoolingFactory
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

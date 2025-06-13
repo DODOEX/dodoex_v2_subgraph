@@ -8,9 +8,9 @@ dataSources:
     name: DODOMineV3ProxyV2
     network: pharos-testnet
     source:
-      address: '0x6bbfD968509752518c1e9fBb0918A8AF8615879e'
+      address: '0xc17611Fcd9591A6bC17f4215AA8Ce84463c92838'
       abi: DODOMineV3ProxyV2
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -38,9 +38,9 @@ dataSources:
     name: DODOMineV3Registry
     network: pharos-testnet
     source:
-      address: '0x3eE78C6214D924a54944f8719Df14cAD0C0107B7'
+      address: '0x1D5f09511c7284735d52e3ad113231A83996d356'
       abi: DODOMineV3Registry
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

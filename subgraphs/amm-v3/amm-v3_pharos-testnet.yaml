@@ -13,9 +13,9 @@ dataSources:
     name: Factory
     network: pharos-testnet
     source:
-      address: '0xb93Cd1E38809607a00FF9CaB633db5CAA6130dD0'
+      address: '0xfbbf8bfAa8dD792229e07F9EFE0935327414bC9f'
       abi: Factory
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -44,9 +44,9 @@ dataSources:
     name: NonfungiblePositionManager
     network: pharos-testnet
     source:
-      address: '0xB713AA210d84B52B621aC50010e3287d4A10Ca4a'
+      address: '0xab70F0dbA06A9f23A3D0631946c9Bd7e5CD5AFE6'
       abi: NonfungiblePositionManager
-      startBlock: 738910
+      startBlock: 9320888
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
