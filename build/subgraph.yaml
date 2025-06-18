@@ -10,9 +10,9 @@ dataSources:
     name: Factory
     network: pharos-testnet
     source:
-      address: "0xD3756Eb053Ff5B742Eb7FD7156DF6AF000cd7c38"
+      address: "0x7b29694E8d44c154E3a2c20A6A2D665D65264e6e"
       abi: Factory
-      startBlock: 9320888
+      startBlock: 9682639
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

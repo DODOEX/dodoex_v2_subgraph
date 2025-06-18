@@ -8,9 +8,9 @@ dataSources:
     name: ERC20V3Factory
     network: pharos-testnet
     source:
-      address: '0x0D8E46c87fc7c5CdbB1148C8BdE7FcE58D200226'
+      address: '0xAa81b61b535Ae3F66163b2B56d8DfE3404a0ECfB'
       abi: ERC20V3Factory
-      startBlock: 9320888
+      startBlock: 9682639
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
