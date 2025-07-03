@@ -57,12 +57,7 @@ export const USDC_WETH_PAIR = "0x72df0bcd7276f2dFbAc900D1CE63c272C4BCcCED"; // c
 export const DAI_WETH_PAIR = "0x7d02a3e0180451b17e5d7f29ef78d06f8117106c"; // created block
 export const USDT_WETH_PAIR = "0xD4071393f8716661958F766DF660033b3d35fD29"; // created block
 // token where amounts should contribute to tracked volume and liquidity
-export let WHITELIST: string[] = [
-  WETH_ADDRESS, // WETH
-  "0x7d02a3e0180451b17e5d7f29ef78d06f8117106c", // DAI
-  "0x72df0bcd7276f2dFbAc900D1CE63c272C4BCcCED", // USDC
-  "0xD4071393f8716661958F766DF660033b3d35fD29", // USDT
-];
+export let WHITELIST: string[] = [];
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
 export let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString("400000");
@@ -79,15 +74,10 @@ export let ONE_BD = BigDecimal.fromString("1");
 export let BI_18 = BigInt.fromI32(18);
 
 // rebass tokens, dont count in tracked volume
-export let UNTRACKED_PAIRS: string[] = [
-  "0x9ea3b5b4ec044b70375236a281986106457b20ef",
-];
+export let UNTRACKED_PAIRS: string[] = [];
 
 // AMM V3
 export const factoryAddress = "0x711b476cbEb92803500Dea10CAeb35741d4c33f7";
 export const WHITELIST_TOKENS: string[] = WHITELIST;
 export const USDC_WETH_03_POOL = "0x4e0a1d4f6c2548550a983a0c446dd67abd00869d";
-export const stablecoinAddresses: string[] = [
-  "0x72df0bcd7276f2dFbAc900D1CE63c272C4BCcCED", // USDC
-  "0xD4071393f8716661958F766DF660033b3d35fD29", // USDT
-];
+export const stablecoinAddresses: string[] = [];

@@ -54,6 +54,8 @@ const chains = [
   "nero",
   "zetachain-testnet",
   "pharos-testnet",
+  "zetachain",
+  "pharos",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [

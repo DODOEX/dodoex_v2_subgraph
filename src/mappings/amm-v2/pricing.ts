@@ -57,11 +57,15 @@ export function findEthPerToken(token: Token): BigDecimal {
   }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
-    let pairAddress = factoryContract.getPair(
+    let pairAddressResult = factoryContract.try_getPair(
       Address.fromString(token.id),
       Address.fromString(WHITELIST[i]),
       BigInt.fromI64(3000000000000000)
     );
+    if (pairAddressResult.reverted) {
+      continue;
+    }
+    let pairAddress = pairAddressResult.value;
     if (pairAddress.toHexString() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHexString());
       if (pair === null) {
