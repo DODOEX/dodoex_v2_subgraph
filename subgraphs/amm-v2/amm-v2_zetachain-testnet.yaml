@@ -13,9 +13,9 @@ dataSources:
     name: Factory
     network: zetachain-testnet
     source:
-      address: '0x4f8C8E05e946de09d768d062c5e969D1C8920C72'
+      address: '0xB725b88b32868266782398ae7Ab6bDCcebe90368'
       abi: Factory
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

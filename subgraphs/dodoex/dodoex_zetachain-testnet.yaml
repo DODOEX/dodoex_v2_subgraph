@@ -8,9 +8,9 @@ dataSources:
     name: DODOV2Proxy02
     network: zetachain-testnet
     source:
-      address: '0x119115D4119a504AD0CccD566904ea055C377dE5'
+      address: '0xae7D4fD9A9427D8B50BD4a4B9dd54dde17c4a53d'
       abi: DODOV2Proxy02
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -35,9 +35,9 @@ dataSources:
     name: DODOFeeRouteProxy
     network: zetachain-testnet
     source:
-      address: '0x026eea5c10f526153e7578E5257801f8610D1142'
+      address: '0x898d8672d9f8811603bE3431D2163a0784e71D22'
       abi: DODOFeeRouteProxy
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -66,9 +66,9 @@ dataSources:
     name: DODOFeeRouteProxy-widgit
     network: zetachain-testnet
     source:
-      address: '0x8c6DbF95448AcbcBb1c3D6E9b3b9ceF7E6fbAb00'
+      address: '0x0d3a1033d9F76A0bC5a444CdFB8fdE85B1290542'
       abi: DODOFeeRouteProxy
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -97,9 +97,9 @@ dataSources:
     name: DVMFactory
     network: zetachain-testnet
     source:
-      address: '0x6db1ed60c9d6090C87a280a0592365EE83Ca87Ed'
+      address: '0xaf6c1052A1114C7816C24a5e8bC485b180C49Deb'
       abi: DVMFactory
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -130,9 +130,9 @@ dataSources:
     name: DPPFactory
     network: zetachain-testnet
     source:
-      address: "0xa914E15C8295ED2e971f319445a9B27Fc6eE0D85"
+      address: "0x74CAd58eD9712e3236D61dea8696B6Dced3da2b6"
       abi: DPPFactory
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -161,9 +161,9 @@ dataSources:
     name: DSPFactory
     network: zetachain-testnet
     source:
-      address: '0x4c639e4d0bfeC3D0766AAA0500Ae7e91418505Bf'
+      address: '0x19c15CaF858e9D3d10272C739cDf3812B91e5508'
       abi: DSPFactory
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -194,9 +194,9 @@ dataSources:
     name: GSPFactory
     network: zetachain-testnet
     source:
-      address: '0x9Ac82EAD1945dF394867df6A053f7375634710fb'
+      address: '0xBb5a0bF38C0BeA6829fDFef931B7988c8fF00a78'
       abi: GSPFactory
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -227,9 +227,9 @@ dataSources:
     name: CrowdPoolingFactory
     network: zetachain-testnet
     source:
-      address: '0x385ADF58514D93F55bcFBC2ABC4154fBc0b08fDd'
+      address: '0xDdDc5cE761A5670F22719A2399d36cA4b3B9e4ca'
       abi: CrowdPoolingFactory
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

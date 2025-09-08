@@ -1,137 +1,75 @@
 specVersion: 0.0.4
 description: Dodoex.io
-graft:
-  base: QmXJaqrvnTgoi564icpGABpWf2g4PrtoqHCPBLjQNbaW7U
-  block: 23021299
 features:
   - grafting
-repository: https://github.com/DODOEX/dodoex_v2_subgraph
+repository: https://github.com/DODOEX/amm_v2_subgraph
 schema:
-  file: token.graphql
+  file: amm-v2.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ERC20Factory
-    network: mainnet
+    name: Factory
+    network: zetachain-testnet
     source:
-      address: "0x44d5df24d5ef52a791d6436fa45a8d426f6de34e"
-      abi: ERC20Factory
-      startBlock: 11717503
+      address: "0xB725b88b32868266782398ae7Ab6bDCcebe90368"
+      abi: Factory
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ERC20Factory/ERC20Factory.wasm
+      file: Factory/Factory.wasm
       entities:
-        - User
+        - Pair
         - Token
-        - UserTokenBlance
-        - TransferHistories
       abis:
-        - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
+        - name: Factory
+          file: ../abis/amm-v2/factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../abis/amm-v2/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../abis/amm-v2/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../abis/amm-v2/ERC20NameBytes.json
       eventHandlers:
-        - event: NewERC20(address,address,bool)
-          handler: handleNewERC20
+        - event: PairCreated(indexed address,indexed address,address,uint256,uint256)
+          handler: handleNewPair
+templates:
   - kind: ethereum/contract
-    name: ERC20V2Factory
-    network: mainnet
+    name: Pair
+    network: zetachain-testnet
     source:
-      address: "0xAA810cd0363d3378F0a13e327EC2Aee7051aDa73"
-      abi: ERC20V2Factory
-      startBlock: 11717503
+      abi: Pair
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ERC20V2Factory/ERC20V2Factory.wasm
+      file: templates/Pair/Pair.wasm
       entities:
-        - User
+        - Pair
         - Token
-        - UserTokenBlance
-        - TransferHistories
       abis:
-        - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
-        - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
+        - name: Pair
+          file: ../abis/amm-v2/pair.json
+        - name: Factory
+          file: ../abis/amm-v2/factory.json
         - name: ERC20
-          file: ../abis/ERC20.json
+          file: ../abis/amm-v2/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
+          file: ../abis/amm-v2/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
+          file: ../abis/amm-v2/ERC20NameBytes.json
       eventHandlers:
-        - event: NewERC20(address,address,uint256)
-          handler: handleNewERC20
-  - kind: ethereum/contract
-    name: ERC20V3Factory
-    network: mainnet
-    source:
-      address: "0x7466c6fe28180c33e2a35989fd6833c8dd5a7e16"
-      abi: ERC20V3Factory
-      startBlock: 14247369
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: ERC20V2Factory/ERC20V2Factory.wasm
-      entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
-      abis:
-        - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
-        - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
-        - name: ERC20V3Factory
-          file: ../abis/ERC20V3Factory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: NewERC20(address,address,uint256)
-          handler: handleNewERC20
-  - kind: ethereum/contract
-    name: ERC20V3Factory-250731
-    network: mainnet
-    source:
-      address: "0x6a3B1CC74019e252a857ABBe9ee1B2f03EE1009f"
-      abi: ERC20V3Factory
-      startBlock: 23021299
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: ERC20V2Factory/ERC20V2Factory.wasm
-      entities:
-        - User
-        - Token
-        - UserTokenBlance
-        - TransferHistories
-      abis:
-        - name: ERC20Factory
-          file: ../abis/ERC20Factory.json
-        - name: ERC20V2Factory
-          file: ../abis/ERC20V2Factory.json
-        - name: ERC20V3Factory
-          file: ../abis/ERC20V3Factory.json
-        - name: ERC20
-          file: ../abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ../abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ../abis/ERC20NameBytes.json
-      eventHandlers:
-        - event: NewERC20(address,address,uint256)
-          handler: handleNewERC20
+        - event: Mint(indexed address,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Sync(uint112,uint112)
+          handler: handleSync
+        - event: FeeRateChange(uint256)
+          handler: handleFeeRateChange
+        - event: LpMtRatioChange(uint256)
+          handler: handleLpMtRatioChange

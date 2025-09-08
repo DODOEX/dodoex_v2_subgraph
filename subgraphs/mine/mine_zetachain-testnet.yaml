@@ -8,9 +8,9 @@ dataSources:
     name: DODOMineV3ProxyV2
     network: zetachain-testnet
     source:
-      address: '0x819829e5CF6e19F9fED92F6b4CC1edF45a2cC4A2'
+      address: '0xafE1D3EE4513530B8D302e812FB07Df1d9e090c4'
       abi: DODOMineV3ProxyV2
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -38,9 +38,9 @@ dataSources:
     name: DODOMineV3Registry
     network: zetachain-testnet
     source:
-      address: '0x680829027709E2ef95D079aC97DDF5feAb82D248'
+      address: '0xF7d33BB55C74048352DC0413733095Cc8e273A74'
       abi: DODOMineV3Registry
-      startBlock: 9931587
+      startBlock: 12513946
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
