@@ -8,9 +8,9 @@ dataSources:
     name: DODOMineV3ProxyV2
     network: monad-testnet
     source:
-      address: '0x819829e5CF6e19F9fED92F6b4CC1edF45a2cC4A2'
+      address: '0x22AdDF954Ea92a3A80403Fe353093f7bF58665EC'
       abi: DODOMineV3ProxyV2
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -38,9 +38,9 @@ dataSources:
     name: DODOMineV3Registry
     network: monad-testnet
     source:
-      address: '0x680829027709E2ef95D079aC97DDF5feAb82D248'
+      address: '0x7D381e6a9c23A0E6969658f6B8Eba57A4Dbf93a0'
       abi: DODOMineV3Registry
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

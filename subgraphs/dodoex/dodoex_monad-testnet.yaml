@@ -8,9 +8,9 @@ dataSources:
     name: DODOV2Proxy02
     network: monad-testnet
     source:
-      address: '0x119115D4119a504AD0CccD566904ea055C377dE5'
+      address: '0xF5378974cfD5042A58c458E06cB6D2A2D1c2FAF8'
       abi: DODOV2Proxy02
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -35,9 +35,9 @@ dataSources:
     name: DODOFeeRouteProxy
     network: monad-testnet
     source:
-      address: '0x026eea5c10f526153e7578E5257801f8610D1142'
+      address: '0x9ef37fD4791eb28e46c3D50Ed83F2a10B3082784'
       abi: DODOFeeRouteProxy
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -66,9 +66,9 @@ dataSources:
     name: DODOFeeRouteProxy-widgit
     network: monad-testnet
     source:
-      address: '0x8c6DbF95448AcbcBb1c3D6E9b3b9ceF7E6fbAb00'
+      address: '0xDA89314035264Ade23313f971AaE5393068Ea6F7'
       abi: DODOFeeRouteProxy
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -97,9 +97,9 @@ dataSources:
     name: DVMFactory
     network: monad-testnet
     source:
-      address: '0x6db1ed60c9d6090C87a280a0592365EE83Ca87Ed'
+      address: '0x306ae919b99c187Fe5eCBdE980E24228ae888182'
       abi: DVMFactory
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -130,9 +130,9 @@ dataSources:
     name: DPPFactory
     network: monad-testnet
     source:
-      address: "0xa914E15C8295ED2e971f319445a9B27Fc6eE0D85"
+      address: "0x82B26eb18382f7532015248078AB1f6030413396"
       abi: DPPFactory
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -161,9 +161,9 @@ dataSources:
     name: DSPFactory
     network: monad-testnet
     source:
-      address: '0x4c639e4d0bfeC3D0766AAA0500Ae7e91418505Bf'
+      address: '0x701Ac6fAD7850956f966a85655348ac1B7c93368'
       abi: DSPFactory
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -194,9 +194,9 @@ dataSources:
     name: GSPFactory
     network: monad-testnet
     source:
-      address: '0x9Ac82EAD1945dF394867df6A053f7375634710fb'
+      address: '0xB88f7eb2dA59E1E8E00E0158b195D5ca48403921'
       abi: GSPFactory
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -227,9 +227,9 @@ dataSources:
     name: CrowdPoolingFactory
     network: monad-testnet
     source:
-      address: '0x385ADF58514D93F55bcFBC2ABC4154fBc0b08fDd'
+      address: '0x297B5D923b9C18081ddE398B5b5aC6E09336B27c'
       abi: CrowdPoolingFactory
-      startBlock: 5285960
+      startBlock: 37468117
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
