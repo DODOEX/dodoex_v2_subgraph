@@ -56,6 +56,7 @@ const chains = [
   "pharos-testnet",
   "zetachain",
   "pharos",
+  "stable",
 ];
 const supportAlphaChains = ["arbitrum", "polygon", "mainnet"];
 const supportStudioChains = [
