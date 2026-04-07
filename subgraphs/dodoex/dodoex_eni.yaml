@@ -255,6 +255,8 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
@@ -325,6 +327,8 @@ dataSources:
   #         file: ../../abis/ERC20NameBytes.json
   #       - name: CP
   #         file: ../../abis/CP.json
+  #       - name: CPV2
+  #         file: ../../abis/CPV2.json
   #     eventHandlers:
   #       - event: NewCP(address,address,address,address)
   #         handler: handleNewCP
@@ -649,6 +653,8 @@ templates:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
         - name: DVMFactory
           file: ../../abis/DVMFactory.json
         - name: DODOZoo

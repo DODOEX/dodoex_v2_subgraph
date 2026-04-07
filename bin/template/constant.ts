@@ -13,6 +13,7 @@ export const CHAIN_BASE_COIN_SYMBOL = "ETH";
 export const CHAIN_BASE_COIN_NAME = "ethereum";
 export const DIP3_TIMESTAMP = 1624442400;
 
+// 必须小写地址
 export const SMART_ROUTE_ADDRESSES: string[] = ["${DODOV2Proxy02}"];
 export const DVM_FACTORY_ADDRESS = "${DVMFactory}";
 export const DPP_FACTORY_ADDRESS = "${DPPFactory}";
