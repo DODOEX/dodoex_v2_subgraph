@@ -1,0 +1,202 @@
+import { BigInt } from "@graphprotocol/graph-ts";
+
+import {
+  Bundle,
+  Burn,
+  AMMFactory,
+  Pool,
+  Tick,
+  Token,
+  LiquidityTracker,
+} from "../../../types/amm-v3/schema";
+import { Burn as BurnEvent } from "../../../types/amm-v3/templates/Pool/Pool";
+import { convertTokenToDecimal, loadTransaction } from "../utils";
+import { getSubgraphConfig, SubgraphConfig } from "../utils/chains";
+import { ONE_BI } from "../../constant";
+import {
+  updatePoolDayData,
+  updatePoolHourData,
+  updateTokenDayData,
+  updateTokenHourData,
+  updateAMMDayData,
+} from "../utils/intervalUpdates";
+import {
+  createPair,
+  updatePairDayData,
+  updatePairHourData,
+} from "../supplementaryData";
+import { updateLpPosition } from "../nonfungiblePositionManager";
+
+export function handleBurn(event: BurnEvent): void {
+  handleBurnHelper(event);
+}
+
+// Note: this handler need not adjust TVL because that is accounted for in the handleCollect handler
+export function handleBurnHelper(
+  event: BurnEvent,
+  subgraphConfig: SubgraphConfig = getSubgraphConfig()
+): void {
+  const factoryAddress = subgraphConfig.factoryAddress;
+
+  const bundle = Bundle.load("1")!;
+  const poolAddress = event.address.toHexString();
+  const pool = Pool.load(poolAddress)!;
+  const factory = AMMFactory.load(factoryAddress)!;
+
+  const token0 = Token.load(pool.token0);
+  const token1 = Token.load(pool.token1);
+
+  if (token0 && token1) {
+    const amount0 = convertTokenToDecimal(
+      event.params.amount0,
+      token0.decimals
+    );
+    const amount1 = convertTokenToDecimal(
+      event.params.amount1,
+      token1.decimals
+    );
+
+    const amountUSD = amount0
+      .times(token0.derivedETH.times(bundle.ethPriceUSD))
+      .plus(amount1.times(token1.derivedETH.times(bundle.ethPriceUSD)));
+
+    // update globals
+    factory.txCount = factory.txCount.plus(ONE_BI);
+
+    // update token0 data
+    token0.txCount = token0.txCount.plus(ONE_BI);
+
+    // update token1 data
+    token1.txCount = token1.txCount.plus(ONE_BI);
+
+    // pool data
+    pool.txCount = pool.txCount.plus(ONE_BI);
+    // Pools liquidity tracks the currently active liquidity given pools current tick.
+    // We only want to update it on burn if the position being burnt includes the current tick.
+    if (
+      pool.tick !== null &&
+      BigInt.fromI32(event.params.tickLower).le(pool.tick as BigInt) &&
+      BigInt.fromI32(event.params.tickUpper).gt(pool.tick as BigInt)
+    ) {
+      // todo: this liquidity can be calculated from the real reserves and
+      // current price instead of incrementally from every burned amount which
+      // may not be accurate: https://linear.app/amm/issue/DAT-336/fix-pool-liquidity
+      pool.liquidity = pool.liquidity.minus(event.params.amount);
+    }
+
+    // burn entity
+    const transaction = loadTransaction(event);
+    const burn = new Burn(transaction.id + "-" + event.logIndex.toString());
+    burn.transaction = transaction.id;
+    burn.timestamp = transaction.timestamp;
+    burn.pool = pool.id;
+    burn.token0 = pool.token0;
+    burn.token1 = pool.token1;
+    burn.owner = event.params.owner;
+    burn.origin = event.transaction.from;
+    burn.amount = event.params.amount;
+    burn.amount0 = amount0;
+    burn.amount1 = amount1;
+    burn.amountUSD = amountUSD;
+    burn.tickLower = BigInt.fromI32(event.params.tickLower);
+    burn.tickUpper = BigInt.fromI32(event.params.tickUpper);
+    burn.logIndex = event.logIndex;
+
+    // tick entities
+    const lowerTickId =
+      poolAddress + "#" + BigInt.fromI32(event.params.tickLower).toString();
+    const upperTickId =
+      poolAddress + "#" + BigInt.fromI32(event.params.tickUpper).toString();
+    const lowerTick = Tick.load(lowerTickId);
+    const upperTick = Tick.load(upperTickId);
+    const amount = event.params.amount;
+    if (lowerTick && upperTick) {
+      lowerTick.liquidityGross = lowerTick.liquidityGross.minus(amount);
+      lowerTick.liquidityNet = lowerTick.liquidityNet.minus(amount);
+      upperTick.liquidityGross = upperTick.liquidityGross.minus(amount);
+      upperTick.liquidityNet = upperTick.liquidityNet.plus(amount);
+
+      lowerTick.save();
+      upperTick.save();
+    }
+    const ammDayData = updateAMMDayData(event, factoryAddress);
+    const poolDayData = updatePoolDayData(event);
+    const poolHourData = updatePoolHourData(event);
+    const token0DayData = updateTokenDayData(token0 as Token, event);
+    const token1DayData = updateTokenDayData(token1 as Token, event);
+    const token0HourData = updateTokenHourData(token0 as Token, event);
+    const token1HourData = updateTokenHourData(token1 as Token, event);
+
+    token0.updatedAt = event.block.timestamp;
+    token0.save();
+    token1.updatedAt = event.block.timestamp;
+    token1.save();
+    pool.updatedAt = event.block.timestamp;
+    createPair(pool);
+    pool.save();
+    factory.updatedAt = event.block.timestamp;
+    factory.save();
+    burn.updatedAt = event.block.timestamp;
+    burn.save();
+    ammDayData.updatedAt = event.block.timestamp;
+    ammDayData.save();
+    poolDayData.updatedAt = event.block.timestamp;
+    poolDayData.save();
+    poolHourData.updatedAt = event.block.timestamp;
+    poolHourData.save();
+    token0DayData.updatedAt = event.block.timestamp;
+    token0DayData.save();
+    token1DayData.updatedAt = event.block.timestamp;
+    token1DayData.save();
+    token0HourData.updatedAt = event.block.timestamp;
+    token0HourData.save();
+    token1HourData.updatedAt = event.block.timestamp;
+    token1HourData.save();
+    updatePairHourData(poolHourData);
+    updatePairDayData(poolDayData);
+
+    // supplementary Data
+    let liquidityTrackerId = event.transaction.hash
+      .toHexString()
+      .concat("#")
+      .concat(event.params.amount.toString())
+      .concat("#")
+      .concat(event.params.amount0.toString())
+      .concat("#")
+      .concat(event.params.amount1.toString());
+    let liquidityTracker = LiquidityTracker.load(liquidityTrackerId);
+    if (liquidityTracker == null) {
+      liquidityTracker = new LiquidityTracker(liquidityTrackerId);
+      liquidityTracker.hash = event.transaction.hash.toHexString();
+      liquidityTracker.pool = pool.id;
+      liquidityTracker.liquidity = event.params.amount;
+      liquidityTracker.amount0 = event.params.amount0;
+      liquidityTracker.amount1 = event.params.amount1;
+      liquidityTracker.tickLower = BigInt.fromI32(event.params.tickLower);
+      liquidityTracker.tickUpper = BigInt.fromI32(event.params.tickUpper);
+      liquidityTracker.logIndex = event.logIndex;
+      liquidityTracker.owner = event.params.owner;
+      liquidityTracker.tokenId = "-1";
+      liquidityTracker.updatedAt = event.block.timestamp;
+      liquidityTracker.save();
+    } else {
+      liquidityTracker.pool = pool.id;
+      liquidityTracker.tickLower = BigInt.fromI32(event.params.tickLower);
+      liquidityTracker.tickUpper = BigInt.fromI32(event.params.tickUpper);
+      liquidityTracker.updatedAt = event.block.timestamp;
+      liquidityTracker.save();
+      updateLpPosition(
+        liquidityTracker.pool,
+        liquidityTracker.liquidity,
+        liquidityTracker.amount0,
+        liquidityTracker.amount1,
+        liquidityTracker.tickLower,
+        liquidityTracker.tickUpper,
+        liquidityTracker.tokenId,
+        liquidityTracker.liquidity,
+        "WITHDRAW",
+        event
+      );
+    }
+  }
+}

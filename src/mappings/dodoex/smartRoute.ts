@@ -5,8 +5,10 @@ import {
   Pair,
   Token,
   Transaction,
+  PositiveSlippage,
 } from "../../types/dodoex/schema";
 import { OrderHistory as OrderHistoryV2 } from "../../types/dodoex/DODOV2Proxy02/DODOV2Proxy02";
+import { PositiveSlippage as PositiveSlippageEvent } from "../../types/dodoex/DODOFeeRouteProxy/DODOFeeRouteProxy";
 import {
   createToken,
   createUser,
@@ -71,9 +73,8 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
     event.block.timestamp
   );
   if (volumeUSD.equals(ZERO_BD)) {
-    fromToken.untrackedVolume = fromToken.untrackedVolume.plus(
-      dealedFromAmount
-    );
+    fromToken.untrackedVolume =
+      fromToken.untrackedVolume.plus(dealedFromAmount);
     toToken.untrackedVolume = fromToken.untrackedVolume.plus(dealedToAmount);
   }
 
@@ -191,4 +192,24 @@ export function handleOrderHistory(event: OrderHistoryV2): void {
   updateTokenTraderCount(event.params.fromToken, event.transaction.from, event);
   updateTokenTraderCount(event.params.toToken, event.transaction.from, event);
   increaseVolumeAndFee(event, volumeUSD, ZERO_BD);
+}
+
+export function handlePositiveSlippage(event: PositiveSlippageEvent): void {
+  let id = event.transaction.hash
+    .toHexString()
+    .concat("-")
+    .concat(event.logIndex.toString());
+  let token = createToken(event.params.token, event);
+  let amount = convertTokenToDecimal(event.params.amount, token.decimals);
+  let positiveSlippage = PositiveSlippage.load(id);
+  if (positiveSlippage == null) {
+    positiveSlippage = new PositiveSlippage(id);
+    positiveSlippage.hash = event.transaction.hash.toHexString();
+    positiveSlippage.timestamp = event.block.timestamp;
+    positiveSlippage.block = event.block.number;
+    positiveSlippage.token = token.id;
+    positiveSlippage.amount = amount;
+  }
+  positiveSlippage.updatedAt = event.block.timestamp;
+  positiveSlippage.save();
 }

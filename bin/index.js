@@ -7,4 +7,5 @@ program
   .command("create", "Create the subgraph")
   .command("deploy", "Deploys the subgraph")
   .command("cmd", "run cmd")
+  .command("codegen", "newchain codegen")
   .parse(process.argv);

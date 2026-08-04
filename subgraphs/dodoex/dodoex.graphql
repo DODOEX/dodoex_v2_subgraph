@@ -236,6 +236,23 @@ type OrderHistory @entity {
   updatedAt: BigInt
 }
 
+type PositiveSlippage @entity {
+  "order id"
+  id: ID!
+  "transaction hash"
+  hash: String!
+  "block"
+  block: BigInt!
+  "timestamp of this transaction"
+  timestamp: BigInt!
+  "token"
+  token: Token!
+  amount: BigDecimal!
+
+  "updatedAt"
+  updatedAt: BigInt
+}
+
 type LiquidityHistory @entity {
   "txid - logindex"
   id: ID!

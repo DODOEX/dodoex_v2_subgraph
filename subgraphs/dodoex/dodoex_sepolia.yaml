@@ -1,5 +1,10 @@
 specVersion: 0.0.4
 description: Dodoex.io
+# graft:
+#   base: QmXfb1uACzV16hEKR91rvBRQG9CHZUtBdw1JQsgw7uXDbq
+#   block: 9982580
+# features:
+#   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -60,6 +65,37 @@ dataSources:
       eventHandlers:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODOFeeRouteProxy-PositiveSlippage
+    network: sepolia
+    source:
+      address: '0x303989972143d3cE71D1E3877bC77007375E0F1B'
+      abi: DODOFeeRouteProxy
+      startBlock: 6641731
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory    
+        - event: PositiveSlippage(address,uint256)
+          handler: handlePositiveSlippage   
   - kind: ethereum/contract
     name: DODOFeeRouteProxy-widgit
     network: sepolia
@@ -197,7 +233,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/poolFactory.ts
+      file: ../../src/mappings/dodoex/poolGspFactory.ts
       entities:
         - Pair
         - Token
@@ -230,7 +266,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/poolFactory.ts
+      file: ../../src/mappings/dodoex/poolGspFactory.ts
       entities:
         - Pair
         - Token
@@ -284,6 +320,8 @@ dataSources:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
       eventHandlers:
         - event: NewCP(address,address,address,address)
           handler: handleNewCP
@@ -678,6 +716,8 @@ templates:
           file: ../../abis/ERC20NameBytes.json
         - name: CP
           file: ../../abis/CP.json
+        - name: CPV2
+          file: ../../abis/CPV2.json
         - name: DVMFactory
           file: ../../abis/DVMFactory.json
         - name: DODOZoo

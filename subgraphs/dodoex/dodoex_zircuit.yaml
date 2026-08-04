@@ -10,7 +10,7 @@ dataSources:
     source:
       address: '0x5e132c0ABB9e4E5f1471eF6d1C9740c276Fe520e'
       abi: DODOV2Proxy02
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -37,7 +37,7 @@ dataSources:
     source:
       address: '0x518Bfe0c91C1C8e9588b9218B87C38Fa6b9735D6'
       abi: DODOFeeRouteProxy
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -66,7 +66,7 @@ dataSources:
     source:
       address: '0x3b0c6c0CE667844e742Ce0Ca533EaA2b6f422AA8'
       abi: DODOFeeRouteProxy
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -95,7 +95,7 @@ dataSources:
     source:
       address: '0xA909314363840f7c28b8EC314028e21722dd8Cb6'
       abi: DVMFactory
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -128,7 +128,7 @@ dataSources:
     source:
       address: "0xb770C37F3A9eC6f25b791D9c791aDE09B0fb1AB8"
       abi: DPPFactory
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -159,7 +159,7 @@ dataSources:
     source:
       address: '0xA312D73C1b537168f1C8588bDcaB9278df98Cd32'
       abi: DSPFactory
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -192,7 +192,7 @@ dataSources:
     source:
       address: '0x40b4030129FCFE660B4ecF35354e027260343049'
       abi: CrowdPoolingFactory
-      startBlock: 1454181
+      startBlock: 6214020
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

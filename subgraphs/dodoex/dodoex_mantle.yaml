@@ -202,7 +202,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/poolFactory.ts
+      file: ../../src/mappings/dodoex/poolGspFactory.ts
       entities:
         - Pair
         - Token

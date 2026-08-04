@@ -77,6 +77,25 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PositiveSlippage",
+    "type": "event"
+  },
+  {
     "stateMutability": "payable",
     "type": "fallback"
   },
@@ -180,6 +199,11 @@
       },
       {
         "internalType": "uint256",
+        "name": "expReturnAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "minReturnAmount",
         "type": "uint256"
       },
@@ -250,6 +274,11 @@
       {
         "internalType": "uint256",
         "name": "fromTokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "expReturnAmount",
         "type": "uint256"
       },
       {
@@ -341,6 +370,11 @@
       },
       {
         "internalType": "uint256",
+        "name": "expReturnAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "minReturnAmount",
         "type": "uint256"
       },
@@ -384,7 +418,7 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "receiveAmount",
+        "name": "",
         "type": "uint256"
       }
     ],

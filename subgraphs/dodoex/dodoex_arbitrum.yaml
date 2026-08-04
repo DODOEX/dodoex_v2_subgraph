@@ -1,10 +1,10 @@
 specVersion: 0.0.4
 description: Dodoex.io
-graft:
-  base: QmPMLJWfXJN9Juyj5h14NKJh9qvteiNs6PMTocqfHocWJk
-  block: 252253560
-features:
-  - grafting
+# graft:
+#   base: QmQGiLLm7XUEPs2U3qU9Kgty4vTFk42twtYrt3XtCbYTBx
+#   block: 252253520
+# features:
+#   - grafting
 repository: https://github.com/DODOEX/dodoex_v2_subgraph
 schema:
   file: ./dodoex.graphql
@@ -67,6 +67,68 @@ dataSources:
       eventHandlers:
         - event: OrderHistory(address,address,address,uint256,uint256)
           handler: handleOrderHistory
+  - kind: ethereum/contract
+    name: DODOFeeRouteProxy-PositiveSlippage
+    network: arbitrum-one
+    source:
+      address: '0x69716E51E3F8Bec9c3D4E1bB46396384AE11C594'
+      abi: DODOFeeRouteProxy
+      startBlock: 255059255
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory    
+        - event: PositiveSlippage(address,uint256)
+          handler: handlePositiveSlippage  
+  - kind: ethereum/contract
+    name: DODOFeeRouteProxy-widgit-PositiveSlippage
+    network: arbitrum-one
+    source:
+      address: '0x056FcE6B76AF3050F54B71Fc9B5fcb7C387BfC1A'
+      abi: DODOFeeRouteProxy
+      startBlock: 255059255
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ../../src/mappings/dodoex/smartRoute.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: DODOFeeRouteProxy
+          file: ../../abis/DODOFeeRouteProxy.json
+        - name: DODOV2Proxy02
+          file: ../../abis/DODOV2Proxy02.json
+        - name: ERC20
+          file: ../../abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ../../abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ../../abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: OrderHistory(address,address,address,uint256,uint256)
+          handler: handleOrderHistory    
+        - event: PositiveSlippage(address,uint256)
+          handler: handlePositiveSlippage           
   - kind: ethereum/contract
     name: DODOV2Proxy02
     network: arbitrum-one
@@ -233,7 +295,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ../../src/mappings/dodoex/poolFactory.ts
+      file: ../../src/mappings/dodoex/poolGspFactory.ts
       entities:
         - Pair
         - Token
